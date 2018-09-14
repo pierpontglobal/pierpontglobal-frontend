@@ -13,7 +13,7 @@ const config = {
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
     './src/styles/main.scss',
-    './src/App.jsx'
+    './src/Index.jsx'
   ],
 
   output: {
