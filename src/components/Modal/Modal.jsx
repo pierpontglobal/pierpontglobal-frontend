@@ -18,8 +18,14 @@ export default class Modal extends React.Component {
     autoCloseModal = e => {
         e.stopPropagation();
         let {className} = e.target;
-        if (className.includes('my-modal'))
+        if (className.includes('my-modal')){
             this.setState({open: false});
+            try {
+                this.props.notifyClosed()
+            } catch(e) {
+                console.log(e);
+            }
+        }
     };
 
     componentDidMount() {

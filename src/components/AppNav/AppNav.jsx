@@ -41,6 +41,14 @@ export default class AppNav extends React.Component {
         profileOpen: true
     });
 
+    gettingProfile() {
+        return (
+        <LinkBtn className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center">
+            <i className="far fa-user mr-2 pr-1" />
+            Profile
+        </LinkBtn>)
+    }
+
     render() {
         return (
             <div 
@@ -60,22 +68,25 @@ export default class AppNav extends React.Component {
                         onMaskClick={this.onTouchEnd} 
                     />
                     <BurgerBtn onClick={this.openMenuSide} />
-                    <img 
-                        className="ml-auto mr-auto img-fluid" 
+                    <img
+                        style={{
+                            height: '40px'
+                        }}
+                        className="ml-auto mr-auto img-fluid logo" 
                         src={logo} 
                         alt="PierpontGlobal" 
                     />
                     <ProfileBtn onClick={this.openProfileSide} />
-                    <LinkBtn className="mr-lg-4 mr-3 d-none d-md-flex align-self-center">Home</LinkBtn>
-                    <LinkBtn className="mr-lg-4 ml-lg-3 mr-3 d-none d-md-flex align-self-center">MarketPlace</LinkBtn>
+                    <LinkBtn href='/' className="mr-lg-4 mr-3 d-none d-md-flex align-self-center">Home</LinkBtn>
+                    <LinkBtn href='/marketplace' className="mr-lg-4 ml-lg-3 mr-3 d-none d-md-flex align-self-center">MarketPlace</LinkBtn>
                     <LinkBtn className="mr-lg-4 ml-lg-3 mr-3 d-none d-md-flex align-self-center">Contact&nbsp;Us</LinkBtn>
+
                     <Divider className="ml-lg-3 mr-lg-3 d-none d-md-flex align-self-center" />
-                    <LinkBtn className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center">
-                        <i className="far fa-user mr-2 pr-1" />
-                        Profile
-                    </LinkBtn>
-                    <SearchInput className="d-none d-md-flex mr-auto align-self-center" />
-                
+                    
+                    { this.gettingProfile() }
+
+                    <SearchInput className="d-none d-md-flex mr-auto align-self-center"></SearchInput>
+
                 </div>
             </div>
         );
