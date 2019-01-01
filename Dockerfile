@@ -14,4 +14,4 @@ COPY package.json /usr/src/app/package.json
 RUN npm install --silent
 
 # start app
-CMD ["yarn", "start --env=production"]
+CMD ["yarn", "start"]
