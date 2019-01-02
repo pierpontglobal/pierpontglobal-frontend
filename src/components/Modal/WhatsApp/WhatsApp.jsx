@@ -82,7 +82,7 @@ class WhatsApp extends React.Component {
                 <div className="d-flex flex-column px-3">
                   <h5 className="header-heading ">Start a Conversation</h5>
                   <p className="header-description mb-0">
-Hi! Click one of our member below to chat on
+Hi! Click one of our members below to chat on
                     {' '}
                     <b>Whatsapp</b>
                   </p>
@@ -129,7 +129,7 @@ Hi! Click one of our member below to chat on
                       <div className="media-body">
                         <p className="mb-1 name">Steve Solomon</p>
                         <p style={{ color: 'darkgray' }} className="mb-1 profession">Sale Support</p>
-                        <p style={{ color: 'orange' }} className="mb-1 profession">Unavailable</p>
+                        <p style={{ color: 'orange' }} className="mb-1 profession">I will be back soon</p>
                       </div>
                       <div>
                         <span><i style={{ color: 'darkgray' }} className="fab fa-whatsapp gren" /></span>
@@ -154,7 +154,7 @@ Hi! Click one of our member below to chat on
           }}
         >
           Need help?
-          <span style={{ fontWeight: 'bold' }}> Chat whith us!</span>
+          <span style={{ fontWeight: 'bold' }}> Chat with us!</span>
         </WMessage>
         <WButton
           style={{
