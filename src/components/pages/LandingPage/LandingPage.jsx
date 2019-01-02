@@ -140,7 +140,7 @@ class LandingPage extends React.Component {
             color: '#393e44',
           }}
           >
-        Endorced by the best
+        Endorsed by the best
           </Text>
 
           <Text style={{ color: '#393e44' }}>
