@@ -43,10 +43,13 @@ export default class AppNav extends React.Component {
 
     gettingProfile() {
         return (
-        <LinkBtn className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center">
+        <div style={{
+            cursor: 'pointer',
+            alignItems: 'center'
+        }} onClick={() => {this.props.openModal()}} className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center">
             <i className="far fa-user mr-2 pr-1" />
-            Profile
-        </LinkBtn>)
+            Sign In
+        </div>)
     }
 
     render() {

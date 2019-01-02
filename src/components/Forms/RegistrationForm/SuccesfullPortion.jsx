@@ -48,8 +48,13 @@ class SuccessfullPortion extends React.Component {
       },
     };
     const response = await axios.post(`${ApiServer}/api/v1/users`, data);
-    if (response.status === 200) {
-      this.setState({ loading: false });
+    try {
+      if (response.status === 200) {
+        this.setState({ loading: false });
+      }
+      console.log(response);
+    } catch (e) {
+
     }
   }
 

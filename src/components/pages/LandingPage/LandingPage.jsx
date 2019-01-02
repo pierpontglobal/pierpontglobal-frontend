@@ -1,10 +1,13 @@
 import React from 'react';
+import { gray } from 'ansi-colors';
 import AppNav from '../../AppNav/AppNav';
 import VideoBar from '../../Bars/VideoBar';
 import Registration from '../../Forms/RegisterForm';
 import ManheimLogo from './manheim.png';
 import Text from '../../styles/Text/Text';
 import Modal from '../../Modal/Modal';
+import Input from '../../styles/Input/Input';
+import Button from '../../Btn/Btn';
 
 class LandingPage extends React.Component {
   constructor(props) {
@@ -28,12 +31,86 @@ class LandingPage extends React.Component {
   render() {
     let modal = ('');
     if (this.state.signIn == true) {
-      modal = (<Modal show notifyClosed={this.closeModal} title="User sign in" />);
+      modal = (
+        <Modal height="320px" show notifyClosed={this.closeModal} title="User sign in">
+          <form
+            style={{
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '100%',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+            onSubmit={this.saveAndContinue}
+          >
+
+            <Input
+              style={{
+                marginTop: '10px',
+                height: '40px',
+              }}
+              className="w-100 pl-2 border-0"
+              type="text"
+              backgroundColor="#EEEEEE"
+              ref={(node) => { this.username = node; }}
+              lineHeight={1.31}
+              maxWidth="300px"
+              maxHeight="40px"
+              borderRadius="4px"
+              placeholder="Username"
+              required
+            />
+
+            <Input
+              style={{
+                marginTop: '10px',
+                height: '40px',
+              }}
+              className="w-100 pl-2 border-0"
+              type="password"
+              backgroundColor="#EEEEEE"
+              lineHeight={1.31}
+              ref={(node) => { this.password = node; }}
+              maxWidth="300px"
+              maxHeight="40px"
+              borderRadius="4px"
+              placeholder="Password"
+              required
+            />
+
+            <a
+              href="/recover"
+              style={{
+                marginTop: '10px',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                color: '#000000',
+              }}
+            >
+            Forgot account?
+            </a>
+
+            <Button
+              marginTop="20px"
+              color="#3e78c0"
+              height="50px"
+              width="160px"
+              style={{
+                color: gray,
+              }}
+            >
+            Sign In
+            </Button>
+          </form>
+        </Modal>
+      );
     }
 
     return (
       <div>
-        <AppNav />
+        <AppNav openModal={this.openModal} />
         <VideoBar />
         <Registration openModal={this.openModal} />
 
