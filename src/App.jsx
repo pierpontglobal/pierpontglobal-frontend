@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 
-const car = {
+/* const car = {
   year: '2017',
   make: 'Hyundai',
   model: 'Santa Fe',
@@ -28,7 +28,7 @@ const car = {
     'https://static.cargurus.com/images/site/2015/03/17/18/44/2015_hyundai_santa_fe_sport-pic-3111940996015372984-640x480.jpeg',
   ],
   title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
-};
+}; */
 
 /* const invoice = {
   unitCost: '$22 900',

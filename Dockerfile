@@ -1,17 +1,16 @@
 # base image
-FROM node:10.14.1
-
-# set working directory
+FROM node:10.14.1 as build
 RUN mkdir /usr/src/app
-COPY . /usr/src/app
 WORKDIR /usr/src/app
-
-# add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
-
-# install and cache app dependencies
 COPY package.json /usr/src/app/package.json
 RUN npm install --silent
+RUN npm install react-scripts -g --silent
+COPY . /usr/src/app
+RUN npm run build
 
-# start app
-CMD ["yarn", "start"]
+### STAGE 2: Production Environment ###
+FROM nginx:1.13.12-alpine
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

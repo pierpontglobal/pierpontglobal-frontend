@@ -30,6 +30,7 @@ class Registration extends React.Component {
     };
 
     this.moveSection = this.moveSection.bind(this);
+    console.log(process.env.NODE_ENV);
   }
 
   moveSection(data, step) {
