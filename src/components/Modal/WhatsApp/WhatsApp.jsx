@@ -1,8 +1,6 @@
 import React from 'react';
 import './custom.css';
 import posed from 'react-pose';
-import { color } from 'style-value-types';
-import { gray } from 'ansi-colors';
 
 const WButton = posed.div({
   clicked: {
@@ -62,19 +60,17 @@ class WhatsApp extends React.Component {
     };
   }
 
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div style={{
         position: 'fixed',
         right: '20px',
         bottom: '20px',
-        zIndex: 200,
+        zIndex: 100,
+        minWidth: '300px',
       }}
       >
-        <WList pose={this.state.whatsappVisible ? 'visible' : 'hidden'} style={{ borderRadius: '10px', zIndex: 100 }} className="chat-box animated shadow" id="chat-box">
+        <WList pose={this.state.whatsappVisible ? 'visible' : 'hidden'} style={{ borderRadius: '10px', display: this.state.whatsappVisible ? 'flex' : 'none' }} className="chat-box animated shadow" id="chat-box">
           <div className="card card-radius-all border-0">
             <div className="card-header card-radius" style={{ backgroundColor: '#2db742' }}>
               <div className="d-flex">
@@ -123,7 +119,7 @@ Hi! Click one of our members below to chat on
                   </div>
                 </WElement>
                 <WElement pose={this.state.whatsappVisible ? 'enter' : 'exit'} i={3} key={3} href="#!" className="nav-link animated fadeInUp">
-                  <div onClick={() => { window.location.href = 'https://wa.me/19548063292?text=Hello Steve, '; }} style={{ cursor: 'pointer' }} style={{ borderLeftColor: 'darkgrey' }} className="media px-3 py-2">
+                  <div onClick={() => { window.location.href = 'https://wa.me/19548063292?text=Hello Steve, '; }} style={{ borderLeftColor: 'darkgrey', cursor: 'pointer' }} className="media px-3 py-2">
                     <div className="d-flex justify-content-end w-100 align-items-center">
                       <img style={{ width: '60px' }} src="/images/steve.png" className="mr-3" alt="..." />
                       <div className="media-body">
@@ -151,6 +147,7 @@ Hi! Click one of our members below to chat on
             bottom: '10px',
             padding: '7px',
             borderRadius: '5px',
+            backgroundColor: '#ffffff',
           }}
         >
           Need help?

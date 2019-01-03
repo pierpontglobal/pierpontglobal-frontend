@@ -3,6 +3,7 @@ import AddressFields from './RegistrationForm/AddressFields';
 import UserFields from './RegistrationForm/UserFields';
 import SuccessfulPortion from './RegistrationForm/SuccesfullPortion';
 import Button from '../Btn/Btn';
+import { SignInModal } from '../support/AccountManager';
 
 const React = require('react');
 
@@ -22,15 +23,27 @@ const fieldValues = {
 };
 
 class Registration extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      step: 1,
-      loading: true,
+      step: 4,
+      loading: false,
+      openModal: false,
     };
 
     this.moveSection = this.moveSection.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+
     console.log(process.env.NODE_ENV);
+  }
+
+  openModal() {
+    this.setState({ openModal: true });
+  }
+
+  closeModal() {
+    this.setState({ openModal: false });
   }
 
   moveSection(data, step) {
@@ -102,8 +115,10 @@ class Registration extends React.Component {
               loading={this.state.loading}
               fieldValues={fieldValues}
               nextButton={this.moveSection}
-              signInElement={this.props.openModal}
+              signInElement={this.openModal}
             />
+
+            { this.state.openModal ? <SignInModal show notifyClosed={this.closeModal} /> : <div /> }
           </div>
         );
     }

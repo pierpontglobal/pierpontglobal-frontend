@@ -27,7 +27,7 @@ class SuccessfullPortion extends React.Component {
   }
 
   componentDidMount() {
-    this.register();
+    //    this.register();
   }
 
   async register() {
@@ -54,7 +54,6 @@ class SuccessfullPortion extends React.Component {
       }
       console.log(response);
     } catch (e) {
-
     }
   }
 
