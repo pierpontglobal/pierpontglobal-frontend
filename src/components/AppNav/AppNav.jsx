@@ -7,6 +7,7 @@ import BurgerBtn from './BurgerBtn/BurgerBtn';
 import ProfileBtn from './ProfileBtn/ProfileBtn';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import ProfileDrawer from './ProfileDrawer/ProfileDrawer';
+import AccountMAnager from '../support/AccountManager'
 
 const style = {
     backgroundColor: '#fafafa',
@@ -22,7 +23,7 @@ export default class AppNav extends React.Component {
         super(props);
         this.state = {
             menuOpen: false,
-            profileOpen: false
+            profileOpen: false,
         }
     }
 
@@ -40,17 +41,6 @@ export default class AppNav extends React.Component {
     openProfileSide = () => this.setState({
         profileOpen: true
     });
-
-    gettingProfile() {
-        return (
-        <div style={{
-            cursor: 'pointer',
-            alignItems: 'center'
-        }} onClick={() => {this.props.openModal()}} className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center">
-            <i className="far fa-user mr-2 pr-1" />
-            Sign In
-        </div>)
-    }
 
     render() {
         return (
@@ -72,8 +62,10 @@ export default class AppNav extends React.Component {
                     />
                     <BurgerBtn onClick={this.openMenuSide} />
                     <img
+                        onClick={() => {window.location.href="/"}}
                         style={{
-                            height: '40px'
+                            height: '40px',
+                            cursor: 'pointer'
                         }}
                         className="ml-auto mr-auto img-fluid logo" 
                         src={logo} 
@@ -86,9 +78,11 @@ export default class AppNav extends React.Component {
 
                     <Divider className="ml-lg-3 mr-lg-3 d-none d-md-flex align-self-center" />
                     
-                    { this.gettingProfile() }
+                    < AccountMAnager/>
 
+                    <div style={{visibility: this.props.notSearchable ? 'hidden' : 'visible' }}>
                     <SearchInput className="d-none d-md-flex mr-auto align-self-center"></SearchInput>
+                    </div>
 
                 </div>
             </div>
