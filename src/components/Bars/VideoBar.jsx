@@ -4,6 +4,7 @@ import InfoBar from '../styles/InfoBar/InfoBar';
 import Text from '../styles/Text/Text';
 import Button from '../Btn/Btn';
 import '../../../node_modules/react-modal-video/css/modal-video.min.css';
+import './styles.css';
 
 class VideoBar extends React.Component {
   constructor() {
@@ -21,8 +22,9 @@ class VideoBar extends React.Component {
   // Video banner
   render() {
     return (
-      <InfoBar>
+      <InfoBar className="info-bar-shinks">
         <Text
+          className="bar-text"
           style={{
             color: '#ffffff',
             marginRight: '20px',
@@ -34,7 +36,7 @@ class VideoBar extends React.Component {
         It’s never been easier to buy cars from the United States
         </Text>
         <VideoModal channel="youtube" isOpen={this.state.isOpen} videoId="XEcELW3hkuQ" onClose={() => this.setState({ isOpen: false })} />
-        <Button onClick={this.openModal} color="#0bb761">Watch promo video</Button>
+        <Button marginTop="10px" marginBottom="10px" onClick={this.openModal} color="#0bb761">Watch promo video</Button>
       </InfoBar>
     );
   }

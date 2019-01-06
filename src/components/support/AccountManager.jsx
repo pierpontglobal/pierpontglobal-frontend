@@ -42,7 +42,6 @@ class AccountManager extends React.Component {
 
   getDisplayable() {
     const show = this.state.showModal;
-    console.log(show);
     return (
       <div
         onClick={() => { this.setState({ showModal: true }); }}
@@ -176,7 +175,7 @@ export class SignInModal extends React.Component {
                   top: 0,
                   bottom: 0,
                   alignItems: 'center',
-                  display: this.state.rotate == 'rotate' ? 'flex' : 'none',
+                  display: this.state.rotate === 'rotate' ? 'flex' : 'none',
                 }}
                 className="fas fa-spinner"
               />
@@ -199,7 +198,6 @@ export class SignInModal extends React.Component {
   }
 
   render() {
-    console.log(this.state.showSigIn);
     return (
       <div>
         {this.state.showSigIn ? this.signInModal() : <div />}

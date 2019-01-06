@@ -9,6 +9,8 @@ import MenuDrawer from './MenuDrawer/MenuDrawer';
 import ProfileDrawer from './ProfileDrawer/ProfileDrawer';
 import AccountMAnager from '../support/AccountManager'
 
+const qs = require('query-string');
+
 const style = {
     backgroundColor: '#fafafa',
     boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.09)',
@@ -18,12 +20,19 @@ const style = {
     overflow: 'hidden',
     zIndex: 1000
 }
+
 export default class AppNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             menuOpen: false,
             profileOpen: false,
+        }
+        try {
+        this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+        } catch (error) {
+            console.log("No location provided");
+            this.params = {}
         }
     }
 
@@ -81,7 +90,7 @@ export default class AppNav extends React.Component {
                     < AccountMAnager/>
 
                     <div style={{visibility: this.props.notSearchable ? 'hidden' : 'visible' }}>
-                    <SearchInput className="d-none d-md-flex mr-auto align-self-center"></SearchInput>
+                    <SearchInput defaultValue={this.params.q} className="d-none d-md-flex mr-auto align-self-center"></SearchInput>
                     </div>
 
                 </div>

@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
+import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 
 /* const car = {
   year: '2017',
@@ -59,8 +60,11 @@ function App() {
   return (
     <Router>
       <div>
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/marketplace" component={MarketPlacePage} />
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/marketplace" component={MarketPlacePage} />
+          <Route component={NotfoundPage} />
+        </Switch>
       </div>
     </Router>
   );

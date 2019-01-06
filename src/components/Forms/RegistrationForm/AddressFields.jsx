@@ -49,13 +49,6 @@ class AddressFields extends React.Component {
         }}
         onSubmit={this.saveAndContinue}
       >
-        <Text style={{
-          color: '#ffffff',
-          fontSize: '22px',
-        }}
-        >
-        Address information
-        </Text>
         <CountryDropdown
           style={{
             width: '300px',
@@ -139,8 +132,9 @@ class AddressFields extends React.Component {
 
         <Button
           type="submit"
-          style={{ marginTop: '12px' }}
-          width="300px"
+          style={{ marginTop: '12px', maxWidth: '300px' }}
+          width="80%"
+          maxWidth="300px"
           color="#3e78c0"
         >
             One step more >>

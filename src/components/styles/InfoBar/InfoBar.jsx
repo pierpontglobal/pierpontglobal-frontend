@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { fontProps, containerProps } from '../Properties/Properties';
 
 const InfoBar = styled.div`

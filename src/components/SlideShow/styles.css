@@ -1,0 +1,9 @@
+.rightControl .icon {
+    background-color: transparent !important;
+    right: 10px;
+}
+
+.leftControl .icon {
+    background-color: transparent !important;
+    left: 10px;
+}

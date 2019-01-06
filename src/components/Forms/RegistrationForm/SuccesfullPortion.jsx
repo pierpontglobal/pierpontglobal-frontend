@@ -27,7 +27,7 @@ class SuccessfullPortion extends React.Component {
   }
 
   componentDidMount() {
-    //    this.register();
+    this.register();
   }
 
   async register() {

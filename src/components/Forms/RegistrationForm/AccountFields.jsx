@@ -32,8 +32,8 @@ class AccountFields extends React.Component {
         display: 'flex',
         alignContent: 'center',
         justifyContent: 'center',
-        width: '100%',
         height: '100%',
+        width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
       }}
@@ -52,14 +52,7 @@ class AccountFields extends React.Component {
           onSubmit={this.saveAndContinue}
         >
 
-          <Text style={{
-            color: '#ffffff',
-            fontSize: '22px',
-          }}
-          >
-            Contact Information
-          </Text>
-
+          <Text style={{ color: this.props.textColor, fontSize: '28px' }} className="subtitle-medium">Sign Up for early access</Text>
           <Input
             className="w-100 h-100 pl-2 border-0"
             type="text"
@@ -82,29 +75,12 @@ class AccountFields extends React.Component {
             className="w-100 h-100 pl-2 border-0"
             type="text"
             backgroundColor="#EEEEEE"
-            lineHeight={1.31}
-            ref={(node) => { this.lastName = node; }}
-            maxWidth="300px"
-            maxHeight="40px"
-            borderRadius="4px"
-            placeholder="Your last name"
-            defaultValue={this.props.fieldValues.lastName}
-            required
-          />
-
-          <Input
-            style={{
-              marginTop: '10px',
-            }}
-            className="w-100 h-100 pl-2 border-0"
-            type="text"
-            backgroundColor="#EEEEEE"
             ref={(node) => { this.email = node; }}
             lineHeight={1.31}
             maxWidth="300px"
             maxHeight="40px"
             borderRadius="4px"
-            placeholder="Your email"
+            placeholder="Email"
             defaultValue={this.props.fieldValues.email}
             required
           />
@@ -123,7 +99,7 @@ class AccountFields extends React.Component {
             maxWidth="300px"
             maxHeight="40px"
             borderRadius="4px"
-            placeholder="Your phone number"
+            placeholder="Phone number"
             onChange={this.printNumber}
             defaultValue={this.props.fieldValues.phonenumber}
             required
@@ -131,12 +107,19 @@ class AccountFields extends React.Component {
 
           <Button
             type="submit"
-            style={{ marginTop: '12px' }}
-            width="300px"
+            style={{ marginTop: '12px', maxWidth: '300px' }}
+            width="80%"
+            maxWidth="300px"
             color="#3e78c0"
           >
             Sign up now >>
           </Button>
+
+          <Text style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
+*We don’t share your personal info with anyone. Check out our
+Privacy Policy for more information
+
+          </Text>
         </form>
       </div>
     );

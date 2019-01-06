@@ -44,13 +44,6 @@ class UserFields extends React.Component {
         }}
         onSubmit={this.saveAndContinue}
       >
-        <Text style={{
-          color: '#ffffff',
-          fontSize: '22px',
-        }}
-        >
-        User information
-        </Text>
 
         <Input
           style={{
@@ -104,7 +97,8 @@ class UserFields extends React.Component {
         <Button
           type="submit"
           style={{ marginTop: '12px' }}
-          width="300px"
+          width="80%"
+          maxWidth="300px"
           color="#3e78c0"
         >
             Register

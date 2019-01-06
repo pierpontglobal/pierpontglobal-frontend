@@ -11,12 +11,15 @@ function Btn({
   width = 'auto',
   height = '60px',
   marginTop = '0px',
+  marginBottom = '0px',
   type = 'button',
 }) {
   return (
     <Button
-      type="submit"
-      style={{ width, height, marginTop }}
+      type
+      style={{
+        width, height, marginTop, marginBottom,
+      }}
       className={`border-0 ${className}`}
       maxWidth={maxWidth}
       borderRadius="4px"

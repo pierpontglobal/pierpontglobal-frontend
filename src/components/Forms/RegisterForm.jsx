@@ -4,6 +4,7 @@ import UserFields from './RegistrationForm/UserFields';
 import SuccessfulPortion from './RegistrationForm/SuccesfullPortion';
 import Button from '../Btn/Btn';
 import { SignInModal } from '../support/AccountManager';
+import Text from '../styles/Text/Text';
 
 const React = require('react');
 
@@ -26,11 +27,12 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 4,
-      loading: false,
+      step: 1,
+      loading: true,
       openModal: false,
     };
 
+    this.textColor = this.props.textColor ? this.props.textColor : '#000000';
     this.moveSection = this.moveSection.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -55,24 +57,22 @@ class Registration extends React.Component {
   }
 
   render() {
-    switch (this.state.step) {
-      default:
+    return (
+      <div style={{
+        height: this.props.height,
+        width: '100%',
+        backgroundColor: this.props.backgroundColor,
+      }}
+      >
+        <AccountFields textColor={this.textColor} fieldValues={fieldValues} nextButton={this.moveSection} />
+      </div>
+    );
+    /* case 2:
         return (
           <div style={{
-            height: '500px',
+            height: this.props.height,
             width: '100%',
-            backgroundColor: '#9aa7b5',
-          }}
-          >
-            <AccountFields fieldValues={fieldValues} nextButton={this.moveSection} />
-          </div>
-        );
-      case 2:
-        return (
-          <div style={{
-            height: '500px',
-            width: '100%',
-            backgroundColor: '#9aa7b5',
+            backgroundColor: this.props.backgroundColor,
           }}
           >
             <div style={{
@@ -88,9 +88,9 @@ class Registration extends React.Component {
       case 3:
         return (
           <div style={{
-            height: '500px',
+            height: this.props.height,
             width: '100%',
-            backgroundColor: '#9aa7b5',
+            backgroundColor: this.props.backgroundColor,
           }}
           >
             <div style={{
@@ -106,9 +106,9 @@ class Registration extends React.Component {
       case 4:
         return (
           <div style={{
-            height: '500px',
+            height: this.props.height,
             width: '100%',
-            backgroundColor: '#9aa7b5',
+            backgroundColor: this.props.backgroundColor,
           }}
           >
             <SuccessfulPortion
@@ -120,8 +120,7 @@ class Registration extends React.Component {
 
             { this.state.openModal ? <SignInModal show notifyClosed={this.closeModal} /> : <div /> }
           </div>
-        );
-    }
+        ); */
   }
 }
 
