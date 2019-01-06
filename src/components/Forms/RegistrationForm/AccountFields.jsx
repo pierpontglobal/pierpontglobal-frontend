@@ -3,7 +3,6 @@ import React from 'react';
 import { AsYouType } from 'libphonenumber-js';
 import Button from '../../Btn/Btn';
 import Input from '../../styles/Input/Input';
-import Text from '../../styles/Text/Text';
 
 class AccountFields extends React.Component {
   constructor(props) {

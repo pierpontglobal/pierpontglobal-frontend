@@ -8,6 +8,11 @@ import './landing_page.css';
 import imac from './images/imac.png';
 import magnifier from './images/magnifier.png';
 import pin from './images/pin.png';
+import section1_bg from './images/section1_bg.jpg';
+import Button from '../../Btn/Btn';
+import loader1 from './images/loader1.png';
+import customs1 from './images/customs1.png';
+import bottomImage from './images/landing_bottom.webp';
 
 class LandingPage extends React.Component {
   constructor(props) {
@@ -149,6 +154,177 @@ class LandingPage extends React.Component {
               className="shadow column-5"
             >
               <Registration height="400px" backgroundColor="#ffffff" openModal={this.openModal} />
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          paddingTop: '100px',
+          paddingBottom: '100px',
+          width: '100%',
+          height: 'auto',
+          backgroundImage: `url(${section1_bg})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: 'rgb(114, 115, 119)',
+          backgroundBlendMode: 'multiply',
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom',
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+          <div className="cards-holder-1">
+            <div style={{ color: '#ffffff' }} className="column-1">
+              <p className="big-title">
+              What makes Pierpont unique?
+              </p>
+              <p style={{ fontSize: '16px', textAlign: 'center', maxWidth: '350px' }} className="subtitle-follow-up">Be apart of a new generation. Were constantly building relationships and new partnerships with U.S. based auction houses, transporting companies, automotive service providers, as well as U.S. and Dominican customs</p>
+              <Button
+                type="button"
+                style={{ marginTop: '12px', maxWidth: '300px' }}
+                width="80%"
+                maxWidth="300px"
+                color="#3e78c0"
+                onClick={() => {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth', // Optional, adds animation
+                  });
+                }}
+              >
+            Sign up now >>
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          paddingTop: '100px',
+          paddingBottom: '100px',
+          width: '100%',
+          height: 'auto',
+          background: '#f6f8fa',
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+          <div className="cards-holder-1">
+            <div className="column-1">
+              <p className="big-title">
+              Built for dealers by dealers.
+              </p>
+            </div>
+            <div className="cards-holder-2">
+              <div
+                style={{
+                  padding: '10px',
+                  backgroundColor: 'transparent',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                }}
+                className="column-5"
+              >
+                <img
+                  alt="Logistics image"
+                  className="image-landing"
+                  src={loader1}
+                />
+
+                <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
+                Logistics
+                </p>
+
+                <p>It’s difficult getting a car from one location to another safely and securely, especially when you are in another country. That’s why we’ve created an innovative solution where we facilitate transporting from auction to port, and shipping from U.S. to Dominican Republic, without you having to lift a finger at all.</p>
+
+              </div>
+
+              <hr className="phoneDivisor" />
+
+              <div
+                style={{
+                  padding: '10px',
+                  backgroundColor: 'transparent',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                }}
+                className="column-5"
+              >
+                <img
+                  alt="Customs image"
+                  className="image-landing"
+                  src={customs1}
+                />
+
+                <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
+                Customs
+                </p>
+
+                <p>We have experts take your vehicle through customs and handle all legal aspects of the vehicle leaving the United States. We make sure all necessary paperwork is processed accordingly, and make sure your vehicle leaves the port on its designated shipping vessel in a timely manner, with little to no obstacles</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          paddingTop: '100px',
+          paddingBottom: '100px',
+          width: '100%',
+          height: 'auto',
+          backgroundImage: `url(${bottomImage})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: 'rgb(114, 115, 119)',
+          backgroundBlendMode: 'multiply',
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom',
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
+          <div className="cards-holder-1">
+            <div style={{ color: '#ffffff' }} className="column-1">
+              <p className="big-title">
+              Start working smarter.
+              </p>
+              <p style={{ fontSize: '16px', textAlign: 'center', maxWidth: '350px' }} className="subtitle-follow-up">More options. Better pricing. Less headaches.</p>
+              <Button
+                type="button"
+                marginTop="96px"
+                marginBottom="10px"
+                style={{ marginTop: '96px', maxWidth: '300px' }}
+                width="80%"
+                maxWidth="300px"
+                color="#3e78c0"
+                onClick={() => {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth', // Optional, adds animation
+                  });
+                }}
+              >
+            SIGN ME UP
+              </Button>
+              <p style={{ textAlign: 'center' }}>
+By continuing you agree to our
+                <br />
+Terms of use
+              </p>
             </div>
           </div>
         </div>
