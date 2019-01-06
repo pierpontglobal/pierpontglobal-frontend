@@ -52,7 +52,7 @@ class AccountFields extends React.Component {
           onSubmit={this.saveAndContinue}
         >
 
-          <Text style={{ color: this.props.textColor, fontSize: '28px' }} className="subtitle-medium">Sign Up for early access</Text>
+          <p style={{ color: this.props.textColor, fontSize: '28px' }} className="subtitle-medium">Sign Up for early access</p>
           <Input
             className="w-100 h-100 pl-2 border-0"
             type="text"
@@ -65,6 +65,24 @@ class AccountFields extends React.Component {
             placeholder="Your first name"
             onChange={e => this.setState({ text: e.target.value })}
             defaultValue={this.props.fieldValues.firstName}
+            required
+          />
+
+          <Input
+            style={{
+              marginTop: '10px',
+            }}
+            className="w-100 h-100 pl-2 border-0"
+            type="text"
+            backgroundColor="#EEEEEE"
+            lineHeight={1.31}
+            ref={(node) => { this.lastName = node; }}
+            maxWidth="300px"
+            maxHeight="40px"
+            borderRadius="4px"
+            placeholder="Your last name"
+            onChange={e => this.setState({ text: e.target.value })}
+            defaultValue={this.props.fieldValues.lastName}
             required
           />
 
@@ -115,11 +133,11 @@ class AccountFields extends React.Component {
             Sign up now >>
           </Button>
 
-          <Text style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
+          <p style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
 *We don’t share your personal info with anyone. Check out our
 Privacy Policy for more information
 
-          </Text>
+          </p>
         </form>
       </div>
     );
