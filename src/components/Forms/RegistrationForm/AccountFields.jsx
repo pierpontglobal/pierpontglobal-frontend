@@ -1,14 +1,37 @@
-
+import axios from 'axios';
 import React from 'react';
 import { AsYouType } from 'libphonenumber-js';
-import Button from '../../Btn/Btn';
+import posed from 'react-pose';
+import Button from '../../styles/Button/Button';
 import Input from '../../styles/Input/Input';
+import { ApiServer } from '../../../Defaults';
+
+const Spinner = posed.i({
+  rotate: {
+    rotate: (300 * 2 * 360),
+    transition: {
+      duration: (1000 * 300),
+      ease: 'linear',
+    },
+  },
+  normal: {
+    rotate: 0,
+  },
+});
+
+const validator = require('email-validator');
 
 class AccountFields extends React.Component {
   constructor(props) {
     super(props);
 
     this.saveAndContinue = this.saveAndContinue.bind(this);
+    this.checkEmail = this.checkEmail.bind(this);
+    this.changeStateLoader = this.changeStateLoader.bind(this);
+
+    this.state = {
+      rotate: 'normal',
+    };
   }
 
   printNumber(e) {
@@ -16,13 +39,44 @@ class AccountFields extends React.Component {
   }
 
   saveAndContinue() {
-    this.props.nextButton({
-      firstName: this.firstName.value,
-      lastName: this.lastName.value,
+    const data = {
+      first_name: this.firstName.value,
+      last_name: this.lastName.value,
       email: this.email.value,
-      phonenumber: this.phone.value,
-    }, 2);
+      phone_number: this.phone.value,
+    };
+    axios.post(`${ApiServer}/api/v1/user/subscription`, data);
     return false;
+  }
+
+  changeStateLoader(state) {
+    this.rotatingState = state;
+    this.forceUpdate();
+  }
+
+  changeVisualStatus(color) {
+    this.email.style.borderColor = color;
+    this.email.style.borderWidth = '2px';
+    this.email.style.boxShadow = 'none';
+    this.email.style.borderStyle = 'solid';
+  }
+
+  async checkEmail(goodFormat) {
+    this.changeStateLoader('rotate');
+    if (!goodFormat) {
+      this.submitButton.disabled = true;
+      this.changeStateLoader('normal');
+      this.changeVisualStatus('#FF6347');
+      return true;
+    }
+    const response = await axios.get(`${ApiServer}/api/v1/user/availability?email=${this.email.value}`);
+    this.changeStateLoader('normal');
+    this.submitButton.disabled = !response.data.available;
+    if (!response.data.available) {
+      this.changeVisualStatus('#FF6347');
+    } else {
+      this.changeVisualStatus('#00B200');
+    }
   }
 
   render() {
@@ -85,22 +139,46 @@ class AccountFields extends React.Component {
             required
           />
 
-          <Input
+          <div
             style={{
+              position: 'relative',
+              width: '300px',
+              height: '40px',
               marginTop: '10px',
             }}
-            className="w-100 h-100 pl-2 border-0"
-            type="text"
-            backgroundColor="#EEEEEE"
-            ref={(node) => { this.email = node; }}
-            lineHeight={1.31}
-            maxWidth="300px"
-            maxHeight="40px"
-            borderRadius="4px"
-            placeholder="Email"
-            defaultValue={this.props.fieldValues.email}
-            required
-          />
+          >
+            <Input
+              style={{
+                borderWidth: '0px',
+              }}
+              className="w-100 h-100 pl-2"
+              type="text"
+              backgroundColor="#EEEEEE"
+              ref={(node) => { this.email = node; }}
+              lineHeight={1.31}
+              maxWidth="300px"
+              maxHeight="40px"
+              borderRadius="4px"
+              placeholder="Email"
+              defaultValue={this.props.fieldValues.email}
+              onChange={() => { this.checkEmail(validator.validate(this.email.value)); }}
+              required
+            />
+
+            <Spinner
+              pose={this.rotatingState}
+              style={{
+                position: 'absolute',
+                right: -35,
+                margin: 'auto',
+                top: 0,
+                bottom: 0,
+                alignItems: 'center',
+                display: this.rotatingState === 'rotate' ? 'flex' : 'none',
+              }}
+              className="fas fa-spinner"
+            />
+          </div>
 
 
           <Input
@@ -123,19 +201,26 @@ class AccountFields extends React.Component {
           />
 
           <Button
+            disabled
+            className="border-0 button-check"
             type="submit"
-            style={{ marginTop: '12px', maxWidth: '300px' }}
-            width="80%"
-            maxWidth="300px"
-            color="#3e78c0"
+            ref={(node) => { this.submitButton = node; }}
+            style={{
+              marginTop: '5px',
+              maxWidth: '300px',
+              width: '80%',
+              height: '40px',
+              marginBottom: '10px',
+              color: 'white',
+              borderRadius: '4px',
+            }}
           >
             Sign up now >>
           </Button>
 
           <p style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
-*We don’t share your personal info with anyone. Check out our
-Privacy Policy for more information
-
+            *We don’t share your personal info with anyone. Check out our
+            Privacy Policy for more information
           </p>
         </form>
       </div>

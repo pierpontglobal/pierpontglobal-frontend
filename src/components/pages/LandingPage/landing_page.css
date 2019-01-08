@@ -20,6 +20,14 @@ div.cards-holder-1 {
     padding: 20px;
 }
 
+.button-check:disabled {
+    background-color: #808080
+}
+
+.button-check {
+    background-color: #3e78c0
+}
+
 img.image-landing {
     width: 100%;
 }

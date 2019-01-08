@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
+import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
 
 /* const car = {
   year: '2017',
@@ -56,13 +57,29 @@ import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
   number: '809 272 9092',
 }; */
 
+function UserRouter() {
+  return (
+    <Router>
+      <div>
+        <Switch>
+          <Route exact path="/user/confirm" component={RegistrationPage} />
+          <Route component={NotfoundPage} />
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
 function App() {
   return (
     <Router>
       <div>
         <Switch>
           <Route exact path="/" component={LandingPage} />
-          <Route path="/marketplace" component={MarketPlacePage} />
+          <Route exact path="/marketplace" component={MarketPlacePage} />
+
+          <Route path="/user" component={UserRouter} />
+
           <Route component={NotfoundPage} />
         </Switch>
       </div>

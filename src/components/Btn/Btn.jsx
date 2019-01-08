@@ -16,7 +16,7 @@ function Btn({
 }) {
   return (
     <Button
-      type
+      type={type}
       style={{
         width, height, marginTop, marginBottom,
       }}

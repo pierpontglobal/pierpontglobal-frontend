@@ -1,0 +1,23 @@
+.registration-bg {
+    background-color: rgb(58, 62, 67);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding-top: 70px
+}
+
+.container-2 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (min-width: 600px) {
+    
+}
+
+@media only screen and (min-width: 768px) {
+
+}
