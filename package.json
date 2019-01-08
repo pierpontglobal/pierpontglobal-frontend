@@ -20,11 +20,13 @@
     "react-dom": "^16.5.2",
     "react-image-gallery": "^0.8.12",
     "react-modal-video": "^1.2.1",
+    "react-password-strength": "^2.3.1",
     "react-pose": "^4.0.4",
     "react-router-dom": "4.3.1",
     "react-scripts": "2.1.2",
     "react-spinners": "^0.4.8",
     "reactstrap": "^6.5.0",
+    "semantic-ui-react": "^0.84.0",
     "styled-components": "^4.0.2",
     "whatwg-fetch": "^3.0.0"
   },

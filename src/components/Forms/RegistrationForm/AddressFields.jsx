@@ -2,7 +2,6 @@ import React from 'react';
 import { CountryDropdown } from 'react-country-region-selector';
 import Button from '../../Btn/Btn';
 import Input from '../../styles/Input/Input';
-import Text from '../../styles/Text/Text';
 
 class AddressFields extends React.Component {
   constructor(props) {
