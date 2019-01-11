@@ -3,8 +3,6 @@ import AppNav from '../../AppNav/AppNav';
 import MainForm from './Form/MainForm';
 import './styles.css';
 
-const validator = require('email-validator');
-
 class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);

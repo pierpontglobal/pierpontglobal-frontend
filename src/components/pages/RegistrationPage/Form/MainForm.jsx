@@ -40,7 +40,7 @@ class MainForm extends Component {
     }
 
     async handleChangePassword(node, ik){
-        if (ik == 1) {
+        if (ik === 1) {
             await this.setState({
                 password1: node
             });
@@ -156,7 +156,7 @@ class MainForm extends Component {
         const { username, firstName, lastName, email, phonenumber, city, country, zipcode, address1, address2 } = this.state;
         const values = { username, firstName, lastName, email, phonenumber, city, country, zipcode, address1, address2 };
         switch(step) {
-        case 1:
+        default:
             return <UserDetails 
                     nextStep={this.nextStep} 
                     handleChange = {this.handleChange}

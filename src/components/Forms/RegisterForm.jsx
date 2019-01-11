@@ -1,10 +1,5 @@
 import AccountFields from './RegistrationForm/AccountFields';
-import AddressFields from './RegistrationForm/AddressFields';
-import UserFields from './RegistrationForm/UserFields';
 import SuccessfulPortion from './RegistrationForm/SuccesfullPortion';
-import Button from '../Btn/Btn';
-import { SignInModal } from '../support/AccountManager';
-import Text from '../styles/Text/Text';
 
 const React = require('react');
 
@@ -62,7 +57,6 @@ class Registration extends React.Component {
 
   render() {
     const { loading } = this.state;
-    console.log(loading);
     switch (this.state.step) {
       case 1: return (
         <div style={{
