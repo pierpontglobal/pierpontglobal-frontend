@@ -33,11 +33,10 @@ class Registration extends React.Component {
     };
 
     this.textColor = this.props.textColor ? this.props.textColor : '#000000';
-    this.moveSection = this.moveSection.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-
-    console.log(process.env.NODE_ENV);
+    this.nextView = this.nextView.bind(this);
+    this.loadingScreenState = this.loadingScreenState.bind(this);
   }
 
   openModal() {
@@ -48,63 +47,58 @@ class Registration extends React.Component {
     this.setState({ openModal: false });
   }
 
-  moveSection(data, step) {
-    this.setState({ step });
-
-    Object.keys(data).forEach((key) => {
-      fieldValues[key] = data[key];
+  nextView() {
+    this.setState({
+      step: this.state.step + 1,
     });
   }
 
+  loadingScreenState() {
+    this.setState({
+      loading: false,
+    });
+    console.log(this.state);
+  }
+
   render() {
-    return (
-      <div style={{
-        height: this.props.height,
-        width: '100%',
-        backgroundColor: this.props.backgroundColor,
-      }}
-      >
-        <AccountFields textColor={this.textColor} fieldValues={fieldValues} nextButton={this.moveSection} />
-      </div>
-    );
-    /* case 2:
-        return (
-          <div style={{
-            height: this.props.height,
-            width: '100%',
-            backgroundColor: this.props.backgroundColor,
-          }}
-          >
+    const { loading } = this.state;
+    console.log(loading);
+    switch (this.state.step) {
+      case 1: return (
+        <div style={{
+          height: this.props.height,
+          width: '100%',
+          backgroundColor: this.props.backgroundColor,
+        }}
+        >
+          <AccountFields
+            textColor={this.textColor}
+            fieldValues={fieldValues}
+            nextButton={this.nextView}
+            loadinStop={this.loadingScreenState}
+          />
+        </div>
+      );
+      default:
+        if (loading === true) {
+          return (
+
             <div style={{
-              paddingLeft: '10px',
-              height: '0px',
+              height: this.props.height,
+              width: '100%',
+              backgroundColor: this.props.backgroundColor,
             }}
             >
-              <Button marginTop="10px" color="#0bb761" height="30px" width="100px" onClick={() => { this.setState({ step: 1 }); }}>&#60;&#60; Back</Button>
+              <SuccessfulPortion
+                loading
+                fieldValues={fieldValues}
+                signInElement={this.openModal}
+              />
             </div>
-            <AddressFields fieldValues={fieldValues} nextButton={this.moveSection} />
-          </div>
-        );
-      case 3:
+          );
+        }
         return (
-          <div style={{
-            height: this.props.height,
-            width: '100%',
-            backgroundColor: this.props.backgroundColor,
-          }}
-          >
-            <div style={{
-              padding: '10px',
-              height: '0px',
-            }}
-            >
-              <Button color="#0bb761" height="30px" width="100px" onClick={() => { this.setState({ step: 2 }); }}>&#60;&#60; Back</Button>
-            </div>
-            <UserFields fieldValues={fieldValues} nextButton={this.moveSection} />
-          </div>
-        );
-      case 4:
-        return (
+
           <div style={{
             height: this.props.height,
             width: '100%',
@@ -112,15 +106,12 @@ class Registration extends React.Component {
           }}
           >
             <SuccessfulPortion
-              loading={this.state.loading}
               fieldValues={fieldValues}
-              nextButton={this.moveSection}
               signInElement={this.openModal}
             />
-
-            { this.state.openModal ? <SignInModal show notifyClosed={this.closeModal} /> : <div /> }
           </div>
-        ); */
+        );
+    }
   }
 }
 
