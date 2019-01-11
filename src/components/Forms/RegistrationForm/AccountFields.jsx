@@ -38,14 +38,17 @@ class AccountFields extends React.Component {
     e.target.value = new AsYouType('US').input(e.target.value);
   }
 
-  saveAndContinue() {
+  async saveAndContinue() {
+    this.props.nextButton();
     const data = {
       first_name: this.firstName.value,
       last_name: this.lastName.value,
       email: this.email.value,
       phone_number: this.phone.value,
     };
-    axios.post(`${ApiServer}/api/v1/user/subscription`, data);
+    const response = await axios.post(`${ApiServer}/api/v1/user/subscription`, data);
+    console.log(response.data);
+    this.props.loadinStop();
     return false;
   }
 
@@ -200,7 +203,7 @@ class AccountFields extends React.Component {
             required
           />
 
-          <Button
+          <button
             disabled
             className="border-0 button-check"
             type="submit"
@@ -216,7 +219,7 @@ class AccountFields extends React.Component {
             }}
           >
             Sign up now >>
-          </Button>
+          </button>
 
           <p style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
             *We don’t share your personal info with anyone. Check out our
