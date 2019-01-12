@@ -3,8 +3,6 @@ import AppNav from '../../AppNav/AppNav';
 import MainForm from './Form/MainForm';
 import './styles.css';
 
-const validator = require('email-validator');
-
 class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +12,7 @@ class RegistrationPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav openModal={this.openModal} notSearchable />
+        <AppNav openModal={this.openModal} notSearchable cookies={this.props.cookies} />
 
         <div className="registration-bg">
           <div className="container-2">

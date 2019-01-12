@@ -3,53 +3,69 @@ import Tab from './Tab/Tab';
 import DealerTab from './DealerTab/DealerTab';
 import FundTab from './FundTab/FundTab';
 import Container from '../styles/Container/Container';
+import axios from 'axios';
+import { ApiServer } from '../../Defaults';
 
 export default class AccountPanel extends React.Component {
     constructor(props) {
         super(props);
+        const { cookies } = props;
         this.state = {
-            selected: ''
+            selected: '',
+            token: cookies.get('token')
         }
+
+        this.signOut = this.signOut.bind(this);
     }
 
     markSelected = (selected) => this.setState({selected});
+
+    async signOut() {
+        let config = {
+          headers: {
+            Authorization: `Bearer ${this.state.token}`,
+          }
+        }
+        await axios.post(`${ApiServer}/api/v1/user/invalidate`, {}, config)
+        window.location.href = "/";
+    }
     
     render() {
-        const {selected } = this.state;
+        const { selected } = this.state;
         const { dealer, funds } = this.props;
         return (
             <Container
                 className="d-flex flex-column justify-content-between h-100"
                 backgroundColor="#fafafa"
                 boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
-                maxHeight="708px"
             >
                     <div>
                         <DealerTab dealer={dealer} />
                         <Tab
                             name="Purchases"
                             icon="fas fa-shopping-cart"
-                            selected={selected}
                             onClick={this.markSelected}
                         />
                         <Tab
                             name="Pending"
                             icon="fas fa-sync-alt"
-                            selected={selected}
-                            notification={22}
+                            notification={0}
                             onClick={this.markSelected} 
                         />
                         <Tab
                             name="Documents"
                             icon="fas fa-file"
-                            selected={selected}
                             onClick={this.markSelected} 
                         />
                         <Tab
                             name="Financial Analysis"
                             icon="fas fa-dollar-sign"
-                            selected={selected}
                             onClick={this.markSelected} 
+                        />
+                        <Tab
+                            name="Sign Out"
+                            icon="fas fa-sign-out-alt"
+                            onClick={this.signOut} 
                         />
                     </div>
                     <div>

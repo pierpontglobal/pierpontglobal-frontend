@@ -25,7 +25,7 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav openModal={this.openModal} notSearchable />
+        <AppNav cookies={this.props.cookies} openModal={this.openModal} notSearchable />
         <VideoBar />
 
         <Registration textColor="#ffffff" height="500px" backgroundColor="#9aa7b5" openModal={this.openModal} />
@@ -92,17 +92,17 @@ class LandingPage extends React.Component {
 
           <div className="cards-holder-3">
             <div className="card-info">
-              <img src={magnifier} className="landing-page-icon" />
+              <img alt="search icon" src={magnifier} className="landing-page-icon" />
               <p className="subtitle-medium">Search Listings</p>
               <p className="subtitle-follow-up">Our platform ties together thousands of listings, from dozens of Manheim Auction locations, giving you access to infinitely more vehicle options to buy from.</p>
             </div>
             <div className="card-info">
-              <img src={imac} className="landing-page-icon" />
+              <img alt="imac icon" src={imac} className="landing-page-icon" />
               <p className="subtitle-medium">Place Bids</p>
               <p className="subtitle-follow-up">Bid on vehicles right from your computer. Using our provided pricing information and condition reports, you’ll have all the info you need to place well calculated bids.</p>
             </div>
             <div style={{ marginBottom: '30px' }} className="card-info">
-              <img src={pin} className="landing-page-icon" />
+              <img alt="Map pin icon" src={pin} className="landing-page-icon" />
               <p className="subtitle-medium">Delivery</p>
               <p className="subtitle-follow-up">We handle the process of delivering the vehicles from the auction to your neary port, while giving you tracking updates along the way. We will get you the best ground transport rates, shipping rates, as well as import customs and tax rates. With all invoices provided in real time.</p>
             </div>
@@ -235,7 +235,7 @@ class LandingPage extends React.Component {
                 className="column-5"
               >
                 <img
-                  alt="Logistics image"
+                  alt="Logistics"
                   className="image-landing"
                   src={loader1}
                 />
@@ -264,7 +264,7 @@ class LandingPage extends React.Component {
                 className="column-5"
               >
                 <img
-                  alt="Customs image"
+                  alt="Customs"
                   className="image-landing"
                   src={customs1}
                 />
