@@ -25,7 +25,7 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav openModal={this.openModal} notSearchable />
+        <AppNav cookies={this.props.cookies} openModal={this.openModal} notSearchable />
         <VideoBar />
 
         <Registration textColor="#ffffff" height="500px" backgroundColor="#9aa7b5" openModal={this.openModal} />

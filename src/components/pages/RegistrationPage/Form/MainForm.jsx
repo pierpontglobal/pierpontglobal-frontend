@@ -76,7 +76,6 @@ class MainForm extends Component {
                     phonenumber: response.data.phone_number
                 });
             } catch (e) {
-                console.log("Token not valid")
             }
         }
     }

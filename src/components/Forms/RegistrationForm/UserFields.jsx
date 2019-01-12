@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '../../Btn/Btn';
 import Input from '../../styles/Input/Input';
-import Text from '../../styles/Text/Text';
 
 const lookup = require('country-data').lookup;
 

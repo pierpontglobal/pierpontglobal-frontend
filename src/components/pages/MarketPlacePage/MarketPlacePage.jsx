@@ -76,7 +76,7 @@ class MarketPlacePage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav location={this.props.location} />
+        <AppNav location={this.props.location} cookies={this.props.cookies} />
         <div className="d-flex justify-content-center">
           <div
             className="ml-auto d-none d-lg-flex mr-3 w-100"

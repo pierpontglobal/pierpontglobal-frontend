@@ -33,7 +33,6 @@ export default class Modal extends React.Component {
       try {
         this.props.notifyClosed();
       } catch (error) {
-        console.log(error);
       }
     }
   }
