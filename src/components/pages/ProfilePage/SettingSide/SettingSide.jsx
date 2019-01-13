@@ -1,7 +1,6 @@
 import React from 'react';
 import UnderLine from '../../../Underline/Underline';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
-import GreenBtn from '../../../styles/Button/Button';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
 import './style.css';
 
@@ -46,8 +45,19 @@ export default class SettingSide extends React.Component {
           <p className="mb-0">Deposit</p>
         </UnderLine>
         <div className="d-flex mb-3">
-          <DepositProgress amount="7 746" />
-          <GreenBtn width="7.5em">ADD DEPOSIT</GreenBtn>
+          <DepositProgress amount={7746} />
+          <button
+            className="border-0 shadow"
+            style={{
+              backgroundColor: '#10b364',
+              color: '#ffffff',
+              borderRadius: '5px',
+              padding: '10px 30px',
+              cursor: 'pointer',
+            }}
+          >
+          ADD DEPOSIT
+          </button>
         </div>
         <UnderLine className="justify-content-between">
           <p className="mb-0">Personal Info</p>
