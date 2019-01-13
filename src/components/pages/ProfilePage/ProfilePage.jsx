@@ -6,6 +6,7 @@ import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
 import SettingSide from './SettingSide/SettingSide';
+import AlertNotification from './Components/AlertNotification';
 
 import './styles.css';
 
@@ -73,8 +74,12 @@ class ProfilePage extends React.Component {
           <AccountPanel cookies={this.props.cookies} dealer={this.state.dealer || dealerExample} />
         </div>
         <AppNav cookies={this.props.cookies} openModal={this.openModal} notSearchable />
+
+        <AlertNotification />
+
         <div style={{
           marginLeft: '300px',
+          padding: '20px 40px',
         }}
         >
 
