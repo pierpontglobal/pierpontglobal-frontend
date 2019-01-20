@@ -6,13 +6,22 @@ import './styles.css';
 import { pointer } from 'popmotion';
 
 function Tab({
-  icon, name, selected, notification, onClick, className = '',
+  icon, name, selected, notification, onClick, className = '', searchKey,
 }) {
-  const isSelected = selected === name;
+  let isSelected = selected === name;
   const handleClick = () => onClick(name);
+
+  const location = window.location.pathname.split('/');
+  const urlSearchKey = location[location.length - 1];
+  if (urlSearchKey === searchKey) {
+    isSelected = true;
+  }
 
   return (
     <Container
+      style={{
+        padding: '10px',
+      }}
       className={`d-flex pl-4 pr-3 justify-content-between ${className}`}
       height="48px"
       backgroundColor={isSelected ? '#3a7abf' : 'transparent'}
@@ -31,9 +40,9 @@ function Tab({
       >
         <i
           style={{
-            color: '#3B444B',
             fontSize: '16px',
             width: '24px',
+            color: isSelected ? '#ffffff' : '#3B444B',
           }}
           className={`mr-4 pt-1 ${icon} tab-icon`}
           height="24px"

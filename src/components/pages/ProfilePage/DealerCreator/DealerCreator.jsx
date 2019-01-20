@@ -32,7 +32,7 @@ class DealerCreator extends React.Component {
       address1: this.address1.value,
       address2: this.address2.value,
     };
-    const response = await axios.post(`${ApiServer}/api/v1/user/dealer`, data, config);
+    const response = await axios.post(`${ApiServer}/api/v1/user/dealers`, data, config);
     console.log(response);
     window.location.reload(true);
   }

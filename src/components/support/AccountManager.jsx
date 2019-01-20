@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
+import { ApiServer } from '../../Defaults';
 import { instanceOf } from 'prop-types';
 import { Cookies } from 'react-cookie';
 import Modal from '../Modal/Modal';
 import Input from '../styles/Input/Input';
 import Button from '../Btn/Btn';
-import { ApiServer } from '../../Defaults';
 import './styles.css'
 
 export const userToken = '';
@@ -37,7 +37,7 @@ class AccountManager extends React.Component {
           }
         }
     try {
-      const response = await axios.get(`${ApiServer}/api/v1/user/me`, config)
+      const response = await axios.get(`${ApiServer}/api/v1/user`, config)
     } catch (e) {
       const { cookies } = this.props;
       cookies.remove('token')
@@ -202,7 +202,7 @@ export class SignInModal extends React.Component {
               color: '#000000',
             }}
           >
-    Forgot account?
+          Forgot account?
           </a>
 
           <Button
