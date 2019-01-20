@@ -25,14 +25,14 @@ class MarketPlacePage extends React.Component {
 
   async getCars() {
     try {
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&q=${this.params.q}`);
+      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&q=${this.params.q || '*'}`);
       const carsGroup = [];
       const carsArray = response.data.cars;
       console.log(carsArray);
 
       for (let i = 0; i < carsArray.length; i += 1) {
         const car = carsArray[i];
-        const images = [];
+        let images = [];
         const imagesObjs = car.car_information.images;
 
         for (let j = 0; j < imagesObjs.length; j += 1) {
@@ -40,9 +40,11 @@ class MarketPlacePage extends React.Component {
           if (url === null) {
             images.push(defaultImage);
           } else {
-            images.push(`${url}?width=212&height=120`);
+            images.push(`${url}?width=424&height=240`);
           }
         }
+
+        images = images.reverse();
 
         carsGroup.push({
           year: car.car_information.year,
@@ -62,7 +64,7 @@ class MarketPlacePage extends React.Component {
           vehicleType: car.car_information.car_type_code ? car.car_information.car_type_code : 'Not available',
           score: '2.0',
           price: car,
-          saleDate: '01/ 20 / 2017 (Cutoff) 9:00 AM ET',
+          saleDate: '',
           images,
           title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
         });
@@ -86,10 +88,10 @@ class MarketPlacePage extends React.Component {
           </div>
           <div
             className="mr-auto ml-md-auto ml-lg-0 w-100"
-            style={{ maxWidth: '810px' }}
+            style={{ maxWidth: '810px', paddingBottom: '60px' }}
           >
             <UnderLine>
-              <SortBar header="Test" />
+              <SortBar header={this.params.q} />
             </UnderLine>
             {
               this.state.cars.map(

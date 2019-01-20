@@ -1,3 +1,49 @@
 .SettingEditIcon:hover {
     cursor: pointer;
 }
+
+.card-holder-large {
+    font-weight: 200;
+}
+
+.card-holder-large div {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.card-holder-large div span {
+    margin: 0 20px;
+}
+
+.card-holder-large div span.last {
+    margin-left: auto;
+}
+
+.simple-view {
+    border: none;
+    font-size: 12px;
+}
+
+.clean-button i {
+    background-color: white;
+    box-shadow: none;
+}
+
+@-webkit-keyframes rotate {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to { 
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+.loading {
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.5s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function:  linear;
+}

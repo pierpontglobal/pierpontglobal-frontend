@@ -63,6 +63,12 @@ export default class AccountPanel extends React.Component {
                             onClick={this.markSelected} 
                         />
                         <Tab
+                            searchKey="subscription"
+                            name="Subscription"
+                            icon="far fa-newspaper"
+                            onClick={() => {window.location.href = "/user/subscription"}} 
+                        />
+                        <Tab
                             name="Sign Out"
                             icon="fas fa-sign-out-alt"
                             onClick={this.signOut} 
@@ -71,11 +77,12 @@ export default class AccountPanel extends React.Component {
                     <div>
                         <FundTab funds={{remaining: funds, total: '10 000'}} />
                         <Tab
+                            searchKey="user"
                             name="Settings"
                             icon="fas fa-cog"
                             selected={selected}
                             className="border-top pt-2"
-                            onClick={this.markSelected} 
+                            onClick={() => {window.location.href = "/user"}} 
                         />
                     </div>
             </Container>

@@ -1,0 +1,27 @@
+tbody tr:nth-child(odd){
+    background-color: #EBF1F8;
+}
+
+tr {
+  transition: 0.5s;
+}
+
+tr:hover {
+    background-color: #D8E4F1 !important;
+}
+
+@-webkit-keyframes rotate {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to { 
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+.loading {
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.5s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function:  linear;
+}
