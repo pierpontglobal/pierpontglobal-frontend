@@ -250,7 +250,7 @@ export class SignInModal extends React.Component {
       if (response.status === 200) {
         console.log(response);
         cookies.set('token', response.data.access_token);
-        window.location.reload();
+        window.location.href = '/user';
       }
     } catch (e) {
       cookies.remove('token');

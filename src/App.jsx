@@ -61,8 +61,8 @@ class App extends React.Component {
             <Route exact path="/" render={() => (<LandingPage cookies={this.props.cookies} />)} />
             <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={this.props.cookies} location={window.location} />)} />
 
-            <Route path="/user" render={() => (<ProfilePage cookies={this.props.cookies} />)} />
             <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={this.props.cookies} />)} />
+            <Route path="/user" render={() => (<ProfilePage cookies={this.props.cookies} />)} />
 
             <Route render={() => (<NotfoundPage cookies={this.props.cookies} />)} />
           </Switch>
