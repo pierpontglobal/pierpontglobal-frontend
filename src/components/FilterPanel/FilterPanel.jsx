@@ -7,7 +7,9 @@ const style = {
   backgroundColor: '#FAFAFA',
   boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.18)',
 };
-function FilterPanel({ options }) {
+function FilterPanel({ availableArguments }) {
+  console.log(availableArguments);
+
   return (
     <div
       className="w-100"
