@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { withCookies } from 'react-cookie';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
+import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 
 /* const car = {
   year: '2017',
@@ -49,42 +51,25 @@ import RegistrationPage from './components/pages/RegistrationPage/RegistrationPa
   availableAmount: '$1 000',
 }; */
 
-/* const dealer = {
-  image: 'https://www.santodomingomotors.com.do/themes/santo-domingo-motors/assets/img/logoSDM.png',
-  name: 'Nice Auto Inc.',
-  address: '5827 Rodman St., Hollywood, FL 33023',
-  email: 'nicecarinc@pierpoint.com',
-  number: '809 272 9092',
-}; */
 
-function UserRouter() {
-  return (
-    <Router>
-      <div>
-        <Switch>
-          <Route exact path="/user/confirm" component={RegistrationPage} />
-          <Route component={NotfoundPage} />
-        </Switch>
-      </div>
-    </Router>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/" render={() => (<LandingPage cookies={this.props.cookies} />)} />
+            <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={this.props.cookies} location={window.location} />)} />
+
+            <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={this.props.cookies} />)} />
+            <Route path="/user" render={() => (<ProfilePage cookies={this.props.cookies} />)} />
+
+            <Route render={() => (<NotfoundPage cookies={this.props.cookies} />)} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/marketplace" component={MarketPlacePage} />
-
-          <Route path="/user" component={UserRouter} />
-
-          <Route component={NotfoundPage} />
-        </Switch>
-      </div>
-    </Router>
-  );
-}
-
-export default App;
+export default withCookies(App);

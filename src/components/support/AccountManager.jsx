@@ -1,60 +1,103 @@
 import React from 'react';
 import axios from 'axios';
-import posed from 'react-pose';
+import { ApiServer } from '../../Defaults';
+import { instanceOf } from 'prop-types';
+import { Cookies } from 'react-cookie';
 import Modal from '../Modal/Modal';
 import Input from '../styles/Input/Input';
 import Button from '../Btn/Btn';
-import { ApiServer } from '../../Defaults';
-
-const Spinner = posed.i({
-  rotate: {
-    rotate: (300 * 2 * 360),
-    transition: {
-      duration: (1000 * 300),
-      ease: 'linear',
-    },
-  },
-  normal: {
-    rotate: 0,
-    transition: {
-      duration: (1000 * 300),
-      ease: 'linear',
-    },
-  },
-});
+import './styles.css'
 
 export const userToken = '';
 
 class AccountManager extends React.Component {
   constructor(props) {
     super(props);
+    const { cookies } = props;
+
     this.state = {
       showModal: false,
+      token: cookies.get('token')
     };
+
+    this.validToken = this.validToken.bind(this);
+
+    if (this.state.token !== undefined) {
+      this.validToken();
+    }
 
     this.getDisplayable = this.getDisplayable.bind(this);
     this.setClosed = this.setClosed.bind(this);
+  }
+
+  async validToken(){
+    let config = {
+          headers: {
+            Authorization: `Bearer ${this.state.token}`,
+          }
+        }
+    try {
+      const response = await axios.get(`${ApiServer}/api/v1/user`, config)
+    } catch (e) {
+      const { cookies } = this.props;
+      cookies.remove('token')
+      window.location.reload(true);
+    }
   }
 
   setClosed() {
     this.setState({ showModal: false });
   }
 
+  // TODO: Verify token validation and re logging if necessary
   getDisplayable() {
     const show = this.state.showModal;
-    return (
-      <div
-        onClick={() => { this.setState({ showModal: true }); }}
+    if (this.state.token !== undefined)
+    {
+      return (<div
+        onClick={() => { window.location.href = "/user" }}
         style={{
+          color: '#000000',
           cursor: 'pointer',
           alignItems: 'center',
           height: '100%',
+          padding: '10px',
+          borderRadius: '5px',
+          minWidth: '130px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center'
         }}
         className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center"
       >
         <i className="far fa-user mr-2 pr-1" />
-      Sign In
-        {show ? <SignInModal notifyClosed={this.setClosed} show /> : <div />}
+          Profile
+        {show ? <SignInModal cookies={this.props.cookies} notifyClosed={this.setClosed} show /> : <div />}
+      </div>);
+    }
+
+    return (
+      <div
+        onClick={() => { this.setState({ showModal: true }); }}
+        style={{
+          color: '#ffffff',
+          cursor: 'pointer',
+          alignItems: 'center',
+          height: '100%',
+          padding: '10px',
+          borderRadius: '5px',
+          minWidth: '130px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center'
+        }}
+        className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center border-0 button-check shadow"
+      >
+        <i className="far fa-user mr-2 pr-1" />
+          Sign In
+        {show ? <SignInModal cookies={this.props.cookies} notifyClosed={this.setClosed} show /> : <div />}
       </div>
     );
   }
@@ -65,11 +108,20 @@ class AccountManager extends React.Component {
 }
 
 export class SignInModal extends React.Component {
+
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
   constructor(props) {
     super(props);
+
+    const { cookies } = props;
+
     this.state = {
       showSigIn: props.show,
       rotate: 'normal',
+      token: cookies.get('token') || 'none',
     };
 
     this.openModal = this.openModal.bind(this);
@@ -150,11 +202,11 @@ export class SignInModal extends React.Component {
               color: '#000000',
             }}
           >
-    Forgot account?
+          Forgot account?
           </a>
 
           <Button
-            type="button"
+            type="submit"
             marginTop="20px"
             color="#3e78c0"
             height="50px"
@@ -166,8 +218,7 @@ export class SignInModal extends React.Component {
           >
             <div style={{ position: 'relative' }}>
         Sign In
-              <Spinner
-                pose={this.state.rotate}
+              <i
                 style={{
                   position: 'absolute',
                   right: 0,
@@ -177,7 +228,7 @@ export class SignInModal extends React.Component {
                   alignItems: 'center',
                   display: this.state.rotate === 'rotate' ? 'flex' : 'none',
                 }}
-                className="fas fa-spinner"
+                className="fas fa-spinner loading"
               />
             </div>
           </Button>
@@ -188,13 +239,22 @@ export class SignInModal extends React.Component {
 
   async signIn(e) {
     e.preventDefault();
+    const { cookies } = this.props;
     const data = {
       username: this.username.value,
       password: this.password.value,
       grant_type: 'password',
     };
-    const response = await axios.post(`${ApiServer}/oauth/token`, data);
-    console.log(response.data);
+    try {
+      const response = await axios.post(`${ApiServer}/oauth/token`, data);
+      if (response.status === 200) {
+        console.log(response);
+        cookies.set('token', response.data.access_token);
+        window.location.href = '/user';
+      }
+    } catch (e) {
+      cookies.remove('token');
+    }
   }
 
   render() {

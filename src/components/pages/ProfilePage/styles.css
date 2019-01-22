@@ -1,0 +1,8 @@
+.pannel-container {
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    left: 0;
+    top: 0;
+    padding-top: 55px;
+}

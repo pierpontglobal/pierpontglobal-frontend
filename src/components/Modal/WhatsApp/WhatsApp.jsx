@@ -66,7 +66,7 @@ class WhatsApp extends React.Component {
         position: 'fixed',
         right: '20px',
         bottom: '20px',
-        zIndex: 100,
+        zIndex: 1500,
         minWidth: '300px',
       }}
       >

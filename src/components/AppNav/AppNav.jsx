@@ -29,9 +29,8 @@ export default class AppNav extends React.Component {
             profileOpen: false,
         }
         try {
-        this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+            this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
         } catch (error) {
-            console.log("No location provided");
             this.params = {}
         }
     }
@@ -87,7 +86,7 @@ export default class AppNav extends React.Component {
 
                     <Divider className="ml-lg-3 mr-lg-3 d-none d-md-flex align-self-center" />
                     
-                    < AccountMAnager/>
+                    <AccountMAnager cookies={this.props.cookies} />
 
                     <div style={{visibility: this.props.notSearchable ? 'hidden' : 'visible' }}>
                     <SearchInput defaultValue={this.params.q} className="d-none d-md-flex mr-auto align-self-center"></SearchInput>
