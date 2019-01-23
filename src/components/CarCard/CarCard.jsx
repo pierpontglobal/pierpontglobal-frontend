@@ -9,7 +9,7 @@ import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 function CarCard({ key, car }) {
@@ -26,11 +26,15 @@ function CarCard({ key, car }) {
   } = car;
   return (
     <Container
+      style={{
+        cursor: 'pointer',
+      }}
       key={key}
       className="d-flex flex-row mb-3 pr-3 pl-2 pl-md-0"
       backgroundColor="#fafafa"
       maxHeight="120px"
       boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
+      onClick={(e) => { const res = e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null; }}
     >
       <Container
         className="d-flex mr-md-3 w-auto"
@@ -38,7 +42,7 @@ function CarCard({ key, car }) {
       >
         <SlideShow images={images} />
       </Container>
-      <Container className="py-1 py-3 pb-3 ml-auto ml-md-0 mr-md-5 w-auto">
+      <Container style={{ width: '170px' }} className="py-1 py-3 pb-3 ml-auto ml-md-0 mr-md-5">
         <Detail
           name="Title"
           value={`${make} ${model}`}

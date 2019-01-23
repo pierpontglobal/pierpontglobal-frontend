@@ -6,8 +6,9 @@ import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
 import ProfilePage from './components/pages/ProfilePage/ProfilePage';
+import CarPage from './components/pages/CarBidPage/CarBidPage';
 
-/* const car = {
+const car = {
   year: '2017',
   make: 'Hyundai',
   model: 'Santa Fe',
@@ -32,7 +33,7 @@ import ProfilePage from './components/pages/ProfilePage/ProfilePage';
     'https://static.cargurus.com/images/site/2015/03/17/18/44/2015_hyundai_santa_fe_sport-pic-3111940996015372984-640x480.jpeg',
   ],
   title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
-}; */
+};
 
 /* const invoice = {
   unitCost: '$22 900',
@@ -60,6 +61,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" render={() => (<LandingPage cookies={this.props.cookies} />)} />
             <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={this.props.cookies} location={window.location} />)} />
+            <Route exact path="/marketplace/car" render={() => (<CarPage cookies={this.props.cookies} car={car} />)} />
 
             <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={this.props.cookies} />)} />
             <Route path="/user" render={() => (<ProfilePage cookies={this.props.cookies} />)} />

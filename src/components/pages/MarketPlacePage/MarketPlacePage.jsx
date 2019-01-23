@@ -13,7 +13,11 @@ const qs = require('query-string');
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { cars: [], availableArguments: [] };
+    this.state = {
+      cars: [],
+      availableArguments: [],
+      loaded: false,
+    };
 
     this.getCars = this.getCars.bind(this);
     this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
@@ -25,8 +29,21 @@ class MarketPlacePage extends React.Component {
 
   async getCars() {
     try {
+      let str = '';
+
+      for (const key in this.params) {
+        if (str != '') {
+          str += '&';
+        }
+        if (this.params[key] !== '') {
+          str += `${key}=${encodeURIComponent(this.params[key])}`;
+        }
+      }
+
+      console.log(str);
+
       const carsGroup = [];
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&q=${this.params.q || '*'}`);
+      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&${str}`);
       const carsArray = response.data.cars;
       this.setState({
         availableArguments: response.data.available_arguments,
@@ -71,13 +88,15 @@ class MarketPlacePage extends React.Component {
           title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
         });
       }
-      this.setState({ cars: carsGroup });
+      this.setState({ cars: carsGroup, loaded: true });
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
+    const { loaded } = this.state;
+
     return (
       <div>
         <AppNav location={this.props.location} cookies={this.props.cookies} />
@@ -86,7 +105,7 @@ class MarketPlacePage extends React.Component {
             className="ml-auto d-none d-lg-flex mr-3 w-100"
             style={{ maxWidth: '260px' }}
           >
-            <FilterPanel availableArguments={this.state.availableArguments} />
+            { loaded ? <FilterPanel availableArguments={this.state.availableArguments} params={this.params} /> : <div />}
           </div>
           <div
             className="mr-auto ml-md-auto ml-lg-0 w-100"
@@ -95,10 +114,9 @@ class MarketPlacePage extends React.Component {
             <UnderLine>
               <SortBar header={this.params.q} />
             </UnderLine>
-            {
-              this.state.cars.map(
-                car => <CarCard key={car.vim} car={car} />,
-              )}
+            {this.state.cars.map(
+              car => <CarCard key={car.vim} car={car} />,
+            )}
           </div>
         </div>
       </div>

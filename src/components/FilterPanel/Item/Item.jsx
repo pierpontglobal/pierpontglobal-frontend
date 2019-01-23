@@ -16,8 +16,9 @@ export default class Item extends React.Component {
     render() {
         const { name, children } = this.props;
         const { toggle } = this.state;
-        const up = <Icon className="fas fa-chevron-up" />
-        const down = <Icon className="fas fa-chevron-down" color="gray" />;
+        const up = <i style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-caret-up"></i>;
+        const down = <i style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-caret-down"></i>;
+
         return (
             <Container
                 className="d-flex flex-column border-bottom"
@@ -27,14 +28,18 @@ export default class Item extends React.Component {
                     className="d-flex mb-0 p-3 justify-content-between"
                     onClick={this.onClick}
                 >
-                    <Text
+                    <div
                         className="mb-0"
-                        fontSize="1em"
-                        fontWeight={600}
-                        lineHeight={1.31}
+                        style={{
+                            display: 'flex',
+                            fontSize: '16px',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            fontWeight: '600',
+                        }}
                     >
-                        {name}
-                    </Text>
+                    <span>{name}</span>
+                    </div>
                         {toggle ? up : down}
                 </div>
                 <Collapse isOpen={toggle}>
