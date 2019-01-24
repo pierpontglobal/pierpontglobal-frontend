@@ -7,6 +7,9 @@ import BurgerBtn from './BurgerBtn/BurgerBtn';
 import ProfileBtn from './ProfileBtn/ProfileBtn';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import ProfileDrawer from './ProfileDrawer/ProfileDrawer';
+import AccountMAnager from '../support/AccountManager'
+
+const qs = require('query-string');
 
 const style = {
     backgroundColor: '#fafafa',
@@ -17,12 +20,18 @@ const style = {
     overflow: 'hidden',
     zIndex: 1000
 }
+
 export default class AppNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             menuOpen: false,
-            profileOpen: false
+            profileOpen: false,
+        }
+        try {
+            this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+        } catch (error) {
+            this.params = {}
         }
     }
 
@@ -60,22 +69,29 @@ export default class AppNav extends React.Component {
                         onMaskClick={this.onTouchEnd} 
                     />
                     <BurgerBtn onClick={this.openMenuSide} />
-                    <img 
-                        className="ml-auto mr-auto img-fluid" 
+                    <img
+                        onClick={() => {window.location.href="/"}}
+                        style={{
+                            height: '40px',
+                            cursor: 'pointer'
+                        }}
+                        className="ml-auto mr-auto img-fluid logo" 
                         src={logo} 
                         alt="PierpontGlobal" 
                     />
                     <ProfileBtn onClick={this.openProfileSide} />
-                    <LinkBtn className="mr-lg-4 mr-3 d-none d-md-flex align-self-center">Home</LinkBtn>
-                    <LinkBtn className="mr-lg-4 ml-lg-3 mr-3 d-none d-md-flex align-self-center">MarketPlace</LinkBtn>
+                    <LinkBtn href='/' className="mr-lg-4 mr-3 d-none d-md-flex align-self-center">Home</LinkBtn>
+                    <LinkBtn href='/marketplace' className="mr-lg-4 ml-lg-3 mr-3 d-none d-md-flex align-self-center">MarketPlace</LinkBtn>
                     <LinkBtn className="mr-lg-4 ml-lg-3 mr-3 d-none d-md-flex align-self-center">Contact&nbsp;Us</LinkBtn>
+
                     <Divider className="ml-lg-3 mr-lg-3 d-none d-md-flex align-self-center" />
-                    <LinkBtn className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center">
-                        <i className="far fa-user mr-2 pr-1" />
-                        Profile
-                    </LinkBtn>
-                    <SearchInput className="d-none d-md-flex mr-auto align-self-center" />
-                
+                    
+                    <AccountMAnager cookies={this.props.cookies} />
+
+                    <div style={{visibility: this.props.notSearchable ? 'hidden' : 'visible' }}>
+                    <SearchInput defaultValue={this.params.q} className="d-none d-md-flex mr-auto align-self-center"></SearchInput>
+                    </div>
+
                 </div>
             </div>
         );
