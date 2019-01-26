@@ -34,7 +34,8 @@ class CarBidPage extends React.Component {
     const response = await axios.get(`${ApiServer}/api/v1/car?vin=${vin}`);
     const carInfo = response.data.car_information;
     const saleInfo = response.data.sale_information;
-    console.log(carInfo);
+    console.log(saleInfo);
+
     this.setState({
       car: {
         year: carInfo.year,
@@ -60,6 +61,7 @@ class CarBidPage extends React.Component {
         vehicleType: carInfo.car_vehicle_type,
         displacement: carInfo.displacement,
         images: carInfo.images.reverse().map(image => (image.f3)),
+        location: saleInfo.action_location,
       },
     });
   }
@@ -90,7 +92,7 @@ class CarBidPage extends React.Component {
               ? <UserBidCard bid={userBid} />
               : <BidPanel currentBid={currentBid} />}
             <LocationBar
-              currentLocation="Florida, USA"
+              currentLocation={car.location}
               transportPrice="277"
               to="to Port Miami, FL"
             />

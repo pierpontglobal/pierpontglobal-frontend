@@ -42,15 +42,18 @@ export default class AccountPanel extends React.Component {
                     <div>
                         <DealerTab dealer={dealer} />
                         <Tab
+                            searchKey="purchase"
                             name="Purchases"
                             icon="fas fa-shopping-cart"
-                            onClick={this.markSelected}
+                            onClick={() => {window.location.href = "/user/purchase"}} 
                         />
                         <Tab
+                            searchKey="pending"
                             name="Pending"
                             icon="fas fa-sync-alt"
                             notification={0}
-                            onClick={this.markSelected} 
+                            onClick={this.markSelected}
+                            onClick={() => {window.location.href = "/user/pending"}}
                         />
                         <Tab
                             name="Documents"
