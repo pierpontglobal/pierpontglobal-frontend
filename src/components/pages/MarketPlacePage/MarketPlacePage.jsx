@@ -13,7 +13,11 @@ const qs = require('query-string');
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { cars: [] };
+    this.state = {
+      cars: [],
+      availableArguments: [],
+      loaded: false,
+    };
 
     this.getCars = this.getCars.bind(this);
     this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
@@ -25,10 +29,25 @@ class MarketPlacePage extends React.Component {
 
   async getCars() {
     try {
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&q=${this.params.q || '*'}`);
+      let str = '';
+
+      for (const key in this.params) {
+        if (str != '') {
+          str += '&';
+        }
+        if (this.params[key] !== '') {
+          str += `${key}=${encodeURIComponent(this.params[key])}`;
+        }
+      }
+
+      console.log(str);
+
       const carsGroup = [];
+      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&${str}`);
       const carsArray = response.data.cars;
-      console.log(carsArray);
+      this.setState({
+        availableArguments: response.data.available_arguments,
+      });
 
       for (let i = 0; i < carsArray.length; i += 1) {
         const car = carsArray[i];
@@ -40,7 +59,7 @@ class MarketPlacePage extends React.Component {
           if (url === null) {
             images.push(defaultImage);
           } else {
-            images.push(`${url}?width=424&height=240`);
+            images.push(`${url}?width=354&height=200`);
           }
         }
 
@@ -59,23 +78,25 @@ class MarketPlacePage extends React.Component {
           interiorColor: car.car_information.color_name_interior,
           exteriorColor: car.car_information.color_name_exterior,
           vin: car.car_information.vin,
+          cr: car.car_information.cr,
           bodyStyle: car.car_information.car_body_style ? car.car_information.car_body_style : 'Not available',
           doors: car.car_information.doors ? car.car_information.doors : 'Not available',
           vehicleType: car.car_information.car_type_code ? car.car_information.car_type_code : 'Not available',
-          score: '2.0',
           price: car,
-          saleDate: '',
+          saleDate: Date.parse(car.sale_information.auction_start_date),
           images,
           title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
         });
       }
-      this.setState({ cars: carsGroup });
+      this.setState({ cars: carsGroup, loaded: true });
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
+    const { loaded } = this.state;
+
     return (
       <div>
         <AppNav location={this.props.location} cookies={this.props.cookies} />
@@ -84,7 +105,7 @@ class MarketPlacePage extends React.Component {
             className="ml-auto d-none d-lg-flex mr-3 w-100"
             style={{ maxWidth: '260px' }}
           >
-            <FilterPanel />
+            { loaded ? <FilterPanel availableArguments={this.state.availableArguments} params={this.params} /> : <div />}
           </div>
           <div
             className="mr-auto ml-md-auto ml-lg-0 w-100"
@@ -93,10 +114,9 @@ class MarketPlacePage extends React.Component {
             <UnderLine>
               <SortBar header={this.params.q} />
             </UnderLine>
-            {
-              this.state.cars.map(
-                car => <CarCard key={car.vim} car={car} />,
-              )}
+            {this.state.cars.map(
+              car => <CarCard key={car.vim} car={car} />,
+            )}
           </div>
         </div>
       </div>
