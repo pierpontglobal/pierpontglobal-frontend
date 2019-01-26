@@ -8,6 +8,8 @@ import DealerCreator from './DealerCreator/DealerCreator';
 import SettingSide from './SettingSide/SettingSide';
 import SubscriptionSide from './SubscriptionSide/SubscriptionSide';
 import AlertNotification from './Components/AlertNotification';
+import PurchaseSide from './PurchaseSide/PurchaseSide';
+import PendingSide from './PendingSide/PendingSide';
 
 import './styles.css';
 
@@ -17,6 +19,54 @@ const dealerExample = {
   address: 'Address...',
   email: 'dealer@example.com',
   number: '+1 (809) 123-5555',
+};
+
+const car = {
+  year: '2017',
+  make: 'Hyundai',
+  model: 'Santa Fe',
+  trimLevel: 'Limited',
+  odometer: '9 440 mi',
+  fuelType: 'Gasoline',
+  engine: '6 cylinder',
+  displacement: '3.3 L',
+  transmission: 'Automatic',
+  interiorColor: 'black',
+  exteriorColor: 'white',
+  vin: 'L974FFH73523GSB353Z0',
+  bodyStyle: 'MPV',
+  doors: 'Not Available',
+  vehicleType: 'SUV',
+  score: '4.3',
+  price: '$ 21 975',
+  saleDate: '01/ 20 / 2017 (Cutoff) 9:00 AM ET',
+  images: [
+    'https://static.cargurus.com/images/site/2015/05/29/11/43/2015_hyundai_santa_fe_2_0t_sport-pic-4662568588414365370-640x480.jpeg',
+    'https://static.cargurus.com/images/site/2018/08/12/15/45/2015_hyundai_santa_fe_sport_2_4l_fwd-pic-1449050980195395017-640x480.jpeg',
+    'https://static.cargurus.com/images/site/2015/03/17/18/44/2015_hyundai_santa_fe_sport-pic-3111940996015372984-640x480.jpeg',
+  ],
+  title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
+};
+
+const step = {
+  date: '10/01/2020',
+  completed: true,
+  text: 'Picked up at location',
+};
+
+const purchases = {
+  key: '12343ABCDEFG',
+  orderNumber: '12231232112',
+  car: '10/01/2020',
+  steps: [step],
+};
+
+const bids = {
+  key: '12343ABCDEFG',
+  orderNumber: '12231232112',
+  bid: 2000,
+  date: '10/01/2020',
+  carTitle: 'Example',
 };
 
 const subscription = {
@@ -182,6 +232,8 @@ class ProfilePage extends React.Component {
           <Router>
             <Switch>
               <Route exact path="/user" render={() => (<SettingSide cookies={this.props.cookies} />)} />
+              <Route exact path="/user/purchase" render={() => (<PurchaseSide bids={[bids]} purchases={[purchases]} cookies={this.props.cookies} />)} />
+              <Route exact path="/user/pending" render={() => (<PendingSide cookies={this.props.cookies} />)} />
               <Route
                 exact
                 path="/user/subscription"
