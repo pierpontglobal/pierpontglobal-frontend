@@ -15,8 +15,21 @@ class SlideShow extends React.Component {
     };
 
     this.handleSelect = this.handleSelect.bind(this);
+  }
+
+
+  handleSelect(selectedIndex, e) {
+    this.setState({
+      index: selectedIndex,
+      direction: e.direction,
+    });
+  }
+
+  render() {
+    const { nextIcon, prevIcon } = this.state;
+
     const { images } = this.props;
-    const { carImages } = this.state;
+    const carImages = [];
 
     for (let i = 0; i < images.length; i += 1) {
       carImages.push(
@@ -32,18 +45,7 @@ class SlideShow extends React.Component {
         </Carousel.Item>,
       );
     }
-  }
 
-
-  handleSelect(selectedIndex, e) {
-    this.setState({
-      index: selectedIndex,
-      direction: e.direction,
-    });
-  }
-
-  render() {
-    const { nextIcon, prevIcon, carImages } = this.state;
     return (
       <Carousel
         nextIcon={nextIcon}

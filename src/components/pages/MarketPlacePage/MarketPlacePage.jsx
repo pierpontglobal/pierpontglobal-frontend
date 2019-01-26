@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Pagination, PaginationItem } from 'semantic-ui-react';
 import AppNav from '../../AppNav/AppNav';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
@@ -7,24 +8,37 @@ import CarCard from '../../CarCard/CarCard';
 import UnderLine from '../../Underline/Underline';
 import { ApiServer } from '../../../Defaults';
 import defaultImage from './not_available.jpg';
+import './styles.css';
 
 const qs = require('query-string');
 
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
+
+    this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+
     this.state = {
       cars: [],
       availableArguments: [],
       loaded: false,
+      page: this.params.page ? this.params.page : 0,
+      total: 1,
     };
 
     this.getCars = this.getCars.bind(this);
-    this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+    this.onPageChange = this.onPageChange.bind(this);
   }
 
   componentDidMount() {
     this.getCars();
+  }
+
+  onPageChange(e, i) {
+    const page = (i.activePage - 1);
+    this.setState({ page }, () => {
+      this.getCars();
+    });
   }
 
   async getCars() {
@@ -32,26 +46,29 @@ class MarketPlacePage extends React.Component {
       let str = '';
 
       for (const key in this.params) {
-        if (str != '') {
-          str += '&';
-        }
-        if (this.params[key] !== '') {
-          str += `${key}=${encodeURIComponent(this.params[key])}`;
+        if (this.params[key] !== '' && key !== 'page') {
+          str += `&${key}=${encodeURIComponent(this.params[key])}`;
         }
       }
 
-      console.log(str);
+      const { page } = this.state;
+      const offset = page * 20;
+
+      window.history.pushState(null, 'Marketplace', `/marketplace?page=${page}${str}`);
 
       const carsGroup = [];
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=10&${str}`);
+      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=20&${str}&offset=${offset}`);
       const carsArray = response.data.cars;
+
       this.setState({
         availableArguments: response.data.available_arguments,
+        total: Math.ceil(parseFloat(response.data.size / 20)),
       });
+
 
       for (let i = 0; i < carsArray.length; i += 1) {
         const car = carsArray[i];
-        let images = [];
+        const images = [];
         const imagesObjs = car.car_information.images;
 
         for (let j = 0; j < imagesObjs.length; j += 1) {
@@ -59,13 +76,11 @@ class MarketPlacePage extends React.Component {
           if (url === null) {
             images.push(defaultImage);
           } else {
-            images.push(`${url}?width=354&height=200`);
+            images[imagesObjs[j].f4] = `${url}?width=354&height=200&position=${imagesObjs[j].f4}`;
           }
         }
 
-        images = images.reverse();
-
-        carsGroup.push({
+        const carObject = {
           year: car.car_information.year,
           make: car.car_information.car_maker,
           model: car.car_information.car_model,
@@ -86,16 +101,21 @@ class MarketPlacePage extends React.Component {
           saleDate: Date.parse(car.sale_information.auction_start_date),
           images,
           title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
-        });
+        };
+
+        carsGroup.push(<CarCard key={carObject.vim} car={carObject} />);
       }
       this.setState({ cars: carsGroup, loaded: true });
+      this.forceUpdate();
     } catch (error) {
       console.log(error);
     }
   }
 
   render() {
-    const { loaded } = this.state;
+    const {
+      loaded, page, total, cars,
+    } = this.state;
 
     return (
       <div>
@@ -109,14 +129,13 @@ class MarketPlacePage extends React.Component {
           </div>
           <div
             className="mr-auto ml-md-auto ml-lg-0 w-100"
-            style={{ maxWidth: '810px', paddingBottom: '60px' }}
+            style={{ maxWidth: '810px', paddingBottom: '120px' }}
           >
             <UnderLine>
               <SortBar header={this.params.q} />
             </UnderLine>
-            {this.state.cars.map(
-              car => <CarCard key={car.vim} car={car} />,
-            )}
+            {cars}
+            <span style={{ float: 'right' }}><Pagination defaultActivePage={parseInt(page, 10) + 1} totalPages={total} onPageChange={this.onPageChange} /></span>
           </div>
         </div>
       </div>
