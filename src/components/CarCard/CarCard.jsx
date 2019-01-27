@@ -12,6 +12,27 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
+function pickHex(color1, color2, color3, weight) {
+  if (weight == null) {
+    return [169, 169, 169];
+  } if (weight === 2.5) {
+    return color2;
+  } if (weight < 2.5) {
+    const w1 = weight / 2.5;
+    const w2 = 1 - w1;
+    const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
+      Math.round(color2[1] * w1 + color3[1] * w2),
+      Math.round(color2[2] * w1 + color3[2] * w2)];
+    return rgb;
+  }
+  const w1 = (weight - 2.5) / 2.5;
+  const w2 = 1 - w1;
+  const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+    Math.round(color1[1] * w1 + color2[1] * w2),
+    Math.round(color1[2] * w1 + color2[2] * w2)];
+  return rgb;
+}
+
 function CarCard({ key, car }) {
   const {
     vin,
@@ -21,9 +42,11 @@ function CarCard({ key, car }) {
     images,
     saleDate,
     cr,
-    model,
-    make,
   } = car;
+
+  const diference = saleDate - new Date();
+  const timeDiff = Math.abs(diference);
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
     <Container
       style={{
@@ -34,7 +57,7 @@ function CarCard({ key, car }) {
       backgroundColor="#fafafa"
       maxHeight="120px"
       boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
-      onClick={(e) => { const res = e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null; }}
+      onClick={(e) => { const _res = e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null; }}
     >
       <Container
         className="d-flex mr-md-3 w-auto"
@@ -42,10 +65,20 @@ function CarCard({ key, car }) {
       >
         <SlideShow images={images} />
       </Container>
-      <Container style={{ width: '170px' }} className="py-1 py-3 pb-3 ml-auto ml-md-0 mr-md-5">
+      <Container style={{ width: '220px' }} className="py-1 py-3 pb-3 ml-auto ml-md-0 mr-md-5">
         <Detail
-          name="Title"
-          value={`${make} ${model}`}
+          name=""
+          value={(
+            <span style={{ fontWeight: '600', fontSize: '13px' }}>
+              {car.year}
+              {' '}
+              {car.make}
+              {' '}
+              {car.model}
+              {' '}
+              {car.trimLevel}
+            </span>
+)}
           className="mb-md-0 w-100"
         />
         <hr style={{ margin: '0 0 5px' }} />
@@ -86,8 +119,10 @@ function CarCard({ key, car }) {
           fontWeight={600}
           lineHeight={1.33}
           className="mb-2 text-right"
-          fontColor="#0bb761"
+          fontColor={diference < 0 ? 'rgb(169,169,169)' : `rgb(${pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], diffDays)})`}
         >
+          {diference < 0 ? 'Started' : ''}
+          {' '}
           <TimeAgo date={saleDate} />
         </Text>
         <PriceTag

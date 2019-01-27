@@ -27,6 +27,7 @@ export default class AccountPanel extends React.Component {
           }
         }
         await axios.post(`${ApiServer}/api/v1/user/invalidate`, {}, config)
+        this.props.cookies.remove('token')
         window.location.href = "/";
     }
     
@@ -61,9 +62,10 @@ export default class AccountPanel extends React.Component {
                             onClick={this.markSelected} 
                         />
                         <Tab
+                            searchKey="financial"
                             name="Financial Analysis"
                             icon="fas fa-dollar-sign"
-                            onClick={this.markSelected} 
+                            onClick={() => {window.location.href = "/user/financial"}} 
                         />
                         <Tab
                             searchKey="subscription"
@@ -78,7 +80,7 @@ export default class AccountPanel extends React.Component {
                         />
                     </div>
                     <div>
-                        <FundTab funds={{remaining: funds, total: '10 000'}} />
+                        <FundTab funds={{remaining: 0, total: '10 000'}} />
                         <Tab
                             searchKey="user"
                             name="Settings"
