@@ -10,6 +10,7 @@ import SubscriptionSide from './SubscriptionSide/SubscriptionSide';
 import AlertNotification from './Components/AlertNotification';
 import PurchaseSide from './PurchaseSide/PurchaseSide';
 import PendingSide from './PendingSide/PendingSide';
+import FinancialSide from './FinancialSide/FinancialSide';
 
 import './styles.css';
 
@@ -234,6 +235,7 @@ class ProfilePage extends React.Component {
               <Route exact path="/user" render={() => (<SettingSide cookies={this.props.cookies} />)} />
               <Route exact path="/user/purchase" render={() => (<PurchaseSide bids={[bids]} purchases={[purchases]} cookies={this.props.cookies} />)} />
               <Route exact path="/user/pending" render={() => (<PendingSide cookies={this.props.cookies} />)} />
+              <Route exact path="/user/financial" render={() => (<FinancialSide cookies={this.props.cookies} />)} />
               <Route
                 exact
                 path="/user/subscription"

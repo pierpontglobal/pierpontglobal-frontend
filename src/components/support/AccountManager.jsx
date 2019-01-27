@@ -7,22 +7,25 @@ import Modal from '../Modal/Modal';
 import Input from '../styles/Input/Input';
 import Button from '../Btn/Btn';
 import './styles.css'
+const qs = require('query-string');
 
 export const userToken = '';
 
 class AccountManager extends React.Component {
   constructor(props) {
     super(props);
-    const { cookies } = props;
+    const { cookies, verify } = props;
+
+    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
     this.state = {
-      showModal: false,
+      showModal: this.params.signIn || false,
       token: cookies.get('token')
     };
 
     this.validToken = this.validToken.bind(this);
 
-    if (this.state.token !== undefined) {
+    if (verify) {
       this.validToken();
     }
 
@@ -37,11 +40,11 @@ class AccountManager extends React.Component {
           }
         }
     try {
-      const response = await axios.get(`${ApiServer}/api/v1/user`, config)
+      await axios.get(`${ApiServer}/api/v1/user`, config)
     } catch (e) {
       const { cookies } = this.props;
       cookies.remove('token')
-      window.location.reload(true);
+      window.location.href = '/?signIn=true';
     }
   }
 
