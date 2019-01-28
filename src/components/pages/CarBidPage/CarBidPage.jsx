@@ -74,7 +74,6 @@ class CarBidPage extends React.Component {
     } = this.props;
 
     const { car } = this.state;
-    console.log(car.images.className);
 
     return (
       <div>
@@ -90,7 +89,7 @@ class CarBidPage extends React.Component {
           >
             {userBid !== undefined
               ? <UserBidCard bid={userBid} />
-              : <BidPanel currentBid={currentBid} />}
+              : <BidPanel currentBid="Not available" />}
             <LocationBar
               currentLocation={car.location}
               transportPrice="277"
