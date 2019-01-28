@@ -1,4 +1,5 @@
 import React from 'react';
+import MorePopUp from './MorePopUp';
 import './style.css';
 
 const style = {
@@ -17,41 +18,38 @@ const labelStyle = {
 function OptionBtn({
   selected, values, origin, onChange,
 }) {
+  const valuesComplete = values.map(v => (
+    <div key={v.key} className="d-flex mb-2">
+      <label style={{ width: '100%' }} className="pure-material-checkbox">
+        <input
+          type="checkbox"
+          defaultChecked={selected.includes(v.key)}
+          onChange={
+            (value) => {
+              onChange(origin, value.target.checked, v.key);
+            }
+          }
+        />
+        <span style={{ float: 'left' }}>
+          {v.key}
+
+          <div style={{ position: 'absolute', right: 10, top: 0 }}>
+            {'('}
+            {v.doc_count}
+            {')'}
+          </div>
+        </span>
+      </label>
+    </div>
+  ));
+
+  const valuesPartial = Object.assign([], valuesComplete);
+
   if (values) {
     return (
       <div className="d-flex flex-column pl-3">
-        {values.slice(0, 10).map(v => (
-          <div key={v.key} className="d-flex mb-2">
-            <label style={{ width: '100%' }} className="pure-material-checkbox">
-              <input
-                type="checkbox"
-                defaultChecked={selected.includes(v.key)}
-                onChange={
-                  (value) => {
-                    onChange(origin, value.target.checked, v.key);
-                  }
-                }
-              />
-              <span style={{ float: 'left' }}>
-                {v.key}
-
-                <div style={{ position: 'absolute', right: 10, top: 0 }}>
-                  {'('}
-                  {v.doc_count}
-                  {')'}
-                </div>
-              </span>
-            </label>
-          </div>
-        ))}
-        <a style={{
-          cursor: 'pointer',
-          padding: '0 0 20px 0',
-          color: 'rgb(62,120,192)',
-        }}
-        >
-        (See all)
-        </a>
+        {valuesPartial.splice(0, 10).map(v => (v))}
+        <MorePopUp options={valuesComplete} />
       </div>
     );
   }
