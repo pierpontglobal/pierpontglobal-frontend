@@ -25,7 +25,7 @@ export default class SettingSide extends React.Component {
   constructor(props) {
     super(props);
 
-    const { cookies } = props;
+    const { cookies, user } = props;
 
     this.state = {
       editable: false,
@@ -34,15 +34,18 @@ export default class SettingSide extends React.Component {
       token: cookies.get('token'),
       card: '',
       loading: false,
+      name: '',
     };
     this.paymentMethods = this.paymentMethods.bind(this);
     this.removeCard = this.removeCard.bind(this);
     this.getDefaultPaymentMethod = this.getDefaultPaymentMethod.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
   componentDidMount() {
     this.paymentMethods();
+    this.getUser();
   }
 
   onEditableClick() {
@@ -203,9 +206,25 @@ export default class SettingSide extends React.Component {
     window.location.reload();
   }
 
+  async getUser() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${this.state.token}`,
+      },
+    };
+    const response_user = (await axios.get(`${ApiServer}/api/v1/user`, config)).data;
+    console.log(response_user);
+    this.setState({
+      name: `${response_user.first_name} ${response_user.last_name}`,
+      address: `${response_user.address.primary_address} ${response_user.address.secondary_address}, ${response_user.address.zip_code}, ${response_user.address.city} ${response_user.address.country}`,
+      email: `${response_user.email}`,
+      phone: `${response_user.phone_number}`,
+    });
+  }
+
   render() {
-    const { editable } = this.state;
     const {
+      editable,
       name,
       address,
       email,
@@ -214,10 +233,9 @@ export default class SettingSide extends React.Component {
       onAddressChange,
       onEmailChange,
       onPhoneChange,
-    } = this.props;
-
-    const { card, loading } = this.state;
-
+      card,
+      loading,
+    } = this.state;
 
     return (
       <div style={headingStyle}>
@@ -225,8 +243,9 @@ export default class SettingSide extends React.Component {
           <h4 className="mb-0">Deposit</h4>
         </UnderLine>
         <div className="d-flex mb-3">
-          <DepositProgress amount={7746} />
+          <DepositProgress amount={0} />
           <button
+            type="button"
             className="border-0 shadow"
             style={{
               backgroundColor: '#10b364',
@@ -241,11 +260,22 @@ export default class SettingSide extends React.Component {
         </div>
         <UnderLine className="justify-content-between">
           <h4 className="mb-0">Personal Info</h4>
-          <i
-            className={`SettingEditIcon fas fa-${editable ? 'times' : 'pen'}`}
-            style={iconStyle}
-            onClick={this.onEditableClick}
-          />
+          <button
+            type="button"
+            style={{
+              backgroundColor: '#ffffff',
+              color: '#000000',
+              borderRadius: '5px',
+              padding: '10px 15px',
+              cursor: 'pointer',
+              fontSize: '12px',
+            }}
+            onClick={this.onOpenModal}
+          >
+            <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
+            {' '}
+            Modify profile information
+          </button>
         </UnderLine>
         <ProfileForm
           editable={editable}

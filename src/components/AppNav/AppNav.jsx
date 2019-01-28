@@ -24,10 +24,13 @@ const style = {
 export default class AppNav extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             menuOpen: false,
             profileOpen: false,
+            verify: this.props.verify || false,
         }
+
         try {
             this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
         } catch (error) {
@@ -51,6 +54,9 @@ export default class AppNav extends React.Component {
     });
 
     render() {
+
+        const { verify } = this.state;
+
         return (
             <div 
                 className="d-flex flex-row py-2 justify-content-md-center px-3 px-md-2 w-100"
@@ -86,7 +92,7 @@ export default class AppNav extends React.Component {
 
                     <Divider className="ml-lg-3 mr-lg-3 d-none d-md-flex align-self-center" />
                     
-                    <AccountMAnager cookies={this.props.cookies} />
+                    <AccountMAnager verify={verify} cookies={this.props.cookies} />
 
                     <div style={{visibility: this.props.notSearchable ? 'hidden' : 'visible' }}>
                     <SearchInput defaultValue={this.params.q} className="d-none d-md-flex mr-auto align-self-center"></SearchInput>

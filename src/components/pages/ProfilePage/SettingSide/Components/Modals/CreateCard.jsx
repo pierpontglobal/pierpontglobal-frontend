@@ -21,8 +21,7 @@ class CreateCard extends React.Component {
     const { open } = this.state;
     return (
       <div>
-        <button 
-        className="border-0 shadow"
+        <button
         style={{
               backgroundColor: '#ffffff',
               color: '#000000',
