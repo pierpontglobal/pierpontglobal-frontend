@@ -36,12 +36,7 @@ function LocationBar({currentLocation, transportPrice, to}) {
                         <i className="fas fa-info-circle ml-2"/ >
                     </span>
                 </p>
-                <p 
-                    className="mb-0"
-                    style={bStyle}
-                >
-                    {to}
-                </p>
+                <p className="mb-0" style={bStyle}> {to} </p>
             </div>
         </div>
     )

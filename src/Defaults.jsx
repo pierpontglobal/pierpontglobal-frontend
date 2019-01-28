@@ -1,1 +1,1 @@
-export const ApiServer = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://api.pierpontglobal.com';
+export const ApiServer = process.env.NODE_ENV === 'development' ? 'http://api.pierpontglobal.com' : 'https://api.pierpontglobal.com';
