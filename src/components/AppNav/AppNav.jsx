@@ -17,7 +17,7 @@ const style = {
     border: 'solid 0.5px rgba(0, 0, 0, 0.12)',
     position: 'fixed',
     top: 0,
-    overflow: 'hidden',
+    overflow: 'show',
     zIndex: 1000
 }
 
