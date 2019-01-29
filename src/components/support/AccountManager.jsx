@@ -12,6 +12,7 @@ const qs = require('query-string');
 export const userToken = '';
 
 class AccountManager extends React.Component {
+  // Constructor
   constructor(props) {
     super(props);
     const { cookies, verify } = props;
@@ -33,6 +34,7 @@ class AccountManager extends React.Component {
     this.setClosed = this.setClosed.bind(this);
   }
 
+  // Validates that the token is correct if not it gets removed
   async validToken(){
     let config = {
           headers: {
@@ -94,7 +96,8 @@ class AccountManager extends React.Component {
           display: 'flex',
           justifyContent: 'center',
           alignContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          overflow: 'show',
         }}
         className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center border-0 button-check shadow"
       >
@@ -148,7 +151,7 @@ export class SignInModal extends React.Component {
 
   signInModal() {
     return (
-      <Modal height="320px" show notifyClosed={this.closeModal} title="User sign in">
+      <Modal style={{ position: 'absolute' }} height="320px" show notifyClosed={this.closeModal} title="User sign in">
         <form
           style={{
             display: 'flex',

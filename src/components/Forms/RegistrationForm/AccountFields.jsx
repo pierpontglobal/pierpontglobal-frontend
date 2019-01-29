@@ -110,6 +110,7 @@ class AccountFields extends React.Component {
           <p style={{ color: this.props.textColor, fontSize: '28px' }} className="subtitle-medium">Sign Up for early access</p>
           <Input
             className="w-100 h-100 pl-2 border-0"
+            autoComplete="name"
             type="text"
             backgroundColor="#EEEEEE"
             lineHeight={1.31}
@@ -119,7 +120,6 @@ class AccountFields extends React.Component {
             borderRadius="4px"
             placeholder="Your first name"
             onChange={e => this.setState({ text: e.target.value })}
-            defaultValue={this.props.fieldValues.firstName}
             required
           />
 
@@ -127,6 +127,7 @@ class AccountFields extends React.Component {
             style={{
               marginTop: '10px',
             }}
+            autoComplete="lname"
             className="w-100 h-100 pl-2 border-0"
             type="text"
             backgroundColor="#EEEEEE"
@@ -137,7 +138,6 @@ class AccountFields extends React.Component {
             borderRadius="4px"
             placeholder="Your last name"
             onChange={e => this.setState({ text: e.target.value })}
-            defaultValue={this.props.fieldValues.lastName}
             required
           />
 
@@ -162,7 +162,6 @@ class AccountFields extends React.Component {
               maxHeight="40px"
               borderRadius="4px"
               placeholder="Email"
-              defaultValue={this.props.fieldValues.email}
               onChange={() => { this.checkEmail(validator.validate(this.email.value)); }}
               required
             />
@@ -198,7 +197,6 @@ class AccountFields extends React.Component {
             borderRadius="4px"
             placeholder="Phone number"
             onChange={this.printNumber}
-            defaultValue={this.props.fieldValues.phonenumber}
             required
           />
 

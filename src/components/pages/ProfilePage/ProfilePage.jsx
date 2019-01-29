@@ -166,7 +166,8 @@ class ProfilePage extends React.Component {
 
 
     const subscriptionData = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`, config)).data;
-    if (!subscriptionData.active) {
+    console.log(subscriptionData);
+    if (!subscriptionData.paid) {
       this.setState({
         notifications:
       (
@@ -190,7 +191,8 @@ class ProfilePage extends React.Component {
       });
     }
 
-    const defaultCard = (await axios.get(`${ApiServer}/api/v1/user/cards/default`, config)).data;
+    let defaultCard = (await axios.get(`${ApiServer}/api/v1/user/cards/default`, config)).data;
+    defaultCard = defaultCard.includes('card_') ? defaultCard : null;
     if (defaultCard === null) {
       this.setState({
         notifications:
