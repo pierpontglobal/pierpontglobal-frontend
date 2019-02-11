@@ -24,30 +24,8 @@ class AccountManager extends React.Component {
       token: cookies.get('token')
     };
 
-    this.validToken = this.validToken.bind(this);
-
-    if (verify) {
-      this.validToken();
-    }
-
     this.getDisplayable = this.getDisplayable.bind(this);
     this.setClosed = this.setClosed.bind(this);
-  }
-
-  // Validates that the token is correct if not it gets removed
-  async validToken(){
-    let config = {
-          headers: {
-            Authorization: `Bearer ${this.state.token}`,
-          }
-        }
-    try {
-      await axios.get(`${ApiServer}/api/v1/user`, config)
-    } catch (e) {
-      const { cookies } = this.props;
-      cookies.remove('token')
-      window.location.href = '/?signIn=true';
-    }
   }
 
   setClosed() {
@@ -62,7 +40,7 @@ class AccountManager extends React.Component {
       return (<div
         onClick={() => { window.location.href = "/user" }}
         style={{
-          color: '#000000',
+          color: '#ffffff',
           cursor: 'pointer',
           alignItems: 'center',
           height: '100%',
@@ -72,9 +50,10 @@ class AccountManager extends React.Component {
           display: 'flex',
           justifyContent: 'center',
           alignContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          overflow: 'show',
         }}
-        className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center"
+        className="border-0 button-check shadow"
       >
         <i className="far fa-user mr-2 pr-1" />
           Profile
@@ -99,7 +78,7 @@ class AccountManager extends React.Component {
           alignItems: 'center',
           overflow: 'show',
         }}
-        className="mr-lg-5 ml-lg-4 mr-3 ml-2 d-none d-md-flex align-self-center border-0 button-check shadow"
+        className="border-0 button-check shadow"
       >
         <i className="far fa-user mr-2 pr-1" />
           Sign In

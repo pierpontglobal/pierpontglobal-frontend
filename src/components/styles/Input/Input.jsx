@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {containerProps, fontProps, placeholderProps} from '../Properties/Properties';
+import { containerProps, fontProps, placeholderProps } from '../Properties/Properties';
 
 const Input = styled.input`
     ${containerProps}

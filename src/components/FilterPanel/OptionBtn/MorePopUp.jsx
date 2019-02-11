@@ -50,6 +50,7 @@ class MorePopUp extends React.Component {
       <div>
         <button
           className="border-0"
+          type="button"
           style={{
             height: '14px',
             background: 'transparent',

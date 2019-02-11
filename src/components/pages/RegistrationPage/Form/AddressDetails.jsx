@@ -5,6 +5,15 @@ import { CountryDropdown } from 'react-country-region-selector';
 class AddressDetails extends Component {
   constructor(props) {
     super(props);
+
+    const {
+      values,
+    } = this.props;
+
+    this.state = {
+      values,
+    };
+
     this.saveAndContinue = this.saveAndContinue.bind(this);
     this.back = this.back.bind(this);
   }
@@ -20,7 +29,10 @@ class AddressDetails extends Component {
   }
 
   render() {
-    const { values } = this.props;
+    const {
+      values,
+    } = this.state;
+
     return (
       <Form color="blue">
         <h1 className="ui centered">Location Details</h1>
@@ -50,7 +62,7 @@ class AddressDetails extends Component {
           />
         </Form.Field>
         <Form.Field>
-          <label>Address 1</label>
+          <label>Primary Address</label>
           <input
             placeholder="Primary address"
             onChange={this.props.handleChange('address1')}
@@ -58,7 +70,7 @@ class AddressDetails extends Component {
           />
         </Form.Field>
         <Form.Field>
-          <label>Address 2</label>
+          <label>Secondary Address (Optional)</label>
           <input
             placeholder="Secondary address"
             onChange={this.props.handleChange('address2')}

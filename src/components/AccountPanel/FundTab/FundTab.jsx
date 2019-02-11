@@ -1,6 +1,10 @@
 import React from 'react';
-import Icon from '../../styles/Icon/Icon';
 import Span from '../../styles/Span/Span';
+
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 
 function FundTab({ funds }) {
   return (
@@ -26,7 +30,7 @@ function FundTab({ funds }) {
           color="#3e78c0"
           className="fas fa-info-circle mr-1 align-self-end"
         />
-        {`($) ${funds.remaining}/ ${funds.total}`}
+        {`($) ${numberWithCommas(parseFloat(funds.remaining).toFixed(2))} / ${funds.total}`}
       </Span>
     </div>
   );

@@ -1,5 +1,5 @@
-import styled, {css} from 'styled-components';
-import {containerProps, fontProps} from '../Properties/Properties';
+import styled, { css } from 'styled-components';
+import { containerProps, fontProps } from '../Properties/Properties';
 
 const Container = styled.div`
     ${containerProps}

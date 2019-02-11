@@ -29,7 +29,10 @@ class CreateCard extends React.Component {
               padding: '10px 15px',
               cursor: 'pointer',
               fontSize: '12px',
-            }} onClick={this.onOpenModal}>
+            }} 
+            onClick={this.onOpenModal}
+            className="border-0 shadow button_white">
+
             <i style={{fontSize: '12px',color: '#000000',}} className="fas fa-plus"/>
             {' '}Add payment method
         </button>

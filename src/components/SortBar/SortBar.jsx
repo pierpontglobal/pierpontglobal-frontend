@@ -1,19 +1,17 @@
 import React from 'react';
 import Text from '../styles/Text/Text';
 import Selection from './Selection/Selection';
+import SearchInput from '../AppNav/SearchInput/SearchInput';
 
 function SortBar({ header, className }) {
   return (
     <div
-      className={`d-flex flex-fill flex-row pr-3 ${className || ''}`}
+      className={`d-flex flex-fill flex-row ${className || ''}`}
+      style={{
+        padding: 0, display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center', justifyItems: 'center',
+      }}
     >
-      <Text
-        className="d-flex mb-0 flex-fill"
-        fontWeight={600}
-        lineHeight={1.31}
-      >
-        {header}
-      </Text>
+      <SearchInput defaultValue={header} className="d-none d-md-flex mr-auto align-self-center" />
       <Selection />
     </div>
   );

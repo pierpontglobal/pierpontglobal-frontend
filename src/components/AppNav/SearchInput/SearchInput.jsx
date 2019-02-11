@@ -1,5 +1,4 @@
 import React from 'react';
-import Input from '../../styles/Input/Input';
 
 let searchBox = null;
 
@@ -9,22 +8,58 @@ function search(e) {
   }
 }
 
-function SearchInput({ className, defaultValue }) {
+function SearchInput({ defaultValue }) {
   return (
-    <Input
-      className={`w-100 h-100 pl-2 border-0 ${className}`}
-      type="text"
-      backgroundColor="#EEEEEE"
-      lineHeight={1.31}
-      fontColor="#707070"
-      maxWidth="260px"
-      maxHeight="40px"
-      borderRadius="4px"
-      placeholder="Search"
-      defaultValue={defaultValue}
-      ref={(node) => { searchBox = node; }}
-      onKeyPress={search}
-    />
+
+
+    <div style={{
+      display: 'flex', flexGrow: 3, paddingRight: '10px', flexDirection: 'row',
+    }}
+    >
+      <div style={{
+        height: '41px',
+        width: '41px',
+        backgroundColor: '#FFFFF',
+        fontSize: '16px',
+        textAlign: 'center',
+        lineHeight: '41px',
+        fontWeight: 900,
+        borderRadius: '5px 0 0 5px',
+        borderTop: 'rgba(0,0,0,0.54) solid 1px',
+        borderBottom: 'rgba(0,0,0,0.54) solid 1px',
+        borderLeft: 'rgba(0,0,0,0.54) solid 1px',
+      }}
+      >
+        <i
+          style={{
+            fontSize: '16px',
+            textAlign: 'center',
+            lineHeight: '41px',
+            fontWeight: 900,
+            color: 'rgba(0,0,0,0.54)',
+          }}
+          className="fas fa-search"
+        />
+      </div>
+      <input
+        style={{
+          backgroundColor: '#FFFFFF',
+          textAlign: 'left',
+          border: 0,
+          width: '100%',
+          borderTop: 'rgba(0,0,0,0.54) solid 1px',
+          borderBottom: 'rgba(0,0,0,0.54) solid 1px',
+          borderRight: 'rgba(0,0,0,0.54) solid 1px',
+          color: 'rgba(0,0,0,0.54)',
+        }}
+        className="input-single-amount"
+        placeholder="Search"
+        type="text"
+        defaultValue={defaultValue}
+        ref={(node) => { searchBox = node; }}
+        onKeyPress={search}
+      />
+    </div>
 
   );
 }

@@ -27,13 +27,8 @@ class DealerCreator extends React.Component {
     const data = {
       name: this.name.value,
       phone_number: this.phone_number.value,
-      country: this.country.value,
-      city: this.city.value,
-      address1: this.address1.value,
-      address2: this.address2.value,
     };
-    const response = await axios.post(`${ApiServer}/api/v1/user/dealers`, data, config);
-    console.log(response);
+    await axios.post(`${ApiServer}/api/v1/user/dealers`, data, config);
     window.location.reload(true);
   }
 
@@ -78,38 +73,6 @@ class DealerCreator extends React.Component {
                 />
               </Form.Field>
             </div>
-            <Form.Field>
-              <label>Country</label>
-              <input
-                type="text"
-                placeholder="Country"
-                ref={(node) => { this.country = node; }}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>City</label>
-              <input
-                type="text"
-                placeholder="City"
-                ref={(node) => { this.city = node; }}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Primary Address</label>
-              <input
-                type="text"
-                placeholder="Primary Address"
-                ref={(node) => { this.address1 = node; }}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Secondary Address</label>
-              <input
-                type="text"
-                placeholder="Secondary Address"
-                ref={(node) => { this.address2 = node; }}
-              />
-            </Form.Field>
 
             <Button onClick={this.saveAndContinue}>Save information and reload</Button>
             <i

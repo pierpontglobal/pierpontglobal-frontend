@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
+import axios from 'axios';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
 import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 import CarPage from './components/pages/CarBidPage/CarBidPage';
+import './styles.css';
 
 const car = {
   year: '2017',
@@ -54,13 +56,33 @@ const car = {
 
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    const { cookies } = this.props;
+
+    axios.interceptors.request.use((config) => {
+      config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
+
+      return config;
+    }, error => Promise.reject(error));
+
+    axios.interceptors.response.use(response => response,
+      (error) => {
+        if (error.response.status === 401) {
+          cookies.remove('token');
+          window.location.href = '/?signIn=true';
+        }
+        return Promise.reject(error);
+      });
+  }
+
   render() {
     return (
       <Router>
         <div>
           <Switch>
             <Route exact path="/" render={() => (<LandingPage cookies={this.props.cookies} />)} />
-            <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={this.props.cookies} location={window.location} />)} />
+            <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={this.props.cookies} />)} />
             <Route exact path="/marketplace/car" render={() => (<CarPage cookies={this.props.cookies} car={car} />)} />
 
             <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={this.props.cookies} />)} />

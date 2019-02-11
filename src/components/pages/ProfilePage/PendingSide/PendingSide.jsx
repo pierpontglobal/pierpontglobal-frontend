@@ -40,7 +40,6 @@ class PendingSide extends React.Component {
       const {tabValue} = this.state;
         return (
           <div>
-            <AppNav notSearchable cookies={this.props.cookies} />
             <DivTabs pose={this.state.textPlace} className="center-holder">
               <span className="big-text">Pending</span>
               <div>

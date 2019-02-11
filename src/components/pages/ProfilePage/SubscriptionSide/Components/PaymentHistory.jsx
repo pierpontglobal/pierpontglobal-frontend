@@ -74,8 +74,9 @@ class PaymentHistory extends React.Component {
 
     return (
       <div>
-        <table style={{ width: '100%', marginTop: '-15px' }}>
-          <thead style={{ background: '#dedede', height: '80px' }}>
+        <hr />
+        <table style={{ width: '100%' }}>
+          <thead style={{ height: '80px' }}>
             <tr style={{ height: '40px', padding: '10px' }}>
               <th>Amount</th>
               <th>Description</th>

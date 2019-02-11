@@ -83,6 +83,7 @@ class Registration extends React.Component {
             }}
             >
               <SuccessfulPortion
+                email={fieldValues.email}
                 loading
                 fieldValues={fieldValues}
                 signInElement={this.openModal}
@@ -99,6 +100,8 @@ class Registration extends React.Component {
           }}
           >
             <SuccessfulPortion
+              email={fieldValues.email}
+              textColor={this.textColor}
               fieldValues={fieldValues}
               signInElement={this.openModal}
             />

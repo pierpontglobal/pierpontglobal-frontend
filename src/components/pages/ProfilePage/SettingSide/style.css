@@ -47,3 +47,34 @@
     -webkit-animation-iteration-count:  infinite;
     -webkit-animation-timing-function:  linear;
 }
+
+.menu .item {
+    opacity: 1;
+}
+
+.content-holder-box {
+    margin-bottom: 20px;
+    border-radius: 10px !important;
+}
+
+.content-holder-box .content-main {
+    margin: 20px;
+}
+
+.button_white {
+    background-color: white;
+    transition: 0.5s;
+}
+
+.button_white:hover {
+    background-color: #fafafa !important
+}
+
+.green_button {
+    background-color: #10b364;
+    transition: 0.5s;
+}
+
+.green_button:hover {
+    background-color: #0d864c !important;
+}

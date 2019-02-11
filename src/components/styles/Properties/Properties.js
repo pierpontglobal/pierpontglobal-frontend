@@ -1,7 +1,7 @@
-import {css} from 'styled-components';
+import { css } from 'styled-components';
 
 export const fontProps = props => css`
-    color: ${props.fontColor || '#000000' };
+    color: ${props.fontColor || '#000000'};
     opacity: ${props.opacity || '1.0'};
     font-size: ${props.fontSize || '1em'};
     font-weight: ${props.fontWeight || 'normal'};
@@ -29,12 +29,12 @@ export const containerProps = props => css`
     background-color: ${props.backgroundColor || 'transparent'};
     overflow: ${props.overflow || 'hidden'};
     box-shadow: ${props.boxShadow || 'none'};
-    ${props.backdropFilter && 
-        css`
+    ${props.backdropFilter
+        && css`
             backdrop-filter: ${props.backdropFilter};
         `}
-    ${props.webkitBackdropFilter && 
-        css`
+    ${props.webkitBackdropFilter
+        && css`
             -webkit-backdrop-filter: ${props.webkitBackdropFilter};
         `}
 `;

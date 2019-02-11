@@ -16,7 +16,33 @@ const ContentText = ({ children, className = 'mb-0' }) => (
   </Text>
 );
 
+function pickHex(color1, color2, color3, weightRaw) {
+  const weight = weightRaw > 5 ? 5 : weightRaw;
+  if (weight == null) {
+    return [169, 169, 169];
+  } if (weight === 2.5) {
+    return color2;
+  } if (weight < 2.5) {
+    const w1 = weight / 2.5;
+    const w2 = 1 - w1;
+    const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
+      Math.round(color2[1] * w1 + color3[1] * w2),
+      Math.round(color2[2] * w1 + color3[2] * w2)];
+    return rgb;
+  }
+  const w1 = (weight - 2.5) / 2.5;
+  const w2 = 1 - w1;
+  const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+    Math.round(color1[1] * w1 + color2[1] * w2),
+    Math.round(color1[2] * w1 + color2[2] * w2)];
+  return rgb;
+}
+
 function CarDetailCard({ car }) {
+  const diference = Date.parse(car.saleDate) - new Date();
+  const timeDiff = Math.abs(diference);
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
   return (
     <Container
       style={{ width: '100%' }}
@@ -39,7 +65,7 @@ function CarDetailCard({ car }) {
           fontWeight={600}
           lineHeight={1.33}
           className="mb-2"
-          fontColor="#0bb761"
+          fontColor={diference < 0 ? 'rgb(169,169,169)' : `rgb(${pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], diffDays)})`}
         >
           <TimeAgo date={car.saleDate} />
         </Span>

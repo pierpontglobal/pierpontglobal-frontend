@@ -8,6 +8,7 @@ import ProfileForm from '../../../ProfileForm/ProfileForm';
 import CreateCard from './Components/Modals/CreateCard';
 import './style.css';
 import { ApiServer } from '../../../../Defaults';
+import AddDeposit from './Components/Modals/AddDeposit';
 
 const headingStyle = {
   fontSize: '1em',
@@ -17,10 +18,6 @@ const headingStyle = {
   color: '#000000',
 };
 
-const iconStyle = {
-  fontSize: '1.125em',
-  color: '#727272',
-};
 export default class SettingSide extends React.Component {
   constructor(props) {
     super(props);
@@ -35,17 +32,20 @@ export default class SettingSide extends React.Component {
       card: '',
       loading: false,
       name: '',
+      funds: 0,
     };
     this.paymentMethods = this.paymentMethods.bind(this);
     this.removeCard = this.removeCard.bind(this);
     this.getDefaultPaymentMethod = this.getDefaultPaymentMethod.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
     this.getUser = this.getUser.bind(this);
+    this.getFunds = this.getFunds.bind(this);
   }
 
   componentDidMount() {
     this.paymentMethods();
     this.getUser();
+    this.getFunds();
   }
 
   onEditableClick() {
@@ -64,15 +64,33 @@ export default class SettingSide extends React.Component {
     });
   }
 
-  async removeCard(cardToken) {
+  async getFunds() {
     const config = {
       headers: {
         Authorization: `Bearer ${this.state.token}`,
       },
     };
 
-    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`, config);
-    window.location.reload();
+    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`, config)).data;
+    console.log(responseFunds);
+    this.setState({
+      funds: responseFunds,
+    });
+  }
+
+  async getUser() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${this.state.token}`,
+      },
+    };
+    const response_user = (await axios.get(`${ApiServer}/api/v1/user`, config)).data;
+    this.setState({
+      name: `${response_user.first_name} ${response_user.last_name}`,
+      address: `${response_user.address.primary_address} ${response_user.address.secondary_address}, ${response_user.address.zip_code}, ${response_user.address.city} ${response_user.address.country}`,
+      email: `${response_user.email}`,
+      phone: `${response_user.phone_number}`,
+    });
   }
 
   async paymentMethods() {
@@ -206,20 +224,15 @@ export default class SettingSide extends React.Component {
     window.location.reload();
   }
 
-  async getUser() {
+  async removeCard(cardToken) {
     const config = {
       headers: {
         Authorization: `Bearer ${this.state.token}`,
       },
     };
-    const response_user = (await axios.get(`${ApiServer}/api/v1/user`, config)).data;
-    console.log(response_user);
-    this.setState({
-      name: `${response_user.first_name} ${response_user.last_name}`,
-      address: `${response_user.address.primary_address} ${response_user.address.secondary_address}, ${response_user.address.zip_code}, ${response_user.address.city} ${response_user.address.country}`,
-      email: `${response_user.email}`,
-      phone: `${response_user.phone_number}`,
-    });
+
+    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`, config);
+    window.location.reload();
   }
 
   render() {
@@ -235,90 +248,90 @@ export default class SettingSide extends React.Component {
       onPhoneChange,
       card,
       loading,
+      funds,
     } = this.state;
 
     return (
       <div style={headingStyle}>
-        <UnderLine>
-          <h4 className="mb-0">Deposit</h4>
-        </UnderLine>
-        <div className="d-flex mb-3">
-          <DepositProgress amount={0} />
-          <button
-            type="button"
-            className="border-0 shadow"
-            style={{
-              backgroundColor: '#10b364',
-              color: '#ffffff',
-              borderRadius: '5px',
-              padding: '10px 30px',
-              cursor: 'pointer',
-            }}
-          >
-          ADD DEPOSIT
-          </button>
+        <div className="card shadow content-holder-box">
+          <UnderLine>
+            <h4 className="mb-0">Deposit</h4>
+          </UnderLine>
+          <div className="d-flex content-main">
+            <DepositProgress amount={funds} />
+            <AddDeposit cookies={this.props.cookies} />
+          </div>
         </div>
-        <UnderLine className="justify-content-between">
-          <h4 className="mb-0">Personal Info</h4>
-          <button
-            type="button"
-            style={{
-              backgroundColor: '#ffffff',
-              color: '#000000',
-              borderRadius: '5px',
-              padding: '10px 15px',
-              cursor: 'pointer',
-              fontSize: '12px',
-            }}
-            onClick={this.onOpenModal}
-          >
-            <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
-            {' '}
-            Modify profile information
-          </button>
-        </UnderLine>
-        <ProfileForm
-          editable={editable}
-          name={name}
-          address={address}
-          email={email}
-          phone={phone}
-          onNameChange={onNameChange}
-          onAddressChange={onAddressChange}
-          onEmailChange={onEmailChange}
-          onPhoneChange={onPhoneChange}
-        />
 
-        <UnderLine className="justify-content-between">
-          <h4 className="mb-0">Payment methods</h4>
-          <StripeProvider apiKey="pk_test_QLMa4OOqdKIkfcZYvlMvJMTJ">
-            <CreateCard cookies={this.props.cookies} />
-          </StripeProvider>
-        </UnderLine>
-        <h5>Cards</h5>
-        <div>
-          Default card
-          {' '}
-          <Dropdown
-            className="clean-button"
-            placeholder="Select the default card"
-            value={card}
-            selection
-            ref={node => (this.dropdown = node)}
-            options={this.state.cardsNumbers}
-            onChange={this.handleCardChange}
-          />
-          {' '}
-          <i
-            style={{
-              color: '#000000', float: 'rigth', fontSize: '14px', display: loading ? 'inline-block' : 'none',
-            }}
-            className="fas fa-spinner loading"
+        <div className="card shadow content-holder-box">
+          <UnderLine className="justify-content-between">
+            <h4 className="mb-0">Personal Info</h4>
+            <button
+              type="button"
+              style={{
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                borderRadius: '5px',
+                padding: '10px 15px',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+              onClick={this.onOpenModal}
+              className="border-0 shadow button_white"
+            >
+              <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
+              {' '}
+            Modify profile information
+            </button>
+          </UnderLine>
+          <ProfileForm
+            editable={editable}
+            name={name}
+            address={address}
+            email={email}
+            phone={phone}
+            onNameChange={onNameChange}
+            onAddressChange={onAddressChange}
+            onEmailChange={onEmailChange}
+            onPhoneChange={onPhoneChange}
           />
         </div>
-        <Card style={{ width: '100%' }}>
-          { this.state.paymentMethods }
-        </Card>
+
+
+        <div className="card shadow content-holder-box">
+          <UnderLine className="justify-content-between">
+            <h4 className="mb-0">Payment methods</h4>
+            <StripeProvider apiKey="pk_test_QLMa4OOqdKIkfcZYvlMvJMTJ">
+              <CreateCard cookies={this.props.cookies} />
+            </StripeProvider>
+          </UnderLine>
+          <div className="content-main">
+            <h5>Cards</h5>
+            <div>
+          Default card
+              {' '}
+              <Dropdown
+                className="clean-button"
+                placeholder="Select the default card"
+                value={card}
+                selection
+                ref={node => (this.dropdown = node)}
+                options={this.state.cardsNumbers}
+                onChange={this.handleCardChange}
+              />
+              {' '}
+              <i
+                style={{
+                  color: '#000000', float: 'rigth', fontSize: '14px', display: loading ? 'inline-block' : 'none',
+                }}
+                className="fas fa-spinner loading"
+              />
+            </div>
+            <Card style={{ width: '100%' }}>
+              { this.state.paymentMethods }
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }

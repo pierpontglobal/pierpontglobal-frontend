@@ -11,6 +11,7 @@ import AlertNotification from './Components/AlertNotification';
 import PurchaseSide from './PurchaseSide/PurchaseSide';
 import PendingSide from './PendingSide/PendingSide';
 import FinancialSide from './FinancialSide/FinancialSide';
+import TransactionsSide from './TransactionsSide/TransactionsSide';
 
 import './styles.css';
 
@@ -166,7 +167,6 @@ class ProfilePage extends React.Component {
 
 
     const subscriptionData = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`, config)).data;
-    console.log(subscriptionData);
     if (!subscriptionData.paid) {
       this.setState({
         notifications:
@@ -218,6 +218,17 @@ class ProfilePage extends React.Component {
   render() {
     return (
       <div>
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: '#dedede',
+        }}
+        />
         <DealerCreator cookies={this.props.cookies} show={!this.state.hasDealer} />
         <div className="pannel-container">
           <AccountPanel cookies={this.props.cookies} dealer={this.state.dealer || dealerExample} />
@@ -248,6 +259,7 @@ class ProfilePage extends React.Component {
                   />
                 )}
               />
+              <Route exact path="/user/transactions" render={() => (<TransactionsSide cookies={this.props.cookies} />)} />
             </Switch>
           </Router>
 

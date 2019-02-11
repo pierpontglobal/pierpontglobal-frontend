@@ -81,7 +81,7 @@ class UserDetails extends Component{
                     defaultValue={values.phonenumber}
                     />
                 </Form.Field>
-                <Button ref={(node) => this.submitButton = node} onClick={this.saveAndContinue}>Save and continue</Button>
+                <Button ref={(node) => this.submitButton = node} onClick={this.saveAndContinue}>Confirm and continue</Button>
             </Form>
         )
     }

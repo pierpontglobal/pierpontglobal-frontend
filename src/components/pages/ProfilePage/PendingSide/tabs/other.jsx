@@ -1,7 +1,6 @@
-import CarCard from '../../../CarCard/CarCard';
+// import CarCard from '../../../CarCard/CarCard';
 
 
+// <CarCard />
 
-<CarCard />
-
-export default Other;
+// export default Other;

@@ -43,6 +43,9 @@ export default class Modal extends React.Component {
       <div
         onClick={this.autoCloseModal}
         className={current}
+        style={{
+          zIndex: 2000,
+        }}
       >
         <section style={{ height: this.props.height }} className="d-flex my-modal-main">
           <div className="d-flex flex-column flex-fill">

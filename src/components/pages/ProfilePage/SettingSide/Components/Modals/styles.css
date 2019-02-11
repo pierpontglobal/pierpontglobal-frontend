@@ -73,3 +73,32 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  .input-single-amount {
+    border: gray solid 0.5px;
+    border-left: 0;
+    background-color: #10b3641f;
+    border-radius: 0 5px 5px 0;
+    width: 270px;
+    height: 41px;
+    text-align: end;
+    padding: 10px;
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  @-webkit-keyframes rotate {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to { 
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+.loading {
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.5s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function:  linear;
+}

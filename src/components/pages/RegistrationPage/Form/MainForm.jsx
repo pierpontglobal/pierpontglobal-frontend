@@ -1,190 +1,217 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import iplocation from 'iplocation';
+import ip from 'public-ip';
 import UserDetails from './UserDetails';
 import AddressDetails from './AddressDetails';
 import AccountDetails from './AccountDetails';
 import Success from './Success';
-import axios from 'axios';
 import { ApiServer } from '../../../../Defaults';
 
 const qs = require('query-string');
 
 class MainForm extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.state = {
+      status: 'loading',
+      username: '',
+      step: 1,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phonenumber: '',
+      age: '',
+      city: '',
+      country: '',
+      zipcode: '',
+      address1: '',
+      address2: '',
+      password1: '',
+      password2: '',
+    };
+    this.changeEmail = this.changeEmail.bind(this);
+    this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+    this.setInformation = this.setInformation.bind(this);
+    this.setCountry = this.setCountry.bind(this);
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.sendRequest = this.sendRequest.bind(this);
+    this.setInformation();
 
-        this.state = {
-            status: 'loading',
-            username: '',
-            step: 1,
-            firstName: '',
-            lastName: '',
-            email: '',
-            phonenumber: '',
-            age: '',
-            city: '',
-            country: '', 
-            zipcode: '',
-            address1: '',
-            address2: '',
-            password1: '',
-            password2: ''
-        }
-        this.changeEmail = this.changeEmail.bind(this);
-        this.params = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
-        this.setInformation = this.setInformation.bind(this);
-        this.setCountry = this.setCountry.bind(this);
-        this.handleChangePassword = this.handleChangePassword.bind(this);
-        this.sendRequest = this.sendRequest.bind(this);
-        this.setInformation()
-    }
 
-    async handleChangePassword(node, ik){
-        if (ik === 1) {
-            await this.setState({
-                password1: node
-            });
-        } else {
-            await this.setState({
-                password2: node
-            })
-        }
-        if (this.state.password1 === this.state.password2) {
-            return true
-        }
-        return false
-    }
-
-    setCountry(value){
-        console.log(value);
+    (async () => {
+      iplocation(await ip.v4(), [], (error, res) => {
         this.setState({
-            country: value
-        })
-    }
-    
-    async setInformation(){
-        if (!this.params.token){
-            return false;
-        }
-        let response = await axios.get(`${ApiServer}/api/v1/user/subscription?token=${this.params.token}`)
-        if (response) {
-            try {
-                this.setState({
-                    firstName: response.data.first_name,
-                    lastName: response.data.last_name,
-                    email: response.data.email,
-                    phonenumber: response.data.phone_number
-                });
-            } catch (e) {
-            }
-        }
-    }
+          country: res.country,
+          city: res.city,
+          zipcode: res.postal,
+        });
+      });
+    })();
+  }
 
-    nextStep = () => {
-        const { step } = this.state
+  async handleChangePassword(node, ik) {
+    if (ik === 1) {
+      await this.setState({
+        password1: node,
+      });
+    } else {
+      await this.setState({
+        password2: node,
+      });
+    }
+    if (this.state.password1 === this.state.password2) {
+      return true;
+    }
+    return false;
+  }
+
+  setCountry(value) {
+    console.log(value);
+    this.setState({
+      country: value,
+    });
+  }
+
+  async setInformation() {
+    if (!this.params.token) {
+      return false;
+    }
+    const response = await axios.get(`${ApiServer}/api/v1/user/subscription?token=${this.params.token}`);
+    if (response) {
+      try {
         this.setState({
-            step : step + 1
-        })
+          firstName: response.data.first_name,
+          lastName: response.data.last_name,
+          email: response.data.email,
+          phonenumber: response.data.phone_number,
+        });
+      } catch (e) {
+      }
     }
+  }
 
-    prevStep = () => {
-        const { step } = this.state
-        this.setState({
-            step : step - 1,
-            status: 'loading',
-        })
-    }
+  nextStep = () => {
+    const { step } = this.state
+    this.setState({
+        step : step + 1
+    });
+  }
 
-    handleChange = input => event => {
-        this.setState({ [input] : event.target.value })
-    }
+  prevStep = () => {
+    const { step } = this.state
+    this.setState({
+      step : step - 1,
+      status: 'loading',
+    });
+  }
 
-    changeEmail(value) {
-        this.setState({ email: value })
-    }
+  handleChange = input => event => {
+    this.setState({ [input] : event.target.value })
+  }
 
-    async sendRequest(){
-        this.nextStep();
+  changeEmail(value) {
+    this.setState({ email: value });
+  }
 
-        const {username,
-        firstName,
-        lastName,
-        email,
-        phonenumber,
+  async sendRequest() {
+    this.nextStep();
+
+    const {
+      username,
+      firstName,
+      lastName,
+      email,
+      phonenumber,
+      city,
+      country,
+      zipcode,
+      address1,
+      address2,
+      password1,
+    } = this.state;
+
+    const data = {
+      email,
+      password: password1,
+      username,
+      phone_number: phonenumber,
+      first_name: firstName,
+      last_name: lastName,
+      address: {
+        country,
         city,
-        country, 
-        zipcode,
-        address1,
-        address2,
-        password1} = this.state
-
-        let data = {
-            email: email,
-            password: password1,
-            username: username,
-            phone_number: phonenumber,
-            first_name: firstName,
-            last_name: lastName,
-            address: {
-                country: country,
-                city: city,
-                zip_code: zipcode,
-                primary_address: address1,
-                secondary_address: address2,
-            }
-        }
-        try {
-            let response = await axios.post(`${ApiServer}/api/v1/users`, data);
-            if (response.status === 200) {
-                this.setState({
-                    status: 'success',
-                })
-            }
-            console.log(response);
-        } catch (e) {
-            console.log(e);
-            this.setState({
-                status: 'error',
-            })
-        }
+        zip_code: zipcode,
+        primary_address: address1,
+        secondary_address: address2,
+      },
+    };
+    try {
+      const response = await axios.post(`${ApiServer}/api/v1/users`, data);
+      if (response.status === 200) {
+        this.setState({
+          status: 'success',
+        });
+      }
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+      this.setState({
+        status: 'error',
+      });
     }
+  }
 
-    render(){
-        const {step} = this.state;
-        const { status } = this.state;
-        const { username, firstName, lastName, email, phonenumber, city, country, zipcode, address1, address2 } = this.state;
-        const values = { username, firstName, lastName, email, phonenumber, city, country, zipcode, address1, address2 };
-        switch(step) {
-        default:
-            return <UserDetails 
-                    nextStep={this.nextStep} 
-                    handleChange = {this.handleChange}
-                    values={values}
-                    changeEmail = {this.changeEmail}
-                    />
-        case 2:
-            return <AddressDetails 
-                    nextStep={this.nextStep}
-                    prevStep={this.prevStep}
-                    handleChange = {this.handleChange}
-                    values={values}
-                    setCountry = {this.setCountry}
-                    />
-        case 3:
-            return <AccountDetails 
-                    nextStep={this.nextStep}
-                    prevStep={this.prevStep}
-                    handleChange = {this.handleChange}
-                    values={values}
-                    sendRequest={this.sendRequest}
-                    handleChangePassword={this.handleChangePassword}
-                    />
-        case 4:
-            return <Success
-                    prevStep={this.prevStep}
-                    loading={status} />
-        }
+  render() {
+    const { step } = this.state;
+    const { status } = this.state;
+    const {
+      username, firstName, lastName, email, phonenumber, city, country, zipcode, address1, address2,
+    } = this.state;
+    const values = {
+      username, firstName, lastName, email, phonenumber, city, country, zipcode, address1, address2,
+    };
+    switch (step) {
+      default:
+        return (
+          <UserDetails
+            nextStep={this.nextStep}
+            handleChange={this.handleChange}
+            values={values}
+            changeEmail={this.changeEmail}
+          />
+        );
+      case 2:
+        return (
+          <AddressDetails
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            handleChange={this.handleChange}
+            values={values}
+            setCountry={this.setCountry}
+          />
+        );
+      case 3:
+        return (
+          <AccountDetails
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            handleChange={this.handleChange}
+            values={values}
+            sendRequest={this.sendRequest}
+            handleChangePassword={this.handleChangePassword}
+          />
+        );
+      case 4:
+        return (
+          <Success
+            prevStep={this.prevStep}
+            loading={status}
+          />
+        );
     }
+  }
 }
 
 export default MainForm;

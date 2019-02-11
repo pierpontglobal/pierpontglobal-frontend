@@ -39,6 +39,9 @@ class AccountFields extends React.Component {
 
   async saveAndContinue() {
     this.props.nextButton();
+    const { fieldValues } = this.props;
+    fieldValues.email = this.email.value;
+
     const data = {
       first_name: this.firstName.value,
       last_name: this.lastName.value,
@@ -46,7 +49,6 @@ class AccountFields extends React.Component {
       phone_number: this.phone.value,
     };
     const response = await axios.post(`${ApiServer}/api/v1/user/subscription`, data);
-    console.log(response.data);
     this.props.loadinStop();
     return false;
   }
@@ -220,7 +222,10 @@ class AccountFields extends React.Component {
 
           <p style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
             *We don’t share your personal info with anyone. Check out our
-            Privacy Policy for more information
+            {' '}
+            <a style={{ color: this.props.textColor, textDecoration: 'none', borderBottom: `2px dotted ${this.props.textColor}` }} href="https://www.iubenda.com/privacy-policy/24475288" className="iubenda-nostyle no-brand iubenda-embed" title="Privacy Policy ">Privacy Policy</a>
+            {' '}
+            for more information
           </p>
         </form>
       </div>

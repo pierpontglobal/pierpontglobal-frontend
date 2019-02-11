@@ -131,44 +131,26 @@ class SubscriptionSide extends React.Component {
     if (this.state.subscription === 'available') {
       return (
         <div style={{ padding: '20px 40px' }}>
-          <Card style={{ width: '100%' }}>
+          <div className="card shadow content-holder-box" style={{ width: '100%' }}>
             <UnderLine>
               <h4 className="mb-0">Plan</h4>
             </UnderLine>
-            <div style={{ margin: '0 20px 20px 20px' }}>
+            <div style={{ flexDirection: 'column' }} className="d-flex content-main">
               <SubscriptionCard planName={planName} endDate={endDate} />
             </div>
-          </Card>
-          <Card style={{ width: '100%' }}>
+          </div>
+          <div className="card shadow content-holder-box" style={{ width: '100%' }}>
             <UnderLine>
               <h4 className="mb-0">Billing and payment information</h4>
             </UnderLine>
-            <div style={{ margin: '0 20px 20px 20px' }}>
+            <div style={{ flexDirection: 'column' }} className="d-flex content-main">
             Selected payment method
-              {' '}
-              <button
-                type="button"
-                className="border-0"
-                style={{
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                }}
-                onClick={() => { window.location.href = '/user'; }}
-              >
-                <i
-                  style={{
-                    color: 'rgb(59, 68, 75)',
-                    fontSize: '12px',
-                  }}
-                  className="fas fa-pen"
-                />
-              </button>
               <div>
                 { paymentMethodsView }
               </div>
             </div>
-          </Card>
-          <Card style={{ width: '100%' }}>
+          </div>
+          <div className="card shadow content-holder-box" style={{ width: '100%' }}>
             <UnderLine>
               <h4 className="mb-0">
               Payment history
@@ -176,8 +158,10 @@ class SubscriptionSide extends React.Component {
               Pending invoices
               </h4>
             </UnderLine>
-            { paymentsHistory || pendingInvoices ? <PaymentHistory token={token} paymentsHistory={paymentsHistory} pendingInvoices={pendingInvoices} /> : <div />}
-          </Card>
+            <div style={{ flexDirection: 'column' }} className="d-flex content-main">
+              { paymentsHistory || pendingInvoices ? <PaymentHistory token={token} paymentsHistory={paymentsHistory} pendingInvoices={pendingInvoices} /> : <div />}
+            </div>
+          </div>
         </div>
       );
     }

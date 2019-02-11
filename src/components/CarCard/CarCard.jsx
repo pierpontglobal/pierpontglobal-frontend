@@ -9,10 +9,11 @@ import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function pickHex(color1, color2, color3, weight) {
+function pickHex(color1, color2, color3, weightRaw) {
+  const weight = weightRaw > 5 ? 5 : weightRaw;
   if (weight == null) {
     return [169, 169, 169];
   } if (weight === 2.5) {
@@ -33,7 +34,7 @@ function pickHex(color1, color2, color3, weight) {
   return rgb;
 }
 
-function CarCard({ key, car }) {
+function CarCard({ key, car, requestFuntion }) {
   const {
     vin,
     odometer,
@@ -42,6 +43,8 @@ function CarCard({ key, car }) {
     images,
     saleDate,
     cr,
+    crUrl,
+    wholePrice,
   } = car;
 
   const diference = saleDate - new Date();
@@ -53,7 +56,7 @@ function CarCard({ key, car }) {
         cursor: 'pointer',
       }}
       key={key}
-      className="d-flex flex-row mb-3 pr-3 pl-2 pl-md-0"
+      className="d-flex flex-row mb-3 pr-3 pl-2 pl-md-0 carCard"
       backgroundColor="#fafafa"
       maxHeight="120px"
       boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
@@ -111,7 +114,7 @@ function CarCard({ key, car }) {
           score={cr}
           className="w-100 mb-2"
         />
-        <AutoCheckBtn className="w-100 py-1 mt-1" />
+        <AutoCheckBtn crUrl={crUrl} className="w-100 py-1 mt-1" />
       </Container>
       <Container className="py-1 py-3 w-auto ml-md-auto">
         <Text
@@ -126,7 +129,9 @@ function CarCard({ key, car }) {
           <TimeAgo date={saleDate} />
         </Text>
         <PriceTag
-          price="Not available price"
+          price={wholePrice}
+          vin={vin}
+          requestFuntion={requestFuntion}
           className="text-right mb-0"
         />
       </Container>
