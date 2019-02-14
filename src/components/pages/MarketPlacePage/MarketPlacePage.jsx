@@ -57,6 +57,7 @@ class MarketPlacePage extends React.Component {
 
       let str = '';
 
+      this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
       for (const key in this.params) {
         if (this.params[key] !== '' && key !== 'page') {
           str += `&${key}=${encodeURIComponent(this.params[key])}`;
@@ -167,7 +168,13 @@ class MarketPlacePage extends React.Component {
               className="ml-auto d-none d-lg-flex mr-3 w-100"
               style={{ maxWidth: '260px' }}
             >
-              { loaded ? <FilterPanel availableArguments={this.state.availableArguments} params={this.params} /> : <div />}
+              { loaded ? (
+                <FilterPanel
+                  getCars={this.getCars}
+                  availableArguments={this.state.availableArguments}
+                  params={this.params}
+                />
+              ) : <div />}
             </div>
             <div
               className="mr-auto ml-md-auto ml-lg-0 w-100"

@@ -3,6 +3,16 @@ import {Collapse} from 'reactstrap';
 import Text from '../../styles/Text/Text';
 import Icon from '../../styles/Icon/Icon';
 import Container from '../../styles/Container/Container';
+import posed from 'react-pose';
+
+const RotatableIcon = posed.i({
+    retracted: {
+      rotate: 0,
+    },
+    expanded: {
+      rotate: 180,
+    },
+  });
 
 export default class Item extends React.Component {
     constructor(props) {
@@ -16,8 +26,7 @@ export default class Item extends React.Component {
     render() {
         const { name, children } = this.props;
         const { toggle } = this.state;
-        const up = <i style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-caret-up"></i>;
-        const down = <i style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-caret-down"></i>;
+        const arrow = <RotatableIcon pose={toggle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down"/>;
 
         return (
             <Container
@@ -40,7 +49,7 @@ export default class Item extends React.Component {
                     >
                     <span>{name}</span>
                     </div>
-                        {toggle ? up : down}
+                        {toggle ? arrow : arrow}
                 </div>
                 <Collapse isOpen={toggle}>
                     {children}
