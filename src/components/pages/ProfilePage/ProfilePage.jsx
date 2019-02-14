@@ -67,7 +67,7 @@ const bids = {
   key: '12343ABCDEFG',
   orderNumber: '12231232112',
   bid: 2000,
-  date: '10/01/2020',
+  date: '03/11/2019',
   carTitle: 'Example',
 };
 
@@ -246,7 +246,7 @@ class ProfilePage extends React.Component {
           <Router>
             <Switch>
               <Route exact path="/user" render={() => (<SettingSide cookies={this.props.cookies} />)} />
-              <Route exact path="/user/purchase" render={() => (<PurchaseSide bids={[bids]} purchases={[purchases]} cookies={this.props.cookies} />)} />
+              <Route exact path="/user/purchase" render={() => (<PurchaseSide purchases={[purchases]} cookies={this.props.cookies} />)} />
               <Route exact path="/user/pending" render={() => (<PendingSide cookies={this.props.cookies} />)} />
               <Route exact path="/user/financial" render={() => (<FinancialSide cookies={this.props.cookies} />)} />
               <Route
