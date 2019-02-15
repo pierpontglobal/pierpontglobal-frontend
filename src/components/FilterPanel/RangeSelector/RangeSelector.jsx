@@ -105,7 +105,6 @@ class RangeSelector extends React.Component {
       console.log(this.state.items);
       const itemsNumber = nextProps.items.length;
       const indicatorWidth = this.state.width / (itemsNumber + 1);
-      alert('test');
 
       this.setState({
         items: nextProps.items,

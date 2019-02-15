@@ -64,10 +64,37 @@
 .button_white {
     background-color: white;
     transition: 0.5s;
+    position: relative;
 }
 
 .button_white:hover {
     background-color: #fafafa !important
+}
+
+.button_white:disabled {
+    background-color: #f3f0f0 !important;
+    cursor: not-allowed !important;
+}
+
+.button_white:disabled:hover::after {
+    content: attr(data-disabled-text);
+    position: absolute;
+    top: 0;
+    width: max-content;
+    /* Firefox */
+    right: -moz-calc(100% + 20px);
+    /* WebKit */
+    right: -webkit-calc(100% + 20px);
+    /* Opera */
+    right: -o-calc(100% + 20px);
+    /* Standard */
+    right: calc(100% + 20px);
+    bottom: 0;
+    font-size: 12px;
+    margin: auto 0;
+    padding: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    
 }
 
 .green_button {
