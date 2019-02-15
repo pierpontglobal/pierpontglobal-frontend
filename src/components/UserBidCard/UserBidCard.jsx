@@ -3,6 +3,11 @@ import Btn from '../Btn/Btn';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 function UserBidCard({ bid }) {
   return (
     <Container
@@ -19,7 +24,7 @@ function UserBidCard({ bid }) {
           lineHeight={1.33}
           fontColor="#10b364"
         >
-                    Your bid:
+          Your bid:
         </Text>
         <Text
           className="mb-0"
@@ -27,7 +32,7 @@ function UserBidCard({ bid }) {
           fontWeight="100"
           lineHeight={1.33}
         >
-          {`$${bid.toFixed(2)}`}
+          {`$${numberWithCommas(bid.toFixed(2))}`}
         </Text>
       </div>
       <Btn
@@ -37,7 +42,7 @@ function UserBidCard({ bid }) {
         maxWidth="260px"
         onClick={() => (window.location.href = '/user/purchase')}
       >
-                VIEW ALL YOUR OPEN BIDS
+        VIEW ALL YOUR OPEN BIDS
       </Btn>
     </Container>
   );

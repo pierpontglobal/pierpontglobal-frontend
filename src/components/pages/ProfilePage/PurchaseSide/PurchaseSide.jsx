@@ -27,7 +27,8 @@ function bidFormatter(bid) {
     orderNumber: `${bid.bid_collector_id}B${bid.id}A${bid.car_id}`,
     bid: parseFloat(bid.amount),
     date: bid.auction_start_date,
-    carTitle: `${bid.year} ${bid.car_maker} ${bid.car_model} ${bid.trim}`,
+    carTitle: `${bid.year ? bid.year : ''} ${bid.car_maker ? bid.car_maker : ''} ${bid.car_model ? bid.car_model : ''} ${bid.trim ? bid.trim : ''}`,
+    data: bid,
   };
   return formattedBid;
 }
@@ -43,7 +44,6 @@ function parseBids(bids) {
 
 async function retrieveActiveBids() {
   const bidsResponse = (await axios.get(`${ApiServer}/api/v1/user/bids`)).data;
-  console.log(bidsResponse);
   return bidsResponse;
 }
 
@@ -80,13 +80,15 @@ class PurchaseSide extends React.Component {
           </div>
           <hr style={{ margin: 0 }} />
           <div className="content-main card">
-            {bids.map(bid => (
+            {bids.sort((a, b) => new Date(b.date) - new Date(a.date)).map(bid => (
               <BidCard
+                vin={bid.key}
                 key={bid.orderNumber}
                 auctionDate={bid.date}
                 bid={bid.bid.toFixed(2)}
                 orderNumber={bid.orderNumber}
                 carTitle={bid.carTitle}
+                data={bid.data}
               />
             ))}
           </div>
