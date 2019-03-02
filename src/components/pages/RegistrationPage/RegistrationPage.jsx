@@ -12,7 +12,6 @@ class RegistrationPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav openModal={this.openModal} notSearchable cookies={this.props.cookies} />
 
         <div className="registration-bg">
           <div className="container-2">

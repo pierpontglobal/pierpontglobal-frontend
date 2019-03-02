@@ -7,7 +7,7 @@ import DepositProgress from '../../../DepositProgress/DepositProgress';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
 import CreateCard from './Components/Modals/CreateCard';
 import './style.css';
-import { ApiServer } from '../../../../Defaults';
+import { ApiServer, StripeKey } from '../../../../Defaults';
 import AddDeposit from './Components/Modals/AddDeposit';
 
 const headingStyle = {
@@ -22,13 +22,10 @@ export default class SettingSide extends React.Component {
   constructor(props) {
     super(props);
 
-    const { cookies, user } = props;
-
     this.state = {
       editable: false,
       paymentMethods: [],
       cardsNumbers: [],
-      token: cookies.get('token'),
       card: '',
       loading: false,
       name: '',
@@ -53,43 +50,26 @@ export default class SettingSide extends React.Component {
   }
 
   async getDefaultPaymentMethod() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-    const response = await axios.get(`${ApiServer}/api/v1/user/cards/default`, config);
+    const response = await axios.get(`${ApiServer}/api/v1/user/cards/default`);
     this.setState({
       card: response.data,
     });
   }
 
   async getFunds() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`, config)).data;
-    console.log(responseFunds);
+    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`)).data;
     this.setState({
       funds: responseFunds,
     });
   }
 
   async getUser() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-    const response_user = (await axios.get(`${ApiServer}/api/v1/user`, config)).data;
+    const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
     this.setState({
-      name: `${response_user.first_name} ${response_user.last_name}`,
-      address: `${response_user.address.primary_address} ${response_user.address.secondary_address}, ${response_user.address.zip_code}, ${response_user.address.city} ${response_user.address.country}`,
-      email: `${response_user.email}`,
-      phone: `${response_user.phone_number}`,
+      name: `${responseUser.first_name} ${responseUser.last_name}`,
+      address: `${responseUser.address.primary_address} ${responseUser.address.secondary_address}, ${responseUser.address.zip_code}, ${responseUser.address.city} ${responseUser.address.country}`,
+      email: `${responseUser.email}`,
+      phone: `${responseUser.phone_number}`,
     });
   }
 
@@ -97,13 +77,7 @@ export default class SettingSide extends React.Component {
     const methods = [];
     const cardsNumbers = [];
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    const response = (await axios.get(`${ApiServer}/api/v1/user/cards`, config)).data;
+    const response = (await axios.get(`${ApiServer}/api/v1/user/cards`)).data;
     for (let i = 0; i < response.length; i += 1) {
       const card = response[i];
 
@@ -214,24 +188,12 @@ export default class SettingSide extends React.Component {
       loading: true,
     });
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: value }, config);
+    axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: value });
     window.location.reload();
   }
 
   async removeCard(cardToken) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`, config);
+    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`);
     window.location.reload();
   }
 
@@ -301,7 +263,7 @@ export default class SettingSide extends React.Component {
         <div className="card shadow content-holder-box">
           <UnderLine className="justify-content-between">
             <h4 className="mb-0">Payment methods</h4>
-            <StripeProvider apiKey="pk_test_QLMa4OOqdKIkfcZYvlMvJMTJ">
+            <StripeProvider apiKey={StripeKey}>
               <CreateCard cookies={this.props.cookies} />
             </StripeProvider>
           </UnderLine>

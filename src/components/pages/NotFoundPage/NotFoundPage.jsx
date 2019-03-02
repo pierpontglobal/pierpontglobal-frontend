@@ -31,7 +31,6 @@ class NotFoundPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav notSearchable cookies={this.props.cookies} />
         <FlyDownDiv pose={this.state.textPlace} className="center-holder">
           <span className="big-text">404</span>
           <div>

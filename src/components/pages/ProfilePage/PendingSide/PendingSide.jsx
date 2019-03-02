@@ -43,7 +43,7 @@ class PendingSide extends React.Component {
             <DivTabs pose={this.state.textPlace} className="center-holder">
               <span className="big-text">Pending</span>
               <div>
-                  These are the pendings you have
+                  These are the pending you have
               </div>
               <Tabs
                   value={tabValue}

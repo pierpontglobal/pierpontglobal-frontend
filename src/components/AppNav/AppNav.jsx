@@ -5,9 +5,8 @@ import BurgerBtn from './BurgerBtn/BurgerBtn';
 import ProfileBtn from './ProfileBtn/ProfileBtn';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import ProfileDrawer from './ProfileDrawer/ProfileDrawer';
-import AccountMAnager from '../support/AccountManager';
+import AccountManager from '../support/AccountManager';
 import './styles.css';
-
 
 const style = {
   backgroundColor: '#fafafa',
@@ -75,19 +74,25 @@ export default class AppNav extends React.Component {
             <LinkBtn>Contact&nbsp;Us</LinkBtn>
           </div>
           <div className="menu" id="nav-bar-menu">
-            <img
+            <button
+              type="button"
+              className="border-0"
+              style={{ background: 'transparent' }}
               onClick={() => { window.location.href = '/'; }}
-              style={{
-                height: '40px',
-                cursor: 'pointer',
-              }}
-              className="logo"
-              src="/logos/Logo 1 - Blue.png"
-              alt="PierpontGlobal"
-            />
+            >
+              <img
+                style={{
+                  height: '40px',
+                  cursor: 'pointer',
+                }}
+                className="logo"
+                src="/logos/Logo 1 - Blue.png"
+                alt="PierpontGlobal"
+              />
+            </button>
             <div style={{ display: 'flex' }}>
               <span style={{ marginRight: '10px' }}>
-                <AccountMAnager cookies={this.props.cookies} />
+                <AccountManager cookies={this.props.cookies} />
               </span>
             </div>
           </div>

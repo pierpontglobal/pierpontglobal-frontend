@@ -25,11 +25,8 @@ class LandingPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav cookies={this.props.cookies} openModal={this.openModal} notSearchable />
         <VideoBar />
-
         <Registration textColor="#ffffff" height="500px" backgroundColor="#9aa7b5" openModal={this.openModal} />
-
         <div style={{
           width: '100%',
           height: '384px',
@@ -57,11 +54,11 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            Endorsed by the best
+            Featuring Inventory from Manheim
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
-            Pierpont Global is a licensed partner of Manheim and Cox Automitive Inc.
+            Pierpont Global is a licensed partner of Manheim and Cox Automotive Inc.
           </p>
         </div>
 
@@ -104,7 +101,7 @@ class LandingPage extends React.Component {
             <div style={{ marginBottom: '30px' }} className="card-info">
               <img alt="Map pin icon" src={pin} className="landing-page-icon" />
               <p className="subtitle-medium">Delivery</p>
-              <p className="subtitle-follow-up">We handle the process of delivering the vehicles from the auction to your neary port, while giving you tracking updates along the way. We will get you the best ground transport rates, shipping rates, as well as import customs and tax rates. With all invoices provided in real time.</p>
+              <p className="subtitle-follow-up">We handle the process of delivering the vehicles from the auction to your near port, while giving you tracking updates along the way. We will get you the best ground transport rates, shipping rates, as well as import customs and tax rates. With all invoices provided in real time.</p>
             </div>
           </div>
 

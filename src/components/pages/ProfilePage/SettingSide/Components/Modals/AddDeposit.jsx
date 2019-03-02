@@ -111,7 +111,7 @@ class AddDeposit extends React.Component {
                 </h3>
                 <hr />
                 <p style={{ marginTop: '20px' }}>
-                Verify your default payment method and try again. You can also contact the technical support representaive! Just click the Whatsapp pluggin in the corner.
+                Verify your default payment method and try again. You can also contact the technical support representative! Just click the WhatsApp plugin in the corner.
                 </p>
               </div>
             </Modal>
@@ -147,7 +147,7 @@ class AddDeposit extends React.Component {
                 <h3 style={{ color: '#10b364' }}>
                   <i style={{ color: '#10b364' }} className="fas fa-check" />
                   {' '}
-                  Transaction successfull.
+                  Transaction successful.
                 </h3>
                 <hr />
                 <p style={{ marginTop: '20px' }}>

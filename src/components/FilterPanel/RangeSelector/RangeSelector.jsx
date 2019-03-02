@@ -97,6 +97,7 @@ class RangeSelector extends React.Component {
 
   componentDidMount() {
     // this.setInitialMinMax(this.props.selectedYears);
+
   }
 
   componentWillReceiveProps(nextProps) {

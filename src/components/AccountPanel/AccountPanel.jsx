@@ -5,14 +5,13 @@ import FundTab from './FundTab/FundTab';
 import Container from '../styles/Container/Container';
 import axios from 'axios';
 import { ApiServer } from '../../Defaults';
+import { withCookies } from 'react-cookie';
 
-export default class AccountPanel extends React.Component {
+class AccountPanel extends React.Component {
     constructor(props) {
         super(props);
-        const { cookies } = props;
         this.state = {
             selected: '',
-            token: cookies.get('token'),
             funds: 0
         }
 
@@ -23,12 +22,7 @@ export default class AccountPanel extends React.Component {
     markSelected = (selected) => this.setState({selected});
 
     async signOut() {
-        let config = {
-          headers: {
-            Authorization: `Bearer ${this.state.token}`,
-          }
-        }
-        await axios.post(`${ApiServer}/api/v1/user/invalidate`, {}, config)
+        await axios.post(`${ApiServer}/api/v1/user/invalidate`, {})
         this.props.cookies.remove('token')
         window.location.href = "/";
     }
@@ -38,13 +32,8 @@ export default class AccountPanel extends React.Component {
     }
 
   async getFunds() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
 
-    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`, config)).data;
+    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`)).data;
     this.setState({
       funds: responseFunds.balance,
     });
@@ -119,3 +108,5 @@ export default class AccountPanel extends React.Component {
         );
     }
 }
+
+export default withCookies(AccountPanel)

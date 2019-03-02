@@ -13,3 +13,7 @@
     -webkit-animation-iteration-count:  infinite;
     -webkit-animation-timing-function:  linear;
 }
+
+.wrong-cre {
+  border: 1px solid #ca0000 !important
+}

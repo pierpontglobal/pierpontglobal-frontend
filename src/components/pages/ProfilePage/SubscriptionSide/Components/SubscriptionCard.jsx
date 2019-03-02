@@ -11,7 +11,7 @@ function SubscriptionCard({ planName, endDate }) {
         </div>
         <div className="subscription-details">
           <h2 style={{ fontWeight: '200' }}>{ planName }</h2>
-          <h6>Sold by: PierpontGlobal, LLC</h6>
+          <h6 />
           <h6>
               Valid until:
             {' '}
