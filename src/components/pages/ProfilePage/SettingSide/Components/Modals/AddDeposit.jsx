@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-responsive-modal';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { ApiServer } from '../../../../../../Defaults';
 
 class AddDeposit extends React.Component {
@@ -33,7 +34,6 @@ class AddDeposit extends React.Component {
   }
 
   async sendDeposit(node) {
-    console.log(node);
     node.target.disabled = true;
     node.target.style.backgroundColor = 'gray';
     node.target.classList.remove('green_button');
@@ -111,7 +111,9 @@ class AddDeposit extends React.Component {
                 </h3>
                 <hr />
                 <p style={{ marginTop: '20px' }}>
-                Verify your default payment method and try again. You can also contact the technical support representative! Just click the WhatsApp plugin in the corner.
+                Verify your default payment method and try again. Y
+                ou can also contact the technical support representative
+                ! Just click the WhatsApp plugin in the corner.
                 </p>
               </div>
             </Modal>
@@ -182,7 +184,6 @@ class AddDeposit extends React.Component {
                     cursor: 'pointer',
                     fontSize: '12px',
                   }}
-                  onClick={this.onOpenModal}
                   className="border-0 shadow button_white"
                   onClick={() => { window.location.href = '/user/transactions'; }}
                 >
@@ -280,7 +281,7 @@ class AddDeposit extends React.Component {
                       min="0.01"
                       step="0.01"
                       placeholder="Deposit amount"
-                      ref={node => (this.amount = node)}
+                      ref={(node) => { this.amount = node; }}
                     />
                   </div>
                   <button
@@ -309,5 +310,13 @@ class AddDeposit extends React.Component {
     }
   }
 }
+
+AddDeposit.propTypes = {
+  cookies: PropTypes.object,
+};
+
+AddDeposit.defaultProps = {
+  cookies: {},
+};
 
 export default AddDeposit;

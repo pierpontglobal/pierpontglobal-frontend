@@ -49,7 +49,7 @@ class AddressDetails extends Component {
           <label>City</label>
           <input
             placeholder="City"
-            onChange={this.props.handleChange('city')}
+            onChange={node => this.props.handleChange('city', node)}
             defaultValue={values.city}
           />
         </Form.Field>
@@ -57,7 +57,7 @@ class AddressDetails extends Component {
           <label>Zip Code</label>
           <input
             placeholder="Zip code"
-            onChange={this.props.handleChange('zipcode')}
+            onChange={node => this.props.handleChange('zipcode', node)}
             defaultValue={values.zipcode}
           />
         </Form.Field>
@@ -65,7 +65,7 @@ class AddressDetails extends Component {
           <label>Primary Address</label>
           <input
             placeholder="Primary address"
-            onChange={this.props.handleChange('address1')}
+            onChange={node => this.props.handleChange('address1', node)}
             defaultValue={values.address1}
           />
         </Form.Field>
@@ -73,7 +73,7 @@ class AddressDetails extends Component {
           <label>Secondary Address (Optional)</label>
           <input
             placeholder="Secondary address"
-            onChange={this.props.handleChange('address2')}
+            onChange={node => this.props.handleChange('address2', node)}
             defaultValue={values.address2}
           />
         </Form.Field>

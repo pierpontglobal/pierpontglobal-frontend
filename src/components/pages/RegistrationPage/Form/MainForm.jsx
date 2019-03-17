@@ -36,7 +36,10 @@ class MainForm extends Component {
     this.setInformation = this.setInformation.bind(this);
     this.setCountry = this.setCountry.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
+    this.nextStep = this.nextStep.bind(this);
+    this.prevStep = this.prevStep.bind(this);
     this.setInformation();
 
 
@@ -51,24 +54,7 @@ class MainForm extends Component {
     })();
   }
 
-  async handleChangePassword(node, ik) {
-    if (ik === 1) {
-      await this.setState({
-        password1: node,
-      });
-    } else {
-      await this.setState({
-        password2: node,
-      });
-    }
-    if (this.state.password1 === this.state.password2) {
-      return true;
-    }
-    return false;
-  }
-
   setCountry(value) {
-    console.log(value);
     this.setState({
       country: value,
     });
@@ -88,27 +74,45 @@ class MainForm extends Component {
           phonenumber: response.data.phone_number,
         });
       } catch (e) {
+        // Test
       }
     }
+    return true;
   }
 
-  nextStep = () => {
-    const { step } = this.state
+  async handleChangePassword(node, ik) {
+    if (ik === 1) {
+      await this.setState({
+        password1: node,
+      });
+    } else {
+      await this.setState({
+        password2: node,
+      });
+    }
+    if (this.state.password1 === this.state.password2) {
+      return true;
+    }
+    return false;
+  }
+
+  nextStep() {
+    const { step } = this.state;
     this.setState({
-        step : step + 1
+      step: step + 1,
     });
   }
 
-  prevStep = () => {
-    const { step } = this.state
+  prevStep() {
+    const { step } = this.state;
     this.setState({
-      step : step - 1,
+      step: step - 1,
       status: 'loading',
     });
   }
 
-  handleChange = input => event => {
-    this.setState({ [input] : event.target.value })
+  handleChange(input, event) {
+    this.setState({ [input]: event.target.value });
   }
 
   changeEmail(value) {

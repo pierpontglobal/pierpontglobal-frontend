@@ -19,6 +19,9 @@ function reOrganize(items) {
 }
 
 function getMaxCount(items) {
+  if (items[0] === undefined) {
+    return 0;
+  }
   let biggerNumber = items[0].doc_count;
   for (let i = 0; i < items.length; i += 1) {
     biggerNumber = biggerNumber > items[i].doc_count ? biggerNumber : items[i].doc_count;

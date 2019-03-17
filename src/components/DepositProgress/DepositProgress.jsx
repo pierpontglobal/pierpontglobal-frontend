@@ -1,5 +1,5 @@
 import React from 'react';
-import { relative } from 'upath';
+import PropTypes from 'prop-types';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 import './styles.css';
@@ -8,7 +8,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function DepositProgress({ amount }) {
+function DepositProgress({ amount, className }) {
   const widthProgress = 100 * ((amount.balance - amount.holding) / 10000);
   const widthHolding = 100 * (amount.holding / 10000);
 
@@ -19,7 +19,7 @@ function DepositProgress({ amount }) {
         overflow: 'visible',
         position: 'relative',
       }}
-      className="flex-fill justify-content-end mr-3 shadow"
+      className={`flex-fill mr-3 shadow ${className}`}
       backgroundColor="#3e78c0"
     >
       <Text
@@ -60,5 +60,13 @@ function DepositProgress({ amount }) {
     </Container>
   );
 }
+
+DepositProgress.propTypes = {
+  amount: PropTypes.number,
+};
+
+DepositProgress.defaultProps = {
+  amount: 0,
+};
 
 export default DepositProgress;

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
@@ -86,7 +87,8 @@ class ProfilePage extends React.Component {
       notifications.push(
         <AlertNotification removable level={3}>
           <p style={{ margin: 0 }}>
-            Your account isn't activate pay your yearly subscription or your account will be disabled on
+            Your account isn`t activate pay your year
+            ly subscription or your account will be disabled on
             {' '}
             {30}
             {' '}
@@ -107,7 +109,7 @@ class ProfilePage extends React.Component {
       notifications.push(
         <AlertNotification removable level={2}>
           <p style={{ margin: 0 }}>
-            You don't have an associated payment method, please
+            You don`t have an associated payment method, please
             {' '}
             <a href="/user">Go to settings</a>
             {' '}
@@ -143,15 +145,11 @@ class ProfilePage extends React.Component {
         }}
         />
         <DealerCreator show={!hasDealer || !hasPaymentMethod} hasDealer={hasDealer} />
-        <div className="pannel-container">
+        <div className="pannel-container desktop-only">
           <AccountPanel dealer={dealer || dealerExample} />
         </div>
 
-        <div style={{
-          marginLeft: '300px',
-          marginBottom: '200px',
-        }}
-        >
+        <div className="user-page-content-container">
 
           {notifications}
 
@@ -178,5 +176,13 @@ class ProfilePage extends React.Component {
     );
   }
 }
+
+ProfilePage.propTypes = {
+  cookies: PropTypes.object,
+};
+
+ProfilePage.defaultProps = {
+  cookies: {},
+};
 
 export default ProfilePage;

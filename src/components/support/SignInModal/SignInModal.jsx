@@ -45,8 +45,7 @@ class SignInModal extends React.Component {
         <form
           style={{
             display: 'flex',
-            alignContent: 'center',
-            justifyContent: 'center',
+            margin: '10px',
             width: '100%',
             height: '100%',
             flexDirection: 'column',
@@ -54,6 +53,7 @@ class SignInModal extends React.Component {
           }}
           onSubmit={this.signIn}
         >
+          <img className="phone-only" style={{ marginBottom: '20px' }} width="200" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
           <p style={{ color: 'red', display: failed ? 'block' : 'none' }}>Wrong credentials</p>
           <Input
             style={{

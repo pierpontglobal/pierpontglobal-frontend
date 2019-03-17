@@ -1,12 +1,9 @@
 import React from 'react';
 import Countdown from 'react-countdown-now';
-import Btn from '../Btn/Btn';
-import Container from '../styles/Container/Container';
+import posed from 'react-pose';
 import Text from '../styles/Text/Text';
 import './styles.css';
-import posed from 'react-pose';
 import SimpleButton from './SimpleButton';
-import { allSettled } from 'rsvp';
 
 const Completionist = () => <span>Bid process started!</span>;
 
@@ -52,7 +49,12 @@ class BidCard extends React.Component {
     super(props);
 
     const {
-      auctionDate, bid, orderNumber, carTitle, vin, data,
+      auctionDate,
+      bid,
+      orderNumber,
+      carTitle,
+      vin,
+      data,
     } = this.props;
 
     this.state = {

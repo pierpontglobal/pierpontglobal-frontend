@@ -28,11 +28,12 @@ export default class Modal extends React.Component {
   autoCloseModal(e) {
     e.stopPropagation();
     const { className } = e.target;
-    if (className.includes('my-modal')) {
+    if (className.includes('my-modal') || className.includes('fa-times')) {
       this.setState({ open: false });
       try {
         this.props.notifyClosed();
       } catch (error) {
+        // Nothing to do here
       }
     }
   }
@@ -56,6 +57,17 @@ export default class Modal extends React.Component {
               >
                 {this.props.title}
               </h1>
+              <i
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  color: '#35444F',
+                  cursor: 'pointer',
+                }}
+                onClick={this.autoCloseModal}
+                className="fas fa-times"
+              />
             </div>
             <div className="px-3 pb-3 pt-2 d-flex flex-column flex-fill justify-content-between">
               {this.props.children}

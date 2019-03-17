@@ -1,7 +1,7 @@
 import React from 'react';
 import posed from 'react-pose';
+import PropTypes from 'prop-types';
 import Item from './Item/Item';
-// import PriceItem from './PriceItem/PriceItem';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
 
@@ -64,8 +64,6 @@ class FilterPanel extends React.Component {
   }
 
   onBoundChanged(min, max) {
-    console.log(min);
-    console.log(max);
     const years = [];
     for (let i = min; i < max; i += 1) {
       years.push(this.state.availableArguments.year.buckets[i].key);
@@ -134,13 +132,12 @@ class FilterPanel extends React.Component {
     }
 
     let str = '';
-    for (const key in searchables) {
-      if (str != '') {
+    Object.keys(searchables).forEach((searchable) => {
+      if (str !== '') {
         str += '&';
       }
-
-      str += `${key}=${encodeURIComponent(searchables[key])}`;
-    }
+      str += `${searchable}=${encodeURIComponent(searchables[searchable])}`;
+    });
 
     window.history.pushState(null, 'Marketplace', `?${str}`);
     this.props.getCars();
@@ -222,7 +219,11 @@ class FilterPanel extends React.Component {
             <RotatableIcon pose={yearTogle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down" />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-            <RangeSelector items={yearArray} selectedYears={year} onBoundChanged={this.onBoundChanged} />
+            <RangeSelector
+              items={yearArray}
+              selectedYears={year}
+              onBoundChanged={this.onBoundChanged}
+            />
           </div>
         </ExpandableDiv>
         <Item name="Color">
@@ -241,18 +242,21 @@ class FilterPanel extends React.Component {
             onChange={this.searchWithParams}
           />
         </Item>
-
-        {/*
-        <Item name="Interior">
-          {' '}
-          <h3>Hi there</h3>
-          {' '}
-        </Item>
-        <PriceItem />
-        */}
       </div>
     );
   }
 }
+
+FilterPanel.propTypes = {
+  getCars: PropTypes.func,
+  availableArguments: PropTypes.object,
+  params: PropTypes.object,
+};
+
+FilterPanel.defaultProps = {
+  getCars: () => {},
+  availableArguments: {},
+  params: {},
+};
 
 export default FilterPanel;

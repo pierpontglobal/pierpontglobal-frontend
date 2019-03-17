@@ -1,7 +1,6 @@
 import React from 'react';
 import './styles.css';
 import posed from 'react-pose';
-import AppNav from '../../AppNav/AppNav';
 
 const FlyDownDiv = posed.div({
   normal: {

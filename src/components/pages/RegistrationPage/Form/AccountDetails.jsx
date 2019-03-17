@@ -39,7 +39,7 @@ class AccountDetails extends Component {
           <input
             type="text"
             placeholder="Username"
-            onChange={this.props.handleChange('username')}
+            onChange={node => this.props.handleChange('username', node)}
             defaultValue={values.username}
           />
         </Form.Field>

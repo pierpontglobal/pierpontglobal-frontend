@@ -1,6 +1,5 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
-import Slide from './Slide/Slide';
 import './styles.css';
 
 class SlideShow extends React.Component {
@@ -11,7 +10,6 @@ class SlideShow extends React.Component {
       direction: null,
       nextIcon: <span><i className="fas fa-chevron-right" /></span>,
       prevIcon: <span><i className="fas fa-chevron-left" /></span>,
-      carImages: [],
     };
 
     this.handleSelect = this.handleSelect.bind(this);

@@ -2,6 +2,7 @@ import React from 'react';
 import { StripeProvider } from 'react-stripe-elements';
 import { Card, Dropdown } from 'semantic-ui-react';
 import axios from 'axios';
+import Chart from 'chart.js';
 import UnderLine from '../../../Underline/Underline';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
@@ -17,6 +18,10 @@ const headingStyle = {
   padding: '20px 40px',
   color: '#000000',
 };
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 
 export default class SettingSide extends React.Component {
   constructor(props) {
@@ -60,7 +65,7 @@ export default class SettingSide extends React.Component {
     const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`)).data;
     this.setState({
       funds: responseFunds,
-    });
+    }, this.generateGraph);
   }
 
   async getUser() {
@@ -70,6 +75,52 @@ export default class SettingSide extends React.Component {
       address: `${responseUser.address.primary_address} ${responseUser.address.secondary_address}, ${responseUser.address.zip_code}, ${responseUser.address.city} ${responseUser.address.country}`,
       email: `${responseUser.email}`,
       phone: `${responseUser.phone_number}`,
+    });
+  }
+
+  generateGraph() {
+    const options = {
+      tooltips: {
+        callbacks: {
+          label(tooltipItem, data) {
+            const amount = data.datasets[0].data[tooltipItem.index].toFixed(2);
+            const amountWithCommas = numberWithCommas(amount);
+            const moneyFormattedAmount = `$ ${amountWithCommas} USD`;
+            return moneyFormattedAmount;
+          },
+        },
+      },
+      scales: {
+
+      },
+    };
+
+    const { funds } = this.state;
+    const amount = funds;
+
+    const progressPercentage = parseFloat(amount.balance - amount.holding);
+    const holdingPercentage = parseFloat(amount.holding);
+    const totalPercentage = parseFloat(10000 - progressPercentage - holdingPercentage);
+
+    const data = {
+      datasets: [{
+        data: [progressPercentage, holdingPercentage, totalPercentage],
+        backgroundColor: ['#1D385A', 'rgb(35, 88, 154)', '#3e78c0'],
+      }],
+
+      labels: [
+        'Remaining',
+        'Holdings',
+        'Total',
+      ],
+    };
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data,
+      options,
     });
   }
 
@@ -219,8 +270,17 @@ export default class SettingSide extends React.Component {
           <UnderLine>
             <h4 className="mb-0">Deposit</h4>
           </UnderLine>
-          <div className="d-flex content-main">
-            <DepositProgress amount={funds} />
+          <div className="d-flex content-main flex-modifier-user-view">
+            <canvas
+              className="phone-only"
+              id="myChart"
+              width="100"
+              height="100"
+              style={{
+                marginBottom: '20px',
+              }}
+            />
+            <DepositProgress className="tablet-up" amount={funds} />
             <AddDeposit cookies={this.props.cookies} />
           </div>
         </div>

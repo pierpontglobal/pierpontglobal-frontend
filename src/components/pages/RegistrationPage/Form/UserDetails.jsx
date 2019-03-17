@@ -50,7 +50,7 @@ class UserDetails extends Component{
                     <label>First Name</label>
                     <input
                     placeholder='First Name'
-                    onChange={this.props.handleChange('firstName')}
+                    onChange={(node) => this.props.handleChange('firstName', node)}
                     defaultValue={values.firstName}
                     />
                 </Form.Field>
@@ -58,7 +58,7 @@ class UserDetails extends Component{
                     <label>Last Name</label>
                     <input
                     placeholder='Last Name'
-                    onChange={this.props.handleChange('lastName')}
+                    onChange={(node) => this.props.handleChange('lastName', node)}
                     defaultValue={values.lastName}
                     />
                 </Form.Field>
@@ -77,7 +77,7 @@ class UserDetails extends Component{
                     <input
                     type='tel'
                     placeholder='Phone number'
-                    onChange={this.props.handleChange('phonenumber')}
+                    onChange={(node) => this.props.handleChange('phonenumber', node)}
                     defaultValue={values.phonenumber}
                     />
                 </Form.Field>

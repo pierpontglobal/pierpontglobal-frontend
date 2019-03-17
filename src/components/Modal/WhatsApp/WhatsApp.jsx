@@ -62,13 +62,15 @@ class WhatsApp extends React.Component {
 
   render() {
     return (
-      <div style={{
-        position: 'fixed',
-        right: '20px',
-        bottom: '20px',
-        zIndex: 1500,
-        minWidth: '300px',
-      }}
+      <div
+        style={{
+          position: 'fixed',
+          right: '20px',
+          bottom: '20px',
+          zIndex: 1500,
+          minWidth: '300px',
+        }}
+        className="outerWhatsApp"
       >
         <WList pose={this.state.whatsappVisible ? 'visible' : 'hidden'} style={{ borderRadius: '10px', display: this.state.whatsappVisible ? 'flex' : 'none' }} className="chat-box animated shadow" id="chat-box">
           <div className="card card-radius-all border-0">

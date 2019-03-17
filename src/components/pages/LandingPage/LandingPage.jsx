@@ -1,5 +1,4 @@
 import React from 'react';
-import AppNav from '../../AppNav/AppNav';
 import VideoBar from '../../Bars/VideoBar';
 import Registration from '../../Forms/RegisterForm';
 import ManheimLogo from './manheim.png';
@@ -8,7 +7,7 @@ import './landing_page.css';
 import imac from './images/imac.png';
 import magnifier from './images/magnifier.png';
 import pin from './images/pin.png';
-import section1_bg from './images/section1_bg.jpg';
+import SectionBG from './images/section1_bg.jpg';
 import Button from '../../Btn/Btn';
 import loader1 from './images/loader1.png';
 import customs1 from './images/customs1.png';
@@ -17,9 +16,7 @@ import bottomImage from './images/landing_bottom.webp';
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      openModal: false,
-    };
+    this.state = {};
   }
 
   render() {
@@ -80,7 +77,7 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            You'll have access to
+            You`ll have access to
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
@@ -160,7 +157,7 @@ class LandingPage extends React.Component {
           paddingBottom: '100px',
           width: '100%',
           height: 'auto',
-          backgroundImage: `url(${section1_bg})`,
+          backgroundImage: `url(${SectionBG})`,
           backgroundRepeat: 'no-repeat',
           backgroundColor: 'rgb(114, 115, 119)',
           backgroundBlendMode: 'multiply',
@@ -192,7 +189,7 @@ class LandingPage extends React.Component {
                   });
                 }}
               >
-            Sign up now >>
+            Sign up now &gt;&gt;
               </Button>
             </div>
           </div>
@@ -240,9 +237,13 @@ class LandingPage extends React.Component {
                 <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
                 Logistics
                 </p>
-
-                <p>It’s difficult getting a car from one location to another safely and securely, especially when you are in another country. That’s why we’ve created an innovative solution where we facilitate transporting from auction to port, and shipping from U.S. to Dominican Republic, without you having to lift a finger at all.</p>
-
+                <p>
+                  It`s difficult getting a car from one location to another safely and securely,
+                  especially when you are in another country. That`s
+                  why we`ve created an innovative solution where
+                  we facilitate transporting from auction to port, and shipping from U.S.
+                  to Dominican Republic, without you having to lift a finger at all.
+                </p>
               </div>
 
               <hr className="phoneDivisor" />
@@ -270,7 +271,13 @@ class LandingPage extends React.Component {
                 Customs
                 </p>
 
-                <p>We have experts take your vehicle through customs and handle all legal aspects of the vehicle leaving the United States. We make sure all necessary paperwork is processed accordingly, and make sure your vehicle leaves the port on its designated shipping vessel in a timely manner, with little to no obstacles</p>
+                <p>
+                  We have experts take your vehicle through customs and handle all
+                  legal aspects of the vehicle leaving the United States. We make
+                  sure all necessary paperwork is processed accordingly, and make
+                  sure your vehicle leaves the port on its designated shipping vessel
+                  in a timely manner, with little to no obstacles
+                </p>
               </div>
             </div>
           </div>

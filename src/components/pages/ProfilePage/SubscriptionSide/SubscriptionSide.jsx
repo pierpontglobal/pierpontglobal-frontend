@@ -1,13 +1,12 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import axios from 'axios';
-import { Card } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import UnderLine from '../../../Underline/Underline';
 import './styles.css';
-
 import CardComponent from './Components/CardComponent';
 import SubscriptionCard from './Components/SubscriptionCard';
 import PaymentHistory from './Components/PaymentHistory';
-
 import { ApiServer } from '../../../../Defaults';
 
 class SubscriptionSide extends React.Component {
@@ -17,7 +16,6 @@ class SubscriptionSide extends React.Component {
     const { cookies } = props;
 
     this.state = {
-      paymentMethods: [],
       token: cookies.get('token'),
       endDate: '',
       planName: '',
@@ -47,7 +45,10 @@ class SubscriptionSide extends React.Component {
       };
 
       const {
-        subscription_info, primary_payment_method, payments_history, pending_invoices,
+        subscription_info,
+        primary_payment_method,
+        payments_history,
+        pending_invoices,
       } = response;
 
       this.setState({
@@ -123,7 +124,14 @@ class SubscriptionSide extends React.Component {
           backgroundColor: '#dedede',
         }}
         >
-          <button onClick={() => { document.location.href = '/user'; }} style={{ backgroundColor: 'white', color: 'black' }} className="save-information-btn">Go to settings</button>
+          <button
+            type="button"
+            onClick={() => { document.location.href = '/user'; }}
+            style={{ backgroundColor: 'white', color: 'black' }}
+            className="save-information-btn"
+          >
+            Go to settings
+          </button>
         </div>
       );
     }
@@ -159,13 +167,30 @@ class SubscriptionSide extends React.Component {
               </h4>
             </UnderLine>
             <div style={{ flexDirection: 'column' }} className="d-flex content-main">
-              { paymentsHistory || pendingInvoices ? <PaymentHistory token={token} paymentsHistory={paymentsHistory} pendingInvoices={pendingInvoices} /> : <div />}
+              { paymentsHistory || pendingInvoices
+                ? (
+                  <PaymentHistory
+                    token={token}
+                    paymentsHistory={paymentsHistory}
+                    pendingInvoices={pendingInvoices}
+                  />
+                ) : <div />}
             </div>
           </div>
         </div>
       );
     }
+
+    return (<div />);
   }
 }
+
+SubscriptionSide.propTypes = {
+  cookies: PropTypes.object,
+};
+
+SubscriptionSide.defaultProps = {
+  cookies: {},
+};
 
 export default SubscriptionSide;

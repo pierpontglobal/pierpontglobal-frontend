@@ -48,7 +48,7 @@ class AccountFields extends React.Component {
       email: this.email.value,
       phone_number: this.phone.value,
     };
-    const response = await axios.post(`${ApiServer}/api/v1/user/subscription`, data);
+    await axios.post(`${ApiServer}/api/v1/user/subscription`, data);
     this.props.loadinStop();
     return false;
   }

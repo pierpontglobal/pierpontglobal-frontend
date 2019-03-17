@@ -1,5 +1,6 @@
 import React from 'react';
 import SignInModal from './SignInModal/SignInModal';
+import './styles.css';
 
 const qs = require('query-string');
 
@@ -32,22 +33,9 @@ class AccountManager extends React.Component {
         <button
           type="button"
           onClick={() => { window.location.href = '/user'; }}
-          style={{
-            color: '#ffffff',
-            cursor: 'pointer',
-            alignItems: 'center',
-            height: '100%',
-            padding: '10px',
-            borderRadius: '5px',
-            minWidth: '130px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            overflow: 'show',
-          }}
-          className="border-0 button-check shadow"
+          className="sign_in_button"
         >
-          <i className="far fa-user mr-2 pr-1" />
+          <i className="far fa-user" id="inner-sign-in-icon" />
           Profile
           {showModal
             ? <SignInModal notifyClosed={this.setClosed} show /> : <div />}
@@ -59,24 +47,11 @@ class AccountManager extends React.Component {
       <button
         type="button"
         onClick={() => { this.setState({ showModal: true }); }}
-        style={{
-          color: '#ffffff',
-          cursor: 'pointer',
-          alignItems: 'center',
-          height: '100%',
-          padding: '10px',
-          borderRadius: '5px',
-          minWidth: '130px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-          overflow: 'show',
-        }}
-        className="border-0 button-check shadow"
+        className="sign_in_button"
       >
-        <i className="far fa-user mr-2 pr-1" />
+        <i className="far fa-user" id="inner-sign-in-icon" />
           Sign In
-        {showModal ? <SignInModal notifyClosed={this.setClosed} show /> : <div />}
+        {showModal ? <SignInModal notifyClosed={this.setClosed} show /> : null}
       </button>
     );
   }
