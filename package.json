@@ -3,12 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/preset-react": "^7.0.0",
     "@material-ui/core": "^3.9.1",
     "@types/styled-components": "^4.0.2",
     "actioncable": "^5.2.2",
     "axios": "^0.18.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.3",
     "chart.js": "^2.8.0",
+    "compression": "^1.7.4",
+    "compression-webpack-plugin": "^2.0.0",
     "country-data": "^0.0.31",
     "email-validator": "^2.0.4",
     "gulp-responsive": "^2.13.0",
@@ -34,6 +39,7 @@
     "react-emotion": "^10.0.0",
     "react-geocode": "^0.1.2",
     "react-geolocated": "^2.4.1",
+    "react-image": "^2.0.0",
     "react-image-gallery": "^0.8.12",
     "react-location-picker": "^1.3.0",
     "react-modal": "^3.8.1",
@@ -49,6 +55,7 @@
     "reactstrap": "^6.5.0",
     "semantic-ui-react": "^0.84.0",
     "styled-components": "^4.0.2",
+    "uglifyjs-3-webpack-plugin": "^1.2.4",
     "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
@@ -67,6 +74,7 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.11.1",
+    "webpack-cli": "^3.3.0"
   }
 }

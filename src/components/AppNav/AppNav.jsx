@@ -1,8 +1,8 @@
 import React from 'react';
+import Img from 'react-image';
 import LinkBtn from './LinkBtn/LinkBtn';
 import BurgerBtn from './BurgerBtn/BurgerBtn';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
-import ProfileDrawer from './ProfileDrawer/ProfileDrawer';
 import AccountManager from '../support/AccountManager';
 import './styles.css';
 
@@ -63,14 +63,23 @@ export default class AppNav extends React.Component {
             style={{ background: 'transparent', display: 'flex', placeContent: 'center' }}
             onClick={() => { window.location.href = '/'; }}
           >
-            <img
+
+            <Img
               style={{
                 height: '40px',
                 cursor: 'pointer',
               }}
-              className="logo"
-              src="/logos/Logo 1 - Blue.png"
               alt="PierpontGlobal"
+              className="logo"
+              src={[
+                '/logos/sm_logo.webp',
+                '/logos/sm_logo.jp2',
+                '/logos/sm_logo.jxr',
+                '/logos/sm_logo.png',
+              ]}
+              loader={
+                <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
+                }
             />
           </button>
 

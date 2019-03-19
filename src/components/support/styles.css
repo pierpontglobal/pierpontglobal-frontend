@@ -1,8 +1,10 @@
 .sign_in_button {
     color: black;
     cursor: pointer;
-    place-items: center;
-    place-content: flex-end;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
     height: 100%;
     border-radius: 5px;
     display: flex;
@@ -22,7 +24,8 @@
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         padding: 10px;
         min-width: 130px;
-        place-content: center;
+        align-content: center;
+        justify-content: center;
     }
 }
   

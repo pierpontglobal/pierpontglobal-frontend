@@ -1,6 +1,5 @@
 import React from 'react';
 import Container from '../../styles/Container/Container';
-import Img from '../../styles/Img/Img';
 import Text from '../../styles/Text/Text';
 import Building from './building.svg';
 
@@ -19,7 +18,7 @@ function DealerTab({ dealer }) {
         alignItems: 'center',
       }}
     >
-      <Img
+      <img
         className="border-0"
         height="70px"
         width="70px"

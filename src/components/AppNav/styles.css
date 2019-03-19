@@ -5,6 +5,8 @@
 .nav-items {
     display: flex;
     place-content: space-between;
+    justify-content: space-between;
+    align-content: space-between;
     width: 100%;
 }
 
@@ -22,7 +24,9 @@
     .menu-sider {
         display: flex;
         width: 320px;
-        place-items: center;
+        justify-items: center;
+        align-content: center;
+        align-items: center;
         justify-content: space-between;
         height: 100%;
         position: absolute;

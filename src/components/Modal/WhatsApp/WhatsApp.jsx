@@ -1,4 +1,5 @@
 import React from 'react';
+import Img from 'react-image';
 import './custom.css';
 import posed from 'react-pose';
 
@@ -93,7 +94,24 @@ Hi! Click one of our members below to chat on
                 <WElement pose={this.state.whatsappVisible ? 'enter' : 'exit'} i={1} key={1} href="#!" className="nav-link animated fadeInUp">
                   <div onClick={() => { window.location.href = 'https://wa.me/13056002113?text=Hello Juan, '; }} style={{ cursor: 'pointer' }} className="media px-3 py-2">
                     <div className="d-flex justify-content-end w-100 align-items-center">
-                      <img style={{ width: '60px' }} src="/images/juan.png" className="mr-3" alt="..." />
+
+                      <Img
+                        style={{
+                          width: '60px',
+                        }}
+                        alt="Administrator"
+                        className="mr-3"
+                        src={[
+                          '/images/whatsapp/juan/juan.webp',
+                          '/images/whatsapp/juan/juan.jp2',
+                          '/images/whatsapp/juan/juan.jxr',
+                          '/images/whatsapp/juan/juan.png',
+                        ]}
+                        loader={
+                          <div style={{ width: '60px', height: '60px', background: '#dedede' }} />
+                        }
+                      />
+
                       <div className="media-body">
                         <p className="mb-1 name">Juan Villagrana</p>
                         <p style={{ color: 'darkgray' }} className="mb-1 profession">Customer Support</p>
@@ -108,7 +126,23 @@ Hi! Click one of our members below to chat on
                 <WElement pose={this.state.whatsappVisible ? 'enter' : 'exit'} i={2} key={2} href="#!" className="nav-link animated fadeInUp">
                   <div onClick={() => { window.location.href = 'https://wa.me/18299570268?text=Hello Héctor, '; }} style={{ cursor: 'pointer' }} className="media px-3 py-2">
                     <div className="d-flex justify-content-end w-100 align-items-center">
-                      <img style={{ width: '60px' }} src="/images/hector.png" className="mr-3" alt="..." />
+
+                      <Img
+                        style={{
+                          width: '60px',
+                        }}
+                        alt="Administrator"
+                        className="mr-3"
+                        src={[
+                          '/images/whatsapp/hector/hector.webp',
+                          '/images/whatsapp/hector/hector.jp2',
+                          '/images/whatsapp/hector/hector.jxr',
+                          '/images/whatsapp/hector/hector.png',
+                        ]}
+                        loader={
+                          <div style={{ width: '60px', height: '60px', background: '#dedede' }} />
+                        }
+                      />
                       <div className="media-body">
                         <p className="mb-1 name">Héctor Acosta</p>
                         <p style={{ color: 'darkgray' }} className="mb-1 profession">Technical Support</p>
@@ -123,7 +157,22 @@ Hi! Click one of our members below to chat on
                 <WElement pose={this.state.whatsappVisible ? 'enter' : 'exit'} i={3} key={3} href="#!" className="nav-link animated fadeInUp">
                   <div onClick={() => { window.location.href = 'https://wa.me/19548063292?text=Hello Steve, '; }} style={{ borderLeftColor: 'darkgrey', cursor: 'pointer' }} className="media px-3 py-2">
                     <div className="d-flex justify-content-end w-100 align-items-center">
-                      <img style={{ width: '60px' }} src="/images/steve.png" className="mr-3" alt="..." />
+                      <Img
+                        style={{
+                          width: '60px',
+                        }}
+                        alt="Administrator"
+                        className="mr-3"
+                        src={[
+                          '/images/whatsapp/steve/steve.webp',
+                          '/images/whatsapp/steve/steve.jp2',
+                          '/images/whatsapp/steve/steve.jxr',
+                          '/images/whatsapp/steve/steve.png',
+                        ]}
+                        loader={
+                          <div style={{ width: '60px', height: '60px', background: '#dedede' }} />
+                        }
+                      />
                       <div className="media-body">
                         <p className="mb-1 name">Steve Solomon</p>
                         <p style={{ color: 'darkgray' }} className="mb-1 profession">Sale Support</p>
