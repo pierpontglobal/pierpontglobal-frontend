@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import { CountryDropdown } from 'react-country-region-selector';
+import TextField from '@material-ui/core/TextField';
+import { MenuItem } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { CountriesList } from '../../../../Defaults';
 
 class AddressDetails extends Component {
   constructor(props) {
@@ -18,6 +22,16 @@ class AddressDetails extends Component {
     this.back = this.back.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const newValues = nextProps.values;
+    const { values } = this.state;
+    if (newValues !== values) {
+      this.setState({
+        values: newValues,
+      });
+    }
+  }
+
   saveAndContinue(e) {
     e.preventDefault();
     this.props.nextStep();
@@ -33,52 +47,96 @@ class AddressDetails extends Component {
       values,
     } = this.state;
 
+    console.log(values);
+
     return (
       <Form color="blue">
         <h1 className="ui centered">Location Details</h1>
         <Form.Field>
-          <label>Country</label>
-          <CountryDropdown
-            ref={(node) => { this.country = node; }}
-            value={values.country}
-            onChange={val => this.props.setCountry(val)}
+          <TextField
+            id="standard-select-currency"
+            style={{
+              width: '100%',
+            }}
             required
-          />
+            ref={(node) => { this.country = node; }}
+            select
+            label="Country"
+            value={values.country}
+            onChange={node => this.props.handleChange('country', node)}
+            SelectProps={{
+              name: 'country',
+              autocomplete: 'country',
+              MenuProps: {},
+            }}
+            helperText="Please select your currency"
+            margin="normal"
+          >
+            {CountriesList.map(option => (
+              <MenuItem key={option.key} value={option.name.en}>
+                {option.name.en}
+              </MenuItem>
+            ))}
+          </TextField>
         </Form.Field>
         <Form.Field>
-          <label>City</label>
-          <input
-            placeholder="City"
+          <TextField
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
+            required
             onChange={node => this.props.handleChange('city', node)}
-            defaultValue={values.city}
+            label="City"
+            name="city"
+            autocomplete="address-level2"
+            value={values.city}
           />
         </Form.Field>
         <Form.Field>
-          <label>Zip Code</label>
-          <input
-            placeholder="Zip code"
+          <TextField
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
             onChange={node => this.props.handleChange('zipcode', node)}
-            defaultValue={values.zipcode}
+            name="zip"
+            autocomplete="postal-code"
+            label="Zip code"
+            value={values.zipcode}
           />
         </Form.Field>
         <Form.Field>
-          <label>Primary Address</label>
-          <input
-            placeholder="Primary address"
+          <TextField
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
+            required
             onChange={node => this.props.handleChange('address1', node)}
-            defaultValue={values.address1}
+            name="address"
+            autocomplete="address-line1"
+            label="Primary address"
+            value={values.address1}
           />
         </Form.Field>
         <Form.Field>
-          <label>Secondary Address (Optional)</label>
-          <input
-            placeholder="Secondary address"
+          <TextField
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
+            margin="normal"
             onChange={node => this.props.handleChange('address2', node)}
-            defaultValue={values.address2}
+            name="address"
+            autocomplete="address-line2"
+            label="Secondary Address (Optional)"
+            value={values.address2}
           />
         </Form.Field>
-        <Button onClick={this.back}>Back</Button>
-        <Button onClick={this.saveAndContinue}>Save and continue </Button>
+        <Button variant="contained" color="secondary" onClick={this.back}>Back</Button>
+        {' '}
+        <Button variant="contained" color="primary" onClick={this.saveAndContinue}>Save and continue </Button>
       </Form>
     );
   }

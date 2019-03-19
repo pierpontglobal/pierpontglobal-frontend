@@ -57,7 +57,7 @@ class MainForm extends Component {
   setCountry(value) {
     this.setState({
       country: value,
-    });
+    }, console.log(this.state));
   }
 
   async setInformation() {
@@ -90,6 +90,8 @@ class MainForm extends Component {
         password2: node,
       });
     }
+    console.log(this.state.password1);
+    console.log(this.state.password2);
     if (this.state.password1 === this.state.password2) {
       return true;
     }
@@ -112,7 +114,8 @@ class MainForm extends Component {
   }
 
   handleChange(input, event) {
-    this.setState({ [input]: event.target.value });
+    console.log(input);
+    this.setState({ [input]: event.target.value }, () => console.log(this.state));
   }
 
   changeEmail(value) {
@@ -158,9 +161,7 @@ class MainForm extends Component {
           status: 'success',
         });
       }
-      console.log(response);
     } catch (e) {
-      console.log(e);
       this.setState({
         status: 'error',
       });

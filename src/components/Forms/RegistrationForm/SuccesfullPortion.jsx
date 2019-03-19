@@ -78,8 +78,21 @@ class SuccessfullPortion extends React.Component {
         flexDirection: 'column',
       }}
       >
-        <Text style={{ fontSize: '32px', color: textColor }}>Your account is almost ready!</Text>
-        <p style={{ color: textColor, textAlign: 'center' }}>
+        <Text style={{
+          fontSize: '32px',
+          color: textColor,
+          textAlign: 'center',
+          padding: '10px',
+        }}
+        >
+          Your account is almost ready!
+        </Text>
+        <p style={{
+          color: textColor,
+          textAlign: 'center',
+          padding: '10px',
+        }}
+        >
           The message has been sent to
           {' '}
           {email}
@@ -87,8 +100,13 @@ class SuccessfullPortion extends React.Component {
           <br />
           Check your email and verify your identity.
         </p>
-        <p style={{ color: textColor }}>
-          Can't find the email? Verify your spam folder or click
+        <p style={{
+          color: textColor,
+          textAlign: 'center',
+          padding: '10px',
+        }}
+        >
+          Can`t find the email? Verify your spam folder or click
           {' '}
           <a
             style={{

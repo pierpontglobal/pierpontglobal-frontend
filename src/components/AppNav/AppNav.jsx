@@ -60,13 +60,22 @@ export default class AppNav extends React.Component {
           <button
             type="button"
             className="border-0 web-logo"
-            style={{ background: 'transparent', display: 'flex', placeContent: 'center' }}
+            style={{
+              background: 'transparent',
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              justifyItems: 'center',
+              overflow: 'visible',
+              maxWidth: '170px',
+            }}
             onClick={() => { window.location.href = '/'; }}
           >
 
             <Img
               style={{
-                height: '40px',
+                width: '100%',
                 cursor: 'pointer',
               }}
               alt="PierpontGlobal"

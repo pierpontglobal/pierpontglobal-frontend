@@ -22,7 +22,12 @@ class VideoBar extends React.Component {
   // Video banner
   render() {
     return (
-      <InfoBar className="info-bar-shinks">
+      <InfoBar
+        className="info-bar-shinks"
+        style={{
+          height: 'auto',
+        }}
+      >
         <Text
           className="bar-text"
           style={{

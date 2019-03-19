@@ -10,6 +10,8 @@ import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 import CarPage from './components/pages/CarBidPage/CarBidPage';
 import './styles.css';
 import AppNav from './components/AppNav/AppNav';
+import { MuiThemeProvider } from '@material-ui/core';
+import { DefaultTheme } from './Defaults';
 
 const car = {
   year: '2017',
@@ -76,21 +78,23 @@ class App extends React.Component {
   render() {
     const { cookies } = this.props;
     return (
-      <Router>
-        <div>
-          <AppNav cookies={cookies} openModal={this.openModal} />
-          <Switch>
-            <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
-            <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
-            <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
+      <MuiThemeProvider theme={DefaultTheme}>
+        <Router>
+          <div>
+            <AppNav cookies={cookies} openModal={this.openModal} />
+            <Switch>
+              <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
+              <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
+              <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
-            <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-            <Route path="/user" render={() => (<ProfilePage cookies={cookies} />)} />
+              <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
+              <Route path="/user" render={() => (<ProfilePage cookies={cookies} />)} />
 
-            <Route render={() => (<NotfoundPage cookies={cookies} />)} />
-          </Switch>
-        </div>
-      </Router>
+              <Route render={() => (<NotfoundPage cookies={cookies} />)} />
+            </Switch>
+          </div>
+        </Router>
+      </MuiThemeProvider>
     );
   }
 }
