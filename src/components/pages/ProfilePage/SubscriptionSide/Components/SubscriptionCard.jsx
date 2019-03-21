@@ -5,7 +5,15 @@ import PlanLogo from './images/Logo4aWhite.png';
 
 function SubscriptionCard({ planName, endDate, value = '' }) {
   return (
-    <Card style={{ width: '400px', backgroundColor: 'rgb(59, 68, 75)' }} className="shadow">
+    <Card
+      style={{
+        width: '100%',
+        maxWidth: '400px',
+        padding: '10px',
+        backgroundColor: 'rgb(59, 68, 75)',
+      }}
+      className="shadow"
+    >
       <div className="card-container">
         <div className="subscription-logo">
           <img alt="Plan logo" className="plan-logo" src={PlanLogo} />

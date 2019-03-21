@@ -1,10 +1,10 @@
 import React from 'react';
 import { injectStripe } from 'react-stripe-elements';
 import axios from 'axios';
+import { Form } from 'semantic-ui-react';
 import { ApiServer } from '../../../../../../Defaults';
 import './styles.css';
 import CardSection from './CardSection';
-import { Form } from 'semantic-ui-react';
 
 class CheckoutForm extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class CheckoutForm extends React.Component {
   async registerCard(token) {
     await axios.post(`${ApiServer}/api/v1/user/cards`, {
       card_token: token,
-      coupon: this.props.couponField.value,
+      coupon: this.props.couponField(),
     });
   }
 
@@ -52,8 +52,12 @@ class CheckoutForm extends React.Component {
 
     return (
       <Form
+        className="create-form-dealer"
         style={{
-          width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
         }}
         onSubmit={ev => (this.handleSubmit(ev, afterSubmit))}
       >

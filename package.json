@@ -55,6 +55,7 @@
     "react-scripts": "2.1.2",
     "react-spinners": "^0.4.8",
     "react-stripe-elements": "^2.0.2",
+    "react-text-mask": "^5.4.3",
     "react-timeago": "^4.3.0",
     "reactstrap": "^6.5.0",
     "semantic-ui-react": "^0.84.0",

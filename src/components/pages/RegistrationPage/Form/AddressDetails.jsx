@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
-import { CountryDropdown } from 'react-country-region-selector';
 import TextField from '@material-ui/core/TextField';
 import { MenuItem } from '@material-ui/core';
 import { Button } from '@material-ui/core';
