@@ -19,7 +19,6 @@ function SortBar({ header, className }) {
       }}
     >
       <SearchInput defaultValue={query} className="d-none d-md-flex mr-auto align-self-center" />
-      <Selection />
     </div>
   );
 }

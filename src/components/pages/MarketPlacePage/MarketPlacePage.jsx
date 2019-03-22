@@ -88,7 +88,7 @@ class MarketPlacePage extends React.Component {
         }
 
         const carObject = {
-          wholePrice: car.sale_information.whole_price,
+          wholePrice: 200000,
           crUrl: car.car_information.cr_url,
           year: car.car_information.year,
           make: car.car_information.car_maker,
@@ -171,7 +171,12 @@ class MarketPlacePage extends React.Component {
             </div>
             <div
               className="mr-auto ml-md-auto ml-lg-0 w-100"
-              style={{ maxWidth: '810px', paddingBottom: '120px' }}
+              style={{
+                maxWidth: '810px',
+                paddingBottom: '120px',
+                paddingLeft: '10px',
+                paddingRight: '10px',
+              }}
             >
               <div style={{
                 padding: 0, display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center', justifyItems: 'center',
