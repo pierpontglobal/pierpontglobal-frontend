@@ -41,7 +41,6 @@ class AccountDetails extends Component {
 
   render() {
     const { values } = this.props;
-    const { passwordIncorrect } = this.state;
     return (
       <Form color="blue">
         <h1 className="ui centered">Account Details</h1>

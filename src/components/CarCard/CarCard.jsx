@@ -60,7 +60,7 @@ function CarCard({ key, car, requestFuntion }) {
       backgroundColor="#fafafa"
       maxHeight="120px"
       boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
-      onClick={(e) => { const _res = e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null; }}
+      onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) }
     >
       <Container
         className="d-flex mr-md-3 w-auto"

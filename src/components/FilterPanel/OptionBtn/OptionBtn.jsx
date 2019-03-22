@@ -2,19 +2,6 @@ import React from 'react';
 import MorePopUp from './MorePopUp';
 import './style.css';
 
-const style = {
-  backgroundColor: '#FAFAFA',
-  border: 'none',
-  width: '16.7px',
-  height: '16.7px',
-};
-
-const labelStyle = {
-  fontSize: '0.875em',
-  lineHeight: 1.36,
-  color: '#000000',
-};
-
 function OptionBtn({
   selected, values, origin, onChange,
 }) {

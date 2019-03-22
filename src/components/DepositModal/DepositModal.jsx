@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import Modal from '../Modal/Modal';
 import Information from '../BidModal/Information/Information';
-import Container from '../styles/Container/Container';
 import Btn from '../Btn/Btn';
 import { ApiServer } from '../../Defaults';
 

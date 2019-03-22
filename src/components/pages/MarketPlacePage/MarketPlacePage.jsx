@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Pagination } from 'semantic-ui-react';
 import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
-import AppNav from '../../AppNav/AppNav';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
