@@ -112,7 +112,6 @@ class CarBidPage extends React.Component {
     return (
       <div>
         <ActionCableProvider cable={this.cable}>
-          <AppNav cookies={cookies} />
           <div style={{ marginTop: '-15px' }} className="d-flex justify-content-center">
             <div style={{ width: '300px' }} className="d-flex flex-column mr-3">
               <CarDetailCard car={car} />

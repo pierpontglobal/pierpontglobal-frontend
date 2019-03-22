@@ -1,7 +1,6 @@
 import React from 'react';
 import Span from '../../styles/Span/Span';
 
-
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

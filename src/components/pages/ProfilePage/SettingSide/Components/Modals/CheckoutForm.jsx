@@ -1,6 +1,7 @@
 import React from 'react';
 import { injectStripe } from 'react-stripe-elements';
 import axios from 'axios';
+import { Form } from 'semantic-ui-react';
 import { ApiServer } from '../../../../../../Defaults';
 import './styles.css';
 import CardSection from './CardSection';
@@ -9,72 +10,58 @@ class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
 
-    const { cookies } = props;
-
     this.state = {
       display: 'none',
-      token: cookies.get('token'),
     };
     this.registerCard = this.registerCard.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async registerCard(token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-    await axios.post(`${ApiServer}/api/v1/user/cards`, { card_token: token }, config);
-    window.location.reload();
+    await axios.post(`${ApiServer}/api/v1/user/cards`, {
+      card_token: token,
+      coupon: this.props.couponField(),
+    });
   }
 
-  async handleSubmit(ev) {
-    // We don't want to let default form submission happen here, which would refresh the page.
+  async handleSubmit(ev, afterSubmit) {
     ev.preventDefault();
 
-    // Within the context of `Elements`, this call to createToken knows which Element to
-    // tokenize, since there's only one in this group.
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    const response = (await axios.get(`${ApiServer}/api/v1/user`, config)).data;
+    const response = (await axios.get(`${ApiServer}/api/v1/user`)).data;
     const name = `${response.first_name} ${response.last_name}`;
 
     this.props.stripe.createToken({ name }).then(({ token }) => {
-      this.setState({
-        display: 'none',
-      });
       try {
-        this.registerCard(token.id);
+        this.registerCard(token.id).then(() => {
+          afterSubmit();
+          this.setState({
+            display: 'none',
+          });
+          window.location.reload(true);
+        });
         this.props.onClose();
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     });
-
-    // However, this line of code will do the same thing:
-    //
-    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
-
-    // You can also use createSource to create Sources. See our Sources
-    // documentation for more: https://stripe.com/docs/stripe-js/reference#stripe-create-source
-    //
-    // this.props.stripe.createSource({type: 'card', owner: {
-    //   name: 'Jenny Rosen'
-    // }});
   }
 
   render() {
+    const { saveButtonText, afterSubmit, innerFields } = this.props;
+    const { display } = this.state;
+
     return (
-      <form
+      <Form
+        className="create-form-dealer"
         style={{
-          width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
         }}
-        onSubmit={this.handleSubmit}
+        onSubmit={ev => (this.handleSubmit(ev, afterSubmit))}
       >
+        {innerFields}
         <CardSection />
         <button
           type="submit"
@@ -93,11 +80,11 @@ class CheckoutForm extends React.Component {
             });
           }}
         >
-          SAVE CARD
+          { saveButtonText }
           {' '}
-          <i style={{ float: 'rigth', fontSize: '14px', display: this.state.display }} className="fas fa-spinner loading" />
+          <i style={{ float: 'rigth', fontSize: '14px', display }} className="fas fa-spinner loading" />
         </button>
-      </form>
+      </Form>
     );
   }
 }

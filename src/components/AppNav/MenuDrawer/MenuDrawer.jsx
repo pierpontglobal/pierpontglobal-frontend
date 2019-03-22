@@ -1,40 +1,49 @@
 import React from 'react';
 import Slider from '../../Sider/Sider';
 import Tab from './Tab/Tab';
+import AccountPanel from '../../AccountPanel/AccountPanel';
 
-const style = {
-    backgroundColor: '#fafafa'
-}
-function MenuDrawer({open, onMaskClick}) {
+
+const dealerExample = {
+  image: null,
+  name: 'Dealer name',
+  address: 'Address...',
+  email: 'dealer@example.com',
+  number: '+1 (809) 123-5555',
+};
+
+function MenuDrawer({ open, onMaskClick }) {
+  if (window.location.pathname.includes('/user')) {
     return (
-        <div style={style}>
-            <Slider
-                open={open}
-                onMaskClick={onMaskClick}
-            >
-                <div 
-                    className="d-flex flex-column align-items-between pt-5 px-4 pb-2 h-100"
-                    style={style}
-                >
-                    <div className="d-flex flex-column mb-auto pt-4">
-                        <Tab icon="fas fa-home">Home</Tab>
-                        <Tab icon="fas fa-car">MarketPlace</Tab>
-                        <Tab icon="fas fa-phone">Contact Us</Tab>
-                    </div>
-                    <input 
-                        type="text" 
-                        className="w-100 h-100"
-                        placeholder="Search"
-                        style={{
-                            backgroundColor: '#EEEEEE',
-                            borderStyle: 'none',
-                            maxHeight: '38px'
-                        }}
-                    />
-                </div>
-            </Slider>
-        </div>
+      <Slider
+        open={open}
+        onMaskClick={onMaskClick}
+      >
+        <AccountPanel
+          dealer={dealerExample}
+          inner={(
+            <div style={{ marginLeft: '20px' }}>
+              <Tab href="/" icon="fas fa-home">Home</Tab>
+              <Tab href="/marketplace" icon="fas fa-car">MarketPlace</Tab>
+              <Tab href="/contact-us" icon="fas fa-phone">Contact Us</Tab>
+            </div>
+          )}
+        />
+      </Slider>
     );
+  }
+  return (
+    <Slider
+      open={open}
+      onMaskClick={onMaskClick}
+    >
+      <div style={{ padding: '20px' }}>
+        <Tab href="/" icon="fas fa-home">Home</Tab>
+        <Tab href="/marketplace" icon="fas fa-car">MarketPlace</Tab>
+        <Tab href="/contact-us" icon="fas fa-phone">Contact Us</Tab>
+      </div>
+    </Slider>
+  );
 }
 
 export default MenuDrawer;

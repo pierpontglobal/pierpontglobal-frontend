@@ -1,90 +1,130 @@
 // UserDetails.jsx
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Form } from 'semantic-ui-react';
+import TextField from '@material-ui/core/TextField';
+import { Button } from '@material-ui/core';
 import { ApiServer } from '../../../../Defaults';
-import { Form, Button } from 'semantic-ui-react';
 
 const validator = require('email-validator');
 
-class UserDetails extends Component{
+class UserDetails extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
-        this.checkEmail = this.checkEmail.bind(this);
+    this.state = {
+      incorrectEmail: false,
+    };
+
+    this.checkEmail = this.checkEmail.bind(this);
+    this.saveAndContinue = this.saveAndContinue.bind(this);
+  }
+
+  saveAndContinue(e) {
+    e.preventDefault();
+    this.props.nextStep();
+  }
+
+  changeVisualStatus(color) {
+    this.email.style.borderColor = color;
+    this.email.style.borderWidth = '2px';
+    this.email.style.boxShadow = 'none';
+    this.email.style.borderStyle = 'solid';
+  }
+
+  async checkEmail(node) {
+    const goodFormat = validator.validate(node.target.value);
+    this.props.handleChange('email', node);
+    if (!goodFormat) {
+      this.submitButton.disabled = true;
+      this.setState({
+        incorrectEmail: true,
+      });
+      return true;
     }
-
-    saveAndContinue = (e) => {
-        e.preventDefault()
-        this.props.nextStep()
+    const response = await axios.get(`${ApiServer}/api/v1/user/availability?email=${this.email.value}`);
+    this.submitButton.disabled = !response.data.available;
+    if (!response.data.available) {
+      this.setState({
+        incorrectEmail: true,
+      });
+    } else {
+      this.setState({
+        incorrectEmail: false,
+      });
     }
+  }
 
-    changeVisualStatus(color) {
-        this.email.style.borderColor = color;
-        this.email.style.borderWidth = '2px';
-        this.email.style.boxShadow = 'none';
-        this.email.style.borderStyle = 'solid';
-      }
+  render() {
+    const { values } = this.props;
+    const { incorrectEmail } = this.state;
+    return (
+      <Form>
+        <h1 className="ui centered">Enter User Details</h1>
 
-    async checkEmail(goodFormat) {
-        this.props.changeEmail(this.email.value);
-        if (!goodFormat) {
-          this.submitButton.disabled = true;
-          this.changeVisualStatus('#FF6347');
-          return true;
-        }
-        const response = await axios.get(`${ApiServer}/api/v1/user/availability?email=${this.email.value}`);
-        this.submitButton.disabled = !response.data.available;
-        if (!response.data.available) {
-          this.changeVisualStatus('#FF6347');
-        } else {
-          this.changeVisualStatus('#00B200');
-        }
-      }
-
-    render(){
-        const { values } = this.props;
-        return(
-            <Form >
-                <h1 className="ui centered">Enter User Details</h1>
-                <Form.Field>
-                    <label>First Name</label>
-                    <input
-                    placeholder='First Name'
-                    onChange={this.props.handleChange('firstName')}
-                    defaultValue={values.firstName}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <label>Last Name</label>
-                    <input
-                    placeholder='Last Name'
-                    onChange={this.props.handleChange('lastName')}
-                    defaultValue={values.lastName}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <label>Email Address</label>
-                    <input
-                    type='email'
-                    placeholder='Email Address'
-                    ref={(node) => {this.email = node}}
-                    onChange={() => {this.checkEmail(validator.validate(this.email.value))}}
-                    defaultValue={values.email}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <label>Phone Number</label>
-                    <input
-                    type='tel'
-                    placeholder='Phone number'
-                    onChange={this.props.handleChange('phonenumber')}
-                    defaultValue={values.phonenumber}
-                    />
-                </Form.Field>
-                <Button ref={(node) => this.submitButton = node} onClick={this.saveAndContinue}>Confirm and continue</Button>
-            </Form>
-        )
-    }
+        <Form.Field>
+          <TextField
+            style={{
+              width: '100%',
+            }}
+            required
+            onChange={node => this.props.handleChange('firstName', node)}
+            label="First Name"
+            name="fname"
+            value={values.firstName}
+            autocomplete="given-name"
+          />
+        </Form.Field>
+        <Form.Field>
+          <TextField
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
+            required
+            onChange={node => this.props.handleChange('lastName', node)}
+            label="Last Name"
+            name="lname"
+            value={values.lastName}
+            autocomplete="family-name"
+          />
+        </Form.Field>
+        <Form.Field>
+          <TextField
+            error={incorrectEmail}
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
+            required
+            onChange={(node) => { this.checkEmail(node); }}
+            label="Email Address"
+            type="email"
+            autocomplete="email"
+            value={values.email}
+            ref={(node) => { this.email = node; }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <TextField
+            style={{
+              marginTop: '5px',
+              width: '100%',
+            }}
+            onChange={node => this.props.handleChange('phonenumber', node)}
+            label="Phone number"
+            type="tel"
+            required
+            margin="normal"
+            name="phone"
+            value={values.phonenumber}
+            autocomplete="tel"
+          />
+        </Form.Field>
+        <Button variant="contained" color="primary" ref={node => this.submitButton = node} onClick={this.saveAndContinue}>Confirm and continue</Button>
+      </Form>
+    );
+  }
 }
 
 export default UserDetails;

@@ -9,6 +9,9 @@ import RegistrationPage from './components/pages/RegistrationPage/RegistrationPa
 import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 import CarPage from './components/pages/CarBidPage/CarBidPage';
 import './styles.css';
+import AppNav from './components/AppNav/AppNav';
+import { MuiThemeProvider } from '@material-ui/core';
+import { DefaultTheme } from './Defaults';
 
 const car = {
   year: '2017',
@@ -48,12 +51,6 @@ const car = {
   estimatedTotal: '$33 595',
 }; */
 
-/* const depositStatus = {
-  deficientAmount: '$2 359',
-  necessaryAmount: '$3 359',
-  availableAmount: '$1 000',
-}; */
-
 
 class App extends React.Component {
   constructor(props) {
@@ -68,7 +65,9 @@ class App extends React.Component {
 
     axios.interceptors.response.use(response => response,
       (error) => {
-        if (error.response.status === 401) {
+        if (error.response.request.responseURL.includes('oauth/token')) {
+          return error.response;
+        } if (error.response.status === 401) {
           cookies.remove('token');
           window.location.href = '/?signIn=true';
         }
@@ -77,21 +76,25 @@ class App extends React.Component {
   }
 
   render() {
+    const { cookies } = this.props;
     return (
-      <Router>
-        <div>
-          <Switch>
-            <Route exact path="/" render={() => (<LandingPage cookies={this.props.cookies} />)} />
-            <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={this.props.cookies} />)} />
-            <Route exact path="/marketplace/car" render={() => (<CarPage cookies={this.props.cookies} car={car} />)} />
+      <MuiThemeProvider theme={DefaultTheme}>
+        <Router>
+          <div>
+            <AppNav cookies={cookies} openModal={this.openModal} />
+            <Switch>
+              <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
+              <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
+              <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
-            <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={this.props.cookies} />)} />
-            <Route path="/user" render={() => (<ProfilePage cookies={this.props.cookies} />)} />
+              <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
+              <Route path="/user" render={() => (<ProfilePage cookies={cookies} />)} />
 
-            <Route render={() => (<NotfoundPage cookies={this.props.cookies} />)} />
-          </Switch>
-        </div>
-      </Router>
+              <Route render={() => (<NotfoundPage cookies={cookies} />)} />
+            </Switch>
+          </div>
+        </Router>
+      </MuiThemeProvider>
     );
   }
 }

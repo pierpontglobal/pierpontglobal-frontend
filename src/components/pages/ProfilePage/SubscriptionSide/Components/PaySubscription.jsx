@@ -70,7 +70,7 @@ class PaySubscription extends React.Component {
         }}>
         <h2>Confirm payment</h2>
         <hr/>
-        <h5>Description: <span style={{fontWeight: 200}}>Subcription payment for "Pierpont Global USA Access"</span></h5>
+        <h5>Description: <span style={{fontWeight: 200}}>Subscription payment for "Pierpont Global USA Access"</span></h5>
         <h5>Invoice id: <span style={{fontWeight: 200}}>{this.props.invoiceId}</span></h5>
         <h5>Invoice status: <span style={{fontWeight: 200}}>{this.props.status}</span></h5>
         <h5>Amount <span style={{fontWeight: 200}}>{this.props.amount}</span></h5>

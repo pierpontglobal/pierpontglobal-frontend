@@ -48,10 +48,10 @@ class CreateCard extends React.Component {
         </Elements>
         <hr/>
         <h4>Bank transfer</h4>
-        <p>At the moment Pierpont Global do not accept bank transfers through our electornic system, contact support.</p>
+        <p>At the moment Pierpont Global do not accept bank transfers through our electronic system, contact support.</p>
         <hr/>
-        <h4>Paypal</h4>
-        <p>At the moment Pierpont Global do no t accept payments from paypal.</p>
+        <h4>PayPal</h4>
+        <p>At the moment Pierpont Global do no t accept payments from PayPal.</p>
         </div>
         </Modal>
       </div>

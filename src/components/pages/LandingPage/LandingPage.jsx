@@ -1,35 +1,23 @@
 import React from 'react';
-import AppNav from '../../AppNav/AppNav';
+import Img from 'react-image';
 import VideoBar from '../../Bars/VideoBar';
 import Registration from '../../Forms/RegisterForm';
 import ManheimLogo from './manheim.png';
 import './font/flaticon.css';
 import './landing_page.css';
-import imac from './images/imac.png';
-import magnifier from './images/magnifier.png';
-import pin from './images/pin.png';
-import section1_bg from './images/section1_bg.jpg';
 import Button from '../../Btn/Btn';
-import loader1 from './images/loader1.png';
-import customs1 from './images/customs1.png';
-import bottomImage from './images/landing_bottom.webp';
 
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      openModal: false,
-    };
+    this.state = {};
   }
 
   render() {
     return (
       <div>
-        <AppNav cookies={this.props.cookies} openModal={this.openModal} notSearchable />
         <VideoBar />
-
         <Registration textColor="#ffffff" height="500px" backgroundColor="#9aa7b5" openModal={this.openModal} />
-
         <div style={{
           width: '100%',
           height: '384px',
@@ -57,11 +45,11 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            Endorsed by the best
+            Featuring Inventory from Manheim
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
-            Pierpont Global is a licensed partner of Manheim and Cox Automitive Inc.
+            Pierpont Global is a licensed partner of Manheim and Cox Automotive Inc.
           </p>
         </div>
 
@@ -83,28 +71,64 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            You'll have access to
+            You`ll have access to
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
-            A platform designed to make buying vehicles much easier.
+            A platform designed to make buying vehicles much easier .
           </p>
 
           <div className="cards-holder-3">
             <div className="card-info">
-              <img alt="search icon" src={magnifier} className="landing-page-icon" />
+              <Img
+                alt="magnifier"
+                className="landing-page-icon"
+                src={[
+                  '/images/marketplace/magnifier/magnifier.webp',
+                  '/images/marketplace/magnifier/magnifier.jp2',
+                  '/images/marketplace/magnifier/magnifier.jxr',
+                  '/images/marketplace/magnifier/magnifier.png',
+                ]}
+                loader={
+                  <div style={{ width: '200px', height: '200px', background: '#dedede' }} />
+                }
+              />
               <p className="subtitle-medium">Search Listings</p>
               <p className="subtitle-follow-up">Our platform ties together thousands of listings, from dozens of Manheim Auction locations, giving you access to infinitely more vehicle options to buy from.</p>
             </div>
             <div className="card-info">
-              <img alt="imac icon" src={imac} className="landing-page-icon" />
+              <Img
+                alt="imac"
+                className="landing-page-icon"
+                src={[
+                  '/images/marketplace/imac/imac.webp',
+                  '/images/marketplace/imac/imac.jp2',
+                  '/images/marketplace/imac/imac.jxr',
+                  '/images/marketplace/imac/imac.png',
+                ]}
+                loader={
+                  <div style={{ width: '200px', height: '200px', background: '#dedede' }} />
+                }
+              />
               <p className="subtitle-medium">Place Bids</p>
               <p className="subtitle-follow-up">Bid on vehicles right from your computer. Using our provided pricing information and condition reports, you’ll have all the info you need to place well calculated bids.</p>
             </div>
             <div style={{ marginBottom: '30px' }} className="card-info">
-              <img alt="Map pin icon" src={pin} className="landing-page-icon" />
+              <Img
+                alt="pin"
+                className="landing-page-icon"
+                src={[
+                  '/images/marketplace/pin/pin.webp',
+                  '/images/marketplace/pin/pin.jp2',
+                  '/images/marketplace/pin/pin.jxr',
+                  '/images/marketplace/pin/pin.png',
+                ]}
+                loader={
+                  <div style={{ width: '200px', height: '200px', background: '#dedede' }} />
+                }
+              />
               <p className="subtitle-medium">Delivery</p>
-              <p className="subtitle-follow-up">We handle the process of delivering the vehicles from the auction to your neary port, while giving you tracking updates along the way. We will get you the best ground transport rates, shipping rates, as well as import customs and tax rates. With all invoices provided in real time.</p>
+              <p className="subtitle-follow-up">We handle the process of delivering the vehicles from the auction to your near port, while giving you tracking updates along the way. We will get you the best ground transport rates, shipping rates, as well as import customs and tax rates. With all invoices provided in real time.</p>
             </div>
           </div>
 
@@ -163,20 +187,44 @@ class LandingPage extends React.Component {
           paddingBottom: '100px',
           width: '100%',
           height: 'auto',
-          backgroundImage: `url(${section1_bg})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: 'rgb(114, 115, 119)',
-          backgroundBlendMode: 'multiply',
-          backgroundSize: 'cover',
-          backgroundPosition: 'bottom',
           display: 'flex',
           justifyContent: 'center',
           alignContent: 'center',
           flexDirection: 'column',
           alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          minHeight: '600px',
         }}
         >
-          <div className="cards-holder-1">
+          <Img
+            style={{
+              position: 'absolute',
+              minHeight: '100%',
+              minWidth: '100%',
+              width: 'auto',
+              height: 'auto',
+              bottom: '0',
+            }}
+            alt="Customs"
+            className="image-landing"
+            src={[
+              '/images/marketplace/section1_bg/section1_bg.webp',
+              '/images/marketplace/section1_bg/section1_bg.jp2',
+              '/images/marketplace/section1_bg/section1_bg.jxr',
+              '/images/marketplace/section1_bg/section1_bg.png',
+            ]}
+            loader={
+              <div style={{ width: '100%', height: '100px', background: '#dedede' }} />
+                  }
+          />
+
+          <div style={{
+            position: 'absolute', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          }}
+          />
+
+          <div style={{ position: 'absolute' }} className="cards-holder-1">
             <div style={{ color: '#ffffff' }} className="column-1">
               <p className="big-title">
               What makes Pierpont unique?
@@ -195,7 +243,7 @@ class LandingPage extends React.Component {
                   });
                 }}
               >
-            Sign up now >>
+            Sign up now &gt;&gt;
               </Button>
             </div>
           </div>
@@ -234,18 +282,34 @@ class LandingPage extends React.Component {
                 }}
                 className="column-5"
               >
-                <img
-                  alt="Logistics"
+
+                <Img
+                  style={{
+                    maxWidth: '600px',
+                  }}
+                  alt="Customs"
                   className="image-landing"
-                  src={loader1}
+                  src={[
+                    '/images/marketplace/loader1/loader1.webp',
+                    '/images/marketplace/loader1/loader1.jp2',
+                    '/images/marketplace/loader1/loader1.jxr',
+                    '/images/marketplace/loader1/loader1.png',
+                  ]}
+                  loader={
+                    <div style={{ width: '100%', height: '100px', background: '#dedede' }} />
+                  }
                 />
 
                 <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
                 Logistics
                 </p>
-
-                <p>It’s difficult getting a car from one location to another safely and securely, especially when you are in another country. That’s why we’ve created an innovative solution where we facilitate transporting from auction to port, and shipping from U.S. to Dominican Republic, without you having to lift a finger at all.</p>
-
+                <p>
+                  It`s difficult getting a car from one location to another safely and securely,
+                  especially when you are in another country. That`s
+                  why we`ve created an innovative solution where
+                  we facilitate transporting from auction to port, and shipping from U.S.
+                  to Dominican Republic, without you having to lift a finger at all.
+                </p>
               </div>
 
               <hr className="phoneDivisor" />
@@ -263,17 +327,34 @@ class LandingPage extends React.Component {
                 }}
                 className="column-5"
               >
-                <img
+                <Img
+                  style={{
+                    maxWidth: '600px',
+                  }}
                   alt="Customs"
                   className="image-landing"
-                  src={customs1}
+                  src={[
+                    '/images/marketplace/customs1/customs1.webp',
+                    '/images/marketplace/customs1/customs1.jp2',
+                    '/images/marketplace/customs1/customs1.jxr',
+                    '/images/marketplace/customs1/customs1.png',
+                  ]}
+                  loader={
+                    <div style={{ width: '100%', height: '100px', background: '#dedede' }} />
+                  }
                 />
 
                 <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
                 Customs
                 </p>
 
-                <p>We have experts take your vehicle through customs and handle all legal aspects of the vehicle leaving the United States. We make sure all necessary paperwork is processed accordingly, and make sure your vehicle leaves the port on its designated shipping vessel in a timely manner, with little to no obstacles</p>
+                <p>
+                  We have experts take your vehicle through customs and handle all
+                  legal aspects of the vehicle leaving the United States. We make
+                  sure all necessary paperwork is processed accordingly, and make
+                  sure your vehicle leaves the port on its designated shipping vessel
+                  in a timely manner, with little to no obstacles
+                </p>
               </div>
             </div>
           </div>
@@ -284,25 +365,59 @@ class LandingPage extends React.Component {
           paddingBottom: '100px',
           width: '100%',
           height: 'auto',
-          backgroundImage: `url(${bottomImage})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: 'rgb(114, 115, 119)',
-          backgroundBlendMode: 'multiply',
-          backgroundSize: 'cover',
-          backgroundPosition: 'bottom',
+          minHeight: '500px',
           display: 'flex',
           justifyContent: 'center',
           alignContent: 'center',
           flexDirection: 'column',
           alignItems: 'center',
+          overflow: 'hidden',
+          position: 'relative',
         }}
         >
-          <div className="cards-holder-1">
+
+          <Img
+            style={{
+              position: 'absolute',
+              minHeight: '100%',
+              minWidth: '100%',
+              width: 'auto',
+              height: 'auto',
+              bottom: 0,
+            }}
+            alt="Customs"
+            className="image-landing"
+            src={[
+              '/images/marketplace/landing_bottom/landing_bottom.webp',
+              '/images/marketplace/landing_bottom/landing_bottom.jp2',
+              '/images/marketplace/landing_bottom/landing_bottom.jxr',
+              '/images/marketplace/landing_bottom/landing_bottom.png',
+            ]}
+            loader={
+              <div style={{ width: '100%', height: '100px', background: '#dedede' }} />
+                  }
+          />
+
+          <div style={{
+            position: 'absolute', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          }}
+          />
+
+          <div style={{ position: 'absolute' }} className="cards-holder-1">
             <div style={{ color: '#ffffff' }} className="column-1">
               <p className="big-title">
-              Start working smarter.
+                Start working smarter.
               </p>
-              <p style={{ fontSize: '16px', textAlign: 'center', maxWidth: '350px' }} className="subtitle-follow-up">More options. Better pricing. Less headaches.</p>
+              <p
+                style={{
+                  fontSize: '16px',
+                  textAlign: 'center',
+                  maxWidth: '350px',
+                }}
+                className="subtitle-follow-up"
+              >
+                More options. Better pricing. Less headaches.
+              </p>
               <Button
                 type="button"
                 marginTop="96px"
@@ -314,16 +429,16 @@ class LandingPage extends React.Component {
                 onClick={() => {
                   window.scrollTo({
                     top: 0,
-                    behavior: 'smooth', // Optional, adds animation
+                    behavior: 'smooth',
                   });
                 }}
               >
-            SIGN ME UP
+                SIGN ME UP
               </Button>
               <p style={{ textAlign: 'center' }}>
-By continuing you agree to our
+                By continuing you agree to our
                 <br />
-Terms of use
+                Terms of use
               </p>
             </div>
           </div>

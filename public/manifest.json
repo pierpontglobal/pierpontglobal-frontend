@@ -1,0 +1,21 @@
+{
+    "short_name": "PPG",
+    "name": "Pierpont Global",
+    "icons": [
+      {
+        "src": "/icon_sm.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/icon_lg.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#fafafa",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#fafafa"
+  }

@@ -49,12 +49,6 @@ class MarketPlacePage extends React.Component {
 
   async getCars() {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${this.state.token}`,
-        },
-      };
-
       let str = '';
 
       this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
@@ -70,7 +64,7 @@ class MarketPlacePage extends React.Component {
       window.history.pushState(null, 'Marketplace', `/marketplace?page=${page}${str}`);
 
       const carsGroup = [];
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=20&${str}&offset=${offset}`, config);
+      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=20&${str}&offset=${offset}`);
       const carsArray = response.data.cars;
 
       this.setState({
@@ -162,7 +156,6 @@ class MarketPlacePage extends React.Component {
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <AppNav cookies={this.props.cookies} />
           <div className="d-flex justify-content-center">
             <div
               className="ml-auto d-none d-lg-flex mr-3 w-100"

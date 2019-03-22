@@ -2,12 +2,13 @@ import React from 'react';
 import { StripeProvider } from 'react-stripe-elements';
 import { Card, Dropdown } from 'semantic-ui-react';
 import axios from 'axios';
+import Chart from 'chart.js';
 import UnderLine from '../../../Underline/Underline';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
 import CreateCard from './Components/Modals/CreateCard';
 import './style.css';
-import { ApiServer } from '../../../../Defaults';
+import { ApiServer, StripeKey } from '../../../../Defaults';
 import AddDeposit from './Components/Modals/AddDeposit';
 
 const headingStyle = {
@@ -18,17 +19,18 @@ const headingStyle = {
   color: '#000000',
 };
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 export default class SettingSide extends React.Component {
   constructor(props) {
     super(props);
-
-    const { cookies, user } = props;
 
     this.state = {
       editable: false,
       paymentMethods: [],
       cardsNumbers: [],
-      token: cookies.get('token'),
       card: '',
       loading: false,
       name: '',
@@ -53,43 +55,72 @@ export default class SettingSide extends React.Component {
   }
 
   async getDefaultPaymentMethod() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-    const response = await axios.get(`${ApiServer}/api/v1/user/cards/default`, config);
+    const response = await axios.get(`${ApiServer}/api/v1/user/cards/default`);
     this.setState({
       card: response.data,
     });
   }
 
   async getFunds() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`, config)).data;
-    console.log(responseFunds);
+    const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`)).data;
     this.setState({
       funds: responseFunds,
-    });
+    }, this.generateGraph);
   }
 
   async getUser() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
+    const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
+    this.setState({
+      name: `${responseUser.first_name} ${responseUser.last_name}`,
+      address: `${responseUser.address.primary_address} ${responseUser.address.secondary_address}, ${responseUser.address.zip_code}, ${responseUser.address.city} ${responseUser.address.country}`,
+      email: `${responseUser.email}`,
+      phone: `${responseUser.phone_number}`,
+    });
+  }
+
+  generateGraph() {
+    const options = {
+      tooltips: {
+        callbacks: {
+          label(tooltipItem, data) {
+            const amount = data.datasets[0].data[tooltipItem.index].toFixed(2);
+            const amountWithCommas = numberWithCommas(amount);
+            const moneyFormattedAmount = `$ ${amountWithCommas} USD`;
+            return moneyFormattedAmount;
+          },
+        },
+      },
+      scales: {
+
       },
     };
-    const response_user = (await axios.get(`${ApiServer}/api/v1/user`, config)).data;
-    this.setState({
-      name: `${response_user.first_name} ${response_user.last_name}`,
-      address: `${response_user.address.primary_address} ${response_user.address.secondary_address}, ${response_user.address.zip_code}, ${response_user.address.city} ${response_user.address.country}`,
-      email: `${response_user.email}`,
-      phone: `${response_user.phone_number}`,
+
+    const { funds } = this.state;
+    const amount = funds;
+
+    const progressPercentage = parseFloat(amount.balance - amount.holding);
+    const holdingPercentage = parseFloat(amount.holding);
+    const totalPercentage = parseFloat(10000 - progressPercentage - holdingPercentage);
+
+    const data = {
+      datasets: [{
+        data: [progressPercentage, holdingPercentage, totalPercentage],
+        backgroundColor: ['#1D385A', 'rgb(35, 88, 154)', '#3e78c0'],
+      }],
+
+      labels: [
+        'Remaining',
+        'Holdings',
+        'Total',
+      ],
+    };
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data,
+      options,
     });
   }
 
@@ -97,13 +128,7 @@ export default class SettingSide extends React.Component {
     const methods = [];
     const cardsNumbers = [];
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    const response = (await axios.get(`${ApiServer}/api/v1/user/cards`, config)).data;
+    const response = (await axios.get(`${ApiServer}/api/v1/user/cards`)).data;
     for (let i = 0; i < response.length; i += 1) {
       const card = response[i];
 
@@ -214,24 +239,12 @@ export default class SettingSide extends React.Component {
       loading: true,
     });
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: value }, config);
+    axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: value });
     window.location.reload();
   }
 
   async removeCard(cardToken) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${this.state.token}`,
-      },
-    };
-
-    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`, config);
+    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`);
     window.location.reload();
   }
 
@@ -257,8 +270,17 @@ export default class SettingSide extends React.Component {
           <UnderLine>
             <h4 className="mb-0">Deposit</h4>
           </UnderLine>
-          <div className="d-flex content-main">
-            <DepositProgress amount={funds} />
+          <div className="d-flex content-main flex-modifier-user-view">
+            <canvas
+              className="phone-only"
+              id="myChart"
+              width="100"
+              height="100"
+              style={{
+                marginBottom: '20px',
+              }}
+            />
+            <DepositProgress className="tablet-up" amount={funds} />
             <AddDeposit cookies={this.props.cookies} />
           </div>
         </div>
@@ -301,7 +323,7 @@ export default class SettingSide extends React.Component {
         <div className="card shadow content-holder-box">
           <UnderLine className="justify-content-between">
             <h4 className="mb-0">Payment methods</h4>
-            <StripeProvider apiKey="pk_test_QLMa4OOqdKIkfcZYvlMvJMTJ">
+            <StripeProvider apiKey={StripeKey}>
               <CreateCard cookies={this.props.cookies} />
             </StripeProvider>
           </UnderLine>

@@ -1,17 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import UnderLine from '../../../Underline/Underline';
-import RoundBadge from '../../../RoundBadge/RoundBadge';
 import BidCard from '../../../BidCard/BidCard';
 import PurchaseCard from '../../../PurchaseCard/PurchaseCard';
 import { ApiServer } from '../../../../Defaults';
 
-const bidStyle = {
+/* const bidStyle = {
   fontSize: '1em',
   fontWeight: 600,
   lineHeight: 1.31,
   color: '#000000',
-};
+}; */
 
 const headingStyle = {
   fontSize: '1em',

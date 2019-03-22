@@ -1,7 +1,6 @@
 import React from 'react';
 import './styles.css';
 import posed from 'react-pose';
-import AppNav from '../../AppNav/AppNav';
 
 const FlyDownDiv = posed.div({
   normal: {
@@ -31,7 +30,6 @@ class NotFoundPage extends React.Component {
   render() {
     return (
       <div>
-        <AppNav notSearchable cookies={this.props.cookies} />
         <FlyDownDiv pose={this.state.textPlace} className="center-holder">
           <span className="big-text">404</span>
           <div>
