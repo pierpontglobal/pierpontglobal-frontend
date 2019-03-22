@@ -108,7 +108,7 @@ class SuccessfullPortion extends React.Component {
         >
           Can`t find the email? Verify your spam folder or click
           {' '}
-          <a
+          <button
             style={{
               color: textColor,
               textDecoration: 'none',
@@ -118,7 +118,7 @@ class SuccessfullPortion extends React.Component {
             onClick={() => (this.resend(email))}
           >
           Resend
-          </a>
+          </button>
           {' '}
           to try again.
         </p>

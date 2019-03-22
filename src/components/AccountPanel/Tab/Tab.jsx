@@ -3,7 +3,6 @@ import RoundBadge from '../../RoundBadge/RoundBadge';
 import Container from '../../styles/Container/Container';
 import Span from '../../styles/Span/Span';
 import './styles.css';
-import { pointer } from 'popmotion';
 
 function Tab({
   icon, name, selected, notification, onClick, className = '', searchKey,

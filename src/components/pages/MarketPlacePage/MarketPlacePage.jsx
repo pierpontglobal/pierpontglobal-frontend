@@ -88,7 +88,7 @@ class MarketPlacePage extends React.Component {
         }
 
         const carObject = {
-          wholePrice: 200000,
+          wholePrice: car.sale_information.whole_price,
           crUrl: car.car_information.cr_url,
           year: car.car_information.year,
           make: car.car_information.car_maker,

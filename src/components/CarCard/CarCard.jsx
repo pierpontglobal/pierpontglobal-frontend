@@ -219,7 +219,7 @@ function CarCard({ key, car, requestFuntion }) {
     <CarContainer
       key={key}
       backgroundColor="#fafafa"
-      onClick={(e) => { const _res = e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null; }}
+      onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) }
     >
       <ImgContainer>
         <Carousel
