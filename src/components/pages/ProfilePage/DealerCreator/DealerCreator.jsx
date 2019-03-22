@@ -102,7 +102,7 @@ class DealerCreator extends React.Component {
     if (key === 'phoneNumber') {
       printNumber(node);
     }
-    const { value } = node.target.value;
+    const { value } = node.target;
     this.setState({
       [key]: value,
     });
