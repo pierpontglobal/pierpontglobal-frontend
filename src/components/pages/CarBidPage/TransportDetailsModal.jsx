@@ -67,9 +67,6 @@ class TransportDetailsModal extends React.Component {
   }
 
   render() {
-    // Implement search function
-    const { options } = this.props;
-
     return (
       <div>
         <button

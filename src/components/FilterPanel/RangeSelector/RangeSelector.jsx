@@ -74,8 +74,6 @@ class RangeSelector extends React.Component {
     const {
       items,
       width,
-      min,
-      max,
       selectedYears,
     } = this.props;
 
@@ -121,7 +119,7 @@ class RangeSelector extends React.Component {
   getItemPosition(key) {
     const { items } = this.state;
     let position = -1;
-    items.map((item, i) => {
+    items.forEach((item, i) => {
       if (item.key === key) {
         position = i;
       }
@@ -146,8 +144,6 @@ class RangeSelector extends React.Component {
       width, indicatorWidth, min, max,
       rightIndicatorPose, leftIndicatorPose, items,
     } = this.state;
-
-    const { onBoundChanged } = this.props;
 
     const maxCount = getMaxCount(items);
     items = reOrganize(items);

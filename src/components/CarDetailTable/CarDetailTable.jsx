@@ -21,6 +21,7 @@ function CarDetailTable({ car }) {
         {Object.keys(car).map(
           (key, i) => (
             <Detail
+              key={i}
               stripe={i === 0 || i % 2 === 0}
               title={key}
               text={car[key] ? (Array.isArray(car[key]) ? `${car[key].length} Elements` : car[key]) : ('Not available')}

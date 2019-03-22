@@ -45,7 +45,7 @@ function CarDetailCard({ car }) {
 
   return (
     <Container
-      style={{ width: '100%' }}
+      style={{ maxWidth: '100%' }}
       className="pl-3 py-3 mb-3"
       maxWidth="22em"
       backgroundColor="#fafafa"

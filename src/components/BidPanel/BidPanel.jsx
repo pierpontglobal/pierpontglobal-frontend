@@ -4,7 +4,6 @@ import { ActionCableConsumer } from 'react-actioncable-provider';
 import Input from '../styles/Input/Input';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
-import Btn from '../Btn/Btn';
 import { ApiServer } from '../../Defaults';
 import PriceTag from '../CarCard/PriceTag/PriceTag';
 import DepositModal from '../DepositModal/DepositModal';

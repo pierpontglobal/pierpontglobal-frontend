@@ -13,7 +13,7 @@ function SearchInput({ defaultValue }) {
 
 
     <div style={{
-      display: 'flex', flexGrow: 3, paddingRight: '10px', flexDirection: 'row',
+      display: 'flex', flexGrow: 3, flexDirection: 'row',
     }}
     >
       <div style={{

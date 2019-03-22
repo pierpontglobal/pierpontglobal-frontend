@@ -60,16 +60,17 @@ class PriceTag extends React.Component {
 
     if (price) {
       return (
-        <Text
+        <p
+          style={{
+            marginBottom: 0,
+            fontSize: '20px',
+            color,
+          }}
           className={className}
-          fontSize="28px"
-          fontWeight={200}
-          lineHeight={1.34}
-          style={{ color }}
         >
           {' '}
-          {price === 'null' ? 'Not available' : `$ ${numberWithCommas(price)}`}
-        </Text>
+          {price === 'null' ? 'Not available' : `$ ${numberWithCommas(price.toFixed(2))}`}
+        </p>
       );
     }
     if (requesting) {
