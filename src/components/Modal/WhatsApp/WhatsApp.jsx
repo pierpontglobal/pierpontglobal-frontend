@@ -2,6 +2,7 @@ import React from 'react';
 import Img from 'react-image';
 import './custom.css';
 import posed from 'react-pose';
+import styled from 'styled-components';
 
 const WButton = posed.div({
   clicked: {
@@ -50,6 +51,18 @@ const WElement = posed.div({
   },
   props: { i: 0 },
 });
+
+const WMessageStyleWrapper = styled.div`
+  position: 'absolute';
+  right: '80px';
+  bottom: '10px';
+  padding: '7px';
+  border-radius: '5px';
+  background-color: '#ffffff';
+  @media screen and (max-width: 480px) {
+    visibility: hidden;
+  }
+`;
 
 
 class WhatsApp extends React.Component {
@@ -189,21 +202,15 @@ Hi! Click one of our members below to chat on
             </div>
           </div>
         </WList>
-        <WMessage
-          pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
-          className="shadow"
-          style={{
-            position: 'absolute',
-            right: '80px',
-            bottom: '10px',
-            padding: '7px',
-            borderRadius: '5px',
-            backgroundColor: '#ffffff',
-          }}
-        >
-          Need help?
-          <span style={{ fontWeight: 'bold' }}> Chat with us!</span>
-        </WMessage>
+        <WMessageStyleWrapper>
+          <WMessage
+            pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
+            className="shadow"
+          >
+            Need help?
+            <span style={{ fontWeight: 'bold' }}> Chat with us!</span>
+          </WMessage>
+        </WMessageStyleWrapper>
         <WButton
           style={{
             zIndex: 200, position: 'absolute', right: 0, bottom: 0,
