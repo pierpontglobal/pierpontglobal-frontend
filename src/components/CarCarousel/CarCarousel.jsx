@@ -3,9 +3,9 @@ import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import './styles.css';
 
-function CarCarousel({ images }) {
+function CarCarousel({ images, maxWidth }) {
   return (
-    <div>
+    <div style={{ maxWidth: maxWidth, justifySelf: 'center', }}>
       <ImageGallery
         items={images.map(i => ({ original: i, thumbnail: `${i}?width=354&height=200` }))}
         disableThumbnailScroll

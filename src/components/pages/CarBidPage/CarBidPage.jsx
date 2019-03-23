@@ -123,7 +123,11 @@ class CarBidPage extends React.Component {
       <div>
         <div style={{ marginTop: '-15px' }} style={{ display: 'flex', justifyContent: 'center' }}>
           <div
-            style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+            style={{ 
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%', 
+            }}
           >
             {userBid !== undefined
               ? <UserBidCard bid={userBid} />
@@ -133,7 +137,7 @@ class CarBidPage extends React.Component {
               transportPrice="277"
               to="to Port Miami, FL"
             />
-            <CarCarousel images={car.images} />
+            <CarCarousel maxWidth='100%' images={car.images} />
           </div>
         </div>
         <CarBottomNav
@@ -184,7 +188,7 @@ class CarBidPage extends React.Component {
                     transportPrice="277"
                     to="to Port Miami, FL"
                   />
-                  <CarCarousel images={car.images} />
+                  <CarCarousel maxWidth='720px' images={car.images} />
                 </div>
               </div>
               <CarBottomNav

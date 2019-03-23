@@ -52,15 +52,15 @@ const WElement = posed.div({
   props: { i: 0 },
 });
 
-const WMessageStyleWrapper = styled.div`
-  position: 'absolute';
-  right: '80px';
-  bottom: '10px';
-  padding: '7px';
-  border-radius: '5px';
-  background-color: '#ffffff';
+const WMessageStyleWrapper = styled(WMessage)`
+  position: absolute;
+  right: 80px;
+  bottom: 10px;
+  padding: 7px;
+  border-radius: 5px;
+  background-color: #ffffff;
   @media screen and (max-width: 480px) {
-    visibility: hidden;
+    display: none;
   }
 `;
 
@@ -202,14 +202,12 @@ Hi! Click one of our members below to chat on
             </div>
           </div>
         </WList>
-        <WMessageStyleWrapper>
-          <WMessage
-            pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
-            className="shadow"
-          >
-            Need help?
-            <span style={{ fontWeight: 'bold' }}> Chat with us!</span>
-          </WMessage>
+        <WMessageStyleWrapper
+          pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
+          className="shadow"
+        >
+          Need help?
+          <span style={{ fontWeight: 'bold' }}> Chat with us!</span>
         </WMessageStyleWrapper>
         <WButton
           style={{
