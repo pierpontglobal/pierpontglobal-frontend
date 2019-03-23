@@ -119,46 +119,53 @@ class CarBidPage extends React.Component {
     const { car } = this.state;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
 
-    let firstTabContent = <React.Fragment>
+    const firstTabContent = (
       <div>
-        <div style={{ marginTop: '-15px' }} className="d-flex justify-content-center">
+        <div style={{ marginTop: '-15px' }} style={{ display: 'flex', justifyContent: 'center' }}>
           <div
-          className="d-flex flex-column"
-          style={{ width: '720px' }} >
-          {userBid !== undefined
-            ? <UserBidCard bid={userBid} />
-            : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
-          <LocationBar
-            currentLocation={car.location}
-            transportPrice="277"
-            to="to Port Miami, FL"
-          />
-          <CarCarousel images={car.images} />
+            style={{ 
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%', 
+            }}
+          >
+            {userBid !== undefined
+              ? <UserBidCard bid={userBid} />
+              : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
+            <LocationBar
+              currentLocation={car.location}
+              transportPrice="277"
+              to="to Port Miami, FL"
+            />
+            <CarCarousel maxWidth='100%' images={car.images} />
           </div>
         </div>
         <CarBottomNav
           prev={car}
-          next={car} />
+          next={car}
+        />
       </div>
-      </React.Fragment>;
+    );
 
-      let secondTabContent = <div style={{ width: '100%' }} className="d-flex flex-column mr-3">
+    const secondTabContent = (
+      <div style={{ width: '100%' }} className="d-flex flex-column mr-3">
         <CarDetailCard car={car} />
         <CarDetailTable car={car} />
-      </div>;
+      </div>
+    );
 
-      let tabOptions = [
-        {
-          label: 'Preview',
-          item: firstTabContent,
-          icon: <DirectionsCar />
-        }, 
-        {
-          label: 'Specifications',
-          item: secondTabContent,
-          icon: <Info />
-        }
-      ];
+    const tabOptions = [
+      {
+        label: 'Preview',
+        item: firstTabContent,
+        icon: <DirectionsCar />,
+      },
+      {
+        label: 'Specifications',
+        item: secondTabContent,
+        icon: <Info />,
+      },
+    ];
 
     return (
       <div>
@@ -166,33 +173,32 @@ class CarBidPage extends React.Component {
           <MediaQuery minDeviceWidth={1224}>
             <React.Fragment>
               <div style={{ marginTop: '-15px' }} className="d-flex justify-content-center">
-              <SideMenuWrapper>
-                <CarDetailCard car={car} />
-                <CarDetailTable car={car} />
-              </SideMenuWrapper>
-              <div
-                className="d-flex flex-column"
-                style={{ width: '720px' }}
-              >
-                {userBid !== undefined
-                  ? <UserBidCard bid={userBid} />
-                  : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
-                <LocationBar
-                  currentLocation={car.location}
-                  transportPrice="277"
-                  to="to Port Miami, FL"
-                />
-                <CarCarousel images={car.images} />
+                <SideMenuWrapper>
+                  <CarDetailCard car={car} />
+                  <CarDetailTable car={car} />
+                </SideMenuWrapper>
+                <div
+                  style={{ display: 'flex', flexDirection: 'column' }}
+                >
+                  {userBid !== undefined
+                    ? <UserBidCard bid={userBid} />
+                    : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
+                  <LocationBar
+                    currentLocation={car.location}
+                    transportPrice="277"
+                    to="to Port Miami, FL"
+                  />
+                  <CarCarousel maxWidth='720px' images={car.images} />
+                </div>
               </div>
-            </div>
-            <CarBottomNav
-              prev={car}
-              next={car}
-            />
+              <CarBottomNav
+                prev={car}
+                next={car}
+              />
             </React.Fragment>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={1224}>
-            <TabsComponent options={tabOptions} />;
+            <TabsComponent options={tabOptions} />
           </MediaQuery>
         </ActionCableProvider>
       </div>

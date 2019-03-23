@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { ActionCableConsumer } from 'react-actioncable-provider';
+import styled from 'styled-components';
 import Input from '../styles/Input/Input';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
@@ -13,6 +14,19 @@ let bidInput = null;
 async function requestCarPrice(vin) {
   await axios.patch(`${ApiServer}/api/v1/car/price-request`, { vin });
 }
+
+const BidPanelWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #3e78c0;
+  min-height: 105px;
+  @media screen and (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
 
 class BidPanel extends React.Component {
   constructor(props) {
@@ -104,11 +118,7 @@ class BidPanel extends React.Component {
     } = this.state;
 
     return (
-      <Container
-        className="d-flex flex-row pt-3 px-3 justify-content-between mb-3"
-        maxHeight="105px"
-        backgroundColor="#3e78c0"
-      >
+      <>
         { bidPlacingFailed ? (
           <DepositModal
             onAddDeposit={() => { window.location.href = '/user'; }}
@@ -126,90 +136,92 @@ class BidPanel extends React.Component {
           channel="PriceQueryChannel"
           onReceived={this.handleReceived}
         />
-        <div className="d-flex flex-column">
-          <Text
-            className="mb-0"
-            opacity={0.87}
-            fontSize="0.75em"
-            lineHeight={1.33}
-            fontColor="#ffffff"
-          >
-          Whole price:
-          </Text>
-          <PriceTag
-            color="white"
-            price={wholePrice}
-            fontSizeButton="20px"
-            vin={vin}
-            requestFuntion={requestCarPrice}
-            className="text-right mb-0"
-          />
-        </div>
-        <div className="d-flex flex-column">
-          <Container
-            className="d-flex mb-1 justify-content-end"
-            height="60px"
-          >
-            <Input
-              className="input mr-3 border-0"
-              maxWidth="200px"
-              backgroundColor="#3A70B4"
-              borderRadius="4px"
-              fontSize="20px"
-              ref={(node) => { bidInput = node; }}
-              style={{
-                padding: '20px',
-                outline: 'none',
-                textAlign: 'right',
-
-              }}
-              type="number"
+        <BidPanelWrapper>
+          <div style={{ display: 'flex', flexDirection: 'column', margin: '10px' }}>
+            <Text
+              className="mb-0"
+              opacity={0.87}
+              fontSize="0.75em"
+              lineHeight={1.33}
               fontColor="#ffffff"
-              placeholder="Your max bid"
-              placeholderColor="#ffffff"
-              placeholderOpacity={0.54}
-            />
-            <button
-              style={{
-                position: 'relative',
-                maxWidth: '100px',
-                backgroundColor: '#0bb761',
-                color: 'white',
-                borderRadius: '5px',
-                cursor: 'pointer',
-              }}
-              className="border-0 w-100"
-              hoverColor="#23d17a"
-              onClick={() => (this.sendBid(parseFloat(bidInput.value), carId))}
-              type="button"
             >
-            BID
-              <i
+            Whole price:
+            </Text>
+            <PriceTag
+              color="white"
+              price={wholePrice}
+              fontSizeButton="20px"
+              vin={vin}
+              requestFuntion={requestCarPrice}
+              className="text-right mb-0"
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Container
+              className="d-flex mb-1 justify-content-end"
+              height="60px"
+            >
+              <Input
+                className="input mr-3 border-0"
+                maxWidth="200px"
+                backgroundColor="#3A70B4"
+                borderRadius="4px"
+                fontSize="20px"
+                ref={(node) => { bidInput = node; }}
                 style={{
-                  display: loading ? 'block' : 'none',
-                  position: 'absolute',
-                  margin: 'auto 0',
-                  top: 0,
-                  bottom: 0,
-                  right: '10px',
-                  height: '20px',
-                  fontSize: '20px',
+                  padding: '20px',
+                  outline: 'none',
+                  textAlign: 'right',
+
                 }}
-                className="fas fa-spinner loading"
+                type="number"
+                fontColor="#ffffff"
+                placeholder="Your max bid"
+                placeholderColor="#ffffff"
+                placeholderOpacity={0.54}
               />
-            </button>
-          </Container>
-          <Text
-            fontSize="0.75em"
-            lineHeight={1.33}
-            fontColor="rgba(255, 255, 255, 0.87)"
-          >
-          You will have to retract your bid until:
-            {' '}
-            {saleDate}
-          </Text>
-        </div>
-      </Container>
+              <button
+                style={{
+                  position: 'relative',
+                  maxWidth: '100px',
+                  backgroundColor: '#0bb761',
+                  color: 'white',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}
+                className="border-0 w-100"
+                hoverColor="#23d17a"
+                onClick={() => (this.sendBid(parseFloat(bidInput.value), carId))}
+                type="button"
+              >
+              BID
+                <i
+                  style={{
+                    display: loading ? 'block' : 'none',
+                    position: 'absolute',
+                    margin: 'auto 0',
+                    top: 0,
+                    bottom: 0,
+                    right: '10px',
+                    height: '20px',
+                    fontSize: '20px',
+                  }}
+                  className="fas fa-spinner loading"
+                />
+              </button>
+            </Container>
+            <Text
+              fontSize="0.75em"
+              lineHeight={1.33}
+              fontColor="rgba(255, 255, 255, 0.87)"
+            >
+            You will have to retract your bid until:
+              {' '}
+              {saleDate}
+            </Text>
+          </div>
+        </BidPanelWrapper>
+      </>
     );
   }
 }
