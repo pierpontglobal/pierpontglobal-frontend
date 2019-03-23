@@ -16,6 +16,7 @@
     "compression": "^1.7.4",
     "compression-webpack-plugin": "^2.0.0",
     "country-data": "^0.0.31",
+    "cra-append-sw": "^2.6.1",
     "email-validator": "^2.0.4",
     "gulp-responsive": "^2.13.0",
     "ip": "^1.1.5",
@@ -51,8 +52,8 @@
     "react-onsenui": "^1.11.2",
     "react-password-strength": "^2.3.1",
     "react-pose": "^4.0.4",
-    "react-responsive-carousel": "^3.1.47",
     "react-responsive": "^6.1.1",
+    "react-responsive-carousel": "^3.1.47",
     "react-responsive-modal": "^3.5.1",
     "react-router-dom": "4.3.1",
     "react-scale-text": "^1.2.2",
@@ -70,8 +71,8 @@
     "yarn": "^1.13.0"
   },
   "scripts": {
-    "start": "react-scripts start --env=production",
-    "build": "react-scripts build",
+    "start": "react-scripts start --env=production && cra-append-sw --mode dev ./public/service-worker.js",
+    "build": "react-scripts build && cra-append-sw ./public/service-worker.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
