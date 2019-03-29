@@ -12,6 +12,7 @@ import './styles.css';
 import AppNav from './components/AppNav/AppNav';
 import { MuiThemeProvider } from '@material-ui/core';
 import { DefaultTheme } from './Defaults';
+import OauthPage from './components/pages/OauthPage/OauthPage';
 
 const car = {
   year: '2017',
@@ -83,6 +84,7 @@ class App extends React.Component {
           <div>
             <AppNav cookies={cookies} openModal={this.openModal} />
             <Switch>
+              <Route exact path="/oauth/login" render={() => <OauthPage />} />
               <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
               <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
               <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />

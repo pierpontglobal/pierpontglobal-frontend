@@ -46,7 +46,11 @@
     .form-container {
         width: 80%;
         height: auto;
+        max-height: 80%;
+        overflow: auto;
         border-radius: 10px;
+        top: 10vh;
+
     }
 
     .section-2 {

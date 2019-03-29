@@ -1,9 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Pagination } from 'semantic-ui-react';
 import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
-import AppNav from '../../AppNav/AppNav';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
@@ -58,7 +56,7 @@ class MarketPlacePage extends React.Component {
         }
       }
 
-      const { page } = this.state;
+      const { page, total } = this.state;
       const offset = page * 20;
 
       window.history.pushState(null, 'Marketplace', `/marketplace?page=${page}${str}`);
@@ -67,11 +65,19 @@ class MarketPlacePage extends React.Component {
       const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=20&${str}&offset=${offset}`);
       const carsArray = response.data.cars;
 
-      this.setState({
-        availableArguments: response.data.available_arguments,
-        total: Math.ceil(parseFloat(response.data.size / 20)),
-      });
-
+      const newTotal = Math.ceil(parseFloat(response.data.size / 20));
+      if (total !== newTotal) {
+        this.setState({
+          availableArguments: response.data.available_arguments,
+          total: newTotal,
+          page: 0,
+        });
+      } else {
+        this.setState({
+          availableArguments: response.data.available_arguments,
+          total: newTotal,
+        });
+      }
 
       for (let i = 0; i < carsArray.length; i += 1) {
         const car = carsArray[i];
@@ -156,7 +162,14 @@ class MarketPlacePage extends React.Component {
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <div className="d-flex justify-content-center">
+          <div
+            style={{
+              height: '100%',
+              position: 'fixed',
+
+            }}
+            className="d-flex justify-content-center"
+          >
             <div
               className="ml-auto d-none d-lg-flex mr-3 w-100"
               style={{ maxWidth: '260px' }}
@@ -185,8 +198,9 @@ class MarketPlacePage extends React.Component {
                 <SortBar header={this.params.q} />
               </div>
               <hr />
-              {cars}
-              <span style={{ float: 'right' }}><Pagination defaultActivePage={parseInt(page, 10) + 1} totalPages={total} onPageChange={this.onPageChange} /></span>
+              <div style={{ overflow: 'auto' }}>
+                {cars}
+              </div>
             </div>
           </div>
         </ActionCableProvider>

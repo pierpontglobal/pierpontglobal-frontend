@@ -144,7 +144,7 @@ class DealerCreator extends React.Component {
         top: 0,
         bottom: 0,
         left: 0,
-        rigth: 0,
+        right: 0,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
