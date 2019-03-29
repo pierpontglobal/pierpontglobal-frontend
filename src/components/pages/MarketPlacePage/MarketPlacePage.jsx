@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
@@ -166,7 +167,9 @@ class MarketPlacePage extends React.Component {
             style={{
               height: '100%',
               position: 'fixed',
-
+              margin: '0 auto',
+              right: '0',
+              left: '0',
             }}
             className="d-flex justify-content-center"
           >
@@ -198,8 +201,29 @@ class MarketPlacePage extends React.Component {
                 <SortBar header={this.params.q} />
               </div>
               <hr />
-              <div style={{ overflow: 'auto' }}>
-                {cars}
+              <div style={{ overflow: 'auto', height: '100%' }}>
+                <InfiniteScroll
+                  dataLength={total} // This is important field to render the next data
+                  next={this.getCars}
+                  hasMore
+                  loader={<h4>Loading...</h4>}
+                  endMessage={(
+                    <p style={{ textAlign: 'center' }}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+)}
+  // below props only if you need pull down functionality
+                  refreshFunction={this.getCars}
+                  pullDownToRefresh
+                  pullDownToRefreshContent={
+                    <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+  }
+                  releaseToRefreshContent={
+                    <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+  }
+                >
+                  {cars}
+                </InfiniteScroll>
               </div>
             </div>
           </div>
