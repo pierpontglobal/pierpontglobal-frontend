@@ -13,8 +13,17 @@ import './styles.css';
 const qs = require('query-string');
 
 const SidePanel = styled.div`
-  max-width: 260px;
+  max-width: 220px;
   width: 100%;
+  display: none;
+
+
+@media only screen and (min-width: 600px) {
+}
+  
+@media only screen and (min-width: 768px) {
+  display: flex;
+}
 `;
 
 const CarSection = styled.div`
@@ -27,6 +36,12 @@ const MarketPlaceContainer = styled.div`
   display: flex;
   align-items: stretch;
   height: 100%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  max-width: 1200px;
+  justify-content: center;
+
 `;
 
 class MarketPlacePage extends React.Component {
@@ -58,82 +73,78 @@ class MarketPlacePage extends React.Component {
   }
 
   async getCars() {
-    try {
-      let str = '';
-      this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    let str = '';
+    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
-      const { page, size } = this.state;
+    const { page, size } = this.state;
 
-      Object.keys(this.params).forEach((key) => {
-        if (this.params[key] !== '' && key !== 'page') {
-          str += `&${key}=${encodeURIComponent(this.params[key])}`;
+    Object.keys(this.params).forEach((key) => {
+      if (this.params[key] !== '' && key !== 'page') {
+        str += `&${key}=${encodeURIComponent(this.params[key])}`;
+      }
+    });
+
+    window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
+    const response = await axios.get(`${ApiServer}/api/v1/car/query?${str}&limit=${page * 20}&offset=0`);
+    const carsArray = response.data.cars;
+    const carsGroup = [];
+
+    for (let i = 0; i < carsArray.length; i += 1) {
+      const car = carsArray[i];
+      const images = [];
+      const imagesObjs = car.car_information.images;
+
+      for (let j = 0; j < imagesObjs.length; j += 1) {
+        const url = imagesObjs[j].f3;
+        if (url === null) {
+          images.push('/not-an-image.jk');
+        } else {
+          images[imagesObjs[j].f4] = `${url}?width=354&height=200&position=${imagesObjs[j].f4}`;
         }
-      });
-
-      window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?${str}&limit=${page * 20}&offset=0`);
-      const carsArray = response.data.cars;
-      const carsGroup = [];
-
-      for (let i = 0; i < carsArray.length; i += 1) {
-        const car = carsArray[i];
-        const images = [];
-        const imagesObjs = car.car_information.images;
-
-        for (let j = 0; j < imagesObjs.length; j += 1) {
-          const url = imagesObjs[j].f3;
-          if (url === null) {
-            images.push('/not-an-image.jk');
-          } else {
-            images[imagesObjs[j].f4] = `${url}?width=354&height=200&position=${imagesObjs[j].f4}`;
-          }
-        }
-
-        const carObject = {
-          wholePrice: car.sale_information.whole_price,
-          crUrl: car.car_information.cr_url,
-          year: car.car_information.year,
-          make: car.car_information.car_maker,
-          model: car.car_information.car_model,
-          trimLevel: car.car_information.trim,
-          odometer: `${car.car_information.odometer} mi`,
-          fuelType: car.car_information.car_fuel,
-          engine: car.car_information.engine,
-          displacement: car.car_information.displacement,
-          transmission: car.car_information.transmission ? 'Automatic' : 'Manual',
-          interiorColor: car.car_information.color_name_interior,
-          exteriorColor: car.car_information.color_name_exterior,
-          vin: car.car_information.vin,
-          cr: car.car_information.cr,
-          bodyStyle: car.car_information.car_body_style ? car.car_information.car_body_style : 'Not available',
-          doors: car.car_information.doors ? car.car_information.doors : 'Not available',
-          vehicleType: car.car_information.car_type_code ? car.car_information.car_type_code : 'Not available',
-          price: car,
-          saleDate: Date.parse(car.sale_information.auction_start_date),
-          images,
-          title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
-        };
-
-        carsGroup.push(
-          <CarCard key={carObject.vim} car={carObject} requestFuntion={this.requestPrice} />,
-        );
       }
 
-      this.setState({
-        cars: carsGroup,
-        page: page + 1,
-        availableArguments: response.data.available_arguments,
-        loaded: true,
-        carsSectionHeight: this.carsSection.current.offsetHeight,
-        size: response.data.size,
-      }, () => {
-        if (this.state.size !== size) {
-          this.carsSection.current.scrollTop = 0;
-        }
-      });
-    } catch (error) {
-      console.log(error.response);
+      const carObject = {
+        wholePrice: car.sale_information.whole_price,
+        crUrl: car.car_information.cr_url,
+        year: car.car_information.year,
+        make: car.car_information.car_maker,
+        model: car.car_information.car_model,
+        trimLevel: car.car_information.trim,
+        odometer: `${car.car_information.odometer} mi`,
+        fuelType: car.car_information.car_fuel,
+        engine: car.car_information.engine,
+        displacement: car.car_information.displacement,
+        transmission: car.car_information.transmission ? 'Automatic' : 'Manual',
+        interiorColor: car.car_information.color_name_interior,
+        exteriorColor: car.car_information.color_name_exterior,
+        vin: car.car_information.vin,
+        cr: car.car_information.cr,
+        bodyStyle: car.car_information.car_body_style ? car.car_information.car_body_style : 'Not available',
+        doors: car.car_information.doors ? car.car_information.doors : 'Not available',
+        vehicleType: car.car_information.car_type_code ? car.car_information.car_type_code : 'Not available',
+        price: car,
+        saleDate: Date.parse(car.sale_information.auction_start_date),
+        images,
+        title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
+      };
+
+      carsGroup.push(
+        <CarCard key={carObject.vim} car={carObject} requestFuntion={this.requestPrice} />,
+      );
     }
+
+    this.setState({
+      cars: carsGroup,
+      page: page + 1,
+      availableArguments: response.data.available_arguments,
+      loaded: true,
+      carsSectionHeight: this.carsSection.current.offsetHeight,
+      size: response.data.size,
+    }, () => {
+      if (this.state.size !== size) {
+        this.carsSection.current.scrollTop = 0;
+      }
+    });
   }
 
   handleReceived(message) {
@@ -145,7 +156,7 @@ class MarketPlacePage extends React.Component {
       if (car.vin === response.vin) {
         car.wholePrice = response.mmr;
       }
-      carElements.push(<CarCard key={car.vim} car={car} requestFuntion={this.requestPrice} />);
+      carElements.push(<CarCard key={car.vim} car={car} requestFunction={this.requestPrice} />);
     }
     this.setState({ cars: carElements, loaded: true });
   }
@@ -171,7 +182,7 @@ class MarketPlacePage extends React.Component {
           />
           <MarketPlaceContainer>
             <SidePanel>
-              { loaded ? (
+              {loaded ? (
                 <FilterPanel
                   getCars={this.getCars}
                   availableArguments={this.state.availableArguments}
@@ -193,15 +204,7 @@ class MarketPlacePage extends React.Component {
                     <p style={{ textAlign: 'center' }}>
                       <b>Yay! You have seen it all</b>
                     </p>
-                    )}
-                  refreshFunction={this.getCars}
-                  pullDownToRefresh
-                  pullDownToRefreshContent={
-                    <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-                  }
-                  releaseToRefreshContent={
-                    <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-                  }
+                  )}
                 >
                   {cars}
                 </InfiniteScroll>
