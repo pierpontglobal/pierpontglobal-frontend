@@ -61,6 +61,7 @@ const PageHolder = styled.div`
 
   > div {
     height: 100%;
+    overflow: auto;
   }
 `;
 
@@ -102,7 +103,7 @@ class App extends React.Component {
           >
             <AppNav cookies={cookies} openModal={this.openModal} />
             <PageHolder>
-              <Switch class="Test">
+              <Switch>
                 <Route exact path="/oauth/login" render={() => <OauthPage />} />
                 <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
                 <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
