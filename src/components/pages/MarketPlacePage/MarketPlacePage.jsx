@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import styled from 'styled-components';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
@@ -11,6 +12,23 @@ import './styles.css';
 
 const qs = require('query-string');
 
+const SidePanel = styled.div`
+  max-width: 260px;
+  width: 100%;
+`;
+
+const CarSection = styled.div`
+  max-width: 810px;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
+
+const MarketPlaceContainer = styled.div`
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+`;
+
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
@@ -18,67 +36,44 @@ class MarketPlacePage extends React.Component {
     this.cable = null;
 
     this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-    const { cookies } = this.props;
 
     this.state = {
       cars: [],
       availableArguments: [],
       loaded: false,
-      page: this.params.page ? this.params.page : 0,
-      total: 1,
-      token: cookies.get('token'),
+      page: 1,
+      carsSectionHeight: 0,
+      size: 0,
     };
 
     this.getCars = this.getCars.bind(this);
-    this.onPageChange = this.onPageChange.bind(this);
     this.requestPrice = this.requestPrice.bind(this);
     this.handleReceived = this.handleReceived.bind(this);
+
+    this.carsSection = React.createRef();
   }
 
   componentDidMount() {
     this.getCars();
   }
 
-  onPageChange(e, i) {
-    const page = (i.activePage - 1);
-    this.setState({ page }, () => {
-      this.getCars();
-    });
-  }
-
   async getCars() {
     try {
       let str = '';
-
       this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-      for (const key in this.params) {
+
+      const { page, size } = this.state;
+
+      Object.keys(this.params).forEach((key) => {
         if (this.params[key] !== '' && key !== 'page') {
           str += `&${key}=${encodeURIComponent(this.params[key])}`;
         }
-      }
+      });
 
-      const { page, total } = this.state;
-      const offset = page * 20;
-
-      window.history.pushState(null, 'Marketplace', `/marketplace?page=${page}${str}`);
-
-      const carsGroup = [];
-      const response = await axios.get(`${ApiServer}/api/v1/car/query?limit=20&${str}&offset=${offset}`);
+      window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
+      const response = await axios.get(`${ApiServer}/api/v1/car/query?${str}&limit=${page * 20}&offset=0`);
       const carsArray = response.data.cars;
-
-      const newTotal = Math.ceil(parseFloat(response.data.size / 20));
-      if (total !== newTotal) {
-        this.setState({
-          availableArguments: response.data.available_arguments,
-          total: newTotal,
-          page: 0,
-        });
-      } else {
-        this.setState({
-          availableArguments: response.data.available_arguments,
-          total: newTotal,
-        });
-      }
+      const carsGroup = [];
 
       for (let i = 0; i < carsArray.length; i += 1) {
         const car = carsArray[i];
@@ -123,8 +118,19 @@ class MarketPlacePage extends React.Component {
           <CarCard key={carObject.vim} car={carObject} requestFuntion={this.requestPrice} />,
         );
       }
-      this.setState({ cars: carsGroup, loaded: true });
-      this.forceUpdate();
+
+      this.setState({
+        cars: carsGroup,
+        page: page + 1,
+        availableArguments: response.data.available_arguments,
+        loaded: true,
+        carsSectionHeight: this.carsSection.current.offsetHeight,
+        size: response.data.size,
+      }, () => {
+        if (this.state.size !== size) {
+          this.carsSection.current.scrollTop = 0;
+        }
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -150,7 +156,7 @@ class MarketPlacePage extends React.Component {
 
   render() {
     const {
-      loaded, page, total, cars,
+      loaded, cars, carsSectionHeight,
     } = this.state;
 
     const { cookies } = this.props;
@@ -163,20 +169,8 @@ class MarketPlacePage extends React.Component {
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <div
-            style={{
-              height: '100%',
-              position: 'fixed',
-              margin: '0 auto',
-              right: '0',
-              left: '0',
-            }}
-            className="d-flex justify-content-center"
-          >
-            <div
-              className="ml-auto d-none d-lg-flex mr-3 w-100"
-              style={{ maxWidth: '260px' }}
-            >
+          <MarketPlaceContainer>
+            <SidePanel>
               { loaded ? (
                 <FilterPanel
                   getCars={this.getCars}
@@ -184,49 +178,36 @@ class MarketPlacePage extends React.Component {
                   params={this.params}
                 />
               ) : <div />}
-            </div>
-            <div
-              className="mr-auto ml-md-auto ml-lg-0 w-100"
-              style={{
-                maxWidth: '810px',
-                paddingBottom: '120px',
-                paddingLeft: '10px',
-                paddingRight: '10px',
-              }}
-            >
-              <div style={{
-                padding: 0, display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center', justifyItems: 'center',
-              }}
-              >
+            </SidePanel>
+            <CarSection ref={this.carsSection}>
+              <div style={{ overflow: 'auto', position: 'relative' }}>
                 <SortBar header={this.params.q} />
-              </div>
-              <hr />
-              <div style={{ overflow: 'auto', height: '100%' }}>
+                <hr />
                 <InfiniteScroll
-                  dataLength={total} // This is important field to render the next data
+                  dataLength={cars.length}
                   next={this.getCars}
                   hasMore
                   loader={<h4>Loading...</h4>}
+                  height={carsSectionHeight - 80}
                   endMessage={(
                     <p style={{ textAlign: 'center' }}>
                       <b>Yay! You have seen it all</b>
                     </p>
-)}
-  // below props only if you need pull down functionality
+                    )}
                   refreshFunction={this.getCars}
                   pullDownToRefresh
                   pullDownToRefreshContent={
                     <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-  }
+                  }
                   releaseToRefreshContent={
                     <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-  }
+                  }
                 >
                   {cars}
                 </InfiniteScroll>
               </div>
-            </div>
-          </div>
+            </CarSection>
+          </MarketPlaceContainer>
         </ActionCableProvider>
       </div>
     );

@@ -73,7 +73,7 @@
     "yarn": "^1.13.0"
   },
   "scripts": {
-    "start": "react-scripts start --env=production && cra-append-sw --mode dev ./public/service-worker.js",
+    "start": "PORT=4000 react-scripts start --env=production && cra-append-sw --mode dev ./public/service-worker.js",
     "build": "yarn add cra-append-sw && react-scripts build && yarn cra-append-sw ./public/service-worker.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
