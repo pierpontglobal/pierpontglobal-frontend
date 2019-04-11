@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 import SlideShow from '../SlideShow/SlideShow';
-import Detail from './Detail/Detail';
 import AutoCheckBtn from '../AutoCheckBtn/AutoCheckBtn';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
-import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -27,19 +25,21 @@ const CarContainer = styled.div`
   overflow: hidden;
   border: 1px solid rgba(0,0,0,0.16);
   box-shadow: 3px 3px 6px rgba(0,0,0,0.16);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25% 35% 15% 25%;
+  background-color: #fafafa;
 
   @media only screen and (min-width: 600px) {
-    height: 177px;
     margin-left: 0;
     margin-right: 0;
     flex-direction: row;
   }
-    
-  @media only screen and (min-width: 768px) {
-  }
 `;
+
+const Container = styled.div`
+  padding: 0px 16px;
+  display: flex;
+`
 
 const ConditionContainer = styled.div`
   padding: 0 10px 10px 10px;
@@ -64,6 +64,12 @@ const ConditionContainer = styled.div`
   }
 `;
 
+const ImageWrapper = styled.img`
+  object-fit: cover;
+  width: 236px;
+  height: 120px;
+`;
+
 const DropDown = posed.i({
   open: {
     rotate: 180,
@@ -73,17 +79,9 @@ const DropDown = posed.i({
   },
 });
 
-const DetailsContainer = styled.div`
-  width: 100%;
-  padding: 10px;
-  position: relative;
-  
-  @media only screen and (min-width: 600px) {
-    width: 30%;
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
+const DetailsContainer = styled(Container)`
+  flex-direction: column;
+  justify-content: space-evenly;
 `;
 
 const DetailsView = posed.div({
@@ -102,36 +100,21 @@ const SpecificDetailsContainer = styled(DetailsView)`
 
 const ImgContainer = styled.div`
   width: 100%;
-  height: 250px;
+  height: auto;
   overflow: hidden;
-
-  @media only screen and (min-width: 600px) {
-    width: 30%;
-    height: 177px;
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
 `;
 
-const DetailedCR = styled.div`
-  width: 50%;
+const DetailedCR = styled(Container)`
+  flex-direction: column;
+  margin-top: 10%;
 `;
 
 const PhoneDropDown = styled(DropDown)`
-
   color: ${DefaultTheme.palette.primary.main} !important;
   position: absolute;
   top: 5px;
   right: 10px;
   display: block !important;
-
-  @media only screen and (min-width: 600px) {
-    display: none !important;
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
 `;
 
 function pickHex(color1, color2, color3, weightRaw) {
@@ -169,17 +152,9 @@ const TimeAgoContainer = styled.div`
   align-items: center;
   text-align: center;
   margin-bottom: 10px;
-
-  @media only screen and (min-width: 600px) {
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
 `;
 
 const PriceContainer = styled.div`
-  
-  width: 50%;
   display: flex;
   justify-content: flex-start;
   align-content: flex-start;
@@ -187,14 +162,24 @@ const PriceContainer = styled.div`
   align-items: center;
   text-align: center;
   flex-direction: column;
+  margin-top: 10%;
+`;
 
-  @media only screen and (min-width: 600px) {
-    
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
-  
+const Detail = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const DetailLabel = styled.span`
+  font-size: 0.85rem;
+  font-weight: 600;
+`;
+
+const DetailValue = styled.span`
+  font-size: 0.85rem;
+  margin-left: 2%;
 `;
 
 function CarCard({ key, car, requestFuntion }) {
@@ -216,86 +201,66 @@ function CarCard({ key, car, requestFuntion }) {
   const timeDiff = Math.abs(diference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
-    <CarContainer
-      key={key}
-      backgroundColor="#fafafa"
-      onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) }
-    >
-      <ImgContainer>
-        <Carousel
-          showIndicators={false}
-          showStatus={false}
-          showThumbs={false}
-        >
-          {images.map(image => (
-            <div>
-              <img src={image} />
-            </div>
-          ))}
-        </Carousel>
-      </ImgContainer>
-
-      <DetailsContainer>
-        <div style={{ width: '100%', fontSize: '16px' }}>
-          {car.year}
-          {' '}
-          {car.make}
-          {' '}
-          {car.model}
-          {' '}
-          {car.trimLevel}
-        </div>
-        <hr style={{ margin: '0 0 5px' }} />
-        <PhoneDropDown
-          pose={openDetails}
-          onClick={() => setOpenDetails(openDetails === 'open' ? 'closed' : 'open')}
-          className="fas fa-caret-down"
-        />
-        <SpecificDetailsContainer pose={openDetails} class>
-          <Detail
-            name="VIN"
-            value={vin}
-            className="mb-md-0 w-100"
-          />
-          <Detail
-            name="Odometer"
-            value={numberWithCommas(odometer)}
-            className="mb-md-0"
-          />
-          <Detail
-            name="Engine"
-            value={engine}
-            className="mb-md-0"
-          />
-          <Detail
-            name="Transmission"
-            value={transmission}
-            className="mb-md-3"
-          />
-        </SpecificDetailsContainer>
-      </DetailsContainer>
-      <ConditionContainer>
-        <DetailedCR>
-          <ConditionBtn
-            score={cr}
-            className="w-100 mb-2"
-          />
-          <AutoCheckBtn crUrl={crUrl} className="w-100 py-1 mt-1" />
-        </DetailedCR>
-
-        <PriceContainer>
-          <TimeAgoContainer diffDays={diffDays}>
-            <TimeAgo date={saleDate} />
-          </TimeAgoContainer>
-          <PriceTag
-            price={wholePrice}
-            vin={vin}
-            requestFuntion={requestFuntion}
-          />
-        </PriceContainer>
-      </ConditionContainer>
-
-    </CarContainer>
+    <>
+      <CarContainer key={key}
+        onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null )} >
+          <Carousel
+              showIndicators={false}
+              showStatus={false}
+              showThumbs={false}
+            >
+              {images.map(image => (
+                <div>
+                  <ImageWrapper src={image} />
+                </div>
+              ))}
+            </Carousel>
+            <DetailsContainer>
+              <div style={{ width: '100%', fontSize: '16px' }}>
+                {car.year}
+                {' '}
+                {car.make}
+                {' '}
+                {car.model}
+                {' '}
+                {car.trimLevel}
+              </div>
+              <hr style={{ margin: '0 0 5px' }} />
+              <div
+                name="VIN"
+                value={vin}
+              />
+              <Detail>
+                <DetailLabel>Odometer: </DetailLabel>
+                <DetailValue>{numberWithCommas(odometer)}</DetailValue>
+              </Detail>
+              <Detail>
+                <DetailLabel>Engine: </DetailLabel>
+                <DetailValue>{engine}</DetailValue>
+              </Detail>
+              <Detail>
+                <DetailLabel>Transmission: </DetailLabel>
+                <DetailValue>{transmission}</DetailValue>
+              </Detail>
+            </DetailsContainer>
+            <DetailedCR>
+              <ConditionBtn
+                score={cr}
+              />
+              <AutoCheckBtn crUrl={crUrl} />
+            </DetailedCR>
+            <PriceContainer>
+              <TimeAgoContainer diffDays={diffDays}>
+                <TimeAgo date={saleDate} />
+              </TimeAgoContainer>
+              <PriceTag
+                price={wholePrice}
+                vin={vin}
+                requestFuntion={requestFuntion}
+              />
+            </PriceContainer>
+      </CarContainer>
+    </>
   );
 }
 
