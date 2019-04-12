@@ -81,7 +81,7 @@ const ImageWrapper = styled.img`
   }
 `;
 
-const DropDown = posed.div({
+const DropDown = posed.i({
   open: {
     rotate: 180,
   },
@@ -271,7 +271,7 @@ function CarCard({ key, car, requestFuntion }) {
   return (
     <>
       <CarContainer key={key} id="car-card"
-        onClick={(e) => ( console.log(e.target) )} >
+        onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) } >
         <Carousel
           showIndicators={false}
           showStatus={false}
