@@ -9,21 +9,19 @@ import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
 import './styles.css';
+import { IconButton } from '@material-ui/core';
+import FilterList from '@material-ui/icons/FilterList';
+import PPGModal from '../../ppg-modal/PPGModal';
 
 const qs = require('query-string');
 
 const SidePanel = styled.div`
   max-width: 220px;
   width: 100%;
-  display: none;
-
-
-@media only screen and (min-width: 600px) {
-}
-  
-@media only screen and (min-width: 768px) {
   display: flex;
-}
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 `;
 
 const CarSection = styled.div`
@@ -46,6 +44,15 @@ const MarketPlaceContainer = styled.div`
 
 `;
 
+const FilterIcon = styled.div`
+  display: none;
+  width: 100%;
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    justify-content: flex-end;
+  }
+`;
+
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
@@ -61,6 +68,7 @@ class MarketPlacePage extends React.Component {
       page: 1,
       carsSectionHeight: 0,
       size: 0,
+      openModalFilter: false
     };
 
     this.getCars = this.getCars.bind(this);
@@ -167,9 +175,21 @@ class MarketPlacePage extends React.Component {
     await axios.patch(`${ApiServer}/api/v1/car/price-request`, { vin });
   }
 
+  showFilterPanel = () => {
+    this.setState({
+      openModalFilter: true
+    }, () => console.log('works!!'));
+  }
+
+  onCloseModal = () => {
+    this.setState({
+      openModalFilter: false
+    });
+  }
+
   render() {
     const {
-      loaded, cars, carsSectionHeight,
+      loaded, cars, carsSectionHeight, openModalFilter
     } = this.state;
 
     const { cookies } = this.props;
@@ -194,6 +214,12 @@ class MarketPlacePage extends React.Component {
             </SidePanel>
             <CarSection ref={this.carsSection}>
               <div style={{ overflow: 'auto', position: 'relative' }}>
+                <FilterIcon>
+                  <IconButton color="primary" onClick={() => this.showFilterPanel()}>
+                    <FilterList />
+                    <span style={{ fontSize: '0.75em' }}>Filters</span>
+                  </IconButton>
+                </FilterIcon>
                 <SortBar header={this.params.q} />
                 <hr />
                 <InfiniteScroll
@@ -212,6 +238,22 @@ class MarketPlacePage extends React.Component {
                 </InfiniteScroll>
               </div>
             </CarSection>
+            <PPGModal
+              setOpen={openModalFilter}
+              handleClose={() => this.onCloseModal("openModalFilter")}
+              width="80%"
+              height="80%"
+            >
+              {/* Repeating this component here is not a performance issue. This child component,
+              of the PPGModal is only rendered when the modal is open.  */}
+              {loaded ? (
+                <FilterPanel
+                  getCars={this.getCars}
+                  availableArguments={this.state.availableArguments}
+                  params={this.params}
+                />
+              ) : null}
+            </PPGModal>
           </MarketPlaceContainer>
         </ActionCableProvider>
       </div>
