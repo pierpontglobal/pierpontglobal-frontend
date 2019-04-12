@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
-import SlideShow from '../SlideShow/SlideShow';
-import AutoCheckBtn from '../AutoCheckBtn/AutoCheckBtn';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import Text from '../styles/Text/Text';
@@ -10,7 +8,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
 import { DefaultTheme } from '../../Defaults';
-
 import ScaleText from 'react-scale-text';
 
 function numberWithCommas(x) {
@@ -26,51 +23,62 @@ const CarContainer = styled.div`
   border: 1px solid rgba(0,0,0,0.16);
   box-shadow: 3px 3px 6px rgba(0,0,0,0.16);
   display: grid;
-  grid-template-columns: 25% 35% 15% 25%;
-  background-color: #fafafa;
+  grid-template-columns: 25% 35% 40%;
+  background-color: #fff;
 
-  @media only screen and (min-width: 600px) {
-    margin-left: 0;
-    margin-right: 0;
-    flex-direction: row;
+  @media only screen and (max-width: 600px) {
+    grid-template-rows: 50% 100%;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 600px) and (min-width: 500px) {
+    grid-template-rows: 260px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 500px) and (min-width: 400px) {
+    grid-template-rows: 235px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 400px) and (min-width: 300px) {
+    grid-template-rows: 210px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 300px) and (min-width: 200px) {
+    grid-template-rows: 180px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 200px) {
+    grid-template-rows: 160px;
+    grid-template-columns: 100%;
   }
 `;
 
 const Container = styled.div`
   padding: 0px 16px;
   display: flex;
-`
-
-const ConditionContainer = styled.div`
-  padding: 0 10px 10px 10px;
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  justify-items: center;
-  align-content: space-between;
-  align-items: center;
-
-  @media only screen and (min-width: 600px) {
-    width: 40%;
-    padding: 10px;
-    align-items: flex-start;
-    justify-items: flex-start;
-    justify-content: flex-start;
-    justify-items: flex-start;
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
 `;
 
 const ImageWrapper = styled.img`
   object-fit: cover;
   width: 236px;
   height: 120px;
+  @media only screen and (max-width: 600px) and (min-width: 500px) {
+    height: 260px;
+  }
+  @media only screen and (max-width: 500px) and (min-width: 400px) {
+    height: 235px;
+  }
+  @media only screen and (max-width: 400px) and (min-width: 300px) {
+    height: 210px;
+  }
+  @media only screen and (max-width: 300px) and (min-width: 200px) {
+    height: 180px;
+  }
+  @media only screen and (max-width: 200px) {
+    height: 160px;
+  }
 `;
 
-const DropDown = posed.i({
+const DropDown = posed.div({
   open: {
     rotate: 180,
   },
@@ -82,39 +90,19 @@ const DropDown = posed.i({
 const DetailsContainer = styled(Container)`
   flex-direction: column;
   justify-content: space-evenly;
-`;
-
-const DetailsView = posed.div({
-  open: { height: '90px' },
-  closed: { height: 0 },
-});
-
-
-const SpecificDetailsContainer = styled(DetailsView)`
-  overflow: hidden;
-
-  @media only screen and (min-width: 600px) {
-    overflow: visible;
+  @media only screen and (max-width: 600px) {
+    margin-top: 5%;
   }
 `;
 
-const ImgContainer = styled.div`
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-`;
-
 const DetailedCR = styled(Container)`
+  display: flex;
   flex-direction: column;
   margin-top: 10%;
-`;
-
-const PhoneDropDown = styled(DropDown)`
-  color: ${DefaultTheme.palette.primary.main} !important;
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  display: block !important;
+  @media only screen and (max-width: 600px) {
+    width: 50%;
+    margin-top: 0px;
+  }
 `;
 
 function pickHex(color1, color2, color3, weightRaw) {
@@ -163,6 +151,10 @@ const PriceContainer = styled.div`
   text-align: center;
   flex-direction: column;
   margin-top: 10%;
+  @media only screen and (max-width: 600px) {
+    width: 50%;
+    margin-top: 0%;
+  }
 `;
 
 const Detail = styled.div`
@@ -172,17 +164,82 @@ const Detail = styled.div`
   align-items: center;
 `;
 
+const DetailTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DetailContent = styled.div`
+  display: block;
+  @media only screen and (max-width: 600px) {
+    display: ${props => props.state};
+  }
+`;
+
 const DetailLabel = styled.span`
   font-size: 0.85rem;
   font-weight: 600;
 `;
 
+const DropDwonIcon = styled(DropDown)`
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 12px 0 12px;
+  border-color: #000 transparent transparent transparent;
+  display: block;
+  @media only screen and (min-width: 600px) {
+    display: none;
+  }
+`;
+
 const DetailValue = styled.span`
   font-size: 0.85rem;
   margin-left: 2%;
+  @media only screen and (max-width: 600px) {
+    margin-left: 0px;
+  }
+`;
+
+const AutoCheckBtn = styled.button`
+  border-radius: 4px;
+  background-color: #3e78c0;
+  max-height: 24px;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1.33;
+  color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+  border-style: none;
+  margin-top: 15%;
+  &:hover {
+    cursor: pointer;
+    background-color: #4c87cc !important;
+  }
+  @media only screen and (max-width: 600px) {
+    margin-top: 5%;
+    padding: 8px;
+    margin: 8px;
+  }
+`;
+
+const CRPriceContainer = styled.div`
+    width: 100%;
+    position: relative;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    justify-items: center;
+    align-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 10px 10px;
 `;
 
 function CarCard({ key, car, requestFuntion }) {
+  
   const [openDetails, setOpenDetails] = useState('closed');
 
   const {
@@ -203,62 +260,54 @@ function CarCard({ key, car, requestFuntion }) {
   return (
     <>
       <CarContainer key={key}
-        onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null )} >
-          <Carousel
-              showIndicators={false}
-              showStatus={false}
-              showThumbs={false}
-            >
-              {images.map(image => (
-                <div>
-                  <ImageWrapper src={image} />
-                </div>
-              ))}
-            </Carousel>
-            <DetailsContainer>
-              <div style={{ width: '100%', fontSize: '16px' }}>
-                {car.year}
-                {' '}
-                {car.make}
-                {' '}
-                {car.model}
-                {' '}
-                {car.trimLevel}
-              </div>
-              <hr style={{ margin: '0 0 5px' }} />
-              <div
-                name="VIN"
-                value={vin}
-              />
-              <Detail>
-                <DetailLabel>Odometer: </DetailLabel>
-                <DetailValue>{numberWithCommas(odometer)}</DetailValue>
-              </Detail>
-              <Detail>
-                <DetailLabel>Engine: </DetailLabel>
-                <DetailValue>{engine}</DetailValue>
-              </Detail>
-              <Detail>
-                <DetailLabel>Transmission: </DetailLabel>
-                <DetailValue>{transmission}</DetailValue>
-              </Detail>
-            </DetailsContainer>
-            <DetailedCR>
-              <ConditionBtn
-                score={cr}
-              />
-              <AutoCheckBtn crUrl={crUrl} />
-            </DetailedCR>
-            <PriceContainer>
-              <TimeAgoContainer diffDays={diffDays}>
-                <TimeAgo date={saleDate} />
-              </TimeAgoContainer>
-              <PriceTag
-                price={wholePrice}
-                vin={vin}
-                requestFuntion={requestFuntion}
-              />
-            </PriceContainer>
+        /*onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null )}*/ >
+        <Carousel
+          showIndicators={false}
+          showStatus={false}
+          showThumbs={false}
+        >
+          {images.map((image, i) => (
+            <ImageWrapper key={i} src={image} />
+          ))}
+        </Carousel>
+        <DetailsContainer>
+          <DetailTitle>
+            <div><span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year} ${car.make} ${car.model} ${car.trimLevel}`}</span></div>
+            <DropDwonIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+          </DetailTitle>
+          <hr style={{ margin: '0 0 5px' }} />
+          <input hidden name="VIN" value={vin} />
+          <DetailContent state={(openDetails === 'open') ? 'block' : 'none'}>
+            <Detail>
+              <DetailLabel>Odometer: </DetailLabel>
+              <DetailValue>{numberWithCommas(odometer)}</DetailValue>
+            </Detail>
+            <Detail>
+              <DetailLabel>Engine: </DetailLabel>
+              <DetailValue>{engine}</DetailValue>
+            </Detail>
+            <Detail>
+              <DetailLabel>Transmission: </DetailLabel>
+              <DetailValue>{transmission}</DetailValue>
+            </Detail>
+          </DetailContent>
+        </DetailsContainer>
+        <CRPriceContainer>
+          <DetailedCR>
+            <ConditionBtn label="Condition" score={cr} />
+            <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
+          </DetailedCR>
+          <PriceContainer>
+            <TimeAgoContainer diffDays={diffDays}>
+              <TimeAgo date={saleDate} />
+            </TimeAgoContainer>
+            <PriceTag
+              price={wholePrice}
+              vin={vin}
+              requestFuntion={requestFuntion}
+            />
+          </PriceContainer>
+        </CRPriceContainer>
       </CarContainer>
     </>
   );
