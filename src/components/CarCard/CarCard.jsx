@@ -26,6 +26,7 @@ const CarContainer = styled.div`
   grid-template-columns: 25% 35% 40%;
   background-color: #fff;
 
+  /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
   @media only screen and (max-width: 600px) {
     grid-template-rows: 50% 100%;
     grid-template-columns: 100%;
@@ -61,6 +62,8 @@ const ImageWrapper = styled.img`
   object-fit: cover;
   width: 236px;
   height: 120px;
+
+  /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
   @media only screen and (max-width: 600px) and (min-width: 500px) {
     height: 260px;
   }
@@ -98,7 +101,6 @@ const DetailsContainer = styled(Container)`
 const DetailedCR = styled(Container)`
   display: flex;
   flex-direction: column;
-  margin-top: 10%;
   @media only screen and (max-width: 600px) {
     width: 50%;
     margin-top: 0px;
@@ -150,7 +152,6 @@ const PriceContainer = styled.div`
   align-items: center;
   text-align: center;
   flex-direction: column;
-  margin-top: 10%;
   @media only screen and (max-width: 600px) {
     width: 50%;
     margin-top: 0%;
@@ -175,6 +176,7 @@ const DetailContent = styled.div`
   display: block;
   @media only screen and (max-width: 600px) {
     display: ${props => props.state};
+    padding: 8px;
   }
 `;
 
@@ -219,9 +221,11 @@ const AutoCheckBtn = styled.button`
     background-color: #4c87cc !important;
   }
   @media only screen and (max-width: 600px) {
-    margin-top: 5%;
-    padding: 8px;
+    margin-top: 8%;
     margin: 8px;
+    max-height: none;
+    padding: 2px;
+    width: 100%;
   }
 `;
 
@@ -229,13 +233,14 @@ const CRPriceContainer = styled.div`
     width: 100%;
     position: relative;
     display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
+    justify-content: space-around;
     justify-items: center;
     align-content: space-between;
-    -webkit-box-align: center;
     align-items: center;
-    padding: 0px 10px 10px;
+    @media only screen and (max-width: 600px) {
+      margin: 5% 0px;
+      justify-content: space-between;
+    }
 `;
 
 function CarCard({ key, car, requestFuntion }) {

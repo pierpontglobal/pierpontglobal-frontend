@@ -37,6 +37,10 @@ const ConditionScore = styled.div`
 const ConditionBtnWrapper = styled.div`
   display: grid;
   grid-template-columns: 75% 25%;
+  @media only screen and (max-width: 600px) {
+    margin: 8px;
+    width: 100%;
+  }
 `;
 
 function pickHex(color1, color2, color3, weight) {
