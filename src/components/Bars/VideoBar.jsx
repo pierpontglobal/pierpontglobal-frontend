@@ -35,16 +35,17 @@ class VideoBar extends React.Component {
             marginRight: '20px',
             marginBottom: '0px',
             marginTop: '10px',
+            margin: '24px 0px 0px 0px',
           }}
           fontWeight={600}
           lineHeight={1.31}
         >
-        <div style={{ margin: '16px 0px 0px 0px' }}>
           It’s never been easier to buy cars from the United States
-        </div>
         </Text>
         <VideoModal channel="youtube" isOpen={this.state.isOpen} videoId="XEcELW3hkuQ" onClose={() => this.setState({ isOpen: false })} />
-        <Button height="50px" marginTop="10px" marginBottom="10px" onClick={this.openModal} color="#0bb761">Watch promo video</Button>
+        <div style={{ margin: '24px 16px 0px 16px' }}>
+          <Button height="50px" margin="10px" marginBottom="10px" onClick={this.openModal} color="#0bb761">Watch promo video</Button>
+        </div>
       </InfoBar>
     );
   }
