@@ -251,7 +251,6 @@ class MarketPlacePage extends React.Component {
               width="80%"
               height="80%"
               setPadding={false}
-              title="Filters"
             >
               {/* Repeating this component here is not a performance issue. This child component,
               of the PPGModal is only rendered when the modal is open.  */}

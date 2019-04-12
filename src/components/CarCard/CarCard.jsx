@@ -172,11 +172,17 @@ const DetailTitle = styled.div`
   align-items: center;
 `;
 
-const DetailContent = styled.div`
-  display: block;
+const DetailsView = posed.div({
+  open: { height: 'auto' },
+  closed: { height: 0 },
+});
+
+const DetailContent = styled(DetailsView)`
+  @media only screen and (min-width: 600px) {
+    height: auto !important;
+  }
   @media only screen and (max-width: 600px) {
-    display: ${props => props.state};
-    padding: 8px;
+    visibility: ${props => props.state};
   }
 `;
 
@@ -264,15 +270,15 @@ function CarCard({ key, car, requestFuntion }) {
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
     <>
-      <CarContainer key={key}
-        /*onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null )}*/ >
+      <CarContainer key={key} id="car-card"
+        onClick={(e) => ( console.log(e.target) )} >
         <Carousel
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
         >
           {images.map((image, i) => (
-            <ImageWrapper key={i} src={image} />
+            <ImageWrapper id="image-carousel" key={i} src={image} />
           ))}
         </Carousel>
         <DetailsContainer>
@@ -282,7 +288,7 @@ function CarCard({ key, car, requestFuntion }) {
           </DetailTitle>
           <hr style={{ margin: '0 0 5px' }} />
           <input hidden name="VIN" value={vin} />
-          <DetailContent state={(openDetails === 'open') ? 'block' : 'none'}>
+          <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
             <Detail>
               <DetailLabel>Odometer: </DetailLabel>
               <DetailValue>{numberWithCommas(odometer)}</DetailValue>
