@@ -27,9 +27,11 @@ const SidePanel = styled.div`
 `;
 
 const CarSection = styled.div`
-  max-width: 810px;
+  height: 95vh;
   padding-left: 10px;
   padding-right: 10px;
+  overflow: scroll;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 `;
 
 const MarketPlaceContainer = styled.div`
