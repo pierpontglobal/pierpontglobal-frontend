@@ -4,12 +4,27 @@ import PropTypes from 'prop-types';
 import Item from './Item/Item';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
+import styled from 'styled-components';
 
 const style = {
   backgroundColor: '#FAFAFA',
   boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.18)',
-  marginTop: '-15px',
+  height: '95vh',
+  overflow: 'scroll',
+  '@media screen and (max-width: 600px)': {
+    height: '100%',
+  },
 };
+
+const FilterPanelWrapper = styled.div`
+  background-color: #FAFAFA;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+  height: 100%;
+  overflow: scroll;
+  @media only screen and (max-width: 600px) {
+    height: 100%,
+  };
+`;
 
 const ExpandableDiv = posed.div({
   retracted: {
@@ -141,6 +156,9 @@ class FilterPanel extends React.Component {
 
     window.history.pushState(null, 'Marketplace', `?${str}`);
     this.props.getCars();
+    if (!!this.props.handleFilterChange) {
+      this.props.handleFilterChange(searchables);
+    }
   }
 
   render() {
@@ -171,10 +189,7 @@ class FilterPanel extends React.Component {
     }
 
     return (
-      <div
-        className="w-100"
-        style={style}
-      >
+      <FilterPanelWrapper>
         <Item name="Maker">
           <OptionBtn
             selected={maker}
@@ -242,7 +257,7 @@ class FilterPanel extends React.Component {
             onChange={this.searchWithParams}
           />
         </Item>
-      </div>
+      </FilterPanelWrapper>
     );
   }
 }

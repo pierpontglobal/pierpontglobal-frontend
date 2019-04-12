@@ -11,6 +11,7 @@ const style = {
   color: '#ffffff',
   boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.18)',
   borderStyle: 'none',
+  marginTop: '15%'
 };
 function AutoCheckBtn({ crUrl, className }) {
   return (

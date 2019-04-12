@@ -16,6 +16,7 @@ function SortBar({ header, className }) {
         alignContent: 'center',
         justifyContent: 'center',
         justifyItems: 'center',
+        marginTop: '10px',
       }}
     >
       <SearchInput defaultValue={query} className="d-none d-md-flex mr-auto align-self-center" />
