@@ -156,6 +156,9 @@ class FilterPanel extends React.Component {
 
     window.history.pushState(null, 'Marketplace', `?${str}`);
     this.props.getCars();
+    if (!!this.props.handleFilterChange) {
+      this.props.handleFilterChange(searchables);
+    }
   }
 
   render() {

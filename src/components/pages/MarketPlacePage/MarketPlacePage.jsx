@@ -12,6 +12,7 @@ import './styles.css';
 import { IconButton } from '@material-ui/core';
 import FilterList from '@material-ui/icons/FilterList';
 import PPGModal from '../../ppg-modal/PPGModal';
+import MediaQuery from 'react-responsive';
 
 const qs = require('query-string');
 
@@ -187,6 +188,10 @@ class MarketPlacePage extends React.Component {
     });
   }
 
+  onFilterChange = (params) => {
+    console.log(params);
+  }
+
   render() {
     const {
       loaded, cars, carsSectionHeight, openModalFilter
@@ -204,13 +209,15 @@ class MarketPlacePage extends React.Component {
           />
           <MarketPlaceContainer>
             <SidePanel>
-              {loaded ? (
-                <FilterPanel
-                  getCars={this.getCars}
-                  availableArguments={this.state.availableArguments}
-                  params={this.params}
-                />
-              ) : <div />}
+              <MediaQuery minDeviceWidth={600}>
+                {loaded ? (
+                  <FilterPanel
+                    getCars={this.getCars}
+                    availableArguments={this.state.availableArguments}
+                    params={this.params}
+                  />
+                ) : <div />}
+              </MediaQuery>
             </SidePanel>
             <CarSection ref={this.carsSection}>
               <div style={{ overflow: 'auto', position: 'relative' }}>
@@ -251,6 +258,7 @@ class MarketPlacePage extends React.Component {
                   getCars={this.getCars}
                   availableArguments={this.state.availableArguments}
                   params={this.params}
+                  handleFilterChange={this.onFilterChange}
                 />
               ) : null}
             </PPGModal>
