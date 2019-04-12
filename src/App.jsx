@@ -12,6 +12,8 @@ import './styles.css';
 import AppNav from './components/AppNav/AppNav';
 import { MuiThemeProvider } from '@material-ui/core';
 import { DefaultTheme } from './Defaults';
+import OauthPage from './components/pages/OauthPage/OauthPage';
+import styled from 'styled-components';
 
 const car = {
   year: '2017',
@@ -51,6 +53,17 @@ const car = {
   estimatedTotal: '$33 595',
 }; */
 
+const PageHolder = styled.div`
+  margin-top: 58px;
+  height: -moz-calc(100% - 58px);
+  height: -webkit-calc(100% - 58px);
+  height: calc(100% - 58px);
+
+  > div {
+    height: 100%;
+    overflow: auto;
+  }
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -80,18 +93,28 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={DefaultTheme}>
         <Router>
-          <div>
+          <div style={{
+            position: 'fixed',
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          >
             <AppNav cookies={cookies} openModal={this.openModal} />
-            <Switch>
-              <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
-              <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
-              <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
+            <PageHolder>
+              <Switch>
+                <Route exact path="/oauth/login" render={() => <OauthPage />} />
+                <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
+                <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
+                <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
-              <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-              <Route path="/user" render={() => (<ProfilePage cookies={cookies} />)} />
+                <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
+                <Route path="/user" render={() => (<ProfilePage cookies={cookies} />)} />
 
-              <Route render={() => (<NotfoundPage cookies={cookies} />)} />
-            </Switch>
+                <Route render={() => (<NotfoundPage cookies={cookies} />)} />
+              </Switch>
+            </PageHolder>
           </div>
         </Router>
       </MuiThemeProvider>

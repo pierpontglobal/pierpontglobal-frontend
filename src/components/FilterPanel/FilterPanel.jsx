@@ -8,7 +8,6 @@ import RangeSelector from './RangeSelector/RangeSelector';
 const style = {
   backgroundColor: '#FAFAFA',
   boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.18)',
-  marginTop: '-15px',
 };
 
 const ExpandableDiv = posed.div({

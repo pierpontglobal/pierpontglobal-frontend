@@ -26,6 +26,7 @@ class SignInModal extends React.Component {
   closeModal() {
     this.setState({ showSigIn: false });
     try {
+      document.getElementsByTagName('body')[0].style.overflow = 'auto';
       const { notifyClosed } = this.props;
       notifyClosed();
     } catch (error) {
@@ -39,15 +40,16 @@ class SignInModal extends React.Component {
 
   signInModal() {
     const { rotate, failed } = this.state;
+    document.getElementsByTagName('body')[0].style.overflow = 'hidden';
 
     return (
       <Modal style={{ position: 'absolute' }} height="320px" show notifyClosed={this.closeModal} title="User sign in">
         <form
           style={{
             display: 'flex',
-            margin: '10px',
             width: '100%',
             height: '100%',
+            minHeight: '390px',
             flexDirection: 'column',
             alignItems: 'center',
           }}
@@ -144,7 +146,6 @@ class SignInModal extends React.Component {
     };
     const response = await axios.post(`${ApiServer}/oauth/token`, data);
     if (response.status === 200) {
-      console.log(response);
       cookies.set('token', response.data.access_token);
       window.location.href = '/user';
     } else {

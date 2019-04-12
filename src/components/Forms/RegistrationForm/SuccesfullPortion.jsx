@@ -114,7 +114,12 @@ class SuccessfullPortion extends React.Component {
               textDecoration: 'none',
               borderBottom: `2px dotted ${textColor}`,
               cursor: 'pointer',
+              borderTop: 'none',
+              borderLeft: 'none',
+              borderRight: 'none',
+              background: 'transparent',
             }}
+            type="button"
             onClick={() => (this.resend(email))}
           >
           Resend
