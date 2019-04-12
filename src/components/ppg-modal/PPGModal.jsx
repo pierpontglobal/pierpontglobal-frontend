@@ -18,7 +18,19 @@ const styles = theme => ({
 });
 
 function PPGModal(props) {
-  const { setOpen, classes, width, height } = props;
+  const { setOpen, classes, width, height, setPadding } = props;
+
+  let style = {
+    argin: 'auto',
+    width: width,
+    height: height,
+    overflowY: 'scroll',
+    padding: '32px',
+  };
+
+  if (!setPadding) {
+    style.padding = '48px 0px 0px 0px';
+  }
 
   return (
     <>
@@ -34,12 +46,7 @@ function PPGModal(props) {
         }}
       >
         <div
-          style={{
-            margin: 'auto',
-            width: width,
-            height: height,
-            overflowY: 'scroll'
-          }}
+          style={style}
           className={classes.paper}
         >
           <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
