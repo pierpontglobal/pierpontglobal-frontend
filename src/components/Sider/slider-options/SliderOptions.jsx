@@ -18,7 +18,7 @@ const SliderOptionActiveLine = styled.div`
 const SliderOptionContent = styled.div`
   width: 100%;
   height: 100%;
-  background-color: ${props => props.active ? 'white' : '#f7f7f7' };
+  background-color: ${props => props.active ? '#f7f7f7' : 'white' };
   display: grid;
   grid-template-columns: 15% 85%;
   padding: 16px;
@@ -41,10 +41,15 @@ class SliderOptions extends Component {
     this.selectActiveOption();
   }
 
-  onClickOption = (url) => {
-    if (!!this.props.onClickOption) {
-      this.props.onClickOption(url);
-      this.selectActiveOption();
+  onClickOption = (url, option) => {
+    if (!!url) {
+      if (!!this.props.onClickOption) {
+        this.props.onClickOption(url);
+        this.selectActiveOption();
+      }
+    }
+    if (!!option) {
+      option.handleClick();
     }
   }
 
@@ -92,7 +97,7 @@ class SliderOptions extends Component {
         {
           (!!options && options.length > 0)
             ? options.map((option, index) => (
-              <SliderOption key={index} onClick={() => this.onClickOption(option.urlMatch)}>
+              <SliderOption key={index} onClick={() => this.onClickOption(option.urlMatch, (!!option.handleClick) ? option : null )}>
                 <SliderOptionActiveLine background={ (option.active) ? '#27e888' : 'darkgray'} />
                 <SliderOptionContent active={option.active}>
                   <div>{option.icon}</div>

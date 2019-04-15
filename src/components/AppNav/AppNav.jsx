@@ -37,7 +37,9 @@ class AppNav extends React.Component {
   }
 
   optionClick = (url) => {
-    this.props.history.push(url);
+    if (!!url) {
+      this.props.history.push(url);
+    }
     this.setState({
       menuOpen: false,
     });
