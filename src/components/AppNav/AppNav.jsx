@@ -5,6 +5,7 @@ import BurgerBtn from './BurgerBtn/BurgerBtn';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import AccountManager from '../support/AccountManager';
 import './styles.css';
+import { withRouter } from 'react-router-dom';
 
 const style = {
   backgroundColor: '#fafafa',
@@ -17,7 +18,7 @@ const style = {
   zIndex: 1000,
 };
 
-export default class AppNav extends React.Component {
+class AppNav extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,6 +31,13 @@ export default class AppNav extends React.Component {
   }
 
   onTouchEnd() {
+    this.setState({
+      menuOpen: false,
+    });
+  }
+
+  optionClick = (url) => {
+    this.props.history.push(url);
     this.setState({
       menuOpen: false,
     });
@@ -54,6 +62,7 @@ export default class AppNav extends React.Component {
           <MenuDrawer
             open={this.state.menuOpen}
             onMaskClick={this.onTouchEnd}
+            afterOptionclick={this.optionClick}
           />
           <BurgerBtn onClick={this.openMenuSide} />
 
@@ -103,3 +112,5 @@ export default class AppNav extends React.Component {
     );
   }
 }
+
+export default  withRouter(AppNav);

@@ -2,7 +2,12 @@ import React from 'react';
 import Slider from '../../Sider/Sider';
 import Tab from './Tab/Tab';
 import AccountPanel from '../../AccountPanel/AccountPanel';
-
+import Home from '@material-ui/icons/Home';
+import DirectionsCar from '@material-ui/icons/DirectionsCar';
+import Phone from '@material-ui/icons/Phone';
+import ShoppingCart from '@material-ui/icons/ShoppingCart';
+import SliderOptions from '../../Sider/slider-options/SliderOptions';
+import styled from 'styled-components';
 
 const dealerExample = {
   image: null,
@@ -12,22 +17,32 @@ const dealerExample = {
   number: '+1 (809) 123-5555',
 };
 
-function MenuDrawer({ open, onMaskClick }) {
+const menuOptions = [
+  { label: 'Home', icon: <Home />, urlMatch: '/' },
+  { label: 'Marketplace', icon: <DirectionsCar />, urlMatch: '/marketplace' },
+  { label: 'Contact us', icon: <Phone />, urlMatch: '/contact-us' },
+];
+
+const MenuTitle = styled.div`
+  width: 100%;
+  min-height: 80px;
+  padding: 16px;
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 1.25rem;
+`;
+
+function MenuDrawer({ open, onMaskClick, afterOptionclick }) {
   if (window.location.pathname.includes('/user')) {
     return (
       <Slider
         open={open}
-        onMaskClick={onMaskClick}
+        handleClose={onMaskClick}
       >
         <AccountPanel
           dealer={dealerExample}
-          inner={(
-            <div style={{ marginLeft: '20px' }}>
-              <Tab href="/" icon="fas fa-home">Home</Tab>
-              <Tab href="/marketplace" icon="fas fa-car">MarketPlace</Tab>
-              <Tab href="/contact-us" icon="fas fa-phone">Contact Us</Tab>
-            </div>
-          )}
+          inner={(<SliderOptions options={menuOptions} onClickOption={afterOptionclick} />)}
         />
       </Slider>
     );
@@ -35,13 +50,14 @@ function MenuDrawer({ open, onMaskClick }) {
   return (
     <Slider
       open={open}
-      onMaskClick={onMaskClick}
+      swipeAreaWidth={20}
+      disableSwipeToOpen={false}
+      handleClose={onMaskClick}
     >
-      <div style={{ padding: '20px' }}>
-        <Tab href="/" icon="fas fa-home">Home</Tab>
-        <Tab href="/marketplace" icon="fas fa-car">MarketPlace</Tab>
-        <Tab href="/contact-us" icon="fas fa-phone">Contact Us</Tab>
-      </div>
+      <MenuTitle>
+        Menu
+      </MenuTitle>
+      <SliderOptions options={menuOptions} onClickOption={afterOptionclick} />
     </Slider>
   );
 }
