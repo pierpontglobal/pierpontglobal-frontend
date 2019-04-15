@@ -1,6 +1,7 @@
 import React from 'react';
 import SignInModal from './SignInModal/SignInModal';
 import './styles.css';
+import { withCookies } from 'react-cookie';
 
 const qs = require('query-string');
 
@@ -61,4 +62,4 @@ class AccountManager extends React.Component {
   }
 }
 
-export default AccountManager;
+export default withCookies(AccountManager);
