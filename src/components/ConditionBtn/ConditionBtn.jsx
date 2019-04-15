@@ -3,13 +3,8 @@ import Container from '../styles/Container/Container';
 import styled from 'styled-components';
 
 const ConditionLabel = styled.div`
-  width: auto;
-  height: auto;
-  max-width: none;
-  max-height: 24px;
-  min-width: none;
-  min-height: none;
-  border-radius: 4px;
+  width: 100%;
+  border-radius: 4px 0px 0px 4px;
   background-color: #eeeeee;
   overflow: hidden;
   box-shadow: none;
@@ -22,24 +17,27 @@ const ConditionLabel = styled.div`
   -moz-letter-spacing: normal;
   -ms-letter-spacing: normal;
   letter-spacing: normal;
-  text-align: center !important;`;
+  text-align: center !important;
+  padding: 8px;
+`;
 
 const ConditionScore = styled.div`
   text-align: center;
-  border-radius: 4px;
+  border-radius: 0px 4px 4px 0px;
   background-color: ${props => `rgb(${props.hexColor})`};
   font-size: 0.75em;
   font-weight: bold;
   line-height: 1.33;
   color: #ffffff;
-  padding: 2px;
+  padding: 8px;
 `;
 const ConditionBtnWrapper = styled.div`
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: 65% 35%;
   @media only screen and (max-width: 600px) {
     margin: 8px;
     width: 100%;
+    grid-template-columns: 75% 25%;
   }
 `;
 
@@ -68,7 +66,7 @@ function ConditionBtn({ label, score }) {
   const hexColor = pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], score).join();
   return (
     <ConditionBtnWrapper>
-      <ConditionLabel>{label}</ConditionLabel>
+      <ConditionLabel>Condition</ConditionLabel>
       <ConditionScore score={score} hexColor={hexColor}>{score}</ConditionScore>
     </ConditionBtnWrapper>
   );

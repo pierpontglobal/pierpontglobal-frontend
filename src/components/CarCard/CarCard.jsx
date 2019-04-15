@@ -101,9 +101,11 @@ const DetailsContainer = styled(Container)`
 const DetailedCR = styled(Container)`
   display: flex;
   flex-direction: column;
+  min-width: 200px;
   @media only screen and (max-width: 600px) {
     width: 50%;
     margin-top: 0px;
+    min-width: '';
   }
 `;
 
@@ -214,7 +216,6 @@ const DetailValue = styled.span`
 const AutoCheckBtn = styled.button`
   border-radius: 4px;
   background-color: #3e78c0;
-  max-height: 24px;
   font-size: 0.75em;
   font-weight: bold;
   line-height: 1.33;
@@ -222,6 +223,7 @@ const AutoCheckBtn = styled.button`
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
   border-style: none;
   margin-top: 15%;
+  padding: 8px;
   &:hover {
     cursor: pointer;
     background-color: #4c87cc !important;
@@ -230,7 +232,7 @@ const AutoCheckBtn = styled.button`
     margin-top: 8%;
     margin: 8px;
     max-height: none;
-    padding: 2px;
+    padding: 4px;
     width: 100%;
   }
 `;
@@ -289,6 +291,10 @@ function CarCard({ key, car, requestFuntion }) {
           <hr style={{ margin: '0 0 5px' }} />
           <input hidden name="VIN" value={vin} />
           <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
+            <Detail>
+              <DetailLabel>Vin: </DetailLabel>
+              <DetailValue>{vin}</DetailValue>
+            </Detail>
             <Detail>
               <DetailLabel>Odometer: </DetailLabel>
               <DetailValue>{numberWithCommas(odometer)}</DetailValue>
