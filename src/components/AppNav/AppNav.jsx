@@ -6,6 +6,7 @@ import MenuDrawer from './MenuDrawer/MenuDrawer';
 import AccountManager from '../support/AccountManager';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
+import MediaQuery from 'react-responsive';
 
 const style = {
   backgroundColor: '#fafafa',
@@ -108,7 +109,10 @@ class AppNav extends React.Component {
             <LinkBtn href="/marketplace">MarketPlace</LinkBtn>
             <LinkBtn href="/contact-us">Contact&nbsp;Us</LinkBtn>
           </div>
-          <AccountManager cookies={this.props.cookies} />
+          
+          <MediaQuery minDeviceWidth={768}>
+            <AccountManager />
+          </MediaQuery>
         </div>
       </div>
     );

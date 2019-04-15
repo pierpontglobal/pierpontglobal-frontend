@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import Slider from '../../Sider/Sider';
+import Slider from '../../Slider/Slider';
 import Tab from './Tab/Tab';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import Home from '@material-ui/icons/Home';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Phone from '@material-ui/icons/Phone';
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import NotificationImportant from '@material-ui/icons/NotificationImportant'
-import SliderOptions from '../../Sider/slider-options/SliderOptions';
+import SliderOptions from '../../Slider/slider-options/SliderOptions';
 import styled from 'styled-components';
 import { Modal } from '@material-ui/core'
 import AccountAlert from '../../account-alert/AccountAlert';
@@ -49,10 +50,10 @@ class MenuDrawer extends Component {
     const { open, onMaskClick, afterOptionclick } = this.props;
 
     const menuOptions = [
-      { label: 'Home', icon: <Home />, urlMatch: '/' },
-      { label: 'Marketplace', icon: <DirectionsCar />, urlMatch: '/marketplace' },
-      { label: 'Contact us', icon: <Phone />, urlMatch: '/contact-us' },
-      { label: 'Alerts', icon: <NotificationImportant />, handleClick: this.alertsClick },
+      { label: 'Home', icon: <Home color='primary'/>, urlMatch: '/' },
+      { label: 'Marketplace', icon: <DirectionsCar color='primary'/>, urlMatch: '/marketplace' },
+      { label: 'Contact us', icon: <Phone color='primary'/>, urlMatch: '/contact-us' },
+      { label: 'Profile', icon: <AccountCircle  color='primary'/>, urlMatch: '/user' }
     ];
 
     if (window.location.pathname.includes('/user')) {
