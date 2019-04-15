@@ -2,51 +2,89 @@ import React from 'react';
 import Text from '../styles/Text/Text';
 import Span from '../styles/Span/Span';
 import TransportDetailsModal from '../pages/CarBidPage/TransportDetailsModal';
+import styled from 'styled-components';
 
-const lStyle = {
-  fontSize: '1em',
-  lineHeight: 1.31,
-  display: 'flex',
-};
-const bStyle = {
-  fontSize: '0.75em',
-  lineHeight: 1.33,
-  fontColor: 'rgba(0, 0, 0, 0.54)',
-};
+const LocationBarWrapper = styled.div`
+  display: flex;
+  padding: 8px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TransportWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LocationWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  };
+`;
+
+const TransportWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TransportTitleModal = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const LocationIconWrapp = styled.div`
+  margin-right: 8px;
+  width: auto;
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
+`;
+
+
 function LocationBar({ currentLocation, to }) {
   return (
-    <div className="d-flex flex-row justify-content-between px-md-4 py-3 px-1">
+    <LocationBarWrapper>
       <Text
         className="mb-0"
         fontSize="1em"
-        lineHeight={1.31}
+        lineHeight="none"
       >
-        <i className="fas fa-map-marker-alt mr-md-2" style={{ color: '#3e78c0', fontSize: '20px' }} />
-        <Span fontWeight={600}>Location:</Span>
-        {' '}
-        {currentLocation}
+        <LocationWrap>
+          <LocationIconWrapp>
+            <i className="fas fa-map-marker-alt mr-md-2" style={{ color: '#3e78c0', fontSize: '20px' }} />
+            <span style={{ fontWeight: '600' }}>Location:</span>
+          </LocationIconWrapp>
+          <div>{currentLocation}</div>
+        </LocationWrap>
       </Text>
-      <div className="d-flex flex-column">
-        <p
-          className="mb-0"
-          style={lStyle}
-        >
-          <span style={{ fontWeight: 600 }}>Ground transport:</span>
-          <span
-            className="ml-1"
-            style={{ color: '#3e78c0' }}
-          >
-            <TransportDetailsModal />
-          </span>
-        </p>
-        <p
-          className="mb-0"
-          style={bStyle}
-        >
-          {to}
-        </p>
-      </div>
-    </div>
+      <TransportWrapper>
+        <TransportWrap>
+          <TransportTitleModal>
+            <div style={{ minWidth: '140px' }}>
+              <span style={{ fontWeight: 600 }}>Ground transport</span>
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+              <span style={{ color: '#3e78c0' }}>
+                <TransportDetailsModal />
+              </span>
+            </div>
+          </TransportTitleModal>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+            <span style={{ fontSize: '0.75em', fontStyle: 'italic' }}>
+              {to}
+            </span>
+          </div>
+        </TransportWrap>
+      </TransportWrapper>
+    </LocationBarWrapper>
   );
 }
 

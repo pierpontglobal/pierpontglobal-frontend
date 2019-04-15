@@ -1,5 +1,45 @@
 import React from 'react';
 import Container from '../styles/Container/Container';
+import styled from 'styled-components';
+
+const ConditionLabel = styled.div`
+  width: 100%;
+  border-radius: 4px 0px 0px 4px;
+  background-color: #eeeeee;
+  overflow: hidden;
+  box-shadow: none;
+  color: #000000;
+  opacity: 1.0;
+  font-size: 0.75em;
+  font-weight: normal;
+  line-height: 1.31;
+  -webkit-letter-spacing: normal;
+  -moz-letter-spacing: normal;
+  -ms-letter-spacing: normal;
+  letter-spacing: normal;
+  text-align: center !important;
+  padding: 8px;
+`;
+
+const ConditionScore = styled.div`
+  text-align: center;
+  border-radius: 0px 4px 4px 0px;
+  background-color: ${props => `rgb(${props.hexColor})`};
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1.33;
+  color: #ffffff;
+  padding: 8px;
+`;
+const ConditionBtnWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 65% 35%;
+  @media only screen and (max-width: 600px) {
+    margin: 8px;
+    width: 100%;
+    grid-template-columns: 75% 25%;
+  }
+`;
 
 function pickHex(color1, color2, color3, weight) {
   if (weight == null) {
@@ -22,30 +62,13 @@ function pickHex(color1, color2, color3, weight) {
   return rgb;
 }
 
-function ConditionBtn({ score, className }) {
+function ConditionBtn({ label, score }) {
+  const hexColor = pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], score).join();
   return (
-    <Container
-      className={`d-flex justify-content-between border-0 ${className || ''}`}
-      maxHeight="24px"
-      borderRadius="4px"
-      fontSize="0.8125em"
-      lineHeight={1.31}
-      backgroundColor="#eeeeee"
-    >
-      <p className="flex-fill mb-0 align-self-center text-center">Condition</p>
-      <Container
-        className="d-flex flex-fill py-2 border-0"
-        maxWidth="24px"
-        borderRadius="4px"
-        backgroundColor={`rgb(${pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], score).join()})`}
-        fontSize="0.75em"
-        fontWeight="bold"
-        lineHeight={1.33}
-        fontColor="#ffffff"
-      >
-        <p className=" flex-fill mb-0 align-self-center text-center">{score !== null ? score : '-' }</p>
-      </Container>
-    </Container>
+    <ConditionBtnWrapper>
+      <ConditionLabel>Condition</ConditionLabel>
+      <ConditionScore score={score} hexColor={hexColor}>{score}</ConditionScore>
+    </ConditionBtnWrapper>
   );
 }
 
