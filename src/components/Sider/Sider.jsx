@@ -34,7 +34,6 @@ class Slider extends Component {
           onClose={this.props.handleClose}
           disableBackdropTransition={true}
           containerClassName={classes.drawer}
-          width={200}
         >
           <div style={{ minWidth: '270px'  }}>
             {
