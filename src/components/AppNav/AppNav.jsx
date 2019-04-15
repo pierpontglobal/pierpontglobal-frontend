@@ -110,9 +110,7 @@ class AppNav extends React.Component {
             <LinkBtn href="/contact-us">Contact&nbsp;Us</LinkBtn>
           </div>
           
-          <MediaQuery minDeviceWidth={768}>
-            <AccountManager />
-          </MediaQuery>
+          <AccountManager />
         </div>
       </div>
     );

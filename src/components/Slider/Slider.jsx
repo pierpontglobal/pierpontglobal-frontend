@@ -28,22 +28,18 @@ class Slider extends Component {
   render() {
     const { open, onMaskClick, children, placement, style, options, classes } = this.props;
     return (
-      <>
-        <SwipeableDrawer
-          open={open}
-          onClose={this.props.handleClose}
-          disableBackdropTransition={true}
-          containerClassName={classes.drawer}
-        >
-          <div style={{ minWidth: '270px'  }}>
-            {
-              (!!children)
-              ? children
-              : (<SliderOptions options={options} onClickOption={this.goToAction} />)
-            }
-          </div>
-        </SwipeableDrawer>
-      </>
+      <SwipeableDrawer
+        open={open}
+        onClose={this.props.handleClose}
+      >
+        <div style={{ minWidth: '270px'  }}>
+          {
+            (!!children)
+            ? children
+            : (<SliderOptions options={options} onClickOption={this.goToAction} />)
+          }
+        </div>
+      </SwipeableDrawer>
     );
   }
 }
