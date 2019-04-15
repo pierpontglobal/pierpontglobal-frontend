@@ -8,7 +8,6 @@ const InfoBar = styled.div`
         height: 76px;
         background: #3e78c0;
         width: 100%;
-        margin-top: -13px;
         display: flex;
         justify-content: center;
         align-items: center;
