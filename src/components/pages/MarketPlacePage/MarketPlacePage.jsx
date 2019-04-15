@@ -155,6 +155,7 @@ class MarketPlacePage extends React.Component {
       if (this.state.size !== size) {
         this.carsSection.current.scrollTop = 0;
       }
+
     });
   }
 
