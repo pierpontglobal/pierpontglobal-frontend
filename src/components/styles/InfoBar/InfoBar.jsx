@@ -5,12 +5,18 @@ const InfoBar = styled.div`
     ${fontProps}
     ${containerProps}
     {
-        height: 76px;
+        color: white;
         background: #3e78c0;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 10px;
+        flex-direction: column;
+    }
+
+    @media only screen and (min-width: 600px) {
+        flex-direction: row;
     }
 `;
 

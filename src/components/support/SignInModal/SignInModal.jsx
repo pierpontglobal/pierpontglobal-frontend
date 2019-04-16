@@ -23,6 +23,14 @@ class SignInModal extends React.Component {
     this.signInModal = this.signInModal.bind(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    if (this.state.showSigIn !== newProps.show) {
+      this.setState({
+        showSigIn: newProps.show,
+      });
+    }
+  }
+
   closeModal() {
     this.setState({ showSigIn: false });
     try {
