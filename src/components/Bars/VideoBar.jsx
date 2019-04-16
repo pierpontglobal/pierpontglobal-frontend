@@ -1,10 +1,20 @@
 import React from 'react';
 import VideoModal from 'react-modal-video';
 import InfoBar from '../styles/InfoBar/InfoBar';
-import Text from '../styles/Text/Text';
 import Button from '../Btn/Btn';
 import '../../../node_modules/react-modal-video/css/modal-video.min.css';
 import './styles.css';
+import styled from 'styled-components';
+
+const VideoBarText = styled.div`
+margin-right: 0;
+margin-bottom: 10px;
+text-align: center;
+@media only screen and (min-width: 600px) {
+  margin-right: 20px;
+  margin-bottom: 0;
+}
+`;
 
 class VideoBar extends React.Component {
   constructor() {
@@ -22,30 +32,12 @@ class VideoBar extends React.Component {
   // Video banner
   render() {
     return (
-      <InfoBar
-        className="info-bar-shinks"
-        style={{
-          height: 'auto',
-        }}
-      >
-        <Text
-          className="bar-text"
-          style={{
-            color: '#ffffff',
-            marginRight: '20px',
-            marginBottom: '0px',
-            marginTop: '10px',
-            margin: '24px 0px 0px 0px',
-          }}
-          fontWeight={600}
-          lineHeight={1.31}
-        >
+      <InfoBar>
+        <VideoBarText>
           It’s never been easier to buy cars from the United States
-        </Text>
+        </VideoBarText>
         <VideoModal channel="youtube" isOpen={this.state.isOpen} videoId="XEcELW3hkuQ" onClose={() => this.setState({ isOpen: false })} />
-        <div style={{ margin: '24px 16px 0px 16px' }}>
-          <Button height="50px" margin="10px" marginBottom="10px" onClick={this.openModal} color="#0bb761">Watch promo video</Button>
-        </div>
+        <Button height="50px" onClick={this.openModal} color="#0bb761">Watch promo video</Button>
       </InfoBar>
     );
   }

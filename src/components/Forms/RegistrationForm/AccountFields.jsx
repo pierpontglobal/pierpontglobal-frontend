@@ -203,7 +203,8 @@ class AccountFields extends React.Component {
           <div
             style={{
               position: 'relative',
-              width: '300px',
+              width: '100%',
+              maxWidth: '300px',
               marginBottom: '10px',
             }}
           >

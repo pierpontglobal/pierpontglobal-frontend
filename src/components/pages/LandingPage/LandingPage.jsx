@@ -181,7 +181,7 @@ class LandingPage extends React.Component {
               }}
               className="shadow column-5"
             >
-              <Registration height="400px" backgroundColor="rgb(255, 255, 255, 0.8)" openModal={this.openModal} />
+              <Registration backgroundColor="rgb(255, 255, 255, 0.8)" openModal={this.openModal} />
             </div>
           </div>
         </div>

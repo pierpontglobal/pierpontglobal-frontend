@@ -39,7 +39,8 @@ class MenuDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openAlertModal: false
+      openAlertModal: false,
+      open: false
     }
   }
 
@@ -54,11 +55,23 @@ class MenuDrawer extends Component {
   }
 
   showLoginModal = () => {
-    window.location.href = "/?signIn=true";
+    this.setState({
+      open: false,
+    });
+    this.props.showSignIn();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.state.open !== newProps.open){
+      this.setState({
+        open: newProps.open
+      });
+    }
   }
 
   render() {
-    const { open, onMaskClick, afterOptionclick } = this.props;
+    const { onMaskClick, afterOptionclick } = this.props;
+    const { open } = this.state;
 
     let menuOptions = [
       { label: 'Home', icon: <Home color='primary'/>, urlMatch: '/' },

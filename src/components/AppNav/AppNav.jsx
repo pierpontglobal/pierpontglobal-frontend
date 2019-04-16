@@ -7,6 +7,7 @@ import AccountManager from '../support/AccountManager';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
+import SignInModal from '../support/SignInModal/SignInModal';
 
 const style = {
   backgroundColor: '#fafafa',
@@ -19,16 +20,23 @@ const style = {
   zIndex: 1000,
 };
 
+const qs = require('query-string');
+
 class AppNav extends React.Component {
   constructor(props) {
     super(props);
 
+    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+
     this.state = {
       menuOpen: false,
+      showModal: this.params.signIn || false,
     };
 
     this.openMenuSide = this.openMenuSide.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.optionClick = this.optionClick.bind(this);
+    this.showSignIn = this.showSignIn.bind(this);
   }
 
   onTouchEnd() {
@@ -37,8 +45,8 @@ class AppNav extends React.Component {
     });
   }
 
-  optionClick = (url) => {
-    if (!!url) {
+  optionClick(url) {
+    if (url) {
       this.props.history.push(url);
     }
     this.setState({
@@ -52,12 +60,21 @@ class AppNav extends React.Component {
     });
   }
 
+  showSignIn(status) {
+    this.setState({
+      showModal: status,
+    });
+  }
+
   render() {
+    const { showModal } = this.state;
+
     return (
       <div
         className="d-flex flex-row py-2 justify-content-md-center px-3 px-md-2 w-100"
         style={style}
       >
+        <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
         <div
           className="nav-items"
           style={{ maxWidth: '950px' }}
@@ -66,6 +83,7 @@ class AppNav extends React.Component {
             open={this.state.menuOpen}
             onMaskClick={this.onTouchEnd}
             afterOptionclick={this.optionClick}
+            showSignIn={() => { this.showSignIn(true); }}
           />
           <BurgerBtn onClick={this.openMenuSide} />
 
@@ -109,12 +127,12 @@ class AppNav extends React.Component {
             <LinkBtn href="/marketplace">MarketPlace</LinkBtn>
             <LinkBtn href="/contact-us">Contact&nbsp;Us</LinkBtn>
           </div>
-          
-          <AccountManager />
+
+          <AccountManager showSignIn={() => { this.showSignIn(true); }} />
         </div>
       </div>
     );
   }
 }
 
-export default  withRouter(AppNav);
+export default withRouter(AppNav);
