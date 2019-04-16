@@ -1,7 +1,8 @@
 import { createMuiTheme } from '@material-ui/core';
 
-export const ApiServer = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://api.pierpontglobal.com';
+export const ApiServer = process.env.NODE_ENV === 'development' ? 'http://ppm2.local:3000' : 'https://api.pierpontglobal.com';
 export const StripeKey = process.env.NODE_ENV === 'development' ? 'pk_test_mPENMxq3MENOAxDxZDVUZajS' : 'pk_live_Rnf6s2eReIqXTzHhZGFvFvMA';
+
 export const DefaultTheme = createMuiTheme({
   palette: {
     primary: { main: '#3A3E43' },

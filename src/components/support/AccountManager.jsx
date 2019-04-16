@@ -1,6 +1,7 @@
 import React from 'react';
 import SignInModal from './SignInModal/SignInModal';
 import './styles.css';
+import { withCookies } from 'react-cookie';
 
 const qs = require('query-string');
 
@@ -28,31 +29,25 @@ class AccountManager extends React.Component {
     const { showModal } = this.state;
     const { cookies } = this.props;
 
-    if (cookies.get('token') !== undefined) {
-      return (
-        <button
-          type="button"
-          onClick={() => { window.location.href = '/user'; }}
-          className="sign_in_button"
-        >
-          <i className="far fa-user" id="inner-sign-in-icon" />
-          Profile
-          {showModal
-            ? <SignInModal notifyClosed={this.setClosed} show /> : <div />}
-        </button>
-      );
-    }
+    const token = cookies.get('token', { path: '/' });
 
     return (
-      <button
-        type="button"
-        onClick={() => { this.setState({ showModal: true }); }}
-        className="sign_in_button"
-      >
-        <i className="far fa-user" id="inner-sign-in-icon" />
-          Sign In
-        {showModal ? <SignInModal notifyClosed={this.setClosed} show /> : null}
-      </button>
+      <>
+        { !token ?
+          (
+            <button
+              type="button"
+              onClick={() => { this.setState({ showModal: true }); }}
+              className="sign_in_button"
+            >
+              <i className="far fa-user" id="inner-sign-in-icon" />
+                Sign In
+              {showModal ? <SignInModal notifyClosed={this.setClosed} show /> : null}
+            </button>
+          )
+          : null
+        }
+      </>
     );
   }
 
@@ -61,4 +56,4 @@ class AccountManager extends React.Component {
   }
 }
 
-export default AccountManager;
+export default withCookies(AccountManager);

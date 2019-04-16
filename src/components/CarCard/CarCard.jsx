@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
-import SlideShow from '../SlideShow/SlideShow';
-import Detail from './Detail/Detail';
-import AutoCheckBtn from '../AutoCheckBtn/AutoCheckBtn';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
-import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
 import { DefaultTheme } from '../../Defaults';
-
 import ScaleText from 'react-scale-text';
 
 function numberWithCommas(x) {
@@ -27,40 +22,62 @@ const CarContainer = styled.div`
   overflow: hidden;
   border: 1px solid rgba(0,0,0,0.16);
   box-shadow: 3px 3px 6px rgba(0,0,0,0.16);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 25% 35% 40%;
+  background-color: #fff;
 
-  @media only screen and (min-width: 600px) {
-    height: 177px;
-    margin-left: 0;
-    margin-right: 0;
-    flex-direction: row;
+  /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
+  @media only screen and (max-width: 600px) {
+    grid-template-rows: 50% 100%;
+    grid-template-columns: 100%;
   }
-    
-  @media only screen and (min-width: 768px) {
+  @media only screen and (max-width: 600px) and (min-width: 500px) {
+    grid-template-rows: 260px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 500px) and (min-width: 400px) {
+    grid-template-rows: 235px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 400px) and (min-width: 300px) {
+    grid-template-rows: 210px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 300px) and (min-width: 200px) {
+    grid-template-rows: 180px;
+    grid-template-columns: 100%;
+  }
+  @media only screen and (max-width: 200px) {
+    grid-template-rows: 160px;
+    grid-template-columns: 100%;
   }
 `;
 
-const ConditionContainer = styled.div`
-  padding: 0 10px 10px 10px;
-  width: 100%;
-  position: relative;
+const Container = styled.div`
+  padding: 0px 16px;
   display: flex;
-  justify-content: space-between;
-  justify-items: center;
-  align-content: space-between;
-  align-items: center;
+`;
 
-  @media only screen and (min-width: 600px) {
-    width: 40%;
-    padding: 10px;
-    align-items: flex-start;
-    justify-items: flex-start;
-    justify-content: flex-start;
-    justify-items: flex-start;
+const ImageWrapper = styled.img`
+  object-fit: cover;
+  width: 236px;
+  height: 120px;
+
+  /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
+  @media only screen and (max-width: 600px) and (min-width: 500px) {
+    height: 260px;
   }
-    
-  @media only screen and (min-width: 768px) {
+  @media only screen and (max-width: 500px) and (min-width: 400px) {
+    height: 235px;
+  }
+  @media only screen and (max-width: 400px) and (min-width: 300px) {
+    height: 210px;
+  }
+  @media only screen and (max-width: 300px) and (min-width: 200px) {
+    height: 180px;
+  }
+  @media only screen and (max-width: 200px) {
+    height: 160px;
   }
 `;
 
@@ -73,64 +90,22 @@ const DropDown = posed.i({
   },
 });
 
-const DetailsContainer = styled.div`
-  width: 100%;
-  padding: 10px;
-  position: relative;
-  
-  @media only screen and (min-width: 600px) {
-    width: 30%;
-  }
-    
-  @media only screen and (min-width: 768px) {
+const DetailsContainer = styled(Container)`
+  flex-direction: column;
+  justify-content: space-evenly;
+  @media only screen and (max-width: 600px) {
+    margin-top: 5%;
   }
 `;
 
-const DetailsView = posed.div({
-  open: { height: '90px' },
-  closed: { height: 0 },
-});
-
-
-const SpecificDetailsContainer = styled(DetailsView)`
-  overflow: hidden;
-
-  @media only screen and (min-width: 600px) {
-    overflow: visible;
-  }
-`;
-
-const ImgContainer = styled.div`
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
-
-  @media only screen and (min-width: 600px) {
-    width: 30%;
-    height: 177px;
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
-`;
-
-const DetailedCR = styled.div`
-  width: 50%;
-`;
-
-const PhoneDropDown = styled(DropDown)`
-
-  color: ${DefaultTheme.palette.primary.main} !important;
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  display: block !important;
-
-  @media only screen and (min-width: 600px) {
-    display: none !important;
-  }
-    
-  @media only screen and (min-width: 768px) {
+const DetailedCR = styled(Container)`
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  @media only screen and (max-width: 600px) {
+    width: 50%;
+    margin-top: 0px;
+    min-width: '';
   }
 `;
 
@@ -169,17 +144,9 @@ const TimeAgoContainer = styled.div`
   align-items: center;
   text-align: center;
   margin-bottom: 10px;
-
-  @media only screen and (min-width: 600px) {
-  }
-    
-  @media only screen and (min-width: 768px) {
-  }
 `;
 
 const PriceContainer = styled.div`
-  
-  width: 50%;
   display: flex;
   justify-content: flex-start;
   align-content: flex-start;
@@ -187,17 +154,105 @@ const PriceContainer = styled.div`
   align-items: center;
   text-align: center;
   flex-direction: column;
+  @media only screen and (max-width: 600px) {
+    width: 50%;
+    margin-top: 0%;
+  }
+`;
 
+const Detail = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const DetailTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DetailsView = posed.div({
+  open: { height: 'auto' },
+  closed: { height: 0 },
+});
+
+const DetailContent = styled(DetailsView)`
   @media only screen and (min-width: 600px) {
-    
+    height: auto !important;
   }
-    
-  @media only screen and (min-width: 768px) {
+  @media only screen and (max-width: 600px) {
+    visibility: ${props => props.state};
   }
-  
+`;
+
+const DetailLabel = styled.span`
+  font-size: 0.85rem;
+  font-weight: 600;
+`;
+
+const DropDwonIcon = styled(DropDown)`
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 12px 0 12px;
+  border-color: #000 transparent transparent transparent;
+  display: block;
+  @media only screen and (min-width: 600px) {
+    display: none;
+  }
+`;
+
+const DetailValue = styled.span`
+  font-size: 0.85rem;
+  margin-left: 2%;
+  @media only screen and (max-width: 600px) {
+    margin-left: 0px;
+  }
+`;
+
+const AutoCheckBtn = styled.button`
+  border-radius: 4px;
+  background-color: #3e78c0;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1.33;
+  color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+  border-style: none;
+  margin-top: 15%;
+  padding: 8px;
+  &:hover {
+    cursor: pointer;
+    background-color: #4c87cc !important;
+  }
+  @media only screen and (max-width: 600px) {
+    margin-top: 8%;
+    margin: 8px;
+    max-height: none;
+    padding: 4px;
+    width: 100%;
+  }
+`;
+
+const CRPriceContainer = styled.div`
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    justify-items: center;
+    align-content: space-between;
+    align-items: center;
+    @media only screen and (max-width: 600px) {
+      margin: 5% 0px;
+      justify-content: space-between;
+    }
 `;
 
 function CarCard({ key, car, requestFuntion }) {
+  
   const [openDetails, setOpenDetails] = useState('closed');
 
   const {
@@ -216,86 +271,62 @@ function CarCard({ key, car, requestFuntion }) {
   const timeDiff = Math.abs(diference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
-    <CarContainer
-      key={key}
-      backgroundColor="#fafafa"
-      onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) }
-    >
-      <ImgContainer>
+    <>
+      <CarContainer key={key} id="car-card"
+        onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) } >
         <Carousel
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
         >
-          {images.map(image => (
-            <div>
-              <img src={image} />
-            </div>
+          {images.map((image, i) => (
+            <ImageWrapper id="image-carousel" key={i} src={image} />
           ))}
         </Carousel>
-      </ImgContainer>
-
-      <DetailsContainer>
-        <div style={{ width: '100%', fontSize: '16px' }}>
-          {car.year}
-          {' '}
-          {car.make}
-          {' '}
-          {car.model}
-          {' '}
-          {car.trimLevel}
-        </div>
-        <hr style={{ margin: '0 0 5px' }} />
-        <PhoneDropDown
-          pose={openDetails}
-          onClick={() => setOpenDetails(openDetails === 'open' ? 'closed' : 'open')}
-          className="fas fa-caret-down"
-        />
-        <SpecificDetailsContainer pose={openDetails} class>
-          <Detail
-            name="VIN"
-            value={vin}
-            className="mb-md-0 w-100"
-          />
-          <Detail
-            name="Odometer"
-            value={numberWithCommas(odometer)}
-            className="mb-md-0"
-          />
-          <Detail
-            name="Engine"
-            value={engine}
-            className="mb-md-0"
-          />
-          <Detail
-            name="Transmission"
-            value={transmission}
-            className="mb-md-3"
-          />
-        </SpecificDetailsContainer>
-      </DetailsContainer>
-      <ConditionContainer>
-        <DetailedCR>
-          <ConditionBtn
-            score={cr}
-            className="w-100 mb-2"
-          />
-          <AutoCheckBtn crUrl={crUrl} className="w-100 py-1 mt-1" />
-        </DetailedCR>
-
-        <PriceContainer>
-          <TimeAgoContainer diffDays={diffDays}>
-            <TimeAgo date={saleDate} />
-          </TimeAgoContainer>
-          <PriceTag
-            price={wholePrice}
-            vin={vin}
-            requestFuntion={requestFuntion}
-          />
-        </PriceContainer>
-      </ConditionContainer>
-
-    </CarContainer>
+        <DetailsContainer>
+          <DetailTitle>
+            <div><span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year} ${car.make} ${car.model} ${car.trimLevel}`}</span></div>
+            <DropDwonIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+          </DetailTitle>
+          <hr style={{ margin: '0 0 5px' }} />
+          <input hidden name="VIN" value={vin} />
+          <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
+            <Detail>
+              <DetailLabel>Vin: </DetailLabel>
+              <DetailValue>{vin}</DetailValue>
+            </Detail>
+            <Detail>
+              <DetailLabel>Odometer: </DetailLabel>
+              <DetailValue>{numberWithCommas(odometer)}</DetailValue>
+            </Detail>
+            <Detail>
+              <DetailLabel>Engine: </DetailLabel>
+              <DetailValue>{engine}</DetailValue>
+            </Detail>
+            <Detail>
+              <DetailLabel>Transmission: </DetailLabel>
+              <DetailValue>{transmission}</DetailValue>
+            </Detail>
+          </DetailContent>
+        </DetailsContainer>
+        <CRPriceContainer>
+          <DetailedCR>
+            <ConditionBtn label="Condition" score={cr} />
+            <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
+          </DetailedCR>
+          <PriceContainer>
+            <TimeAgoContainer diffDays={diffDays}>
+              <TimeAgo date={saleDate} />
+            </TimeAgoContainer>
+            <PriceTag
+              price={wholePrice}
+              vin={vin}
+              requestFuntion={requestFuntion}
+            />
+          </PriceContainer>
+        </CRPriceContainer>
+      </CarContainer>
+    </>
   );
 }
 
