@@ -100,7 +100,7 @@ class MarketPlacePage extends React.Component {
         if (url === null) {
           images.push('/not-an-image.jk');
         } else {
-          images[imagesObjs[j].f4] = `${url}?width=354&height=200&position=${imagesObjs[j].f4}`;
+          images[imagesObjs[j].f4] = `${url}?width=400&height=400&position=${imagesObjs[j].f4}`;
         }
       }
 
