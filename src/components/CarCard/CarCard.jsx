@@ -3,9 +3,11 @@ import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -55,7 +57,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-const ImageWrapper = styled.img`
+const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
   width: 236px;
   height: 120px;
@@ -219,7 +221,7 @@ const AutoCheckBtn = styled.button`
   color: #ffffff;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
   border-style: none;
-  margin-top: 15%;
+  margin-top: 10px;
   padding: 8px;
   &:hover {
     cursor: pointer;
@@ -267,69 +269,74 @@ function CarCard({ key, car, requestFuntion }) {
   const timeDiff = Math.abs(difference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
-    <>
-      <CarContainer
-        key={key}
-        id="car-card"
-        onClick={(e) => {
-          if (e.target.tagName === 'DIV') {
-            window.location.href = `/marketplace/car?vin=${vin}`;
-          }
-        }}
+    <CarContainer
+      key={key}
+      id="car-card"
+      onClick={(e) => {
+        if (e.target.tagName === 'DIV') {
+          window.location.href = `/marketplace/car?vin=${vin}`;
+        }
+      }}
+    >
+      <Carousel
+        showIndicators={false}
+        showStatus={false}
+        showThumbs={false}
       >
-        <Carousel
-          showIndicators={false}
-          showStatus={false}
-          showThumbs={false}
-        >
-          {images.map((image, i) => (
-            <ImageWrapper id="image-carousel" key={i} src={image} />
-          ))}
-        </Carousel>
-        <DetailsContainer>
-          <DetailTitle>
-            <div><span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year} ${car.make} ${car.model} ${car.trimLevel}`}</span></div>
-            <DropDwonIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
-          </DetailTitle>
-          <hr style={{ margin: '0 0 5px' }} />
-          <input hidden name="VIN" value={vin} />
-          <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
-            <Detail>
-              <DetailLabel>Vin: </DetailLabel>
-              <DetailValue>{vin}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>Odometer: </DetailLabel>
-              <DetailValue>{numberWithCommas(odometer)}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>Engine: </DetailLabel>
-              <DetailValue>{engine}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>Transmission: </DetailLabel>
-              <DetailValue>{transmission}</DetailValue>
-            </Detail>
-          </DetailContent>
-        </DetailsContainer>
-        <CRPriceContainer>
-          <DetailedCR>
-            <ConditionBtn label="Condition" score={cr} />
-            <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
-          </DetailedCR>
-          <PriceContainer>
-            <TimeAgoContainer diffDays={diffDays}>
-              <TimeAgo date={saleDate} />
-            </TimeAgoContainer>
-            <PriceTag
-              price={wholePrice}
-              vin={vin}
-              requestFuntion={requestFuntion}
-            />
-          </PriceContainer>
-        </CRPriceContainer>
-      </CarContainer>
-    </>
+        {images.map((image, i) => (
+          <ImageWrapper
+            effect="blur"
+            id="image-carousel"
+            key={i}
+            src={image}
+            threshold={1000}
+            delayTime={1000}
+          />
+        ))}
+      </Carousel>
+      <DetailsContainer>
+        <DetailTitle>
+          <div><span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year} ${car.make} ${car.model} ${car.trimLevel}`}</span></div>
+          <DropDwonIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+        </DetailTitle>
+        <hr style={{ margin: '0 0 5px' }} />
+        <input hidden name="VIN" value={vin} />
+        <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
+          <Detail>
+            <DetailLabel>Vin: </DetailLabel>
+            <DetailValue>{vin}</DetailValue>
+          </Detail>
+          <Detail>
+            <DetailLabel>Odometer: </DetailLabel>
+            <DetailValue>{numberWithCommas(odometer)}</DetailValue>
+          </Detail>
+          <Detail>
+            <DetailLabel>Engine: </DetailLabel>
+            <DetailValue>{engine}</DetailValue>
+          </Detail>
+          <Detail>
+            <DetailLabel>Transmission: </DetailLabel>
+            <DetailValue>{transmission}</DetailValue>
+          </Detail>
+        </DetailContent>
+      </DetailsContainer>
+      <CRPriceContainer>
+        <DetailedCR>
+          <ConditionBtn label="Condition" score={cr} />
+          <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
+        </DetailedCR>
+        <PriceContainer>
+          <TimeAgoContainer diffDays={diffDays}>
+            <TimeAgo date={saleDate} />
+          </TimeAgoContainer>
+          <PriceTag
+            price={wholePrice}
+            vin={vin}
+            requestFuntion={requestFuntion}
+          />
+        </PriceContainer>
+      </CRPriceContainer>
+    </CarContainer>
   );
 }
 
