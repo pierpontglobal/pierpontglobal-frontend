@@ -6,6 +6,7 @@ import ManheimLogo from './manheim.png';
 import './font/flaticon.css';
 import './landing_page.css';
 import Button from '../../Btn/Btn';
+import Notifications from '../../notifications/Notifications';
 
 class LandingPage extends React.Component {
   constructor(props) {

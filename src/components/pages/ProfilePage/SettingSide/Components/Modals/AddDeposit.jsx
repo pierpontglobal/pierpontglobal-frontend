@@ -29,7 +29,7 @@ class AddDeposit extends React.Component {
   onCloseModal() {
     this.setState({ open: false });
     if (this.state.status === 'success') {
-      window.location.reload();
+      //window.location.reload();
     }
   }
 

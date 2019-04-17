@@ -6,6 +6,7 @@ import Modal from '../../Modal/Modal';
 import Input from '../../styles/Input/Input';
 import Button from '../../Btn/Btn';
 import './styles.css';
+import { withRouter } from 'react-router-dom';
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -138,7 +139,7 @@ class SignInModal extends React.Component {
 
   async signIn(e) {
     e.preventDefault();
-    const { cookies } = this.props;
+    const { cookies, history } = this.props;
     const data = {
       username: this.username.value,
       password: this.password.value,
@@ -147,7 +148,8 @@ class SignInModal extends React.Component {
     const response = await axios.post(`${ApiServer}/oauth/token`, data);
     if (response.status === 200) {
       cookies.set('token', response.data.access_token);
-      window.location.href = '/user';
+      cookies.set('user_id', response.data.user_id);
+      history.push('/user');
     } else {
       this.username.className = `${this.username.className} wrong-cre`;
       this.password.className = `${this.password.className} wrong-cre`;
@@ -168,4 +170,4 @@ class SignInModal extends React.Component {
   }
 }
 
-export default withCookies(SignInModal);
+export default withCookies(withRouter(SignInModal));

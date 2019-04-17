@@ -6,7 +6,11 @@ import MenuDrawer from './MenuDrawer/MenuDrawer';
 import AccountManager from '../support/AccountManager';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
-import MediaQuery from 'react-responsive';
+import NotificatinBadge from './notification-badge/NotificatinBadge';
+import Person from '@material-ui/icons/Person';
+import styled from 'styled-components';
+import { IconButton } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 const style = {
   backgroundColor: '#fafafa',
@@ -18,6 +22,20 @@ const style = {
   overflow: 'show',
   zIndex: 1000,
 };
+
+const styles = theme => ({
+  iconButton: {
+    "&:hover": {
+      backgroundColor: 'rgba(0, 0, 0, 0);'
+    }
+  },
+});
+
+const UserInfoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 class AppNav extends React.Component {
   constructor(props) {
@@ -52,7 +70,12 @@ class AppNav extends React.Component {
     });
   }
 
+  goToProfile = () => {
+    this.props.history.push('/user');
+  }
+
   render() {
+    const { cookies, classes } = this.props;
     return (
       <div
         className="d-flex flex-row py-2 justify-content-md-center px-3 px-md-2 w-100"
@@ -109,12 +132,23 @@ class AppNav extends React.Component {
             <LinkBtn href="/marketplace">MarketPlace</LinkBtn>
             <LinkBtn href="/contact-us">Contact&nbsp;Us</LinkBtn>
           </div>
-          
           <AccountManager />
+          {
+            (!!cookies.get('token', { path: '/' })) ? 
+              <UserInfoWrapper>
+                <NotificatinBadge /> 
+                <IconButton
+                  disableRipple={true}  
+                  className={classes.iconButton} 
+                  onClick={() => this.goToProfile()}>
+                  <Person />
+                </IconButton>
+              </UserInfoWrapper> : null
+          }
         </div>
       </div>
     );
   }
 }
 
-export default  withRouter(AppNav);
+export default withStyles(styles)(withRouter(AppNav));
