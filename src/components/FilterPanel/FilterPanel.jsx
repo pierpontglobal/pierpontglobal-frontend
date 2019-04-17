@@ -1,26 +1,16 @@
 import React from 'react';
 import posed from 'react-pose';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Item from './Item/Item';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
-import styled from 'styled-components';
-
-const style = {
-  backgroundColor: '#FAFAFA',
-  boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.18)',
-  height: '95vh',
-  overflow: 'scroll',
-  '@media screen and (max-width: 600px)': {
-    height: '100%',
-  },
-};
 
 const FilterPanelWrapper = styled.div`
   background-color: #FAFAFA;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   @media only screen and (max-width: 600px) {
     height: 100%,
   };
@@ -156,7 +146,7 @@ class FilterPanel extends React.Component {
 
     window.history.pushState(null, 'Marketplace', `?${str}`);
     this.props.getCars();
-    if (!!this.props.handleFilterChange) {
+    if (this.props.handleFilterChange) {
       this.props.handleFilterChange(searchables);
     }
   }

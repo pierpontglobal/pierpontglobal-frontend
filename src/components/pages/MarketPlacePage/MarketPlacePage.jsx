@@ -9,10 +9,9 @@ import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
 import './styles.css';
-import { IconButton } from '@material-ui/core';
-import FilterList from '@material-ui/icons/FilterList';
 import PPGModal from '../../ppg-modal/PPGModal';
 import MediaQuery from 'react-responsive';
+import { CircularProgress } from '@material-ui/core';
 
 const qs = require('query-string');
 
@@ -20,16 +19,16 @@ const SidePanel = styled.div`
   max-width: 220px;
   width: 100%;
   display: flex;
+  overflow: auto;
   @media only screen and (max-width: 600px) {
     display: none;
   }
 `;
 
 const CarSection = styled.div`
-  height: 95vh;
+  height: calc(100%);
   padding-left: 10px;
   padding-right: 10px;
-  overflow: scroll;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 `;
 
@@ -42,16 +41,7 @@ const MarketPlaceContainer = styled.div`
   right: 0;
   max-width: 1200px;
   justify-content: center;
-
-`;
-
-const FilterIcon = styled.div`
-  display: none;
-  width: 100%;
-  @media only screen and (max-width: 600px) {
-    display: flex;
-    justify-content: flex-end;
-  }
+  overflow: hidden;
 `;
 
 class MarketPlacePage extends React.Component {
@@ -221,20 +211,25 @@ class MarketPlacePage extends React.Component {
               </MediaQuery>
             </SidePanel>
             <CarSection ref={this.carsSection}>
-              <div style={{ overflow: 'auto', position: 'relative' }}>
-                <FilterIcon>
-                  <IconButton color="primary" onClick={() => this.showFilterPanel()}>
-                    <FilterList />
-                    <span style={{ fontSize: '0.75em' }}>Filters</span>
-                  </IconButton>
-                </FilterIcon>
-                <SortBar header={this.params.q} />
+              <div style={{ overflow: 'hidden', position: 'relative' }}>
+                <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel}/>
                 <hr />
                 <InfiniteScroll
                   dataLength={cars.length}
                   next={this.getCars}
                   hasMore
-                  loader={<h4>Loading...</h4>}
+                  loader={
+                    <div style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      paddingTop: '10px',
+                      height: '80px',
+                      alignContent: 'center',
+                    }}>
+                      <CircularProgress />
+                    </div>
+                  }
                   height={carsSectionHeight - 80}
                   endMessage={(
                     <p style={{ textAlign: 'center' }}>
