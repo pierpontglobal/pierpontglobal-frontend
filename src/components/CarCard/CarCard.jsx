@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
-import ConditionBtn from '../ConditionBtn/ConditionBtn';
-import PriceTag from './PriceTag/PriceTag';
-import Text from '../styles/Text/Text';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
-import { DefaultTheme } from '../../Defaults';
-import ScaleText from 'react-scale-text';
+import ConditionBtn from '../ConditionBtn/ConditionBtn';
+import PriceTag from './PriceTag/PriceTag';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -121,14 +118,14 @@ function pickHex(color1, color2, color3, weightRaw) {
     const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
       Math.round(color2[1] * w1 + color3[1] * w2),
       Math.round(color2[2] * w1 + color3[2] * w2)];
-    return rgb;
+    return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
   }
   const w1 = (weight - 2.5) / 2.5;
   const w2 = 1 - w1;
   const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
     Math.round(color1[1] * w1 + color2[1] * w2),
     Math.round(color1[2] * w1 + color2[2] * w2)];
-  return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`;
+  return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
 }
 
 const TimeAgoContainer = styled.div`
@@ -252,7 +249,6 @@ const CRPriceContainer = styled.div`
 `;
 
 function CarCard({ key, car, requestFuntion }) {
-  
   const [openDetails, setOpenDetails] = useState('closed');
 
   const {
@@ -267,13 +263,20 @@ function CarCard({ key, car, requestFuntion }) {
     wholePrice,
   } = car;
 
-  const diference = saleDate - new Date();
-  const timeDiff = Math.abs(diference);
+  const difference = saleDate - new Date();
+  const timeDiff = Math.abs(difference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
     <>
-      <CarContainer key={key} id="car-card"
-        onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) } >
+      <CarContainer
+        key={key}
+        id="car-card"
+        onClick={(e) => {
+          if (e.target.tagName === 'DIV') {
+            window.location.href = `/marketplace/car?vin=${vin}`;
+          }
+        }}
+      >
         <Carousel
           showIndicators={false}
           showStatus={false}
