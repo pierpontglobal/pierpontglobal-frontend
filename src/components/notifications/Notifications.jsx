@@ -7,6 +7,7 @@ import { identity } from 'rxjs';
 import axios from 'axios';
 import { ApiServer } from '../../Defaults';
 import posed, { PoseGroup } from 'react-pose';
+import NotificationsType from '../../constants/NotificationTypes';
 
 const Card = posed.div({
   enter: { opacity: 1 },
@@ -15,26 +16,24 @@ const Card = posed.div({
 
 const NotificationCard = styled(Card)`
   width: 100%;
-  height: 100%;
-  min-height: 120px;
+  min-height: 130px;
   display: grid;
-  grid-template-rows: 30% 40% 30%;
+  grid-template-rows: 20% 70% 10%;
   background-color: white;
-  border-radius: 16px;
-  margin-bottom: 8px;
-  margin-top: 8px;
   padding: 8px 16px;
+  margin-bottom: 8px;
   opacity: 0;
   overflow: hidden;
   &:hover {
     cursor: pointer;
+    border-left: thick double ${props => (props.type === NotificationsType.alert) ? '#ff6666' : '#6594cd'};
+    transition: 0.19s;
   }
 `;
 
 const NotificationsWrapper = styled.div`
   width: 100%;
   padding: 8px;
-  margin-top: 8px;
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 120px);
@@ -66,8 +65,16 @@ const ActionsButtons = styled.div`
   width: 100%;
   min-height: 30px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+`;
+
+const TotalShow = styled.span`
+  font-style: italic;
+  color: lightgray;
+  padding: 4px;
+  margin-left: 4px;
+  font-size: 0.9rem;
 `;
 
 class Notifications extends Component {
@@ -88,14 +95,15 @@ class Notifications extends Component {
   showDetail = (id) => {
     axios.post(`${ApiServer}/api/v1/notification/read?id=${id}`).then(data => {
       this.animateCardExit(id);
+      console.log('Notification >>');
+      console.log(data.data);
       this.props.onRead(data.data);
       this.props.onClose();
     });
   }
 
   animateCardExit = id => {
-    let tagId = `card-${id}`;
-
+    // TODO: Fade exit transition for selected card
   }
 
   readAll = () => {
@@ -120,16 +128,17 @@ class Notifications extends Component {
       </TitleWrapper>
       <NotificationsWrapper>
         <ActionsButtons>
+          <TotalShow>{ notifications.length }</TotalShow>
           <Button onClick={this.readAll}>Mark all as read</Button>
         </ActionsButtons>
         <PoseGroup>
           {
             notifications.map((n) => {
               return (
-                <NotificationCard key={n.id} onClick={() => this.showDetail(n.id)}>
+                <NotificationCard type={n.notification_type} key={n.id} onClick={() => this.showDetail(n.id)}>
                   <div><span style={{ fontSize: '0.90rem', fontWeight: '600' }}>{ n.data.title }</span></div>
-                  <div><span style={{ fontSize: '0.85rem' }}>{ n.data.message }</span></div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', fontStyle: 'italic' }}><span style={{ fontSize: '0.75rem' }}>{ new Date(n.data.sent_date).toDateString() }</span></div>
+                  <div style={{ overflowY: 'scroll' }}><span style={{ fontSize: '0.85rem' }}>{ n.data.message }</span></div>
+                  <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', width: '100%', fontStyle: 'italic' }}><span style={{ fontSize: '0.75rem', marginTop: '4px' }}>{ new Date(n.data.sent_date).toDateString() }</span></div>
                 </NotificationCard>
               );
             })

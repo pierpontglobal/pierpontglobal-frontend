@@ -20,7 +20,7 @@ class CheckoutForm extends React.Component {
   async registerCard(token) {
     await axios.post(`${ApiServer}/api/v1/user/cards`, {
       card_token: token,
-      coupon: this.props.couponField(),
+      coupon: !!(this.props.couponField) ? this.props.couponField() : null,
     });
   }
 

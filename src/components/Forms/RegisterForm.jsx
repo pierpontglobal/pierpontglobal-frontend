@@ -1,11 +1,11 @@
+import styled from 'styled-components';
 import AccountFields from './RegistrationForm/AccountFields';
 import SuccessfulPortion from './RegistrationForm/SuccesfullPortion';
-import styled from 'styled-components';
 
 const Wrapper = styled.div`
   height: ${props => props.height};
+  background: ${props => props.background};
   width: 100%;
-  background: linear-gradient(to top, rgb(0, 0, 0, 0.8), ${props => props.backgroundColor}), url("/images/marketplace/b-01.jpg");
   background-repeat: no-repeat;
   background-position: center 8%; /* Center the image */
   background-size: cover;
@@ -68,7 +68,7 @@ class Registration extends React.Component {
     const { loading } = this.state;
     switch (this.state.step) {
       case 1: return (
-        <Wrapper height={this.props.height} backgroundColor={this.props.backgroundColor}>
+        <Wrapper height={this.props.height} background={this.props.background}>
           <AccountFields
             textColor={this.textColor}
             fieldValues={fieldValues}
@@ -81,7 +81,7 @@ class Registration extends React.Component {
         if (loading === true) {
           return (
 
-            <Wrapper height={this.props.height} backgroundColor={this.props.backgroundColor}>
+            <Wrapper height={this.props.height} backgroundColor={this.props.background}>
               <SuccessfulPortion
                 email={fieldValues.email}
                 loading
@@ -93,7 +93,7 @@ class Registration extends React.Component {
         }
         return (
 
-          <Wrapper height={this.props.height} backgroundColor={this.props.backgroundColor}>
+          <Wrapper height={this.props.height} backgroundColor={this.props.background}>
             <SuccessfulPortion
               email={fieldValues.email}
               textColor={this.textColor}

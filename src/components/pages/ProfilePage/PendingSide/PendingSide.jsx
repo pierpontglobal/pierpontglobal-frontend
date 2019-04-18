@@ -67,9 +67,9 @@ class PendingSide extends React.Component {
             />
           </Tabs>
 
-          {tabValue === 0 && <Pending />}
-          {tabValue === 1 && <History />}
-          {tabValue === 2 && <Other />}
+          {tabValue === 0 && 'Pending sample...'}
+          {tabValue === 1 && 'History sample..'}
+          {tabValue === 2 && 'Other sample..'}
         </DivTabs>
       </div>
     );

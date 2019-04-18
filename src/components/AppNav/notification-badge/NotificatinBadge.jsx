@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
@@ -16,6 +17,9 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Notifications from '../../notifications/Notifications';
+import NotificationDetailModal from '../../notifications/notification-detail-modal/NotificationDetailModal';
+import PPGModal from '../../ppg-modal/PPGModal';
+import NotificationTypes from '../../../constants/NotificationTypes';
 
 const styles = theme => ({
   iconButton: {
@@ -33,10 +37,10 @@ const CustomPopper = styled(Popper)`
   width: 100% !important;
   height: 100% !important;
   transform: none !important;
-  top: 50px !important;
+  top: 60px !important;
   @media only screen and (min-width: 748px) {
-    width: 30% !important;
-    right: 8% !important;
+    width: 24% !important;
+    right: 16% !important;
     left: auto !important;
     height: 65% !important;
   }
@@ -49,6 +53,8 @@ class NotificationBadge extends Component {
     this.state = {
       notifications: [],
       open: false,
+      openNotificationModal: false,
+      selectedNotification: undefined
     }
   }
 
@@ -66,7 +72,6 @@ class NotificationBadge extends Component {
           this.handleReceived(data);
       }
     });
-    console.log(this.subscription);
   }
 
   handleReceived = (data) => {
@@ -80,8 +85,12 @@ class NotificationBadge extends Component {
         message: data.message,
         payload: data.payload
       },
+      notification_type: data.notification_type,
       read_at: undefined,
     }
+
+    console.log('Handle Notification >>> ');
+    console.log(new_noti);
 
     this.setState({
       notifications: [new_noti, ...notifications]
@@ -109,8 +118,13 @@ class NotificationBadge extends Component {
   };
 
   onReadNotification = notification => {
+    console.log('READ NOTIFICATION: ????? >>>> ');
+    console.log(notification);
     this.setState({
       notifications: [...this.state.notifications].filter(x => x.id !== notification.id)
+    }, () => {
+      // Open Notification Detail Modal
+      this.showNotificationModal(notification);
     });
   }
   onReadAllNotification = notifications => {
@@ -119,9 +133,22 @@ class NotificationBadge extends Component {
     });
   }
 
+  showNotificationModal = (notification) => {
+    this.setState({
+      openNotificationModal: true,
+      selectedNotification: notification
+    });
+  }
+
+  closeNotificationModal = () => {
+    this.setState({
+      openNotificationModal: false
+    });
+  }
+
   render() {
     const { classes, cookies } = this.props;
-    const { notifications, open } = this.state;
+    const { notifications, open, openNotificationModal, selectedNotification } = this.state;
     return (
       <>
         <ActionCableProvider cable={this.cable}>
@@ -136,7 +163,7 @@ class NotificationBadge extends Component {
             aria-owns={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true">
             <Badge className={classes.margin} badgeContent={notifications.length} max={99} color="primary">
-              <NotificationsIcon />
+              { (notifications.length > 0) ? <NotificationsActiveIcon /> : <NotificationsIcon /> }
             </Badge>
           </IconButton>
           <CustomPopper open={open} anchorEl={this.anchorEl} transition disablePortal>
@@ -154,6 +181,14 @@ class NotificationBadge extends Component {
               </Grow>
             )}
           </CustomPopper>
+          <PPGModal
+            setOpen={openNotificationModal}
+            handleClose={this.closeNotificationModal}
+            setPadding={false}
+            onlyChildren={true}
+          >
+            <NotificationDetailModal handleClose={this.closeNotificationModal} selectedNotification={selectedNotification} /> 
+          </PPGModal>
         </ActionCableProvider>
       </>
     );

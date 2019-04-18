@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Drawer from 'rc-drawer';
 import 'rc-drawer/assets/index.css';
 import { withRouter } from 'react-router-dom';
 import SliderOptions from './slider-options/SliderOptions';

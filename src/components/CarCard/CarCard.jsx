@@ -9,6 +9,7 @@ import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
 import { DefaultTheme } from '../../Defaults';
 import ScaleText from 'react-scale-text';
+import { withRouter } from 'react-router-dom';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -251,7 +252,15 @@ const CRPriceContainer = styled.div`
     }
 `;
 
-function CarCard({ key, car, requestFuntion }) {
+function gotToCarDetail(vin, event, history) {
+  if (!!event && !!event.target) {
+    if (event.target.tagName === 'LI' || event.target.tagName === 'SPAN' || event.target.tagName === 'DIV') {
+      history.push(`/marketplace/car?vin=${vin}`);
+    }
+  }
+}
+
+function CarCard({ key, car, requestFunction, history }) {
   
   const [openDetails, setOpenDetails] = useState('closed');
 
@@ -273,11 +282,12 @@ function CarCard({ key, car, requestFuntion }) {
   return (
     <>
       <CarContainer key={key} id="car-card"
-        onClick={(e) => ( e.target.tagName === 'DIV' ? window.location.href = `/marketplace/car?vin=${vin}` : null ) } >
+        onClick={(e) => gotToCarDetail(vin, e, history)} >
         <Carousel
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
+          id="images-carousel"
         >
           {images.map((image, i) => (
             <ImageWrapper id="image-carousel" key={i} src={image} />
@@ -321,7 +331,7 @@ function CarCard({ key, car, requestFuntion }) {
             <PriceTag
               price={wholePrice}
               vin={vin}
-              requestFuntion={requestFuntion}
+              requestFunction={requestFunction}
             />
           </PriceContainer>
         </CRPriceContainer>
@@ -330,4 +340,4 @@ function CarCard({ key, car, requestFuntion }) {
   );
 }
 
-export default CarCard;
+export default withRouter(CarCard);

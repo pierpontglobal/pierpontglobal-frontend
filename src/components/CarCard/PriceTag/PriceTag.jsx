@@ -12,7 +12,7 @@ class PriceTag extends React.Component {
     const {
       price,
       className,
-      requestFuntion,
+      requestFunction,
       vin,
       color,
       fontSizeButton,
@@ -21,7 +21,7 @@ class PriceTag extends React.Component {
     this.state = {
       price,
       className,
-      requestFuntion,
+      requestFunction,
       color: color || '#000000',
       fontSizeButton: fontSizeButton || '14px',
       vin,
@@ -36,8 +36,8 @@ class PriceTag extends React.Component {
       this.setState({ price: nextProps.price });
     }
 
-    if (nextProps.requestFuntion !== this.state.requestFuntion) {
-      this.setState({ requestFuntion: nextProps.requestFuntion });
+    if (nextProps.requestFunction !== this.state.requestFunction) {
+      this.setState({ requestFunction: nextProps.requestFunction });
     }
 
     if (nextProps.vin !== this.state.vin) {
@@ -47,10 +47,10 @@ class PriceTag extends React.Component {
 
   request() {
     const {
-      requestFuntion, vin,
+      requestFunction, vin,
     } = this.state;
     this.setState({ requesting: true });
-    requestFuntion(vin);
+    requestFunction(vin);
   }
 
   render() {

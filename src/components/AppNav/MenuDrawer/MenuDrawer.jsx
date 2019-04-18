@@ -6,13 +6,12 @@ import Home from '@material-ui/icons/Home';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Phone from '@material-ui/icons/Phone';
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import Input from '@material-ui/icons/AccountCircle'
+import Input from '@material-ui/icons/Input'
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import NotificationImportant from '@material-ui/icons/NotificationImportant'
 import SliderOptions from '../../Slider/slider-options/SliderOptions';
 import styled from 'styled-components';
 import { Modal } from '@material-ui/core'
-import AccountAlert from '../../account-alert/AccountAlert';
 import { withCookies } from 'react-cookie';
 import { Redirect } from 'react-router-dom';
 
@@ -39,14 +38,8 @@ class MenuDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openAlertModal: false
+      open: false
     }
-  }
-
-  alertsClick = () => {
-    this.setState({
-      openAlertModal: true
-    });
   }
 
   userIsLoggedIn = () => {
@@ -54,11 +47,23 @@ class MenuDrawer extends Component {
   }
 
   showLoginModal = () => {
-    window.location.href = "/?signIn=true";
+    this.setState({
+      open: false,
+    });
+    this.props.showSignIn();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.state.open !== newProps.open){
+      this.setState({
+        open: newProps.open
+      });
+    }
   }
 
   render() {
-    const { open, onMaskClick, afterOptionclick } = this.props;
+    const { onMaskClick, afterOptionclick } = this.props;
+    const { open } = this.state;
 
     let menuOptions = [
       { label: 'Home', icon: <Home color='primary'/>, urlMatch: '/' },
@@ -102,9 +107,6 @@ class MenuDrawer extends Component {
           </MenuTitle>
           <SliderOptions options={menuOptions} onClickOption={afterOptionclick} />
         </Slider>
-        <Modal open={this.state.openAlertModal}>
-          <AccountAlert />
-        </Modal>
       </>
     );
   }

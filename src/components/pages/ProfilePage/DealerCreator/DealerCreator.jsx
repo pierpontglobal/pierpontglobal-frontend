@@ -262,14 +262,13 @@ class DealerCreator extends React.Component {
                     </div>
                   </div>
                   )}
-                afterSubmit={() => { if (!hasDealer) { this.register(); } }}
-                couponField={this.getCouponCode}
+                  afterSubmit={() => (!hasDealer) ? this.register() : null }
+                  couponField={this.getCouponCode}
                 saveButtonText={`Pay ${amountToPay} and reload`}
-              />
+                />
             </Elements>
           </StripeProvider>
         </div>
-
       </div>
     );
   }

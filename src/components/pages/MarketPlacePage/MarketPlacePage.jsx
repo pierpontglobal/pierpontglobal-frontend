@@ -9,10 +9,9 @@ import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
 import './styles.css';
-import { IconButton } from '@material-ui/core';
-import FilterList from '@material-ui/icons/FilterList';
 import PPGModal from '../../ppg-modal/PPGModal';
 import MediaQuery from 'react-responsive';
+import { CircularProgress } from '@material-ui/core';
 
 const qs = require('query-string');
 
@@ -20,16 +19,16 @@ const SidePanel = styled.div`
   max-width: 220px;
   width: 100%;
   display: flex;
+  overflow: auto;
   @media only screen and (max-width: 600px) {
     display: none;
   }
 `;
 
 const CarSection = styled.div`
-  height: 95vh;
+  height: calc(100%);
   padding-left: 10px;
   padding-right: 10px;
-  overflow: scroll;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 `;
 
@@ -42,16 +41,7 @@ const MarketPlaceContainer = styled.div`
   right: 0;
   max-width: 1200px;
   justify-content: center;
-
-`;
-
-const FilterIcon = styled.div`
-  display: none;
-  width: 100%;
-  @media only screen and (max-width: 600px) {
-    display: flex;
-    justify-content: flex-end;
-  }
+  overflow: hidden;
 `;
 
 class MarketPlacePage extends React.Component {
@@ -140,7 +130,7 @@ class MarketPlacePage extends React.Component {
       };
 
       carsGroup.push(
-        <CarCard key={carObject.vim} car={carObject} requestFuntion={this.requestPrice} />,
+        <CarCard key={carObject.vim} car={carObject} requestFunction={this.requestPrice} />,
       );
     }
 
@@ -209,42 +199,65 @@ class MarketPlacePage extends React.Component {
             onReceived={this.handleReceived}
           />
           <MarketPlaceContainer>
-            <SidePanel>
-              <MediaQuery minDeviceWidth={600}>
-                {loaded ? (
-                  <FilterPanel
-                    getCars={this.getCars}
-                    availableArguments={this.state.availableArguments}
-                    params={this.params}
-                  />
-                ) : <div />}
-              </MediaQuery>
-            </SidePanel>
+            {
+              loaded ? (
+                <SidePanel>
+                  <MediaQuery minDeviceWidth={600}>
+                    <FilterPanel
+                      getCars={this.getCars}
+                      availableArguments={this.state.availableArguments}
+                      params={this.params}
+                    />
+                  </MediaQuery>
+                </SidePanel>
+              ) : null
+            }
             <CarSection ref={this.carsSection}>
-              <div style={{ overflow: 'auto', position: 'relative' }}>
-                <FilterIcon>
-                  <IconButton color="primary" onClick={() => this.showFilterPanel()}>
-                    <FilterList />
-                    <span style={{ fontSize: '0.75em' }}>Filters</span>
-                  </IconButton>
-                </FilterIcon>
-                <SortBar header={this.params.q} />
-                <hr />
-                <InfiniteScroll
-                  dataLength={cars.length}
-                  next={this.getCars}
-                  hasMore
-                  loader={<h4>Loading...</h4>}
-                  height={carsSectionHeight - 80}
-                  endMessage={(
-                    <p style={{ textAlign: 'center' }}>
-                      <b>Yay! You have seen it all</b>
-                    </p>
-                  )}
-                >
-                  {cars}
-                </InfiniteScroll>
-              </div>
+              {
+                loaded ? (
+                  <div style={{ overflow: 'hidden', position: 'relative' }}>
+                    <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel}/>
+                    <hr />
+                    <InfiniteScroll
+                      dataLength={cars.length}
+                      next={this.getCars}
+                      hasMore
+                      loader={
+                        <div style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          paddingTop: '10px',
+                          height: '80px',
+                          alignContent: 'center',
+                        }}>
+                          <CircularProgress />
+                        </div>
+                      }
+                      height={carsSectionHeight - 80}
+                      endMessage={(
+                        <p style={{ textAlign: 'center' }}>
+                          <b>Yay! You have seen it all</b>
+                        </p>
+                      )}
+                    >
+                      {cars}
+                    </InfiniteScroll>
+                  </div>
+                ) : (
+                  <div style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingTop: '24px',
+                    height: '80px',
+                    alignContent: 'center',
+                    marginTop: '8px'
+                  }}>
+                    <CircularProgress />
+                  </div>
+                )
+              }
             </CarSection>
             <PPGModal
               setOpen={openModalFilter}

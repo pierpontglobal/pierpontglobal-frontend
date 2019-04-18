@@ -24,6 +24,14 @@ class SignInModal extends React.Component {
     this.signInModal = this.signInModal.bind(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    if (this.state.showSigIn !== newProps.show) {
+      this.setState({
+        showSigIn: newProps.show,
+      });
+    }
+  }
+
   closeModal() {
     this.setState({ showSigIn: false });
     try {
@@ -149,6 +157,7 @@ class SignInModal extends React.Component {
     if (response.status === 200) {
       cookies.set('token', response.data.access_token);
       cookies.set('user_id', response.data.user_id);
+      this.props.notifyClosed();
       history.push('/user');
     } else {
       this.username.className = `${this.username.className} wrong-cre`;
@@ -164,7 +173,7 @@ class SignInModal extends React.Component {
     const { showSigIn } = this.state;
     return (
       <div>
-        {showSigIn ? this.signInModal() : <div />}
+        {showSigIn ? this.signInModal() : null}
       </div>
     );
   }

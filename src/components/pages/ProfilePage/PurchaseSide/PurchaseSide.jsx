@@ -75,7 +75,7 @@ class PurchaseSide extends React.Component {
         <div className="card shadow content-holder-box">
           <div style={{ padding: '20px' }}>
             <h4>Your bids</h4>
-            <p style={{ color: 'darkgrey' }}>All the bids will be locked 1 houre before the bid process start.</p>
+            <p style={{ color: 'darkgrey' }}>All the bids will be locked 1 hour before the bid process start.</p>
           </div>
           <hr style={{ margin: 0 }} />
           <div className="content-main card">

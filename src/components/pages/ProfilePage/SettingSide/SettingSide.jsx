@@ -248,6 +248,10 @@ export default class SettingSide extends React.Component {
     window.location.reload();
   }
 
+  onDepositSuccess = (data) => {
+    this.getFunds();
+  }
+
   render() {
     const {
       editable,
@@ -281,7 +285,7 @@ export default class SettingSide extends React.Component {
               }}
             />
             <DepositProgress className="tablet-up" amount={funds} />
-            <AddDeposit cookies={this.props.cookies} />
+            <AddDeposit onSuccess={this.onDepositSuccess} cookies={this.props.cookies} />
           </div>
         </div>
 

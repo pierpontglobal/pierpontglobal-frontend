@@ -12,7 +12,8 @@ import PurchaseSide from './PurchaseSide/PurchaseSide';
 import PendingSide from './PendingSide/PendingSide';
 import FinancialSide from './FinancialSide/FinancialSide';
 import TransactionsSide from './TransactionsSide/TransactionsSide';
-
+import NotificationTypes from '../../../constants/NotificationTypes';
+import IssueTypes from '../../../constants/IssueTypes';
 import './styles.css';
 
 const dealerExample = {
@@ -35,13 +36,12 @@ class ProfilePage extends React.Component {
 
     this.getDealer = this.getDealer.bind(this);
     this.openDealerCreator = this.openDealerCreator.bind(this);
-    this.checkNotifications = this.checkNotifications.bind(this);
     this.getDealer();
     this.getPaymentMethod();
   }
 
   componentDidMount() {
-    // this.checkNotifications();
+    this.checkNotifications();
   }
 
   async getDealer() {
@@ -78,48 +78,41 @@ class ProfilePage extends React.Component {
     });
   }
 
-  async checkNotifications() {
-    const notifications = [];
+  sendNotification = (notificationDto) => {
+    axios.post(`${ApiServer}/api/v1/notification`, {...notificationDto});
+  }
 
-    try {
-      await axios.get(`${ApiServer}/api/v1/user/subscriptions`);
-    } catch (e) {
-      notifications.push(
-        <AlertNotification removable level={3}>
-          <p style={{ margin: 0 }}>
-            Your account isn`t activate pay your year
-            ly subscription or your account will be disabled on
-            {' '}
-            {30}
-            {' '}
-            days.
-            Click
-            {' '}
-            <a href="/user/subscription">Pay subscription</a>
-            {' '}
-            to solve this issue.
-          </p>
-        </AlertNotification>,
-      );
+  checkNotifications = async () => {
+
+    let subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
+    let cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
+
+    let notificationDto = {
+      title: 'Account incomplete',
+      message: `Please, add a subscription to this account. You won't be able to place bids until its complete.`,
+      payload: subscriptions,
+      type: NotificationTypes.alert,
+      issue_id: undefined
     }
 
-    try {
-      await axios.get(`${ApiServer}/api/v1/user/cards/default`);
-    } catch (e) {
-      notifications.push(
-        <AlertNotification removable level={2}>
-          <p style={{ margin: 0 }}>
-            You don`t have an associated payment method, please
-            {' '}
-            <a href="/user">Go to settings</a>
-            {' '}
-            to solve this issue.
-          </p>
-        </AlertNotification>,
-      );
+    if (subscriptions == undefined) {
+      console.log('Sent sub noti');
+      this.sendNotification(notificationDto);
+    } else if (!!subscriptions && !subscriptions.active) {
+      console.log('Sent sub noti');
+      this.sendNotification(notificationDto);
     }
 
-    this.setState({ notifications });
+    if (cards == undefined) {
+      console.log('Sent card noti');
+      notificationDto.payload = cards;
+      notificationDto.message = `Please, add your card information to your account. You won't be able to process any payment before its complete.`;
+      notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
+      this.sendNotification(notificationDto);
+    }
+
+    console.log('PROFILE PAGE AFTER CHECK NOTIFICARTIONS....');
+    console.log(subscriptions, cards);
   }
 
   render() {

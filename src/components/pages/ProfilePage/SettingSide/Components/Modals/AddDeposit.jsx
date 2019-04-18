@@ -64,6 +64,9 @@ class AddDeposit extends React.Component {
         this.setState({
           status: 'success',
           charge: responseData,
+        }, () => {
+          // Propagate amount to parent
+          this.props.onSuccess(responseData);
         });
         break;
       default:

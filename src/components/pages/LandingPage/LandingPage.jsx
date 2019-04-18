@@ -18,7 +18,12 @@ class LandingPage extends React.Component {
     return (
       <div>
         <VideoBar />
-        <Registration textColor="#ffffff" height="500px" backgroundColor="rgb(154, 167, 181, 0.8)" openModal={this.openModal} />
+        <Registration
+          textColor="#ffffff"
+          height="500px"
+          background='linear-gradient(to top, rgb(0, 0, 0, 0.8), rgb(154, 167, 181, 0.8)), url("/images/marketplace/b-01.jpg")'
+          openModal={this.openModal}
+        />
         <div style={{
           width: '100%',
           height: '384px',
@@ -166,9 +171,8 @@ class LandingPage extends React.Component {
             </div>
             <div
               style={{
-                padding: '10px',
-                backgroundColor: '#ffffff',
-                height: '400px',
+                padding: '20px',
+                background: '#ffffff',
                 display: 'flex',
                 justifyContent: 'center',
                 alignContent: 'center',
@@ -178,7 +182,7 @@ class LandingPage extends React.Component {
               }}
               className="shadow column-5"
             >
-              <Registration height="400px" backgroundColor="rgb(255, 255, 255, 0.8)" openModal={this.openModal} />
+              <Registration backgroundColor="rgb(255, 255, 255, 0.8)" openModal={this.openModal} />
             </div>
           </div>
         </div>
