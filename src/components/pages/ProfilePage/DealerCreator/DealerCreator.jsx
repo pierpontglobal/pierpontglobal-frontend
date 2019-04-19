@@ -13,6 +13,7 @@ import { withCookies } from 'react-cookie';
 import { ApiServer, StripeKey } from '../../../../Defaults';
 import InjectedCheckoutForm from '../SettingSide/Components/Modals/CheckoutForm';
 import SubscriptionCard from '../SubscriptionSide/Components/SubscriptionCard';
+import { withRouter } from 'react-router-dom';
 
 function printNumber(e) {
   e.target.value = new AsYouType('US').input(e.target.value);
@@ -278,4 +279,4 @@ class DealerCreator extends React.Component {
   }
 }
 
-export default withCookies(withStyles(styles)(DealerCreator));
+export default withCookies(withStyles(styles)(withRouter(DealerCreator)));

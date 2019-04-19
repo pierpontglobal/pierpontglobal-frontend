@@ -1,11 +1,10 @@
 import React from 'react';
 import Img from 'react-image';
-import BurgerBtn from './BurgerBtn/BurgerBtn';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import AccountManager from '../support/AccountManager';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
-
+import BurgerIcon from '@material-ui/icons/Menu';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import SignInModal from '../support/SignInModal/SignInModal';
@@ -29,6 +28,8 @@ const styles = theme => ({
   },
 });
 
+const qs = require('query-string');
+
 const LinkBtn = styled.div`
   font-weight: 600;
   opacity: 0.54;
@@ -40,7 +41,59 @@ const LinkBtn = styled.div`
   }
 `;
 
-const qs = require('query-string');
+const AppNavWrapper = styled.div`
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.09);
+  border: solid 0.5px rgba(0, 0, 0, 0.12);
+  position: fixed;
+  height: 58px;
+  top: 0;
+  overflow: show;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const NavItems = styled.div`
+  display: flex;
+  place-content: space-between;
+  justify-content: space-between;
+  align-content: space-between;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  @media only screen and (min-width: 600px) {
+    max-width: 950px;
+  }
+`;
+
+const BurgerBtn = styled.i`
+  color: #212529;
+  font-size: 1.7em;
+  opacity: 0.85;
+  margin: 4px 16px;
+  @media only screen and (min-width: 600px) {
+    display: none;
+  }
+`;
+
+const LogoWrapper = styled.button`
+  background: transparent;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  overflow: visible;
+  max-width: 170px;
+  position: relative;
+  width: auto;
+  left: auto;
+  margin: 0;
+  border: none;
+`;
 
 class AppNav extends React.Component {
   constructor(props) {
@@ -80,8 +133,8 @@ class AppNav extends React.Component {
     });
   }
 
-  goToProfile = () => {
-    this.props.history.push('/user');
+  goTo = (path) => {
+    this.props.history.push(`/${path}`);
   }
 
   showSignIn(status) {
@@ -95,15 +148,9 @@ class AppNav extends React.Component {
     const { cookies, classes } = this.props;
 
     return (
-      <div
-        className="d-flex flex-row py-2 justify-content-md-center px-3 px-md-2 w-100"
-        style={style}
-      >
+      <AppNavWrapper>
         <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
-        <div
-          className="nav-items"
-          style={{ maxWidth: '950px' }}
-        >
+        <NavItems>
           <MenuDrawer
             open={this.state.menuOpen}
             onMaskClick={this.onTouchEnd}
@@ -111,24 +158,10 @@ class AppNav extends React.Component {
             showSignIn={() => { this.showSignIn(true); }}
             onRequestOpen={this.openMenuSide}
           />
-          <BurgerBtn onClick={this.openMenuSide} />
-
-          <button
-            type="button"
-            className="border-0 web-logo"
-            style={{
-              background: 'transparent',
-              display: 'flex',
-              alignContent: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              justifyItems: 'center',
-              overflow: 'visible',
-              maxWidth: '170px',
-            }}
-            onClick={() => { window.location.href = '/'; }}
-          >
-
+          <BurgerBtn onClick={this.openMenuSide}>
+            <BurgerIcon />
+          </BurgerBtn>
+          <LogoWrapper onClick={() => this.goTo('')} >
             <Img
               style={{
                 width: '100%',
@@ -146,17 +179,17 @@ class AppNav extends React.Component {
                 <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
                 }
             />
-          </button>
+          </LogoWrapper>
 
           <div className="menu-sider" id="nav-bar-sub-menu">
-            <LinkBtn onClick={ () => this.props.history.push('/') }>Home</LinkBtn>
-            <LinkBtn onClick={ () => this.props.history.push('/marketplace') }>MarketPlace</LinkBtn>
-            <LinkBtn onClick={ () => this.props.history.push('/contact-us') }>Contact&nbsp;Us</LinkBtn>
+            <LinkBtn onClick={ () => this.goTo('') }>Home</LinkBtn>
+            <LinkBtn onClick={ () => this.goTo('marketplace') }>MarketPlace</LinkBtn>
+            <LinkBtn onClick={ () => this.goTo('contact-us') }>Contact&nbsp;Us</LinkBtn>
           </div>
           
           <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
-        </div>
-      </div>
+        </NavItems>
+      </AppNavWrapper>
     );
   }
 }

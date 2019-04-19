@@ -44,6 +44,13 @@ const MarketPlaceContainer = styled.div`
   overflow: hidden;
 `;
 
+const NotFoundWrapper = styled.div`
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+`;
+
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
@@ -197,98 +204,107 @@ class MarketPlacePage extends React.Component {
     const { cookies } = this.props;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
 
-    return (
-      <div>
-        <ActionCableProvider cable={this.cable}>
-          <ActionCableConsumer
-            channel="PriceQueryChannel"
-            onReceived={this.handleReceived}
-          />
-          <MarketPlaceContainer>
-            {
-              loaded ? (
-                <SidePanel>
-                  <MediaQuery minDeviceWidth={600}>
-                    <FilterPanel
-                      getCars={this.getCars}
-                      availableArguments={this.state.availableArguments}
-                      params={this.params}
-                      onSeeAll={this.seeAllOptions}
-                    />
-                  </MediaQuery>
-                </SidePanel>
-              ) : null
-            }
-            <CarSection ref={this.carsSection}>
+    if (loaded && cars.length === 0) {
+      // no cars found
+      return (
+        <NotFoundWrapper>
+          No cars has been found.
+        </NotFoundWrapper>
+      );
+    } else {
+      return (
+        <div>
+          <ActionCableProvider cable={this.cable}>
+            <ActionCableConsumer
+              channel="PriceQueryChannel"
+              onReceived={this.handleReceived}
+            />
+            <MarketPlaceContainer>
               {
                 loaded ? (
-                  <div style={{ overflow: 'hidden', position: 'relative' }}>
-                    <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel}/>
-                    <hr />
-                    <InfiniteScroll
-                      dataLength={cars.length}
-                      next={this.getCars}
-                      hasMore
-                      loader={
-                        <div style={{
-                          width: '100%',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          paddingTop: '10px',
-                          height: '80px',
-                          alignContent: 'center',
-                        }}>
-                          <CircularProgress />
-                        </div>
-                      }
-                      height={carsSectionHeight - 80}
-                      endMessage={(
-                        <p style={{ textAlign: 'center' }}>
-                          <b>Yay! You have seen it all</b>
-                        </p>
-                      )}
-                    >
-                      {cars}
-                    </InfiniteScroll>
-                  </div>
-                ) : (
-                  <div style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    paddingTop: '24px',
-                    height: '80px',
-                    alignContent: 'center',
-                    marginTop: '8px'
-                  }}>
-                    <CircularProgress />
-                  </div>
-                )
+                  <SidePanel>
+                    <MediaQuery minDeviceWidth={600}>
+                      <FilterPanel
+                        getCars={this.getCars}
+                        availableArguments={this.state.availableArguments}
+                        params={this.params}
+                        onSeeAll={this.seeAllOptions}
+                      />
+                    </MediaQuery>
+                  </SidePanel>
+                ) : null
               }
-            </CarSection>
-            <PPGModal
-              setOpen={openModalFilter}
-              handleClose={() => this.onCloseModal("openModalFilter")}
-              width="80%"
-              height="80%"
-              setPadding={false}
-            >
-              {/* Repeating this component here is not a performance issue. This child component,
-              of the PPGModal is only rendered when the modal is open.  */}
-              {loaded ? (
-                <FilterPanel
-                  getCars={this.getCars}
-                  availableArguments={this.state.availableArguments}
-                  params={this.params}
-                  handleFilterChange={this.onFilterChange}
-                  onSeeAll={this.seeAllOptions}
-                />
-              ) : null}
-            </PPGModal>
-          </MarketPlaceContainer>
-        </ActionCableProvider>
-      </div>
-    );
+              <CarSection ref={this.carsSection}>
+                {
+                  loaded ? (
+                    <div style={{ overflow: 'hidden', position: 'relative' }}>
+                      <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel}/>
+                      <hr />
+                      <InfiniteScroll
+                        dataLength={cars.length}
+                        next={this.getCars}
+                        hasMore
+                        loader={
+                          <div style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            paddingTop: '10px',
+                            height: '80px',
+                            alignContent: 'center',
+                          }}>
+                            <CircularProgress />
+                          </div>
+                        }
+                        height={carsSectionHeight - 80}
+                        endMessage={(
+                          <p style={{ textAlign: 'center' }}>
+                            <b>Yay! You have seen it all</b>
+                          </p>
+                        )}
+                      >
+                        {cars}
+                      </InfiniteScroll>
+                    </div>
+                  ) : (
+                    <div style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      paddingTop: '24px',
+                      height: '80px',
+                      alignContent: 'center',
+                      marginTop: '8px'
+                    }}>
+                      <CircularProgress />
+                    </div>
+                  )
+                }
+              </CarSection>
+              <PPGModal
+                setOpen={openModalFilter}
+                handleClose={() => this.onCloseModal("openModalFilter")}
+                width="80%"
+                height="80%"
+                setPadding={false}
+              >
+                {/* Repeating this component here is not a performance issue. This child component,
+                of the PPGModal is only rendered when the modal is open.  */}
+                {loaded ? (
+                  <FilterPanel
+                    getCars={this.getCars}
+                    availableArguments={this.state.availableArguments}
+                    params={this.params}
+                    handleFilterChange={this.onFilterChange}
+                    onSeeAll={this.seeAllOptions}
+                  />
+                ) : null}
+              </PPGModal>
+            </MarketPlaceContainer>
+          </ActionCableProvider>
+        </div>
+      );
+    }
   }
 }
 

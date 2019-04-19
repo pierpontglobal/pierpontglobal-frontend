@@ -137,7 +137,7 @@ class ProfilePage extends React.Component {
           backgroundColor: '#dedede',
         }}
         />
-        <DealerCreator history={this.props.history} show={!hasDealer || !hasPaymentMethod} hasDealer={hasDealer} />
+        <DealerCreator show={!hasDealer || !hasPaymentMethod} hasDealer={hasDealer} />
         <div className="pannel-container desktop-only">
           <AccountPanel dealer={dealer || dealerExample} />
         </div>

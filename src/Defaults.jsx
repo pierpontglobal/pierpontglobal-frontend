@@ -12,6 +12,7 @@ export const DefaultTheme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Raleway, serif',
+    useNextVariants: true,
   },
 });
 export const CountriesList = [
