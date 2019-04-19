@@ -30,6 +30,9 @@ class MorePopUp extends React.Component {
   }
 
   openModal() {
+    if (this.props.onSeeAll) {
+      this.props.onSeeAll();
+    }
     this.setState({ modalIsOpen: true });
   }
 

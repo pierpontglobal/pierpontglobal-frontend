@@ -62,7 +62,7 @@ class MenuDrawer extends Component {
   }
 
   render() {
-    const { onMaskClick, afterOptionclick } = this.props;
+    const { onMaskClick, afterOptionclick, onRequestOpen } = this.props;
     const { open } = this.state;
 
     let menuOptions = [
@@ -86,6 +86,7 @@ class MenuDrawer extends Component {
         <Slider
           open={open}
           handleClose={onMaskClick}
+          handleOpen={onRequestOpen}
         >
           <AccountPanel
             dealer={dealerExample}
@@ -101,6 +102,7 @@ class MenuDrawer extends Component {
           swipeAreaWidth={20}
           disableSwipeToOpen={false}
           handleClose={onMaskClick}
+          handleOpen={onRequestOpen}
         >
           <MenuTitle>
             Menu

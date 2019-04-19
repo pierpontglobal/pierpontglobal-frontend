@@ -30,6 +30,7 @@ class Slider extends Component {
       <SwipeableDrawer
         open={open}
         onClose={this.props.handleClose}
+        onOpen={this.props.handleOpen}
       >
         <div style={{ minWidth: '270px'  }}>
           {

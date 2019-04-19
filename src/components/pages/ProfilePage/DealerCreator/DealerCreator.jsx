@@ -115,7 +115,11 @@ class DealerCreator extends React.Component {
     await axios.post(`${ApiServer}/api/v1/user/invalidate`, {});
     this.props.cookies.remove('token', { path: '/' });
     this.props.cookies.remove('user_id', { path: '/' });
-    window.location.href = '/';
+    this.props.history.push('/');
+  }
+
+  gotToMarketplace = () => {
+    this.props.history.push('/marketplace');
   }
 
   render() {
@@ -172,8 +176,8 @@ class DealerCreator extends React.Component {
                           <ExitToApp className={classes.LogoutButtonIcon} />
                           Logout
                         </Button>
-                        <Button onClick={() => { window.location.href = '/marketplace'; }} style={{ margin: '10px' }} color="primary">
-                          Go to marketplace
+                        <Button onClick={this.gotToMarketplace} style={{ margin: '10px' }} color="primary">
+                          Marketplace
                           <ArrowForwardIos />
                         </Button>
                       </MuiThemeProvider>

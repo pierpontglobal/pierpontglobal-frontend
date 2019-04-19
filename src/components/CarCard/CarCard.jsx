@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
-import ConditionBtn from '../ConditionBtn/ConditionBtn';
-import PriceTag from './PriceTag/PriceTag';
-import Text from '../styles/Text/Text';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import ConditionBtn from '../ConditionBtn/ConditionBtn';
+import PriceTag from './PriceTag/PriceTag';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { DefaultTheme } from '../../Defaults';
 import ScaleText from 'react-scale-text';
 import { withRouter } from 'react-router-dom';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -59,7 +60,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-const ImageWrapper = styled.img`
+const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
   width: 236px;
   height: 120px;
@@ -122,14 +123,14 @@ function pickHex(color1, color2, color3, weightRaw) {
     const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
       Math.round(color2[1] * w1 + color3[1] * w2),
       Math.round(color2[2] * w1 + color3[2] * w2)];
-    return rgb;
+    return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
   }
   const w1 = (weight - 2.5) / 2.5;
   const w2 = 1 - w1;
   const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
     Math.round(color1[1] * w1 + color2[1] * w2),
     Math.round(color1[2] * w1 + color2[2] * w2)];
-  return `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`;
+  return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
 }
 
 const TimeAgoContainer = styled.div`
@@ -166,6 +167,9 @@ const Detail = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  @media only screen and (max-width: 748px) {
+    padding: 4px 8px;
+  }
 `;
 
 const DetailTitle = styled.div`
@@ -208,9 +212,9 @@ const DropDwonIcon = styled(DropDown)`
 
 const DetailValue = styled.span`
   font-size: 0.85rem;
-  margin-left: 2%;
+  margin-left: 4px;
   @media only screen and (max-width: 600px) {
-    margin-left: 0px;
+    margin-left: 4px;
   }
 `;
 
@@ -223,7 +227,7 @@ const AutoCheckBtn = styled.button`
   color: #ffffff;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
   border-style: none;
-  margin-top: 15%;
+  margin-top: 10px;
   padding: 8px;
   &:hover {
     cursor: pointer;
@@ -276,8 +280,8 @@ function CarCard({ key, car, requestFunction, history }) {
     wholePrice,
   } = car;
 
-  const diference = saleDate - new Date();
-  const timeDiff = Math.abs(diference);
+  const difference = saleDate - new Date();
+  const timeDiff = Math.abs(difference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
     <>
@@ -287,10 +291,16 @@ function CarCard({ key, car, requestFunction, history }) {
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
-          id="images-carousel"
         >
           {images.map((image, i) => (
-            <ImageWrapper id="image-carousel" key={i} src={image} />
+            <ImageWrapper
+              effect="blur"
+              id="image-carousel"
+              key={i}
+              src={image}
+              threshold={1000}
+              delayTime={1000}
+            />
           ))}
         </Carousel>
         <DetailsContainer>

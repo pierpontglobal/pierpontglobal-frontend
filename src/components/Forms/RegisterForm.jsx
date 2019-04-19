@@ -81,7 +81,7 @@ class Registration extends React.Component {
         if (loading === true) {
           return (
 
-            <Wrapper height={this.props.height} backgroundColor={this.props.background}>
+            <Wrapper height={this.props.height} background={this.props.background}>
               <SuccessfulPortion
                 email={fieldValues.email}
                 loading
@@ -93,7 +93,7 @@ class Registration extends React.Component {
         }
         return (
 
-          <Wrapper height={this.props.height} backgroundColor={this.props.background}>
+          <Wrapper height={this.props.height} background={this.props.background}>
             <SuccessfulPortion
               email={fieldValues.email}
               textColor={this.textColor}

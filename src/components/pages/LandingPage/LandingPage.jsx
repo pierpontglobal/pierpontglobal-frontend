@@ -21,7 +21,7 @@ class LandingPage extends React.Component {
         <Registration
           textColor="#ffffff"
           height="500px"
-          background='linear-gradient(to top, rgb(0, 0, 0, 0.8), rgb(154, 167, 181, 0.8)), url("/images/marketplace/b-01.jpg")'
+          background='linear-gradient(to top, rgb(35, 35, 35, 0.7), rgb(154, 167, 181, 0.8)), url("/images/marketplace/b-01-min.jpg")'
           openModal={this.openModal}
         />
         <div style={{

@@ -11,6 +11,7 @@ const AccountAlertWrapper = styled.div`
     display: grid;
     grid-template-rows: 10% 75% 15%;
     margin: 0 auto;
+    max-height: calc(100vh - 220px);
   @media only screen and (min-width: 748px) {
     width: 60%;
     height: 60%;

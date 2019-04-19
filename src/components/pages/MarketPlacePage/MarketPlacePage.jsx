@@ -100,7 +100,7 @@ class MarketPlacePage extends React.Component {
         if (url === null) {
           images.push('/not-an-image.jk');
         } else {
-          images[imagesObjs[j].f4] = `${url}?width=354&height=200&position=${imagesObjs[j].f4}`;
+          images[imagesObjs[j].f4] = `${url}?width=400&height=400&position=${imagesObjs[j].f4}`;
         }
       }
 
@@ -183,6 +183,12 @@ class MarketPlacePage extends React.Component {
     console.log(params);
   }
 
+  seeAllOptions = () => {
+    this.setState({
+      openModalFilter: false
+    });
+  }
+
   render() {
     const {
       loaded, cars, carsSectionHeight, openModalFilter
@@ -207,6 +213,7 @@ class MarketPlacePage extends React.Component {
                       getCars={this.getCars}
                       availableArguments={this.state.availableArguments}
                       params={this.params}
+                      onSeeAll={this.seeAllOptions}
                     />
                   </MediaQuery>
                 </SidePanel>
@@ -274,6 +281,7 @@ class MarketPlacePage extends React.Component {
                   availableArguments={this.state.availableArguments}
                   params={this.params}
                   handleFilterChange={this.onFilterChange}
+                  onSeeAll={this.seeAllOptions}
                 />
               ) : null}
             </PPGModal>
