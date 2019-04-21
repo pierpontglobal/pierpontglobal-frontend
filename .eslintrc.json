@@ -6,6 +6,7 @@
     "rules": {
       "react/destructuring-assignment": [0, "always"],
       "react/forbid-prop-types": 0,
+      "react/no-array-index-key": 0,
       "no-param-reassign": 0,
       "jsx-a11y/no-template-curly-in-string": "off",
       "jsx-a11y/no-noninteractive-element-interactions": "off",

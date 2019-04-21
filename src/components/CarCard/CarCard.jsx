@@ -192,7 +192,7 @@ const DetailLabel = styled.span`
   font-weight: 600;
 `;
 
-const DropDwonIcon = styled(DropDown)`
+const DropDownIcon = styled(DropDown)`
   width: 0;
   height: 0;
   border-style: solid;
@@ -296,8 +296,10 @@ function CarCard({ key, car, requestFuntion }) {
       </Carousel>
       <DetailsContainer>
         <DetailTitle>
-          <div><span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year} ${car.make} ${car.model} ${car.trimLevel}`}</span></div>
-          <DropDwonIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+          <div>
+            <span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
+          </div>
+          <DropDownIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
         </DetailTitle>
         <hr style={{ margin: '0 0 5px' }} />
         <input hidden name="VIN" value={vin} />
