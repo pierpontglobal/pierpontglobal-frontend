@@ -273,7 +273,7 @@ function CarCard({ key, car, requestFuntion }) {
       key={key}
       id="car-card"
       onClick={(e) => {
-        if (e.target.tagName === 'DIV') {
+        if (e.target.tagName !== 'BUTTON') {
           window.location.href = `/marketplace/car?vin=${vin}`;
         }
       }}
