@@ -47,7 +47,9 @@ class CheckoutForm extends React.Component {
   }
 
   render() {
-    const { saveButtonText, afterSubmit, innerFields } = this.props;
+    const {
+      saveButtonText, afterSubmit, innerFields, handleSubmit = this.handleSubmit,
+    } = this.props;
     const { display } = this.state;
 
     return (
@@ -59,7 +61,7 @@ class CheckoutForm extends React.Component {
           justifyContent: 'center',
           flexDirection: 'column',
         }}
-        onSubmit={ev => (this.handleSubmit(ev, afterSubmit))}
+        onSubmit={ev => (handleSubmit(ev, afterSubmit))}
       >
         {innerFields}
         <CardSection />
