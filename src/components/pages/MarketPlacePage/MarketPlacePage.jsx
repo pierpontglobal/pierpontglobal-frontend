@@ -312,7 +312,7 @@ class MarketPlacePage extends React.Component {
                     onSeeAll={this.seeAllOptions}
                   />
                 ) : (
-                  <div style={{ padding: '16px' }}>
+                  <div style={{ padding: '16px', height: '100%', overflowX: 'scroll' }}>
                      <input
                       className="border-0"
                       style={{

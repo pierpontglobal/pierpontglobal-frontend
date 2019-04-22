@@ -53,7 +53,7 @@ function PPGModal(props) {
                 style={style}
                 className={classes.paper}
               >
-              <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
+              <div style={{ position: 'absolute', top: '5px', left: '5px' }}>
                 {
                   (onBackAction) ? (
                     <IconButton onClick={props.onBackAction}>
@@ -62,6 +62,8 @@ function PPGModal(props) {
                     ) 
                   : null
                 }
+              </div>
+              <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
                 <IconButton onClick={props.handleClose}>
                   <Close />
                 </IconButton>
