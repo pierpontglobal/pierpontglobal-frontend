@@ -2,6 +2,15 @@ import React from 'react';
 import { withCookies } from 'react-cookie';
 import SignInModal from './SignInModal/SignInModal';
 import './styles.css';
+import NotificatinBadge from '../AppNav/notification-badge/NotificatinBadge';
+import Person from '@material-ui/icons/Person';
+import styled from 'styled-components';
+
+const UserInfoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 class AccountManager extends React.Component {
   // Constructor
@@ -24,14 +33,17 @@ class AccountManager extends React.Component {
 
     if (token) {
       return (
-        <button
-          type="button"
-          onClick={() => { window.location.href = '/user'; }}
-          className="sign_in_button"
-        >
-          <i className="far fa-user" id="inner-sign-in-icon" />
-          Profile
-        </button>
+        <UserInfoWrapper>
+          <NotificatinBadge />
+          <button
+            type="button"
+            onClick={() => { this.props.history.push('/user')}}
+            className="sign_in_button"
+          >
+            <i className="far fa-user" id="inner-sign-in-icon" />
+            Profile
+          </button>
+        </UserInfoWrapper>
       );
     }
 

@@ -56,19 +56,18 @@ class CreateCard extends React.Component {
     return (
       <div>
         <button
-        style={{
-              backgroundColor: '#ffffff',
-              color: '#000000',
-              borderRadius: '5px',
-              padding: '10px 15px',
-              cursor: 'pointer',
-              fontSize: '12px',
-            }} 
-            onClick={this.onOpenModal}
-            className="border-0 shadow button_white">
-
-            <i style={{fontSize: '12px',color: '#000000',}} className="fas fa-plus"/>
-            {' '}Add payment method
+          style={{
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            borderRadius: '5px',
+            padding: '10px 15px',
+            cursor: 'pointer',
+            fontSize: '12px',
+          }} 
+          onClick={this.onOpenModal}
+          className="border-0 shadow button_white">
+            <i style={{fontSize: '12px',color: '#000000'}} className="fas fa-plus"/>
+            {' '} Add payment method
         </button>
         <Modal style={{}} open={open} onClose={this.onCloseModal} center>
         <div style={{

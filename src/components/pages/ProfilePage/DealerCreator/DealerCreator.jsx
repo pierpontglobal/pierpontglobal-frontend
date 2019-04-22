@@ -13,6 +13,7 @@ import { withCookies } from 'react-cookie';
 import { ApiServer, StripeKey } from '../../../../Defaults';
 import InjectedCheckoutForm from '../SettingSide/Components/Modals/CheckoutForm';
 import SubscriptionCard from '../SubscriptionSide/Components/SubscriptionCard';
+import { withRouter } from 'react-router-dom';
 
 function printNumber(e) {
   e.target.value = new AsYouType('US').input(e.target.value);
@@ -113,8 +114,13 @@ class DealerCreator extends React.Component {
 
   async signOut() {
     await axios.post(`${ApiServer}/api/v1/user/invalidate`, {});
-    this.props.cookies.remove('token');
-    window.location.href = '/';
+    this.props.cookies.remove('token', { path: '/' });
+    this.props.cookies.remove('user_id', { path: '/' });
+    this.props.history.push('/');
+  }
+
+  gotToMarketplace = () => {
+    this.props.history.push('/marketplace');
   }
 
   render() {
@@ -171,8 +177,8 @@ class DealerCreator extends React.Component {
                           <ExitToApp className={classes.LogoutButtonIcon} />
                           Logout
                         </Button>
-                        <Button onClick={() => { window.location.href = '/marketplace'; }} style={{ margin: '10px' }} color="primary">
-                          Go to marketplace
+                        <Button onClick={this.gotToMarketplace} style={{ margin: '10px' }} color="primary">
+                          Marketplace
                           <ArrowForwardIos />
                         </Button>
                       </MuiThemeProvider>
@@ -261,17 +267,16 @@ class DealerCreator extends React.Component {
                     </div>
                   </div>
                   )}
-                afterSubmit={() => { if (!hasDealer) { this.register(); } }}
-                couponField={this.getCouponCode}
+                  afterSubmit={() => (!hasDealer) ? this.register() : null }
+                  couponField={this.getCouponCode}
                 saveButtonText={`Pay ${amountToPay} and reload`}
-              />
+                />
             </Elements>
           </StripeProvider>
         </div>
-
       </div>
     );
   }
 }
 
-export default withCookies(withStyles(styles)(DealerCreator));
+export default withCookies(withStyles(styles)(withRouter(DealerCreator)));

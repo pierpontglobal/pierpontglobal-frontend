@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
 import axios from 'axios';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
@@ -8,6 +8,7 @@ import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
 import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 import CarPage from './components/pages/CarBidPage/CarBidPage';
+import NotificationPage from './components/pages/NotificationPage/NotificationPage';
 import './styles.css';
 import AppNav from './components/AppNav/AppNav';
 import { MuiThemeProvider } from '@material-ui/core';
@@ -88,6 +89,14 @@ class App extends React.Component {
       });
   }
 
+  verifyUserLoggedIn = () => {
+    const { cookies } = this.props;
+    if(!!cookies.get('token', { path: '/' }) && !!cookies.get('user_id', { path: '/' })) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     const { cookies } = this.props;
     return (
@@ -110,7 +119,8 @@ class App extends React.Component {
                 <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                 <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                <Route path="/user" render={() => (<ProfilePage cookies={cookies} />)} />
+                <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage cookies={cookies} /> : <Redirect to="/" />} />
+                <Route exact path="/user/notifications" render={() => (this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />} />
 
                 <Route render={() => (<NotfoundPage cookies={cookies} />)} />
               </Switch>

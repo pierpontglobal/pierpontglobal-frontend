@@ -3,7 +3,7 @@ import MorePopUp from './MorePopUp';
 import './style.css';
 
 function OptionBtn({
-  selected, values, origin, onChange,
+  selected, values, origin, onChange, onSeeAll
 }) {
   const valuesComplete = values.map(v => (
     <div key={v.key} className="d-flex mb-2">
@@ -36,7 +36,7 @@ function OptionBtn({
     return (
       <div className="d-flex flex-column pl-3">
         {valuesPartial.splice(0, 10).map(v => (v))}
-        <MorePopUp options={valuesComplete} />
+        <MorePopUp onSeeAll={() => onSeeAll(valuesComplete)} options={valuesComplete} />
       </div>
     );
   }

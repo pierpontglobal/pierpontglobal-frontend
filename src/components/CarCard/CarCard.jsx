@@ -7,6 +7,9 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { DefaultTheme } from '../../Defaults';
+import ScaleText from 'react-scale-text';
+import { withRouter } from 'react-router-dom';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 function numberWithCommas(x) {
@@ -164,6 +167,9 @@ const Detail = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  @media only screen and (max-width: 748px) {
+    padding: 4px 8px;
+  }
 `;
 
 const DetailTitle = styled.div`
@@ -206,9 +212,9 @@ const DropDownIcon = styled(DropDown)`
 
 const DetailValue = styled.span`
   font-size: 0.85rem;
-  margin-left: 2%;
+  margin-left: 4px;
   @media only screen and (max-width: 600px) {
-    margin-left: 0px;
+    margin-left: 4px;
   }
 `;
 
@@ -250,7 +256,17 @@ const CRPriceContainer = styled.div`
     }
 `;
 
-function CarCard({ key, car, requestFuntion }) {
+function gotToCarDetail(vin, event, history) {
+  if (!!event && !!event.target) {
+    if (event.target.tagName === 'LI' || event.target.tagName === 'SPAN' || event.target.tagName === 'DIV') {
+      history.push(`/marketplace/car?vin=${vin}`);
+    }
+  }
+}
+
+function CarCard({
+  key, car, requestFunction, history,
+}) {
   const [openDetails, setOpenDetails] = useState('closed');
 
   const {
@@ -272,11 +288,7 @@ function CarCard({ key, car, requestFuntion }) {
     <CarContainer
       key={key}
       id="car-card"
-      onClick={(e) => {
-        if (e.target.tagName !== 'BUTTON') {
-          window.location.href = `/marketplace/car?vin=${vin}`;
-        }
-      }}
+      onClick={e => gotToCarDetail(vin, e, history)}
     >
       <Carousel
         showIndicators={false}
@@ -334,7 +346,7 @@ function CarCard({ key, car, requestFuntion }) {
           <PriceTag
             price={wholePrice}
             vin={vin}
-            requestFuntion={requestFuntion}
+            requestFunction={requestFunction}
           />
         </PriceContainer>
       </CRPriceContainer>
@@ -342,4 +354,4 @@ function CarCard({ key, car, requestFuntion }) {
   );
 }
 
-export default CarCard;
+export default withRouter(CarCard);

@@ -155,6 +155,7 @@ class FilterPanel extends React.Component {
     const {
       availableArguments, maker, model, trim, year, color, engine, yearTogle,
     } = this.state;
+    const { onSeeAll } = this.props;
     let makersArray = [];
     let modelsArray = [];
     let trimArray = [];
@@ -186,6 +187,7 @@ class FilterPanel extends React.Component {
             values={makersArray}
             origin="maker"
             onChange={this.searchWithParams}
+            onSeeAll={onSeeAll}
           />
         </Item>
         <Item name="Model">
@@ -194,6 +196,7 @@ class FilterPanel extends React.Component {
             values={modelsArray}
             origin="model"
             onChange={this.searchWithParams}
+            onSeeAll={onSeeAll}
           />
         </Item>
         <Item name="Trim">
@@ -202,6 +205,7 @@ class FilterPanel extends React.Component {
             values={trimArray}
             origin="trim"
             onChange={this.searchWithParams}
+            onSeeAll={onSeeAll}
           />
         </Item>
         <ExpandableDiv style={{ overflow: 'hidden' }} pose={yearTogle ? 'expanded' : 'retracted'} className="border-bottom">
@@ -237,6 +241,7 @@ class FilterPanel extends React.Component {
             values={colorArray}
             origin="color"
             onChange={this.searchWithParams}
+            onSeeAll={onSeeAll}
           />
         </Item>
         <Item name="Engine">
@@ -245,6 +250,7 @@ class FilterPanel extends React.Component {
             values={engineArray}
             origin="engine"
             onChange={this.searchWithParams}
+            onSeeAll={onSeeAll}
           />
         </Item>
       </FilterPanelWrapper>

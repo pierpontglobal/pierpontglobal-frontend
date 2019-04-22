@@ -3,6 +3,7 @@ import Modal from '@material-ui/core/Modal';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Close from '@material-ui/icons/Close';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
   paper: {
@@ -18,7 +19,7 @@ const styles = theme => ({
 });
 
 function PPGModal(props) {
-  const { setOpen, classes, width, height, setPadding } = props;
+  const { setOpen, classes, width, height, setPadding, onlyChildren, onBackAction } = props;
 
   let style = {
     argin: 'auto',
@@ -33,31 +34,46 @@ function PPGModal(props) {
   }
 
   return (
-    <>
-      <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={setOpen}
-        onClose={props.handleClose}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <div
-          style={style}
-          className={classes.paper}
-        >
-          <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
-            <IconButton onClick={props.handleClose}>
-              <Close />
-            </IconButton>
-          </div>
-          {props.children}
-        </div>
-      </Modal>
-    </>
+    <Modal
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+      open={setOpen}
+      onClose={props.handleClose}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      {
+        !onlyChildren
+          ? 
+          (
+            <div
+                style={style}
+                className={classes.paper}
+              >
+              <div style={{ position: 'absolute', top: '5px', left: '5px' }}>
+                {
+                  (onBackAction) ? (
+                    <IconButton onClick={props.onBackAction}>
+                      <ArrowBackIcon />
+                    </IconButton>
+                    ) 
+                  : null
+                }
+              </div>
+              <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
+                <IconButton onClick={props.handleClose}>
+                  <Close />
+                </IconButton>
+              </div>
+              {props.children}
+            </div>
+          )
+        : props.children
+      }
+    </Modal>
   );
 }
 

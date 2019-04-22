@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Drawer from 'rc-drawer';
 import 'rc-drawer/assets/index.css';
 import { withRouter } from 'react-router-dom';
 import SliderOptions from './slider-options/SliderOptions';
@@ -31,6 +30,7 @@ class Slider extends Component {
       <SwipeableDrawer
         open={open}
         onClose={this.props.handleClose}
+        onOpen={this.props.handleOpen}
       >
         <div style={{ minWidth: '270px'  }}>
           {

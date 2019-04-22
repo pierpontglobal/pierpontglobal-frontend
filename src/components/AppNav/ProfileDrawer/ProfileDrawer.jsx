@@ -10,12 +10,13 @@ const dealer = {
   number: '809 272 9092',
 };
 
-function ProfileDrawer({ open, onMaskClick }) {
+function ProfileDrawer({ open, onMaskClick, onRequestOpen }) {
   return (
       <Slider
           open={open}
           onMaskClick={onMaskClick}
           placement="right"
+          handleOpen={onRequestOpen}
         >
           <AccountPanel dealer={dealer} />
         </Slider>

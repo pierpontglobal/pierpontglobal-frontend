@@ -29,7 +29,7 @@ class AddDeposit extends React.Component {
   onCloseModal() {
     this.setState({ open: false });
     if (this.state.status === 'success') {
-      window.location.reload();
+      //window.location.reload();
     }
   }
 
@@ -64,6 +64,9 @@ class AddDeposit extends React.Component {
         this.setState({
           status: 'success',
           charge: responseData,
+        }, () => {
+          // Propagate amount to parent
+          this.props.onSuccess(responseData);
         });
         break;
       default:

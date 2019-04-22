@@ -31,10 +31,6 @@
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        position: absolute;
-        left: 50%;
-        top: 0;
-        margin-left: -160px;
     }
     
     .web-logo {

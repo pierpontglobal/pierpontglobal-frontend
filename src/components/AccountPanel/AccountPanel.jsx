@@ -38,7 +38,7 @@ class AccountPanel extends React.Component {
 
   async signOut() {
     await axios.post(`${ApiServer}/api/v1/user/invalidate`, {});
-    this.props.cookies.remove('token');
+    this.props.cookies.remove('token', { path: '/' });
     window.location.href = '/';
   }
 

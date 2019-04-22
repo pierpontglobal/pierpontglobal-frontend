@@ -9,6 +9,7 @@ function BurgerBtn({ onClick }) {
         color: '#212529',
         fontSize: '1.7em',
         opacity: 0.85,
+        margin: '4px 16px',
       }}
     />
   );

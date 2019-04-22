@@ -2,6 +2,7 @@ import { createMuiTheme } from '@material-ui/core';
 
 export const ApiServer = process.env.NODE_ENV === 'development' ? 'http://ppm1.local:3000' : 'https://api.pierpontglobal.com';
 export const StripeKey = process.env.NODE_ENV === 'development' ? 'pk_test_mPENMxq3MENOAxDxZDVUZajS' : 'pk_live_Rnf6s2eReIqXTzHhZGFvFvMA';
+export const WSConnection = process.env.NODE_ENV === 'development' ? 'ws://ppm1.local:3000/cable' : 'wss://api.pierpontglobal.com/cable';
 
 export const DefaultTheme = createMuiTheme({
   palette: {
@@ -11,6 +12,7 @@ export const DefaultTheme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Raleway, serif',
+    useNextVariants: true,
   },
 });
 export const CountriesList = [

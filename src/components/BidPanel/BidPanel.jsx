@@ -152,7 +152,7 @@ class BidPanel extends React.Component {
               price={wholePrice}
               fontSizeButton="20px"
               vin={vin}
-              requestFuntion={requestCarPrice}
+              requestFunction={requestCarPrice}
               className="text-right mb-0"
             />
           </div>
