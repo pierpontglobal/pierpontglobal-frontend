@@ -60,12 +60,11 @@ class NotificationBadge extends Component {
 
   componentWillMount = () => {
     this.cable = ActionCable.createConsumer(WSConnection);
-    this.userId = this.props.cookies.get('user_id', { path: '/' });
-
+    this.userToken = this.props.cookies.get('token', { path: '/' });
 
     this.subscription = this.cable.subscriptions.create({
       channel: 'AdminNotificationChannel',
-      user_id: this.userId
+      token: this.userToken
     },
     {
       received: (data) => {
@@ -88,10 +87,6 @@ class NotificationBadge extends Component {
       notification_type: data.notification_type,
       read_at: undefined,
     }
-
-    console.log('Handle Notification >>> ');
-    console.log(new_noti);
-
     this.setState({
       notifications: [new_noti, ...notifications]
     })
@@ -118,8 +113,6 @@ class NotificationBadge extends Component {
   };
 
   onReadNotification = notification => {
-    console.log('READ NOTIFICATION: ????? >>>> ');
-    console.log(notification);
     this.setState({
       notifications: [...this.state.notifications].filter(x => x.id !== notification.id)
     }, () => {

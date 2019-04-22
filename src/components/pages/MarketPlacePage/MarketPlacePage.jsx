@@ -322,7 +322,7 @@ class MarketPlacePage extends React.Component {
                         borderRadius: '5px',
                         boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
                       }}
-                      placeholder="Type search term"
+                      placeholder="  Type search term"
                     />
                     {otherFiltersOptions}
                   </div>

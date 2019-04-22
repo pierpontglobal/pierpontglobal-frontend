@@ -156,7 +156,6 @@ class SignInModal extends React.Component {
     const response = await axios.post(`${ApiServer}/oauth/token`, data);
     if (response.status === 200) {
       cookies.set('token', response.data.access_token);
-      cookies.set('user_id', response.data.user_id);
       this.props.notifyClosed();
       history.push('/user');
     } else {
