@@ -3,6 +3,7 @@ import Modal from '@material-ui/core/Modal';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Close from '@material-ui/icons/Close';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
   paper: {
@@ -18,7 +19,7 @@ const styles = theme => ({
 });
 
 function PPGModal(props) {
-  const { setOpen, classes, width, height, setPadding, onlyChildren } = props;
+  const { setOpen, classes, width, height, setPadding, onlyChildren, onBackAction } = props;
 
   let style = {
     argin: 'auto',
@@ -53,6 +54,14 @@ function PPGModal(props) {
                 className={classes.paper}
               >
               <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
+                {
+                  (onBackAction) ? (
+                    <IconButton onClick={props.onBackAction}>
+                      <ArrowBackIcon />
+                    </IconButton>
+                    ) 
+                  : null
+                }
                 <IconButton onClick={props.handleClose}>
                   <Close />
                 </IconButton>

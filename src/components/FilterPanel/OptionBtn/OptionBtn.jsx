@@ -36,7 +36,7 @@ function OptionBtn({
     return (
       <div className="d-flex flex-column pl-3">
         {valuesPartial.splice(0, 10).map(v => (v))}
-        <MorePopUp onSeeAll={onSeeAll} options={valuesComplete} />
+        <MorePopUp onSeeAll={() => onSeeAll(valuesComplete)} options={valuesComplete} />
       </div>
     );
   }

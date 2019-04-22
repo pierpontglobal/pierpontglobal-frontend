@@ -12,6 +12,8 @@ import './styles.css';
 import PPGModal from '../../ppg-modal/PPGModal';
 import MediaQuery from 'react-responsive';
 import { CircularProgress } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { IconButton } from '@material-ui/core';
 
 const qs = require('query-string');
 
@@ -66,7 +68,9 @@ class MarketPlacePage extends React.Component {
       page: 1,
       carsSectionHeight: 0,
       size: 0,
-      openModalFilter: false
+      openModalFilter: false,
+      showOtherOptionsInModalFilter: false,
+      otherFiltersOptions: null
     };
 
     this.getCars = this.getCars.bind(this);
@@ -190,15 +194,23 @@ class MarketPlacePage extends React.Component {
     console.log(params);
   }
 
-  seeAllOptions = () => {
+  seeAllOptions = (options) => {
     this.setState({
-      openModalFilter: false
+      showOtherOptionsInModalFilter: true,
+      otherFiltersOptions: options
+    });
+  }
+
+  quitOptionsFilters = () => {
+    this.setState({
+      showOtherOptionsInModalFilter: false,
+      otherFiltersOptions: null
     });
   }
 
   render() {
     const {
-      loaded, cars, carsSectionHeight, openModalFilter
+      loaded, cars, carsSectionHeight, openModalFilter, showOtherOptionsInModalFilter, otherFiltersOptions
     } = this.state;
 
     const { cookies } = this.props;
@@ -287,10 +299,11 @@ class MarketPlacePage extends React.Component {
                 width="80%"
                 height="80%"
                 setPadding={false}
+                onBackAction={ (!!otherFiltersOptions) ? this.quitOptionsFilters : undefined }
               >
                 {/* Repeating this component here is not a performance issue. This child component,
                 of the PPGModal is only rendered when the modal is open.  */}
-                {loaded ? (
+                { !showOtherOptionsInModalFilter ? (
                   <FilterPanel
                     getCars={this.getCars}
                     availableArguments={this.state.availableArguments}
@@ -298,7 +311,22 @@ class MarketPlacePage extends React.Component {
                     handleFilterChange={this.onFilterChange}
                     onSeeAll={this.seeAllOptions}
                   />
-                ) : null}
+                ) : (
+                  <div style={{ padding: '16px' }}>
+                     <input
+                      className="border-0"
+                      style={{
+                        width: '300px',
+                        padding: '10px',
+                        marginBottom: '20px',
+                        borderRadius: '5px',
+                        boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
+                      }}
+                      placeholder="Type search term"
+                    />
+                    {otherFiltersOptions}
+                  </div>
+                )}
               </PPGModal>
             </MarketPlaceContainer>
           </ActionCableProvider>
