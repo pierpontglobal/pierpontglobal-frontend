@@ -91,7 +91,7 @@ class App extends React.Component {
 
   verifyUserLoggedIn = () => {
     const { cookies } = this.props;
-    if(!!cookies.get('token', { path: '/' }) && !!cookies.get('user_id', { path: '/' })) {
+    if(!!cookies.get('token', { path: '/' })) {
       return true;
     }
     return false;
