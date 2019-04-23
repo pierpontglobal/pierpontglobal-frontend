@@ -121,7 +121,7 @@ class App extends React.Component {
             flexDirection: 'column',
           }}
           >
-            <AppNav cookies={cookies} openModal={this.openModal} dealer={dealer} />
+            <AppNav cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
             <PageHolder>
               <Switch>
                 <Route exact path="/oauth/login" render={() => <OauthPage />} />
