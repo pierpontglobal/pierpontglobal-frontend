@@ -54,7 +54,6 @@ class CheckoutForm extends React.Component {
 
     return (
       <Form
-        className="create-form-dealer"
         style={{
           width: '100%',
           display: 'flex',

@@ -14,24 +14,28 @@ function ProfileForm({
         value={name}
         onChange={onNameChange}
         editable={editable}
+        id="name"
       />
       <FormInput
         label="Address"
         value={address}
         onChange={onAddressChange}
         editable={editable}
+        id="address"
       />
       <FormInput
         label="Email"
         value={email}
         onChange={onEmailChange}
         editable={editable}
+        id="email"
       />
       <FormInput
         label="Phone"
         value={phone}
         onChange={onPhoneChange}
         editable={editable}
+        id="phone"
       />
     </div>
   );

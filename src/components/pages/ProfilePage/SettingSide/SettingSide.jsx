@@ -1,6 +1,5 @@
 import React from 'react';
 import { StripeProvider } from 'react-stripe-elements';
-import { Card, Dropdown } from 'semantic-ui-react';
 import axios from 'axios';
 import Chart from 'chart.js';
 import Select from '@material-ui/core/Select';
@@ -15,14 +14,88 @@ import CreateCard from './Components/Modals/CreateCard';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import UnderLine from '../../../Underline/Underline';
+import styled from 'styled-components';
+import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
+import {Button} from '@material-ui/core';
 
-const headingStyle = {
-  fontSize: '1em',
-  fontWeight: 600,
-  lineHeight: 1.31,
-  padding: '20px 40px',
-  color: '#000000',
-};
+const HeadingStyle = styled.div`
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.31;
+  padding: 20px 40px;
+  color: #000000;
+  @media only screen and (max-width: 768px) {
+    padding: 20px 10px;
+  }
+`;
+
+const ActionButtonText = styled.span`
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const Card = styled.div`
+  padding: 16px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px 0px #ccc;
+  border: 1.2px solid #ccc;
+`;
+
+const CardHolderLarge = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  width: 100%;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px;
+  }
+`;
+
+const CardNumber = styled.div`
+  display: flex;
+  justify-content: center;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+`;
+
+const CardExpDate = styled.div`
+  display: flex;
+  justify-content: center;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+`;
+
+const CardBrand = styled.div`
+  margin: 4px 4px;
+  @media only screen and (max-width: 768px) {
+    margin: 16px 8px;
+  }
+`;
+
+const CardActionButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    font-size: 0.9rem;
+    justify-content: center;
+    margin-top: 24px;
+  }
+`;
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -34,6 +107,7 @@ export default class SettingSide extends React.Component {
 
     this.state = {
       editable: false,
+      unEditedInfo: {},
       paymentMethods: [],
       cardsNumbers: [],
       card: '',
@@ -182,24 +256,23 @@ export default class SettingSide extends React.Component {
       });
 
       const view = (
-        <div className="card-holder-large" key={i}>
-          <div style={{ padding: '15px' }}>
-            <span>
+        <CardHolderLarge key={i}>
+            <CardBrand>
               {brand}
-            </span>
-            <span>
+            </CardBrand>
+            <CardNumber>
               XXXX-XXXX-XXXX-
               {card.last4}
-            </span>
-            <span>
+            </CardNumber>
+            <CardExpDate>
               {card.exp_month}
               {' '}
               /
               {' '}
               {card.exp_year}
-            </span>
+            </CardExpDate>
 
-            <span className="last">
+            <CardActionButtons>
               {/* <button className="simple-view">
                 <i style={{ color: '#3a7abf', fontSize: '12px' }} className="fas fa-pen" />
                 <span style={{ color: '#3a7abf', fontSize: '12px', margin: 0 }}>
@@ -208,24 +281,22 @@ export default class SettingSide extends React.Component {
                 </span>
               </button> */}
 
-              <button
+              <Button
                 type="button"
-                className="simple-view"
                 onClick={(node) => {
                   node.target.style.cursor = 'wait';
                   this.removeCard(card.id);
                 }}
               >
-                <i style={{ color: '#3a7abf', fontSize: '12px' }} className="fas fa-trash-alt" />
+                <i style={{ color: '#3a7abf', fontSize: '12px', marginRight: '8px' }} className="fas fa-trash-alt" />
                 <span style={{ color: '#3a7abf', fontSize: '12px', margin: 0 }}>
                   {'  '}
                   Delete
                 </span>
-              </button>
-            </span>
-          </div>
+              </Button>
+            </CardActionButtons>
           <hr style={{ margin: 0 }} />
-        </div>
+        </CardHolderLarge>
       );
       methods.push(view);
     }
@@ -257,6 +328,60 @@ export default class SettingSide extends React.Component {
     this.getFunds();
   }
 
+  onEditProfileInfo = () => {
+    this.setState((prevState) => {
+      return {
+        editable: !prevState.editable,
+        unEditedInfo: {
+          name: prevState.name,
+          email: prevState.email,
+          address: prevState.address,
+          pehon: prevState.phone
+        }
+      }
+    });
+  }
+
+  onCancelEditProfile = () => {
+    const {unEditedInfo} = this.state;
+    this.setState({
+      editable: false,
+      unEditedInfo: {},
+      name: unEditedInfo.name,
+      address: unEditedInfo.address,
+      email: unEditedInfo.email,
+      phone: unEditedInfo.phone
+    });
+  }
+
+  onSaveEditProfile = () => {
+    // Validate info
+    // Make API CALL to save new info
+    // url:  PATCH: ${ApiServer}/api/v1/user
+    const { name, address, email, phone } = this.state;
+    let names = name.split(" ");
+    const user = {
+      first_name: names[0],
+      last_name: names.slice(1, names.length).join(" "),
+      email: email,
+      phone_number: phone,
+      address: address
+    }
+    axios.patch(`${ApiServer}/api/v1/user`, { user: user }).then(data => {
+      this.setState({
+        editable: false
+      });
+    }, err => {
+      console.log(err);
+    })
+  }
+
+  onEditProfileChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
+  }
+
   render() {
     const {
       editable,
@@ -274,8 +399,8 @@ export default class SettingSide extends React.Component {
     } = this.state;
 
     return (
-      <div style={headingStyle}>
-        <div className="card shadow content-holder-box">
+      <HeadingStyle>
+        <div className="card content-holder-box">
           <UnderLine>
             <h4 className="mb-0">Deposit</h4>
           </UnderLine>
@@ -294,26 +419,39 @@ export default class SettingSide extends React.Component {
           </div>
         </div>
 
-        <div className="card shadow content-holder-box">
+        <div className="card content-holder-box">
           <UnderLine className="justify-content-between">
             <h4 className="mb-0">Personal Info</h4>
-            <button
-              type="button"
-              style={{
-                backgroundColor: '#ffffff',
-                color: '#000000',
-                borderRadius: '5px',
-                padding: '10px 15px',
-                cursor: 'pointer',
-                fontSize: '12px',
-              }}
-              onClick={this.onOpenModal}
-              className="border-0 shadow button_white"
-            >
-              <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
-              {' '}
-            Modify profile information
-            </button>
+            <div>
+              { 
+                editable
+                ? (
+                  <>
+                    <CancelIcon color="primary" style={{  }} onClick={this.onCancelEditProfile} />
+                    <CheckIcon color="accent" onClick={this.onSaveEditProfile} />
+                  </>
+                ) :
+                (
+                  <button
+                    type="button"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      color: '#000000',
+                      borderRadius: '5px',
+                      padding: '10px 15px',
+                      cursor: 'pointer',
+                      fontSize: '12px',
+                    }}
+                    onClick={this.onEditProfileInfo}
+                    className="border-0 button_white"
+                  >
+                    <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
+                    {' '}
+                    <ActionButtonText>Modify profile information</ActionButtonText>
+                  </button>
+                )
+              }
+            </div>
           </UnderLine>
           <ProfileForm
             editable={editable}
@@ -321,15 +459,15 @@ export default class SettingSide extends React.Component {
             address={address}
             email={email}
             phone={phone}
-            onNameChange={onNameChange}
-            onAddressChange={onAddressChange}
-            onEmailChange={onEmailChange}
-            onPhoneChange={onPhoneChange}
+            onNameChange={this.onEditProfileChange}
+            onAddressChange={this.onEditProfileChange}
+            onEmailChange={this.onEditProfileChange}
+            onPhoneChange={this.onEditProfileChange}
           />
         </div>
 
 
-        <div className="card shadow content-holder-box">
+        <div className="card content-holder-box">
           <UnderLine className="justify-content-between">
             <h4 className="mb-0">Payment methods</h4>
             <StripeProvider apiKey={StripeKey}>
@@ -356,7 +494,6 @@ export default class SettingSide extends React.Component {
                 )) }
               </Select>
             </FormControl>
-
             <div>
               <i
                 style={{
@@ -370,7 +507,7 @@ export default class SettingSide extends React.Component {
             </Card>
           </div>
         </div>
-      </div>
+      </HeadingStyle>
     );
   }
 }

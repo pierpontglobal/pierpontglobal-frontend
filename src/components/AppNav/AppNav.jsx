@@ -180,13 +180,11 @@ class AppNav extends React.Component {
                 }
             />
           </LogoWrapper>
-
           <div className="menu-sider" id="nav-bar-sub-menu">
             <LinkBtn onClick={ () => this.goTo('') }>Home</LinkBtn>
             <LinkBtn onClick={ () => this.goTo('marketplace') }>MarketPlace</LinkBtn>
             <LinkBtn onClick={ () => this.goTo('contact-us') }>Contact&nbsp;Us</LinkBtn>
           </div>
-          
           <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
         </NavItems>
       </AppNavWrapper>

@@ -8,7 +8,18 @@ import CardComponent from './Components/CardComponent';
 import SubscriptionCard from './Components/SubscriptionCard';
 import PaymentHistory from './Components/PaymentHistory';
 import { ApiServer } from '../../../../Defaults';
+import styled from 'styled-components';
 
+const HeadingStyle = styled.div`
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.31;
+  padding: 20px 40px;
+  color: #000000;
+  @media only screen and (max-width: 768px) {
+    padding: 20px 10px;
+  }
+`;
 class SubscriptionSide extends React.Component {
   constructor(props) {
     super(props);
@@ -138,7 +149,7 @@ class SubscriptionSide extends React.Component {
 
     if (this.state.subscription === 'available') {
       return (
-        <div style={{ padding: '20px 40px' }}>
+        <HeadingStyle>
           <div className="card shadow content-holder-box" style={{ width: '100%' }}>
             <UnderLine>
               <h4 className="mb-0">Plan</h4>
@@ -177,7 +188,7 @@ class SubscriptionSide extends React.Component {
                 ) : <div />}
             </div>
           </div>
-        </div>
+        </HeadingStyle>
       );
     }
 
