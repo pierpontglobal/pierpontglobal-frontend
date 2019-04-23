@@ -23,7 +23,7 @@ function DealerTab({ dealer }) {
         height="70px"
         width="70px"
         borderRadius="50%"
-        src={dealer.image || Building}
+        src={ dealer.image ? dealer.image || Building : Building}
         alt="pierpont"
       />
       <div style={{
@@ -36,14 +36,14 @@ function DealerTab({ dealer }) {
           fontWeight={600}
           lineHeight={1.25}
         >
-          {dealer.name}
+          {dealer.name ? dealer.name : '' }
         </Text>
         <Text
           opacity={0.54}
           fontSize="0.75em"
           lineHeight={1.33}
         >
-          {dealer.address}
+          { dealer.address ? dealer.address : ''}
         </Text>
         <Text
           className="mb-0"
@@ -55,13 +55,13 @@ function DealerTab({ dealer }) {
           }}
           onClick={() => { window.location.href = `mailto:${dealer.email}`; }}
         >
-          {dealer.email}
+          { dealer.email ? dealer.email : ''}
         </Text>
         <Text
           fontSize="0.875em"
           lineHeight={1.43}
         >
-          {dealer.number}
+          { dealer.number ? dealer.number : ''}
         </Text>
       </div>
     </Container>

@@ -71,6 +71,10 @@ class App extends React.Component {
     super(props);
     const { cookies } = this.props;
 
+    this.state = {
+      dealer: null
+    }
+
     axios.interceptors.request.use((config) => {
       config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
 
@@ -89,6 +93,12 @@ class App extends React.Component {
       });
   }
 
+  setDealer = (dealer) => {
+    this.setState({
+      dealer: dealer
+    });
+  }
+
   verifyUserLoggedIn = () => {
     const { cookies } = this.props;
     if(!!cookies.get('token', { path: '/' })) {
@@ -99,6 +109,7 @@ class App extends React.Component {
 
   render() {
     const { cookies } = this.props;
+    const { dealer } = this.state;
     return (
       <MuiThemeProvider theme={DefaultTheme}>
         <Router>
@@ -110,7 +121,7 @@ class App extends React.Component {
             flexDirection: 'column',
           }}
           >
-            <AppNav cookies={cookies} openModal={this.openModal} />
+            <AppNav cookies={cookies} openModal={this.openModal} dealer={dealer} />
             <PageHolder>
               <Switch>
                 <Route exact path="/oauth/login" render={() => <OauthPage />} />
@@ -119,7 +130,7 @@ class App extends React.Component {
                 <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                 <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage cookies={cookies} /> : <Redirect to="/" />} />
+                <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />} />
                 <Route exact path="/user/notifications" render={() => (this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />} />
 
                 <Route render={() => (<NotfoundPage cookies={cookies} />)} />

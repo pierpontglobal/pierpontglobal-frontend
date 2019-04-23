@@ -145,7 +145,7 @@ class AppNav extends React.Component {
 
   render() {
     const { showModal } = this.state;
-    const { cookies, classes } = this.props;
+    const { cookies, classes, dealer } = this.props;
 
     return (
       <AppNavWrapper>
@@ -157,6 +157,7 @@ class AppNav extends React.Component {
             afterOptionclick={this.optionClick}
             showSignIn={() => { this.showSignIn(true); }}
             onRequestOpen={this.openMenuSide}
+            dealer={dealer}
           />
           <BurgerBtn onClick={this.openMenuSide}>
             <BurgerIcon />

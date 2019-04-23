@@ -84,6 +84,11 @@ class ProfilePage extends React.Component {
           number: responseDealer.data.phone_number,
           email: responseUser.data.email,
         },
+      }, () => {
+        const { dealer } = this.state;
+        if (!!this.props.setDealer) {
+          this.props.setDealer(dealer);
+        }
       });
     }
   }

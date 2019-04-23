@@ -15,14 +15,6 @@ import { Modal } from '@material-ui/core'
 import { withCookies } from 'react-cookie';
 import { Redirect } from 'react-router-dom';
 
-const dealerExample = {
-  image: null,
-  name: 'Dealer name',
-  address: 'Address...',
-  email: 'dealer@example.com',
-  number: '+1 (809) 123-5555',
-};
-
 const MenuTitle = styled.div`
   width: 100%;
   min-height: 80px;
@@ -62,7 +54,7 @@ class MenuDrawer extends Component {
   }
 
   render() {
-    const { onMaskClick, afterOptionclick, onRequestOpen } = this.props;
+    const { onMaskClick, afterOptionclick, onRequestOpen, dealer } = this.props;
     const { open } = this.state;
 
     let menuOptions = [
@@ -89,7 +81,7 @@ class MenuDrawer extends Component {
           handleOpen={onRequestOpen}
         >
           <AccountPanel
-            dealer={dealerExample}
+            dealer={dealer}
             inner={(<SliderOptions options={menuOptions} onClickOption={afterOptionclick} />)}
           />
         </Slider>
