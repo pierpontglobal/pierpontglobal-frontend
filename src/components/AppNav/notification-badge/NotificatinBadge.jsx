@@ -59,12 +59,13 @@ class NotificationBadge extends Component {
   }
 
   componentWillMount = () => {
-    this.cable = ActionCable.createConsumer(WSConnection);
+    
     this.userToken = this.props.cookies.get('token', { path: '/' });
 
+    this.cable = ActionCable.createConsumer(WSConnection + '?token=' + this.userToken);
+
     this.subscription = this.cable.subscriptions.create({
-      channel: 'AdminNotificationChannel',
-      token: this.userToken
+      channel: 'AdminNotificationChannel'
     },
     {
       received: (data) => {
