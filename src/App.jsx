@@ -72,7 +72,13 @@ class App extends React.Component {
     const { cookies } = this.props;
 
     this.state = {
-      dealer: null
+      dealer: {
+        image: null,
+        name: null,
+        address: null,
+        email: null,
+        number: null,
+      }
     }
 
     axios.interceptors.request.use((config) => {
