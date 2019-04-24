@@ -3,13 +3,18 @@ import { StripeProvider } from 'react-stripe-elements';
 import { Card, Dropdown } from 'semantic-ui-react';
 import axios from 'axios';
 import Chart from 'chart.js';
-import UnderLine from '../../../Underline/Underline';
-import DepositProgress from '../../../DepositProgress/DepositProgress';
-import ProfileForm from '../../../ProfileForm/ProfileForm';
-import CreateCard from './Components/Modals/CreateCard';
+import Select from '@material-ui/core/Select';
 import './style.css';
-import { ApiServer, StripeKey } from '../../../../Defaults';
+import { Elements } from 'react-stripe-elements';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import AddDeposit from './Components/Modals/AddDeposit';
+import { ApiServer, StripeKey } from '../../../../Defaults';
+import CreateCard from './Components/Modals/CreateCard';
+import ProfileForm from '../../../ProfileForm/ProfileForm';
+import DepositProgress from '../../../DepositProgress/DepositProgress';
+import UnderLine from '../../../Underline/Underline';
 
 const headingStyle = {
   fontSize: '1em',
@@ -233,13 +238,13 @@ export default class SettingSide extends React.Component {
     this.getDefaultPaymentMethod();
   }
 
-  async handleCardChange(e, { value }) {
+  async handleCardChange(e) {
     this.setState({
-      card: value,
+      card: e.target.value,
       loading: true,
     });
 
-    axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: value });
+    axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: e.target.value });
     window.location.reload();
   }
 
@@ -328,24 +333,31 @@ export default class SettingSide extends React.Component {
           <UnderLine className="justify-content-between">
             <h4 className="mb-0">Payment methods</h4>
             <StripeProvider apiKey={StripeKey}>
-              <CreateCard cookies={this.props.cookies} />
+              <Elements>
+                <CreateCard cookies={this.props.cookies} />
+              </Elements>
             </StripeProvider>
           </UnderLine>
           <div className="content-main">
             <h5>Cards</h5>
-            <div>
-          Default card
-              {' '}
-              <Dropdown
-                className="clean-button"
-                placeholder="Select the default card"
+            <FormControl style={{ minWidth: '200px', marginBottom: '20px' }}>
+              <InputLabel htmlFor="age-simple">Default Card</InputLabel>
+              <Select
                 value={card}
-                selection
-                ref={node => (this.dropdown = node)}
-                options={this.state.cardsNumbers}
                 onChange={this.handleCardChange}
-              />
-              {' '}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                { this.state.cardsNumbers.map(cardNumber => (
+                  <MenuItem value={cardNumber.key}>
+                    {cardNumber.text}
+                  </MenuItem>
+                )) }
+              </Select>
+            </FormControl>
+
+            <div>
               <i
                 style={{
                   color: '#000000', float: 'rigth', fontSize: '14px', display: loading ? 'inline-block' : 'none',

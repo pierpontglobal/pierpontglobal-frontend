@@ -198,7 +198,7 @@ const DetailLabel = styled.span`
   font-weight: 600;
 `;
 
-const DropDwonIcon = styled(DropDown)`
+const DropDownIcon = styled(DropDown)`
   width: 0;
   height: 0;
   border-style: solid;
@@ -264,8 +264,9 @@ function gotToCarDetail(vin, event, history) {
   }
 }
 
-function CarCard({ key, car, requestFunction, history }) {
-  
+function CarCard({
+  key, car, requestFunction, history,
+}) {
   const [openDetails, setOpenDetails] = useState('closed');
 
   const {
@@ -284,69 +285,72 @@ function CarCard({ key, car, requestFunction, history }) {
   const timeDiff = Math.abs(difference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
-    <>
-      <CarContainer key={key} id="car-card"
-        onClick={(e) => gotToCarDetail(vin, e, history)} >
-        <Carousel
-          showIndicators={false}
-          showStatus={false}
-          showThumbs={false}
-        >
-          {images.map((image, i) => (
-            <ImageWrapper
-              effect="blur"
-              id="image-carousel"
-              key={i}
-              src={image}
-              threshold={1000}
-              delayTime={1000}
-            />
-          ))}
-        </Carousel>
-        <DetailsContainer>
-          <DetailTitle>
-            <div><span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year} ${car.make} ${car.model} ${car.trimLevel}`}</span></div>
-            <DropDwonIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
-          </DetailTitle>
-          <hr style={{ margin: '0 0 5px' }} />
-          <input hidden name="VIN" value={vin} />
-          <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
-            <Detail>
-              <DetailLabel>Vin: </DetailLabel>
-              <DetailValue>{vin}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>Odometer: </DetailLabel>
-              <DetailValue>{numberWithCommas(odometer)}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>Engine: </DetailLabel>
-              <DetailValue>{engine}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>Transmission: </DetailLabel>
-              <DetailValue>{transmission}</DetailValue>
-            </Detail>
-          </DetailContent>
-        </DetailsContainer>
-        <CRPriceContainer>
-          <DetailedCR>
-            <ConditionBtn label="Condition" score={cr} />
-            <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
-          </DetailedCR>
-          <PriceContainer>
-            <TimeAgoContainer diffDays={diffDays}>
-              <TimeAgo date={saleDate} />
-            </TimeAgoContainer>
-            <PriceTag
-              price={wholePrice}
-              vin={vin}
-              requestFunction={requestFunction}
-            />
-          </PriceContainer>
-        </CRPriceContainer>
-      </CarContainer>
-    </>
+    <CarContainer
+      key={key}
+      id="car-card"
+      onClick={e => gotToCarDetail(vin, e, history)}
+    >
+      <Carousel
+        showIndicators={false}
+        showStatus={false}
+        showThumbs={false}
+      >
+        {images.map((image, i) => (
+          <ImageWrapper
+            effect="blur"
+            id="image-carousel"
+            key={i}
+            src={image}
+            threshold={1000}
+            delayTime={1000}
+          />
+        ))}
+      </Carousel>
+      <DetailsContainer>
+        <DetailTitle>
+          <div>
+            <span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
+          </div>
+          <DropDownIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+        </DetailTitle>
+        <hr style={{ margin: '0 0 5px' }} />
+        <input hidden name="VIN" value={vin} />
+        <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
+          <Detail>
+            <DetailLabel>Vin: </DetailLabel>
+            <DetailValue>{vin}</DetailValue>
+          </Detail>
+          <Detail>
+            <DetailLabel>Odometer: </DetailLabel>
+            <DetailValue>{numberWithCommas(odometer)}</DetailValue>
+          </Detail>
+          <Detail>
+            <DetailLabel>Engine: </DetailLabel>
+            <DetailValue>{engine}</DetailValue>
+          </Detail>
+          <Detail>
+            <DetailLabel>Transmission: </DetailLabel>
+            <DetailValue>{transmission}</DetailValue>
+          </Detail>
+        </DetailContent>
+      </DetailsContainer>
+      <CRPriceContainer>
+        <DetailedCR>
+          <ConditionBtn label="Condition" score={cr} />
+          <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
+        </DetailedCR>
+        <PriceContainer>
+          <TimeAgoContainer diffDays={diffDays}>
+            <TimeAgo date={saleDate} />
+          </TimeAgoContainer>
+          <PriceTag
+            price={wholePrice}
+            vin={vin}
+            requestFunction={requestFunction}
+          />
+        </PriceContainer>
+      </CRPriceContainer>
+    </CarContainer>
   );
 }
 

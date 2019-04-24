@@ -21,7 +21,8 @@ class LandingPage extends React.Component {
         <Registration
           textColor="#ffffff"
           height="500px"
-          background='linear-gradient(to top, rgb(35, 35, 35, 0.7), rgb(154, 167, 181, 0.8)), url("/images/marketplace/b-01-min.jpg")'
+          background="rgb(65,77,93)"
+          background="linear-gradient(0deg, rgba(65,77,93,1) 0%, #3e78c0 100%)"
           openModal={this.openModal}
         />
         <div style={{
@@ -179,6 +180,7 @@ class LandingPage extends React.Component {
                 flexDirection: 'column',
                 alignItems: 'center',
                 overflow: 'hidden',
+                position: 'relative',
               }}
               className="shadow column-5"
             >
