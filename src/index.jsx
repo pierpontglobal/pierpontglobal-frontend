@@ -14,9 +14,10 @@ import messages_en from "./translations/en.json";
 
 addLocaleData([...locale_en, ...locale_es]);
 
+// TODO: This switch was on porpuse for testing ONLY purposes!!!
 const messages = {
-    'es': messages_es,
-    'en': messages_en
+    'en': messages_es,
+    'es': messages_en
 };
 const language = navigator.language.split(/[-_]/)[0];
 
