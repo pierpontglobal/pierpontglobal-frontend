@@ -58,14 +58,15 @@ const AppNavWrapper = styled.div`
 
 const NavItems = styled.div`
   display: flex;
-  place-content: space-between;
   justify-content: space-between;
   align-content: space-between;
   width: 100%;
-  align-items: center;
-  justify-items: center;
+  align-items: space-between;
+  justify-items: space-between;
   @media only screen and (min-width: 600px) {
     max-width: 950px;
+    align-items: center;
+    justify-items: center;
   }
 `;
 
@@ -87,12 +88,16 @@ const LogoWrapper = styled.button`
   align-items: center;
   justify-items: center;
   overflow: visible;
-  max-width: 170px;
   position: relative;
-  width: auto;
+  width: 100%;
   left: auto;
   margin: 0;
   border: none;
+  position: absolute;
+  @media only screen and (min-width: 600px) {
+    max-width: 170px;
+    position: relative;
+  }
 `;
 
 class AppNav extends React.Component {
@@ -165,6 +170,7 @@ class AppNav extends React.Component {
             <Img
               style={{
                 width: '100%',
+                maxWidth: '170px',
                 cursor: 'pointer',
               }}
               alt="PierpontGlobal"
