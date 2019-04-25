@@ -93,10 +93,15 @@ const LogoWrapper = styled.button`
   left: auto;
   margin: 0;
   border: none;
+<<<<<<< HEAD
   position: absolute;
   @media only screen and (min-width: 600px) {
     max-width: 170px;
     position: relative;
+=======
+  @media only screen and (max-width: 600px) {
+    margin-left: ${props => props.userIsLoggedIn ? '' : '13%'}
+>>>>>>> 498710bad6f6600d0d1a2650c21c6e1cd5a57102
   }
 `;
 
@@ -150,18 +155,21 @@ class AppNav extends React.Component {
 
   render() {
     const { showModal } = this.state;
-    const { cookies, classes } = this.props;
+    const { cookies, classes, dealer } = this.props;
+
+    const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
     return (
       <AppNavWrapper>
         <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
-        <NavItems>
+        <NavItems userIsLoggedIn={userIsLoggedIn}>
           <MenuDrawer
             open={this.state.menuOpen}
             onMaskClick={this.onTouchEnd}
             afterOptionclick={this.optionClick}
             showSignIn={() => { this.showSignIn(true); }}
             onRequestOpen={this.openMenuSide}
+            dealer={dealer}
           />
           <BurgerBtn onClick={this.openMenuSide}>
             <BurgerIcon />

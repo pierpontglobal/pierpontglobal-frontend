@@ -37,7 +37,9 @@ class AccountPanel extends React.Component {
   }
 
   async signOut() {
-    await axios.post(`${ApiServer}/api/v1/user/invalidate`, {});
+    await axios.post(`${ApiServer}/api/v1/user/invalidate`, {
+      one_signal_uuid: this.props.cookies.get('one_signal_uuid'),
+    });
     this.props.cookies.remove('token', { path: '/' });
     window.location.href = '/';
   }
@@ -128,13 +130,11 @@ class AccountPanel extends React.Component {
 AccountPanel.propTypes = {
   cookies: PropTypes.object,
   dealer: PropTypes.object,
-  inner: PropTypes.element,
 };
 
 AccountPanel.defaultProps = {
   cookies: {},
   dealer: {},
-  inner: '',
 };
 
 export default withCookies(AccountPanel);

@@ -3,14 +3,18 @@ import './styles.css';
 import axios from 'axios';
 import UnderLine from '../../../Underline/Underline';
 import { ApiServer } from '../../../../Defaults';
+import styled from 'styled-components';
 
-const headingStyle = {
-  fontSize: '1em',
-  fontWeight: 600,
-  lineHeight: 1.31,
-  padding: '20px 40px',
-  color: '#000000',
-};
+const HeadingStyle = styled.div`
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.31;
+  padding: 20px 40px;
+  color: #000000;
+  @media only screen and (max-width: 768px) {
+    padding: 20px 10px;
+  }
+`;
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -152,7 +156,7 @@ class TransactionsSide extends React.Component {
     const { history, manualHistory } = this.state;
 
     return (
-      <div style={headingStyle}>
+      <HeadingStyle>
         <div className="card shadow content-holder-box">
           <UnderLine>
             <h4 className="mb-0">Transactions history</h4>
@@ -178,7 +182,7 @@ class TransactionsSide extends React.Component {
             </button>
 
             <div style={{
-              width: '100%', display: 'flex', justifyContent: 'center', justifyItems: 'center', alignContent: 'center', alignItems: 'center',
+              width: '100%', display: 'flex', justifyContent: 'center', justifyItems: 'center', alignContent: 'center', alignItems: 'center', overflowX: 'auto'
             }}
             >
               <table style={{ width: '100%', marginTop: '20px' }}>
@@ -206,6 +210,7 @@ class TransactionsSide extends React.Component {
           <div style={{ flexDirection: 'column' }} className="d-flex content-main">
             <div style={{
               width: '100%', display: 'flex', justifyContent: 'center', justifyItems: 'center', alignContent: 'center', alignItems: 'center',
+              overflowX: 'auto'
             }}
             >
               <table style={{ width: '100%', marginTop: '20px' }}>
@@ -226,7 +231,7 @@ class TransactionsSide extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </HeadingStyle>
     );
   }
 }

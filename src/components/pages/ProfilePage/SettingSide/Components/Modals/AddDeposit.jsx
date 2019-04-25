@@ -1,8 +1,107 @@
 import React from 'react';
-import Modal from 'react-responsive-modal';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { ApiServer } from '../../../../../../Defaults';
+import styled from 'styled-components';
+import PPGModal from '../../../../../ppg-modal/PPGModal';
+import CloseIcon from '@material-ui/icons/Close';
+import { withRouter } from 'react-router-dom';
+
+const ModalWrapper = styled.div`
+  width: 90%;
+  display: grid;
+  grid-template-rows: ${props => props.gridRows};
+  margin: 0 auto;
+  background-color: white;
+  @media only screen and (min-width: 748px) {
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    top: 10%;
+  }
+`;
+
+const ModalHeader = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const HeaderTitle = styled.h2`
+  font-weight: 600;
+  @media only screen and (max-width: 768px) {
+    font-size: 0.98em;
+  }
+`;
+
+const ModalContent = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalFooter = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  text-align: center;
+`;
+
+const DepositForm = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const TransactionButton = styled.button`
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 12px;
+  border: none;
+  width: 100%;
+  box-shadow: 0px 0px 3px 0px #ccc;
+`;
+
+const TransactionSuccessKeyValue = styled.div`
+  margin-bottom: 8px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  @media only screen and (max-width: 768px) {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+`;
+
+const Underline = styled.div`
+  width: 100%;
+  height: ${props => !props.height ? '100%' : props.height};
+  background-color: #ccc;
+`;
+
+const AddDepositButtonWrapper = styled.div`
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+`;
 
 class AddDeposit extends React.Component {
   constructor(props) {
@@ -13,7 +112,7 @@ class AddDeposit extends React.Component {
     this.state = {
       open: false,
       status: 'normal',
-      token: cookies.get('token'),
+      token: cookies.get('token', { path: '/' }),
       charge: {},
     };
 
@@ -77,240 +176,184 @@ class AddDeposit extends React.Component {
     }
   }
 
+  gotToTransactions = () => {
+    this.props.history.push('/user/transactions');
+  }
+
   render() {
     const { open, status, charge } = this.state;
+
+    let title = 'ADD DEPOSIT';
+    let content = null;
+    let footer = '';
+    let gridRows = '20% 0.5% 54% 0.5% 25%';
+
     switch (status) {
       case 'error':
-        return (
-          <div>
-            <button
-              type="button"
-              className="border-0 shadow green_button"
-              style={{
-                backgroundColor: '#10b364',
-                color: '#ffffff',
-                borderRadius: '5px',
-                padding: '10px 30px',
-                cursor: 'pointer',
-              }}
-              onClick={this.onOpenModal}
-            >
-              <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
+        content = (
+          <>
+            <h3 style={{ color: '#B20000' }}>
+              <i style={{ color: '#B20000' }} className="fas fa-times" />
               {' '}
-            ADD DEPOSIT
-            </button>
-            <Modal open={open} onClose={this.onCloseModal} center>
-              <div style={{
-                width: '500px',
-                fontWeight: '200',
-              }}
-              >
-                <h2>Add deposit</h2>
-                <hr />
-                <h3 style={{ color: '#B20000' }}>
-                  <i style={{ color: '#B20000' }} className="fas fa-times" />
-                  {' '}
-                Transaction failed.
-                </h3>
-                <hr />
-                <p style={{ marginTop: '20px' }}>
-                Verify your default payment method and try again. Y
-                ou can also contact the technical support representative
-                ! Just click the WhatsApp plugin in the corner.
-                </p>
-              </div>
-            </Modal>
-          </div>
+            Transaction failed.
+            </h3>
+            <hr />
+            <p style={{ marginTop: '20px' }}>
+            Verify your default payment method and try again. Y
+            ou can also contact the technical support representative
+            ! Just click the WhatsApp plugin in the corner.
+            </p>
+          </>
         );
+        break;
       case 'success':
-        return (
-          <div>
-            <button
-              type="button"
-              className="border-0 shadow green_button"
-              style={{
-                backgroundColor: '#10b364',
-                color: '#ffffff',
-                borderRadius: '5px',
-                padding: '10px 30px',
-                cursor: 'pointer',
-              }}
-              onClick={this.onOpenModal}
-            >
-              <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
-              {' '}
-              ADD DEPOSIT
-            </button>
-            <Modal open={open} onClose={this.onCloseModal} center>
-              <div style={{
-                width: '500px',
-                fontWeight: '200',
-              }}
-              >
-                <h2>Add deposit</h2>
-                <hr />
-                <h3 style={{ color: '#10b364' }}>
-                  <i style={{ color: '#10b364' }} className="fas fa-check" />
-                  {' '}
-                  Transaction successful.
-                </h3>
-                <hr />
-                <p style={{ marginTop: '20px' }}>
-                  Visit the transaction tab for more details
-                  <br />
-                  <br />
-                  <span style={{ fontWeight: 900 }}>Transaction number:</span>
-                  {' '}
-                  {charge.id}
-                  <br />
-                  <span style={{ fontWeight: 900 }}>User identifier:</span>
-                  {' '}
-                  {charge.customer}
-                  <br />
-                  <span style={{ fontWeight: 900 }}>Source id:</span>
-                  {' '}
-                  {charge.source.id}
-                  <br />
-                  <span style={{ fontWeight: 900 }}>Date:</span>
-                  {' '}
-                  {(new Date(charge.created * 1000)).toDateString()}
-                  <br />
-                </p>
-                <hr />
-                <button
-                  type="button"
-                  style={{
-                    backgroundColor: '#ffffff',
-                    color: '#000000',
-                    borderRadius: '5px',
-                    padding: '10px 15px',
-                    cursor: 'pointer',
-                    fontSize: '12px',
-                  }}
-                  className="border-0 shadow button_white"
-                  onClick={() => { window.location.href = '/user/transactions'; }}
-                >
+        title = 'Transaction successful.';
+        gridRows = '18% 0.5% 62% 0.5% 19%';
+        if ( window.innerWidth <= 768 ) {
+          gridRows = '13% 0.5% 73% 0.5% 13%';
+        }
+        content = (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+              <span style={{ fontWeight: '600' }}>Visit the transaction tab for more details</span>
+            </div>
+            <TransactionSuccessKeyValue>
+              <span style={{ fontWeight: 900 }}>Transaction number: </span>
+              <span>{charge.id}</span>
+            </TransactionSuccessKeyValue>
+            <TransactionSuccessKeyValue>
+              <span style={{ fontWeight: 900 }}>User identifier: </span>
+              <span>{charge.customer}</span>
+            </TransactionSuccessKeyValue>
+            <TransactionSuccessKeyValue>
+              <span style={{ fontWeight: 900 }}>Source id: </span>
+              <span>{charge.source.id}</span>
+            </TransactionSuccessKeyValue>
+            <TransactionSuccessKeyValue>
+              <span style={{ fontWeight: 900 }}>Date: </span>
+              <span>{(new Date(charge.created * 1000)).toDateString()}</span>
+            </TransactionSuccessKeyValue>
+          </div>
+        );
+        footer = (
+          <TransactionButton
+            type="button"
+            onClick={ this.gotToTransactions }
+          >
 
-                  <i style={{ fontSize: '12px', color: 'rgb(59, 68, 75)' }} className="fas fa-file-invoice-dollar" />
-                  {' '}
-                    Transactions
-                </button>
-              </div>
-            </Modal>
-          </div>
+            <i style={{ fontSize: '12px', color: 'rgb(59, 68, 75)' }} className="fas fa-file-invoice-dollar" />
+            {' '}
+              Transactions
+          </TransactionButton>
         );
+        break;
       case 'sending':
-        return (
-          <div>
-            <button
-              type="button"
-              className="border-0 shadow green_button"
-              style={{
-                backgroundColor: '#10b364',
-                color: '#ffffff',
-                borderRadius: '5px',
-                padding: '10px 30px',
-                cursor: 'pointer',
-              }}
-              onClick={this.onOpenModal}
-            >
-              <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
+        content = (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+            <h3>
+              <i style={{ color: 'rgb(59, 68, 75)' }} className="fas fa-spinner loading" />
               {' '}
-              ADD DEPOSIT
-            </button>
-            <Modal open={open} onClose={this.onCloseModal} center>
-              <div style={{
-                width: '500px',
-                fontWeight: '200',
-              }}
-              >
-                <h2>Add deposit</h2>
-                <hr />
-                <h3>
-                  <i style={{ color: 'rgb(59, 68, 75)' }} className="fas fa-spinner loading" />
-                  {' '}
-                  Performing transactions...
-                </h3>
-              </div>
-            </Modal>
+              Performing transactions...
+            </h3>
           </div>
         );
+        footer = 'Please, wait...';
+        break;
       default:
-        return (
-          <div>
-            <button
-              type="button"
-              className="border-0 shadow green_button"
-              style={{
-                backgroundColor: '#10b364',
-                color: '#ffffff',
-                borderRadius: '5px',
-                padding: '10px 30px',
-                cursor: 'pointer',
-              }}
-              onClick={this.onOpenModal}
+       content = 
+       (
+        <DepositForm>
+          <div style={{ display: 'flex', flexDirection: 'row', margin: '16px 0px' }}>
+            <div style={{
+              height: '41px',
+              width: '41px',
+              backgroundColor: '#dedede',
+              fontSize: '16px',
+              textAlign: 'center',
+              lineHeight: '41px',
+              fontWeight: 900,
+              borderRadius: '5px 0 0 5px',
+              border: 'gray solid 0.5px',
+            }}
             >
-              <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
-              {' '}
-              ADD DEPOSIT
-            </button>
-            <Modal open={open} onClose={this.onCloseModal} center>
-              <div style={{
-                width: '500px',
-                fontWeight: '200',
-              }}
-              >
-                <h2>Add deposit</h2>
-                <hr />
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <div style={{
-                      height: '41px',
-                      width: '41px',
-                      backgroundColor: '#dedede',
-                      fontSize: '16px',
-                      textAlign: 'center',
-                      lineHeight: '41px',
-                      fontWeight: 900,
-                      borderRadius: '5px 0 0 5px',
-                      border: 'gray solid 0.5px',
-                    }}
-                    >
-                  $
-                    </div>
-                    <input
-                      className="input-single-amount"
-                      type="number"
-                      min="0.01"
-                      step="0.01"
-                      placeholder="Deposit amount"
-                      ref={(node) => { this.amount = node; }}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    className="border-0 shadow green_button"
-                    style={{
-                      backgroundColor: '#10b364',
-                      color: '#ffffff',
-                      borderRadius: '5px',
-                      padding: '10px 30px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={this.sendDeposit}
-                  >
-                    <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
-                    {' '}
-                ADD DEPOSIT
-                  </button>
-                </div>
-                <hr />
-                <p style={{ marginTop: '10px' }}>Allow the funds to show in your account after 5 minutes.</p>
-              </div>
-            </Modal>
+          $
+            </div>
+            <input
+              className="input-single-amount"
+              type="number"
+              min="0.01"
+              step="0.01"
+              placeholder="Deposit amount"
+              ref={(node) => { this.amount = node; }}
+            />
           </div>
-        );
+          <button
+            type="button"
+            className="border-0 shadow green_button"
+            style={{
+              backgroundColor: '#10b364',
+              color: '#ffffff',
+              borderRadius: '5px',
+              padding: '10px 30px',
+              cursor: 'pointer',
+            }}
+            onClick={this.sendDeposit}
+          >
+            <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
+            {' '}
+        ADD DEPOSIT
+          </button>
+        </DepositForm>
+       );
+       footer = 'Allow the funds to show in your account after 5 minutes.';
     }
+
+    const baseModalContent = 
+    (
+      <ModalWrapper gridRows={gridRows}>
+        <ModalHeader>
+          <HeaderTitle>{ title }</HeaderTitle>
+          <CloseIcon onClick={this.onCloseModal} />
+        </ModalHeader>
+        <Underline />
+        <ModalContent>
+          { content }
+        </ModalContent>
+        <Underline />
+        <ModalFooter>
+          <p style={{ marginTop: '10px' }}>{ footer }</p>
+        </ModalFooter>
+      </ModalWrapper>
+    );
+    
+    return (
+      <AddDepositButtonWrapper>
+        <button
+          type="button"
+          className="border-0 shadow green_button"
+          style={{
+            backgroundColor: '#10b364',
+            color: '#ffffff',
+            borderRadius: '5px',
+            padding: '10px 30px',
+            cursor: 'pointer',
+          }}
+          onClick={this.onOpenModal}
+        >
+          <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
+          {' '}
+          ADD DEPOSIT
+        </button>
+        <PPGModal 
+          setPadding={false}
+          onlyChildren={true} 
+          setOpen={open} 
+          handleClose={this.onCloseModal}
+        >
+         { baseModalContent }
+        </PPGModal>
+      </AddDepositButtonWrapper>
+    );
   }
 }
 
@@ -322,4 +365,4 @@ AddDeposit.defaultProps = {
   cookies: {},
 };
 
-export default AddDeposit;
+export default withRouter(AddDeposit);

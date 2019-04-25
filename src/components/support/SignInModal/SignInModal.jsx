@@ -64,7 +64,7 @@ class SignInModal extends React.Component {
           }}
           onSubmit={this.signIn}
         >
-          <img className="phone-only" style={{ marginBottom: '20px' }} width="200" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
+          <img className="phone-only" style={{ marginBottom: '20px' }} width="80" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
           <p style={{ color: 'red', display: failed ? 'block' : 'none' }}>Wrong credentials</p>
           <Input
             style={{
@@ -155,7 +155,10 @@ class SignInModal extends React.Component {
     };
     const response = await axios.post(`${ApiServer}/oauth/token`, data);
     if (response.status === 200) {
-      cookies.set('token', response.data.access_token);
+      cookies.set('token', response.data.access_token, { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) });
+      axios.post(`${ApiServer}/api/v1/user/notifier`, {
+        one_signal_uuid: cookies.get('one_signal_uuid'),
+      });
       this.props.notifyClosed();
       history.push('/user');
     } else {

@@ -73,8 +73,7 @@ class PaymentHistory extends React.Component {
     }
 
     return (
-      <div>
-        <hr />
+      <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%' }}>
           <thead style={{ height: '80px' }}>
             <tr style={{ height: '40px', padding: '10px' }}>

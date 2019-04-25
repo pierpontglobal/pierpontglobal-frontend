@@ -14,6 +14,7 @@ import FinancialSide from './FinancialSide/FinancialSide';
 import TransactionsSide from './TransactionsSide/TransactionsSide';
 import NotificationTypes from '../../../constants/NotificationTypes';
 import IssueTypes from '../../../constants/IssueTypes';
+import styled from 'styled-components';
 import './styles.css';
 
 const dealerExample = {
@@ -24,6 +25,31 @@ const dealerExample = {
   number: '+1 (809) 123-5555',
 };
 
+const Wrapper = styled.div`
+  background-color: #dedede;
+  width: 100%;
+  height: 100%;
+`;
+
+const AccountPanelWrapper = styled.div`
+  position: fixed;
+  height: 100%;
+  width: 300px;
+  left: 0;
+  top: 0;
+  padding-top: 55px;
+  display: none;
+  @media only screen and (min-width: 768px) {
+    display: inherit;
+  }
+`;
+
+const RouterWrapper = styled.div`
+  margin-bottom: 50px;
+  @media only screen and (min-width: 768px) {
+    margin-left: 300px;
+  }
+`;
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -58,6 +84,11 @@ class ProfilePage extends React.Component {
           number: responseDealer.data.phone_number,
           email: responseUser.data.email,
         },
+      }, () => {
+        const { dealer } = this.state;
+        if (!!this.props.setDealer) {
+          this.props.setDealer(dealer);
+        }
       });
     }
   }
@@ -96,23 +127,17 @@ class ProfilePage extends React.Component {
     }
 
     if (subscriptions == undefined) {
-      console.log('Sent sub noti');
       this.sendNotification(notificationDto);
     } else if (!!subscriptions && !subscriptions.active) {
-      console.log('Sent sub noti');
       this.sendNotification(notificationDto);
     }
 
     if (cards == undefined) {
-      console.log('Sent card noti');
       notificationDto.payload = cards;
       notificationDto.message = `Please, add your card information to your account. You won't be able to process any payment before its complete.`;
       notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
       this.sendNotification(notificationDto);
     }
-
-    console.log('PROFILE PAGE AFTER CHECK NOTIFICARTIONS....');
-    console.log(subscriptions, cards);
   }
 
   render() {
@@ -125,27 +150,12 @@ class ProfilePage extends React.Component {
     const { cookies } = this.props;
 
     return (
-      <div>
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#dedede',
-        }}
-        />
+      <Wrapper>
         <DealerCreator show={!hasDealer || !hasPaymentMethod} hasDealer={hasDealer} />
-        <div className="pannel-container desktop-only">
+        <AccountPanelWrapper>
           <AccountPanel dealer={dealer || dealerExample} />
-        </div>
-
-        <div className="user-page-content-container">
-
-          {notifications}
-
+        </AccountPanelWrapper>
+        <RouterWrapper>
           <Router>
             <Switch>
               <Route exact path="/user" render={() => (<SettingSide cookies={cookies} />)} />
@@ -162,10 +172,8 @@ class ProfilePage extends React.Component {
               <Route exact path="/user/transactions" render={() => (<TransactionsSide cookies={cookies} />)} />
             </Switch>
           </Router>
-
-
-        </div>
-      </div>
+        </RouterWrapper>
+      </Wrapper>
     );
   }
 }

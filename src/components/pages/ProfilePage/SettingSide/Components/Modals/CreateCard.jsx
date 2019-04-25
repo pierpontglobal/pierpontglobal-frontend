@@ -4,6 +4,18 @@ import InjectedCheckoutForm from './CheckoutForm';
 import { injectStripe } from 'react-stripe-elements';
 import axios from 'axios';
 import { ApiServer } from '../../../../../../Defaults';
+import styled from 'styled-components';
+
+const ActionButtonText = styled.span`
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ModalContent = styled.div`
+  max-height: calc(100vh - 320px);
+  overflow-y: scroll;
+`;
 
 class CreateCard extends React.Component {
 
@@ -65,24 +77,27 @@ class CreateCard extends React.Component {
             fontSize: '12px',
           }} 
           onClick={this.onOpenModal}
-          className="border-0 shadow button_white">
+          className="border-0 button_white">
             <i style={{fontSize: '12px',color: '#000000'}} className="fas fa-plus"/>
-            {' '} Add payment method
+            {' '} <ActionButtonText>Add payment method</ActionButtonText>
         </button>
         <Modal style={{}} open={open} onClose={this.onCloseModal} center>
         <div style={{
-            width: '500px',
             fontWeight: '200',
         }}>
-        <h2>Add your payment method details</h2>
+        <div style={{ marginTop: '24px' }}>
+          <h2>Add your payment method details</h2>
+        </div>
         <hr/>
-        <InjectedCheckoutForm handleSubmit={this.handleSubmit} saveButtonText={'SAVE CARD'} cookies={this.props.cookies} onClose={this.onCloseModal} />
-        <hr/>
-        <h4>Bank transfer</h4>
-        <p>At the moment Pierpont Global do not accept bank transfers through our electronic system, contact support.</p>
-        <hr/>
-        <h4>PayPal</h4>
-        <p>At the moment Pierpont Global do no t accept payments from PayPal.</p>
+        <ModalContent>
+          <InjectedCheckoutForm handleSubmit={this.handleSubmit} saveButtonText={'SAVE CARD'} cookies={this.props.cookies} onClose={this.onCloseModal} />
+          <hr/>
+          <h4>Bank transfer</h4>
+          <p>At the moment Pierpont Global do not accept bank transfers through our electronic system, contact support.</p>
+          <hr/>
+          <h4>PayPal</h4>
+          <p>At the moment Pierpont Global do no t accept payments from PayPal.</p>
+        </ModalContent>
         </div>
         </Modal>
       </div>
