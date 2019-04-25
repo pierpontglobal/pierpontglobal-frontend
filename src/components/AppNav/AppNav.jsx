@@ -61,7 +61,6 @@ const NavItems = styled.div`
   justify-content: space-between;
   align-content: space-between;
   width: 100%;
-  align-items: space-between;
   justify-items: space-between;
   @media only screen and (min-width: 600px) {
     max-width: 950px;
