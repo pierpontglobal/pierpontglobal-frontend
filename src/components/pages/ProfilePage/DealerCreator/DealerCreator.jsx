@@ -113,7 +113,9 @@ class DealerCreator extends React.Component {
   }
 
   async signOut() {
-    await axios.post(`${ApiServer}/api/v1/user/invalidate`, {});
+    await axios.post(`${ApiServer}/api/v1/user/invalidate`, {
+      one_signal_uuid: this.props.cookies.get('one_signal_uuid'),
+    });
     this.props.cookies.remove('token', { path: '/' });
     this.props.cookies.remove('user_id', { path: '/' });
     this.props.history.push('/');
