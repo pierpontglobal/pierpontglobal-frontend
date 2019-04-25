@@ -64,7 +64,7 @@ class SignInModal extends React.Component {
           }}
           onSubmit={this.signIn}
         >
-          <img className="phone-only" style={{ marginBottom: '20px' }} width="200" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
+          <img className="phone-only" style={{ marginBottom: '20px' }} width="80" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
           <p style={{ color: 'red', display: failed ? 'block' : 'none' }}>Wrong credentials</p>
           <Input
             style={{
