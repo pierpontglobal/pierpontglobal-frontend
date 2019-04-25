@@ -8,6 +8,7 @@ import BurgerIcon from '@material-ui/icons/Menu';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import SignInModal from '../support/SignInModal/SignInModal';
+import {FormattedMessage} from 'react-intl';
 
 const style = {
   backgroundColor: '#fafafa',
@@ -186,9 +187,15 @@ class AppNav extends React.Component {
           </LogoWrapper>
 
           <div className="menu-sider" id="nav-bar-sub-menu">
-            <LinkBtn onClick={ () => this.goTo('') }>Home</LinkBtn>
-            <LinkBtn onClick={ () => this.goTo('marketplace') }>MarketPlace</LinkBtn>
-            <LinkBtn onClick={ () => this.goTo('contact-us') }>Contact&nbsp;Us</LinkBtn>
+            <LinkBtn onClick={ () => this.goTo('') }>
+              <FormattedMessage id="navbar.home" />
+            </LinkBtn>
+            <LinkBtn onClick={ () => this.goTo('marketplace') }>
+              <FormattedMessage id="navbar.market" />
+            </LinkBtn>
+            <LinkBtn onClick={ () => this.goTo('contact-us') }>
+              <FormattedMessage id="navbar.contact-us" />
+            </LinkBtn>
           </div>
           
           <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
