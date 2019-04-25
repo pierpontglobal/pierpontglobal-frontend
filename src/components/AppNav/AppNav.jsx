@@ -93,15 +93,10 @@ const LogoWrapper = styled.button`
   left: auto;
   margin: 0;
   border: none;
-<<<<<<< HEAD
   position: absolute;
   @media only screen and (min-width: 600px) {
     max-width: 170px;
     position: relative;
-=======
-  @media only screen and (max-width: 600px) {
-    margin-left: ${props => props.userIsLoggedIn ? '' : '13%'}
->>>>>>> 498710bad6f6600d0d1a2650c21c6e1cd5a57102
   }
 `;
 
