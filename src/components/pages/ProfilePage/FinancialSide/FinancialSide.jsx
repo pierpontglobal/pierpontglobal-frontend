@@ -1,6 +1,23 @@
 import React from 'react';
 import './styles.css';
 import StatHolder from './Components/StatHolder/StatHolder';
+import styled from 'styled-components';
+
+const ContainerFinancial = styled.div`
+ 
+`;
+
+const FinancialHolder= styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  justify-items: center;
+  align-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  margin-top: 3%;
+  margin-bottom: 2%;
+`;
 
 class FinancialSide extends React.Component {
   constructor(props) {
@@ -8,17 +25,21 @@ class FinancialSide extends React.Component {
     this.state = {};
   }
 
+  componentDidMount = () => {
+
+  }
+
   render() {
     return (
-      <div className="container-financial">
-        <div className="financial-holder">
-          <StatHolder value={21} title="AVERAGE DAYS ON MARKET" logo={<i className="fas fa-calendar" />} />
-          <StatHolder value="$81 853" title="INVESTMENT" logo={<i className="fas fa-calculator" />} />
-          <StatHolder value="$118 238" title="TOTAL SALES" logo={<i className="fas fa-dollar-sign" />} />
-          <StatHolder className="accent" title="GROSS PROFIT" value="$36 385" logo={<i className="fas fa-chart-pie" />} />
-          <StatHolder className="accent" title="GROSS PROFIT MARGIN" logo={<i className="fas fa-percent" />} value="%44.45" />
-          <StatHolder className="accent" title="AVERAGE PROFIT" logo={<i className="fas fa-dollar-sign" />} value="$809" />
-        </div>
+      <ContainerFinancial>
+        <FinancialHolder>
+          <StatHolder value={21} title="AVERAGE DAYS ON MARKET" logo="fas fa-calendar" />
+          <StatHolder value="$81 853" title="INVESTMENT" logo="fas fa-calculator" />
+          <StatHolder value="$118 238" title="TOTAL SALES" logo="fas fa-dollar-sign" />
+          <StatHolder title="GROSS PROFIT" value="$36 385" logo="fas fa-chart-pie" />
+          <StatHolder title="GROSS PROFIT MARGIN" logo="fas fa-percent" value="%44.45" />
+          <StatHolder title="AVERAGE PROFIT" logo="fas fa-dollar-sign" value="$809" />
+        </FinancialHolder>
 
         <button
           type="button"
@@ -31,6 +52,7 @@ class FinancialSide extends React.Component {
             fontSize: '12px',
             margin: '30px',
             float: 'right',
+            zIndex: '1',
           }}
           onClick={this.onOpenModal}
         >
@@ -40,7 +62,7 @@ class FinancialSide extends React.Component {
         </button>
 
         <div style={{
-          width: '100%', display: 'flex', justifyContent: 'center', justifyItems: 'center', alignContent: 'center', alignItems: 'center',
+          width: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center', justifyItems: 'center', alignContent: 'center', alignItems: 'center',
         }}
         >
           <table style={{ width: '90%' }}>
@@ -55,7 +77,7 @@ class FinancialSide extends React.Component {
             </thead>
           </table>
         </div>
-      </div>
+      </ContainerFinancial>
     );
   }
 }
