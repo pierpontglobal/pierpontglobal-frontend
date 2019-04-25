@@ -58,14 +58,12 @@ const AppNavWrapper = styled.div`
 
 const NavItems = styled.div`
   display: flex;
-  place-content: space-between;
-  justify-content: space-between;
-  align-content: space-between;
   width: 100%;
   align-items: center;
-  justify-items: center;
+  justify-content: ${props => props.userIsLoggedIn ? 'space-betweem' : 'flex-start'};
   @media only screen and (min-width: 600px) {
     max-width: 950px;
+    justify-content: space-between;
   }
 `;
 
@@ -93,6 +91,9 @@ const LogoWrapper = styled.button`
   left: auto;
   margin: 0;
   border: none;
+  @media only screen and (max-width: 600px) {
+    margin-left: ${props => props.userIsLoggedIn ? '' : '12%'}
+  }
 `;
 
 class AppNav extends React.Component {
@@ -145,18 +146,21 @@ class AppNav extends React.Component {
 
   render() {
     const { showModal } = this.state;
-    const { cookies, classes } = this.props;
+    const { cookies, classes, dealer } = this.props;
+
+    const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
     return (
       <AppNavWrapper>
         <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
-        <NavItems>
+        <NavItems userIsLoggedIn={userIsLoggedIn}>
           <MenuDrawer
             open={this.state.menuOpen}
             onMaskClick={this.onTouchEnd}
             afterOptionclick={this.optionClick}
             showSignIn={() => { this.showSignIn(true); }}
             onRequestOpen={this.openMenuSide}
+            dealer={dealer}
           />
           <BurgerBtn onClick={this.openMenuSide}>
             <BurgerIcon />

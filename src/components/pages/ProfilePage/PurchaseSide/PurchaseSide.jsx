@@ -4,21 +4,18 @@ import UnderLine from '../../../Underline/Underline';
 import BidCard from '../../../BidCard/BidCard';
 import PurchaseCard from '../../../PurchaseCard/PurchaseCard';
 import { ApiServer } from '../../../../Defaults';
+import styled from 'styled-components';
 
-/* const bidStyle = {
-  fontSize: '1em',
-  fontWeight: 600,
-  lineHeight: 1.31,
-  color: '#000000',
-}; */
-
-const headingStyle = {
-  fontSize: '1em',
-  fontWeight: 600,
-  lineHeight: 1.31,
-  padding: '20px 40px',
-  color: '#000000',
-};
+const HeadingStyle = styled.div`
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.31;
+  padding: 20px 40px;
+  color: #000000;
+  @media only screen and (max-width: 768px) {
+    padding: 20px 10px;
+  }
+`;
 
 function bidFormatter(bid) {
   const formattedBid = {
@@ -71,7 +68,7 @@ class PurchaseSide extends React.Component {
     console.log(bids);
 
     return (
-      <div style={headingStyle}>
+      <HeadingStyle>
         <div className="card shadow content-holder-box">
           <div style={{ padding: '20px' }}>
             <h4>Your bids</h4>
@@ -107,7 +104,7 @@ class PurchaseSide extends React.Component {
           ))}
         </div>
 
-      </div>
+      </HeadingStyle>
     );
   }
 }
