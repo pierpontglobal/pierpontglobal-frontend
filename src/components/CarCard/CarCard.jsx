@@ -85,10 +85,10 @@ const ImageWrapper = styled(LazyLoadImage)`
 
 const DropDown = posed.i({
   open: {
-    rotate: 180,
+    rotate: 225,
   },
   closed: {
-    rotate: 0,
+    rotate: 45,
   },
 });
 
@@ -199,12 +199,16 @@ const DetailLabel = styled.span`
 `;
 
 const DropDownIcon = styled(DropDown)`
-  width: 0;
-  height: 0;
+  box-sizing: border-box;
+  height: 4vw;
+  width: 4vw;
   border-style: solid;
-  border-width: 12px 12px 0 12px;
-  border-color: #000 transparent transparent transparent;
-  display: block;
+  border-color: black;
+  border-width: 0px 3px 3px 0px;
+  margin: 4px;
+  position: relative;
+  top: -5px;
+  left: 0;
   @media only screen and (min-width: 600px) {
     display: none;
   }
