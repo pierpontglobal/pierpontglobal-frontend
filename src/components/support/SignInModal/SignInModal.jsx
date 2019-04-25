@@ -7,6 +7,7 @@ import Input from '../../styles/Input/Input';
 import Button from '../../Btn/Btn';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -125,7 +126,7 @@ class SignInModal extends React.Component {
             onClick={() => { this.setState({ rotate: 'rotate' }); }}
           >
             <div style={{ position: 'relative' }}>
-              Sign In
+              <FormattedMessage id='label.sign-in' />
               <i
                 style={{
                   position: 'absolute',

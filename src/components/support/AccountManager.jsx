@@ -5,6 +5,7 @@ import './styles.css';
 import NotificatinBadge from '../AppNav/notification-badge/NotificatinBadge';
 import Person from '@material-ui/icons/Person';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -54,7 +55,7 @@ class AccountManager extends React.Component {
         onClick={this.props.showSignIn}
       >
         <i className="far fa-user" id="inner-sign-in-icon" />
-          Sign In
+          <FormattedMessage id='label.sign-in' />
       </button>
     );
   }

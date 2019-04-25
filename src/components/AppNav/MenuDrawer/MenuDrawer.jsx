@@ -14,6 +14,15 @@ import styled from 'styled-components';
 import { Modal } from '@material-ui/core'
 import { withCookies } from 'react-cookie';
 import { Redirect } from 'react-router-dom';
+import {FormattedMessage} from 'react-intl';
+
+
+// To avoid performance issues I've declared this variables up here
+const labelHome = <FormattedMessage id='label.home'/>;
+const labelMarket = <FormattedMessage id='label.market'/>;
+const labelContact = <FormattedMessage id='label.contact-us'/>;
+const labelProfile = <FormattedMessage id='label.profile'/>;
+const labelSignin = <FormattedMessage id='label.sign-in'/>;
 
 const MenuTitle = styled.div`
   width: 100%;
@@ -58,18 +67,18 @@ class MenuDrawer extends Component {
     const { open } = this.state;
 
     let menuOptions = [
-      { label: 'Home', icon: <Home color='primary'/>, urlMatch: '/' },
-      { label: 'Marketplace', icon: <DirectionsCar color='primary'/>, urlMatch: '/marketplace' },
-      { label: 'Contact us', icon: <Phone color='primary'/>, urlMatch: '/contact-us' },
-      { label: 'Profile', icon: <AccountCircle  color='primary'/>, urlMatch: '/user' }
+      { label: labelHome, icon: <Home color='primary'/>, urlMatch: '/' },
+      { label: labelMarket, icon: <DirectionsCar color='primary'/>, urlMatch: '/marketplace' },
+      { label: labelContact, icon: <Phone color='primary'/>, urlMatch: '/contact-us' },
+      { label: labelProfile, icon: <AccountCircle  color='primary'/>, urlMatch: '/user' }
     ];
 
     if (!this.userIsLoggedIn()) {
       menuOptions = [
-        { label: 'Home', icon: <Home color='primary'/>, urlMatch: '/' },
-        { label: 'Marketplace', icon: <DirectionsCar color='primary'/>, urlMatch: '/marketplace' },
-        { label: 'Contact us', icon: <Phone color='primary'/>, urlMatch: '/contact-us' },
-        { label: 'Sign in', icon: <Input color='primary' />, handleClick: this.showLoginModal }
+        { label: labelHome, icon: <Home color='primary'/>, urlMatch: '/' },
+        { label: labelMarket, icon: <DirectionsCar color='primary'/>, urlMatch: '/marketplace' },
+        { label: labelContact, icon: <Phone color='primary'/>, urlMatch: '/contact-us' },
+        { label: labelSignin, icon: <Input color='primary' />, handleClick: this.showLoginModal }
       ];
     }
 
