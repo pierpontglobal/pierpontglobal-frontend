@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, Switch, Redirect,
+} from 'react-router-dom';
 import { withCookies } from 'react-cookie';
 import axios from 'axios';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
@@ -12,7 +14,7 @@ import NotificationPage from './components/pages/NotificationPage/NotificationPa
 import './styles.css';
 import AppNav from './components/AppNav/AppNav';
 import { MuiThemeProvider } from '@material-ui/core';
-import { DefaultTheme } from './Defaults';
+import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import styled from 'styled-components';
 
@@ -97,6 +99,8 @@ class App extends React.Component {
         }
         return Promise.reject(error);
       });
+
+    this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
   }
 
   setDealer = (dealer) => {
@@ -104,10 +108,40 @@ class App extends React.Component {
       dealer: dealer
     });
   }
-
-  verifyUserLoggedIn = () => {
+  
+  componentWillMount() {
     const { cookies } = this.props;
-    if(!!cookies.get('token', { path: '/' })) {
+
+    this.OneSignal = window.OneSignal || [];
+
+    this.OneSignal.push(() => {
+      this.OneSignal.init({
+        appId: OneSignalKey,
+      });
+      this.OneSignal.on('subscriptionChange', (isSubscribed) => {
+        console.log(`The user subscription status is: ${isSubscribed}`);
+        this.OneSignal.getUserId((id) => {
+          if (isSubscribed) {
+            if (cookies.get('token', { path: '/' })) {
+              axios.post(`${ApiServer}/api/v1/user/notifier`, {
+                one_signal_uuid: id,
+              });
+            }
+            cookies.set('one_signal_uuid', id, { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 5)) });
+          } else {
+            if (cookies.get('token', { path: '/' })) {
+              axios.delete(`${ApiServer}/api/v1/user/notifier?one_signal_uuid=${id}`);
+            }
+            cookies.remove('one_signal_uuid', { path: '/' });
+          }
+        });
+      });
+    });
+  }
+
+  verifyUserLoggedIn() {
+    const { cookies } = this.props;
+    if (cookies.get('token', { path: '/' })) {
       return true;
     }
     return false;
