@@ -1,7 +1,8 @@
 {
-  "navbar.home": "Home",
-  "navbar.market": "Marketplace",
-  "navbar.contact-us": "Contact us",
-  "label.sign-in": "Sign in",
-  "label.profile": "Profile"
+  "navbar.home": "Inicio",
+  "navbar.market": "Mercado",
+  "navbar.contact-us": "Contáctenos",
+  "label.sign-in": "Iniciar sesión",
+  "label.profile": "Perfil",
+  "home.slogan": "Nunca ha sido tan fácil comprar carros desde los Estados Unidos!"
 }
