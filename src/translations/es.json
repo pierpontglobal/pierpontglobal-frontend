@@ -4,5 +4,14 @@
   "navbar.contact-us": "Contáctenos",
   "label.sign-in": "Iniciar sesión",
   "label.profile": "Perfil",
-  "home.slogan": "Nunca ha sido tan fácil comprar carros desde los Estados Unidos!"
+  "label.privacy-policy": "Políticas de privacidad",
+  "home.slogan": "Nunca ha sido tan fácil comprar carros desde los Estados Unidos!",
+  "home.watch-promo": "Ver promoción",
+  "home.signup-form.title": "Suscríbete para rápido acceso!",
+  "home.signup-form.firstname-label": "Tu primer nombre",
+  "home.signup-form.lastname-label": "Tu primer apellido",
+  "home.signup-form.email-label": "Correo electrónico",
+  "home.signup-form.phone-label": "Teléfono",
+  "home.signup-form.button": "Regístrate ahora >>",
+  "signup-form.disclaimer": "Nosotros no compartimos tu información personal con nadie. Lee nuestras {privacy} para más información."
 }

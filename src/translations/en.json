@@ -4,5 +4,14 @@
   "navbar.contact-us": "Contact us",
   "label.sign-in": "Sign in",
   "label.profile": "Profile",
-  "home.slogan": "It’s never been easier to buy cars from the United States"
+  "label.privacy-policy": "Privacy Policy",
+  "home.slogan": "It’s never been easier to buy cars from the United States",
+  "home.watch-promo": "Watch promo video",
+  "home.signup-form.title": "Sign Up for early access",
+  "home.signup-form.firstname-label": "Your first name",
+  "home.signup-form.lastname-label": "Your last name",
+  "home.signup-form.email-label": "Email",
+  "home.signup-form.phone-label": "Phone number",
+  "home.signup-form.button": "Sign up now >>",
+  "signup-form.disclaimer": "We don’t share your personal info with anyone. Check out our {privacy} for more information."
 }
