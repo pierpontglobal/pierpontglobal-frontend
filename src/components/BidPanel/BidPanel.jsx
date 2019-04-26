@@ -8,6 +8,8 @@ import Text from '../styles/Text/Text';
 import { ApiServer } from '../../Defaults';
 import PriceTag from '../CarCard/PriceTag/PriceTag';
 import DepositModal from '../DepositModal/DepositModal';
+import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 let bidInput = null;
 
@@ -50,6 +52,8 @@ class BidPanel extends React.Component {
 
     this.handleReceived = this.handleReceived.bind(this);
     this.sendBid = this.sendBid.bind(this);
+
+    this.bidAmountPlaceholder = this.props.intl.formatMessage({id: 'label.your-max-bid'});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -117,6 +121,9 @@ class BidPanel extends React.Component {
       bidPlacingFailed,
     } = this.state;
 
+    console.log('Placeholder >>>>>> ');
+    console.log(this.bidAmountPlaceholder);
+
     return (
       <>
         { bidPlacingFailed ? (
@@ -145,7 +152,7 @@ class BidPanel extends React.Component {
               lineHeight={1.33}
               fontColor="#ffffff"
             >
-            Whole price:
+              <FormattedMessage id="label.whole-price" />
             </Text>
             <PriceTag
               color="white"
@@ -176,7 +183,7 @@ class BidPanel extends React.Component {
                 }}
                 type="number"
                 fontColor="#ffffff"
-                placeholder="Your max bid"
+                placeholder={this.bidAmountPlaceholder}
                 placeholderColor="#ffffff"
                 placeholderOpacity={0.54}
               />
@@ -194,7 +201,7 @@ class BidPanel extends React.Component {
                 onClick={() => (this.sendBid(parseFloat(bidInput.value), carId))}
                 type="button"
               >
-              BID
+                <FormattedMessage id="label.bid" />
                 <i
                   style={{
                     display: loading ? 'block' : 'none',
@@ -215,7 +222,7 @@ class BidPanel extends React.Component {
               lineHeight={1.33}
               fontColor="rgba(255, 255, 255, 0.87)"
             >
-            You will have to retract your bid until:
+              <FormattedMessage id="bid.retract-msg" />
               {' '}
               {saleDate}
             </Text>
@@ -226,4 +233,4 @@ class BidPanel extends React.Component {
   }
 }
 
-export default BidPanel;
+export default injectIntl(BidPanel);

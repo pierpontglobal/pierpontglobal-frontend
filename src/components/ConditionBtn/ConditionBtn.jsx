@@ -1,6 +1,7 @@
 import React from 'react';
 import Container from '../styles/Container/Container';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 
 const ConditionLabel = styled.div`
   width: 100%;
@@ -67,7 +68,9 @@ function ConditionBtn({ label, score }) {
   const hexColor = pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], score).join();
   return (
     <ConditionBtnWrapper>
-      <ConditionLabel>Condition</ConditionLabel>
+      <ConditionLabel>
+        <FormattedMessage id="label.condition" />
+      </ConditionLabel>
       <ConditionScore score={score} hexColor={hexColor}>{score}</ConditionScore>
     </ConditionBtnWrapper>
   );

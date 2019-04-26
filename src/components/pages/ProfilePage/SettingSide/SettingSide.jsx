@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import {Button} from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
 
 const HeadingStyle = styled.div`
   font-size: 1em;
@@ -403,7 +404,9 @@ export default class SettingSide extends React.Component {
       <HeadingStyle>
         <div className="card content-holder-box">
           <UnderLine>
-            <h4 className="mb-0">Deposit</h4>
+            <h4 className="mb-0">
+              <FormattedMessage id="label.deposit" />
+            </h4>
           </UnderLine>
           <div className="d-flex content-main flex-modifier-user-view">
             <canvas
@@ -422,7 +425,9 @@ export default class SettingSide extends React.Component {
 
         <div className="card content-holder-box">
           <UnderLine className="justify-content-between">
-            <h4 className="mb-0">Personal Info</h4>
+            <h4 className="mb-0">
+              <FormattedMessage id="label.personal-info" />
+            </h4>
             <div>
               { 
                 editable
@@ -448,7 +453,9 @@ export default class SettingSide extends React.Component {
                   >
                     <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
                     {' '}
-                    <ActionButtonText>Modify profile information</ActionButtonText>
+                    <ActionButtonText>
+                      <FormattedMessage id="label.modify-personal-info" />
+                    </ActionButtonText>
                   </button>
                 )
               }
@@ -470,7 +477,9 @@ export default class SettingSide extends React.Component {
 
         <div className="card content-holder-box">
           <UnderLine className="justify-content-between">
-            <h4 className="mb-0">Payment methods</h4>
+            <h4 className="mb-0">
+              <FormattedMessage id="label.payment-methods" />
+            </h4>
             <StripeProvider apiKey={StripeKey}>
               <Elements>
                 <CreateCard cookies={this.props.cookies} />
@@ -478,15 +487,17 @@ export default class SettingSide extends React.Component {
             </StripeProvider>
           </UnderLine>
           <div className="content-main">
-            <h5>Cards</h5>
+            <h5><FormattedMessage id="label.cards" /></h5>
             <FormControl style={{ minWidth: '200px', marginBottom: '20px' }}>
-              <InputLabel htmlFor="age-simple">Default Card</InputLabel>
+              <InputLabel htmlFor="age-simple">
+                <FormattedMessage id="label.default-card" />
+              </InputLabel>
               <Select
                 value={card}
                 onChange={this.handleCardChange}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em><FormattedMessage id="label.none" /></em>
                 </MenuItem>
                 { this.state.cardsNumbers.map(cardNumber => (
                   <MenuItem value={cardNumber.key}>

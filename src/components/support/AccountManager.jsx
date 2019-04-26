@@ -42,7 +42,7 @@ class AccountManager extends React.Component {
             className="sign_in_button"
           >
             <i className="far fa-user" id="inner-sign-in-icon" />
-            Profile
+              <FormattedMessage id="label.profile" />
           </button>
         </UserInfoWrapper>
       );

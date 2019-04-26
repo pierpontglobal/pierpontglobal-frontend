@@ -2,6 +2,8 @@ import React from 'react';
 import Btn from '../Btn/Btn';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
+import { FormattedMessage } from 'react-intl';
+import { Label } from 'semantic-ui-react';
 
 
 function numberWithCommas(x) {
@@ -24,7 +26,7 @@ function UserBidCard({ bid }) {
           lineHeight={1.33}
           fontColor="#10b364"
         >
-          Your bid:
+          <FormattedMessage id="label.your-bid" />
         </Text>
         <Text
           className="mb-0"
@@ -42,7 +44,7 @@ function UserBidCard({ bid }) {
         maxWidth="260px"
         onClick={() => (window.location.href = '/user/purchase')}
       >
-        VIEW ALL YOUR OPEN BIDS
+        <FormattedMessage id="label.view-open-bids" />
       </Btn>
     </Container>
   );

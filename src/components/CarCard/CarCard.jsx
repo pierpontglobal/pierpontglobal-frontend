@@ -11,6 +11,7 @@ import { DefaultTheme } from '../../Defaults';
 import ScaleText from 'react-scale-text';
 import { withRouter } from 'react-router-dom';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { FormattedMessage } from 'react-intl';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -321,27 +322,37 @@ function CarCard({
         <input hidden name="VIN" value={vin} />
         <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
           <Detail>
-            <DetailLabel>Vin: </DetailLabel>
+            <DetailLabel>
+              <FormattedMessage id="car.vin" />
+            </DetailLabel>
             <DetailValue>{vin}</DetailValue>
           </Detail>
           <Detail>
-            <DetailLabel>Odometer: </DetailLabel>
+            <DetailLabel>
+              <FormattedMessage id="car.odometer" />
+            </DetailLabel>
             <DetailValue>{numberWithCommas(odometer)}</DetailValue>
           </Detail>
           <Detail>
-            <DetailLabel>Engine: </DetailLabel>
+            <DetailLabel>
+              <FormattedMessage id="car.engine" />
+            </DetailLabel>
             <DetailValue>{engine}</DetailValue>
           </Detail>
           <Detail>
-            <DetailLabel>Transmission: </DetailLabel>
+            <DetailLabel>
+              <FormattedMessage id="car.transmission" />
+            </DetailLabel>
             <DetailValue>{transmission}</DetailValue>
           </Detail>
         </DetailContent>
       </DetailsContainer>
       <CRPriceContainer>
         <DetailedCR>
-          <ConditionBtn label="Condition" score={cr} />
-          <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>AutoCheck</AutoCheckBtn>
+          <ConditionBtn label={<FormattedMessage id="label.condition" />} score={cr} />
+          <AutoCheckBtn onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}>
+            <FormattedMessage id="label.autocheck" />
+          </AutoCheckBtn>
         </DetailedCR>
         <PriceContainer>
           <TimeAgoContainer diffDays={diffDays}>
