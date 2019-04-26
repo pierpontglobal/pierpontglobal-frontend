@@ -85,5 +85,13 @@
   "whatsapp.welcome": "Hello! Click on one of our members to chat on {social}",
   "whatsapp.chat-with-us": "Chat with us",
   "whatsapp.be-back-soon": "I'll be back soon!",
-  "whatsapp.reply-info": "The team normally responds in a few minutes."
+  "whatsapp.reply-info": "The team normally responds in a few minutes.",
+  "marketplace.end-message": "Yay! You have seen it all",
+  "marketplace.no-cars": "No cars have been found.",
+  "marketplace.maker": "Maker",
+  "marketplace.model": "Model",
+  "marketplace.trim": "Trim",
+  "marketplace.year": "Year",
+  "marketplace.color": "Color",
+  "marketplace.engine": "Engine"
 }

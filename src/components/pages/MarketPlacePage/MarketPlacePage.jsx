@@ -14,6 +14,7 @@ import MediaQuery from 'react-responsive';
 import { CircularProgress } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { IconButton } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
 
 const qs = require('query-string');
 
@@ -181,7 +182,7 @@ class MarketPlacePage extends React.Component {
   showFilterPanel = () => {
     this.setState({
       openModalFilter: true
-    }, () => console.log('works!!'));
+    });
   }
 
   onCloseModal = () => {
@@ -220,7 +221,7 @@ class MarketPlacePage extends React.Component {
       // no cars found
       return (
         <NotFoundWrapper>
-          No cars has been found.
+          <FormattedMessage id=''/>
         </NotFoundWrapper>
       );
     } else {
@@ -271,7 +272,7 @@ class MarketPlacePage extends React.Component {
                         height={carsSectionHeight - 80}
                         endMessage={(
                           <p style={{ textAlign: 'center' }}>
-                            <b>Yay! You have seen it all</b>
+                            <b><FormattedMessage id='marketplace.end-message' /></b>
                           </p>
                         )}
                       >

@@ -2,6 +2,7 @@ import React from 'react';
 import posed from 'react-pose';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Item from './Item/Item';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
@@ -41,6 +42,17 @@ class FilterPanel extends React.Component {
       availableArguments,
       params,
     } = props;
+
+    const { intl } = this.props;
+    this.text = {
+      maker: intl.formattedMessage({ id: 'marketplace.maker' }),
+      model: intl.formattedMessage({ id: 'marketplace.model' }),
+      trim: intl.formattedMessage({ id: 'marketplace.trim' }),
+      year: intl.formattedMessage({ id: 'marketplace.year' }),
+      color: intl.formattedMessage({ id: 'marketplace.color' }),
+      engine: intl.formattedMessage({ id: 'marketplace.engine' }),
+    };
+    this.te = this.props.intl;
 
     this.state = {};
 
@@ -181,7 +193,7 @@ class FilterPanel extends React.Component {
 
     return (
       <FilterPanelWrapper>
-        <Item name="Maker">
+        <Item name={this.text.maker}>
           <OptionBtn
             selected={maker}
             values={makersArray}
@@ -190,7 +202,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name="Model">
+        <Item name={this.text.model}>
           <OptionBtn
             selected={model}
             values={modelsArray}
@@ -199,7 +211,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name="Trim">
+        <Item name={this.text.trim}>
           <OptionBtn
             selected={trim}
             values={trimArray}
@@ -223,7 +235,7 @@ class FilterPanel extends React.Component {
                 fontWeight: '600',
               }}
             >
-              <span>Year</span>
+              <span>{this.text.year}</span>
             </div>
             <RotatableIcon pose={yearTogle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down" />
           </div>
@@ -235,7 +247,7 @@ class FilterPanel extends React.Component {
             />
           </div>
         </ExpandableDiv>
-        <Item name="Color">
+        <Item name={this.text.color}>
           <OptionBtn
             selected={color}
             values={colorArray}
@@ -244,7 +256,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name="Engine">
+        <Item name={this.text.engine}>
           <OptionBtn
             selected={engine}
             values={engineArray}
@@ -270,4 +282,4 @@ FilterPanel.defaultProps = {
   params: {},
 };
 
-export default FilterPanel;
+export default injectIntl(FilterPanel);
