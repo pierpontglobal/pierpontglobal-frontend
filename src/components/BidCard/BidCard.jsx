@@ -4,11 +4,11 @@ import posed from 'react-pose';
 import Text from '../styles/Text/Text';
 import './styles.css';
 import SimpleButton from './SimpleButton';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 const Completionist = () => <FormattedMessage id="bid.process-start" />;
 
-const NotAvailableLabel = <FormattedMessage id="label.not-available" />
+const NotAvailableLabel = <FormattedMessage id="label.not-available" />;
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -33,7 +33,7 @@ const RotatableIcon = posed.i({
 });
 
 const renderer = ({
-  days, hours, minutes, seconds, completed,
+  days, hours, minutes, seconds, completed
 }) => {
   if (completed) {
     // Render a completed state
@@ -42,7 +42,7 @@ const renderer = ({
   // Render a countdown
   return (
     <span style={{ fontWeight: 800 }}>
-      {`${days} ${<FormattedMessage id="label.days" />} ${hours.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`}
+      {`${days} days ${hours.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`}
     </span>
   );
 };
@@ -69,6 +69,8 @@ class BidCard extends React.Component {
       vin,
       data,
     };
+
+    this.lbDays = this.props.intl.formatMessage({id: 'label.days' });
   }
 
   render() {
@@ -167,7 +169,9 @@ class BidCard extends React.Component {
               onClick={() => { window.location.href = `/marketplace/car?vin=${vin}`; }}
             >
               <br />
-              <FormattedMessage id="label.view-lot" style={{ fontFamily: 'Raleway', fontSize: '12px', lineHeight: '12px' }} />
+              <span style={{ fontFamily: 'Raleway', fontSize: '12px', lineHeight: '12px' }}>
+                <FormattedMessage id="label.view-lot" />
+              </span>
             </button>
             <RotatableIcon onClick={() => { this.setState({ status: !status }); }} style={{ color: 'rgb(59, 68, 75)', marginRight: '10px', cursor: 'pointer' }} className="fas fa-angle-down" />
           </div>
@@ -219,4 +223,4 @@ class BidCard extends React.Component {
   }
 }
 
-export default BidCard;
+export default injectIntl(BidCard);

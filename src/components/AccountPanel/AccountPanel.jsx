@@ -115,7 +115,7 @@ class AccountPanel extends React.Component {
             onClick={() => { window.location.href = '/user/transactions'; }}
           />
           <Tab
-            name="Sign Out"
+            name={<FormattedMessage id="label.sign-out" />}
             icon="fas fa-sign-out-alt"
             onClick={this.signOut}
           />
