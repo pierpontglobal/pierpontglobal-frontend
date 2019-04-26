@@ -7,7 +7,7 @@ import DealerTab from './DealerTab/DealerTab';
 import FundTab from './FundTab/FundTab';
 import Container from '../styles/Container/Container';
 import { ApiServer } from '../../Defaults';
-
+import { FormattedMessage, injectIntl } from 'react-intl';
 class AccountPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +19,15 @@ class AccountPanel extends React.Component {
     this.signOut = this.signOut.bind(this);
     this.getFunds = this.getFunds.bind(this);
     this.markSelected = this.markSelected.bind(this);
+
+    // Labels
+    this.lbPurchases = this.props.intl.formatMessage({ id: 'menu.purchases' });
+    this.lbDocuments = this.props.intl.formatMessage({ id: 'menu.documents' });
+    this.lbSettings = this.props.intl.formatMessage({ id: 'menu.settings' });
+    this.lbFinancialAnalysis = this.props.intl.formatMessage({ id: 'menu.financial' });
+    this.lbPending = this.props.intl.formatMessage({ id: 'menu.pending' });
+    this.lbSubscription = this.props.intl.formatMessage({ id: 'menu.subscription' });
+    this.lbTransactions = this.props.intl.formatMessage({ id: 'menu.transaction' });
   }
 
   componentDidMount() {
@@ -71,42 +80,42 @@ class AccountPanel extends React.Component {
 
           <Tab
             searchKey="purchase"
-            name="Purchases"
+            name={this.lbPurchases}
             icon="fas fa-shopping-cart"
             onClick={() => { window.location.href = '/user/purchase'; }}
           />
           <Tab
             searchKey="pending"
-            name="Pending"
+            name={this.lbPending}
             icon="fas fa-sync-alt"
             notification={0}
             onClick={() => { window.location.href = '/user/pending'; }}
           />
           <Tab
-            name="Documents"
+            name={this.lbDocuments}
             icon="fas fa-file"
             onClick={this.markSelected}
           />
           <Tab
             searchKey="financial"
-            name="Financial Analysis"
+            name={this.lbFinancialAnalysis}
             icon="fas fa-dollar-sign"
             onClick={() => { window.location.href = '/user/financial'; }}
           />
           <Tab
             searchKey="subscription"
-            name="Subscription"
+            name={this.lbSubscription}
             icon="far fa-newspaper"
             onClick={() => { window.location.href = '/user/subscription'; }}
           />
           <Tab
             searchKey="transactions"
-            name="Transactions"
+            name={this.lbTransactions}
             icon="fas fa-file-invoice-dollar"
             onClick={() => { window.location.href = '/user/transactions'; }}
           />
           <Tab
-            name="Sign Out"
+            name={<FormattedMessage id="label.sign-out" />}
             icon="fas fa-sign-out-alt"
             onClick={this.signOut}
           />
@@ -115,7 +124,7 @@ class AccountPanel extends React.Component {
           <FundTab funds={{ remaining: this.state.funds, total: '10 000' }} />
           <Tab
             searchKey="user"
-            name="Settings"
+            name={this.lbSettings}
             icon="fas fa-cog"
             selected={selected}
             className="border-top pt-2"
@@ -137,4 +146,4 @@ AccountPanel.defaultProps = {
   dealer: {},
 };
 
-export default withCookies(AccountPanel);
+export default withCookies(injectIntl(AccountPanel));

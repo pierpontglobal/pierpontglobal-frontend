@@ -2,6 +2,7 @@ import React from 'react';
 import Detail from './Detail/Detail';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
+import { FormattedMessage } from 'react-intl';
 
 function CarDetailTable({ car }) {
   return (
@@ -15,7 +16,7 @@ function CarDetailTable({ car }) {
         fontWeight={600}
         lineHeight={1.31}
       >
-                    Vehicle Specifications
+        <FormattedMessage id="label.vehicle-specs" />
       </Text>
       <div>
         {Object.keys(car).map(
@@ -24,7 +25,7 @@ function CarDetailTable({ car }) {
               key={i}
               stripe={i === 0 || i % 2 === 0}
               title={key}
-              text={car[key] ? (Array.isArray(car[key]) ? `${car[key].length} Elements` : car[key]) : ('Not available')}
+              text={car[key] ? (Array.isArray(car[key]) ? `${car[key].length} ${<FormattedMessage id="label.elements" />}` : car[key]) : <FormattedMessage id="label.not-available" />}
             />
           ),
         )}

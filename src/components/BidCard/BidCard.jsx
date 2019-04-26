@@ -4,8 +4,11 @@ import posed from 'react-pose';
 import Text from '../styles/Text/Text';
 import './styles.css';
 import SimpleButton from './SimpleButton';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
-const Completionist = () => <span>Bid process started!</span>;
+const Completionist = () => <FormattedMessage id="bid.process-start" />;
+
+const NotAvailableLabel = <FormattedMessage id="label.not-available" />;
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -30,7 +33,7 @@ const RotatableIcon = posed.i({
 });
 
 const renderer = ({
-  days, hours, minutes, seconds, completed,
+  days, hours, minutes, seconds, completed
 }) => {
   if (completed) {
     // Render a completed state
@@ -39,7 +42,7 @@ const renderer = ({
   // Render a countdown
   return (
     <span style={{ fontWeight: 800 }}>
-      {`${days} Days ${hours.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`}
+      {`${days} days ${hours.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`}
     </span>
   );
 };
@@ -66,6 +69,8 @@ class BidCard extends React.Component {
       vin,
       data,
     };
+
+    this.lbDays = this.props.intl.formatMessage({id: 'label.days' });
   }
 
   render() {
@@ -112,7 +117,7 @@ class BidCard extends React.Component {
                 lineHeight={1.67}
                 className="mb-0"
               >
-                {`Order Number: ${orderNumber}`}
+                {`${<FormattedMessage id="label.order-number" />}: ${orderNumber}`}
               </Text>
             </div>
           </div>
@@ -131,7 +136,7 @@ class BidCard extends React.Component {
                 lineHeight={1.67}
                 className="mb-0 text-right"
               >
-                Auction goes on
+                <FormattedMessage id="label.auction-goes-on" />
               </Text>
               <Countdown
                 date={auctionDate}
@@ -142,7 +147,7 @@ class BidCard extends React.Component {
                 lineHeight={1.67}
                 className="mb-0 text-right"
               >
-                Your bid:
+                <FormattedMessage id="label.your-bid" />
                 <span style={{ color: '#0bb761' }}>
                   {' '}
                   $
@@ -165,7 +170,7 @@ class BidCard extends React.Component {
             >
               <br />
               <span style={{ fontFamily: 'Raleway', fontSize: '12px', lineHeight: '12px' }}>
-              View lot
+                <FormattedMessage id="label.view-lot" />
               </span>
             </button>
             <RotatableIcon onClick={() => { this.setState({ status: !status }); }} style={{ color: 'rgb(59, 68, 75)', marginRight: '10px', cursor: 'pointer' }} className="fas fa-angle-down" />
@@ -175,40 +180,40 @@ class BidCard extends React.Component {
           <hr />
           <div style={{ width: '80%', float: 'left' }}>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Car ID</div>
-              <div>{data.car_id ? data.car_id : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.id" /></div>
+              <div>{data.car_id ? data.car_id : NotAvailableLabel}</div>
             </div>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Car maker</div>
-              <div>{data.car_maker ? data.car_maker : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.maker" /></div>
+              <div>{data.car_maker ? data.car_maker : NotAvailableLabel}</div>
             </div>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Car model</div>
-              <div>{data.car_model ? data.car_model : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.model" /></div>
+              <div>{data.car_model ? data.car_model : NotAvailableLabel}</div>
             </div>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Year</div>
-              <div>{data.year ? data.year : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.year" /></div>
+              <div>{data.year ? data.year : NotAvailableLabel}</div>
             </div>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Trim</div>
-              <div>{data.trim ? data.trim : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.trim" /></div>
+              <div>{data.trim ? data.trim : NotAvailableLabel}</div>
             </div>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Vin</div>
-              <div>{data.vin ? data.vin : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.vin" /></div>
+              <div>{data.vin ? data.vin : NotAvailableLabel}</div>
             </div>
             <div className="auction-detail-conatiner">
-              <div className="auction-detail-name">Channel</div>
-              <div>{data.channel ? data.channel : 'Not Available'}</div>
+              <div className="auction-detail-name"><FormattedMessage id="car.channel" /></div>
+              <div>{data.channel ? data.channel : NotAvailableLabel}</div>
             </div>
           </div>
           <div style={{ width: '20%', float: 'left' }}>
-            <SimpleButton text="Modify bid amount" iconClass="fas fa-pen" />
+            <SimpleButton text={<FormattedMessage id="label.modify-bid-amount" />} iconClass="fas fa-pen" />
             <SimpleButton
-              text="Cancel bid"
+              text={<FormattedMessage id="label.cancel-bid" />}
               iconClass="fas fa-times"
-              disabledText="You are passed the time available for cancelling a bid"
+              disabledText={<FormattedMessage id="label.cancel-bid-disabled" />}
               disabled={passBidRemovalAction}
             />
           </div>
@@ -218,4 +223,4 @@ class BidCard extends React.Component {
   }
 }
 
-export default BidCard;
+export default injectIntl(BidCard);

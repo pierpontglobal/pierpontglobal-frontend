@@ -1,5 +1,6 @@
 import React from 'react';
 import './style.css';
+import { FormattedMessage } from 'react-intl';
 
 const style = {
   borderRadius: '4px',
@@ -21,7 +22,7 @@ function AutoCheckBtn({ crUrl, className }) {
       style={style}
       onClick={() => (window.open(crUrl, '', 'width=500,height=500'))}
     >
-    AutoCheck
+      <FormattedMessage id="label.autocheck" />
     </button>
   );
 }

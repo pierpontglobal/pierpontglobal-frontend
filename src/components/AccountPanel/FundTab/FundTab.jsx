@@ -1,5 +1,6 @@
 import React from 'react';
 import Span from '../../styles/Span/Span';
+import { FormattedMessage } from 'react-intl';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -14,7 +15,7 @@ function FundTab({ funds }) {
         fontWeight={600}
         lineHeight={1.43}
       >
-                Funds
+        <FormattedMessage id="label.funds" />
       </Span>
       <Span
         className="d-flex"
