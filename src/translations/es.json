@@ -13,5 +13,14 @@
   "home.signup-form.email-label": "Correo electrónico",
   "home.signup-form.phone-label": "Teléfono",
   "home.signup-form.button": "Regístrate ahora >>",
-  "signup-form.disclaimer": "Nosotros no compartimos tu información personal con nadie. Lee nuestras {privacy} para más información."
+  "signup-form.disclaimer": "No compartimos tu información personal con nadie. Lee nuestras {privacy} para más información.",
+  "whatsapp.need-help": "Necesitas ayuda?",
+  "whatsapp.start-conversation": "Empieza una conversación",
+  "whatsapp.welcome": "Hola! Haz click en unos de nuestros miembros para chatear en {social}",
+  "whatsapp.chat-with-us": "Chatea con nosotros",
+  "whatsapp.be-back-soon": "Estaré de vuelta pronto!",
+  "whatsapp.reply-info": "El equipo normalmente response en unos minutos.",
+  "technical-support": "Soporte Técnico",
+  "customer-service": "Servicio al cliente",
+  "sale-support": "Encargado de ventas"
 }
