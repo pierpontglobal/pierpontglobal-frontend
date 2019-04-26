@@ -61,11 +61,10 @@ const NavItems = styled.div`
   justify-content: space-between;
   align-content: space-between;
   width: 100%;
-  justify-items: space-between;
+  align-items: center;
+  justify-items: center;
   @media only screen and (min-width: 600px) {
     max-width: 950px;
-    align-items: center;
-    justify-items: center;
   }
 `;
 
@@ -87,15 +86,16 @@ const LogoWrapper = styled.button`
   align-items: center;
   justify-items: center;
   overflow: visible;
-  position: relative;
   width: 100%;
-  left: auto;
-  margin: 0;
+  max-width: 170px;
+  left: 0;
+  right: 0;
+  margin: auto;
   border: none;
   position: absolute;
   @media only screen and (min-width: 600px) {
-    max-width: 170px;
     position: relative;
+    margin: 0;
   }
 `;
 
