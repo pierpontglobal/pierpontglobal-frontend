@@ -13,5 +13,14 @@
   "home.signup-form.email-label": "Email",
   "home.signup-form.phone-label": "Phone number",
   "home.signup-form.button": "Sign up now >>",
-  "signup-form.disclaimer": "We don’t share your personal info with anyone. Check out our {privacy} for more information."
+  "signup-form.disclaimer": "We don’t share your personal info with anyone. Check out our {privacy} for more information.",
+  "whatsapp.need-help": "Need help?",
+  "whatsapp.start-conversation": "Start a Conversation",
+  "whatsapp.welcome": "Hi! Click one of our members below to chat on {social}",
+  "whatsapp.chat-with-us": "Chat with us",
+  "whatsapp.be-back-soon": "I'll be back soon",
+  "whatsapp.reply-info": "The team typically replies in a few minutes",
+  "technical-support": "Technical support",
+  "customer-service": "Customer service",
+  "sale-support": "Sale support"
 }

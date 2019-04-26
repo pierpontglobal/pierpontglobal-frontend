@@ -3,6 +3,7 @@ import Img from 'react-image';
 import './custom.css';
 import posed from 'react-pose';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 
 const WButton = posed.div({
   clicked: {
@@ -92,17 +93,15 @@ class WhatsApp extends React.Component {
               <div className="d-flex">
                 <span><i className="fab fa-whatsapp " /></span>
                 <div className="d-flex flex-column px-3">
-                  <h5 className="header-heading ">Start a Conversation</h5>
+                  <h5 className="header-heading "><FormattedMessage id="whatsapp.start-conversation" /></h5>
                   <p className="header-description mb-0">
-Hi! Click one of our members below to chat on
-                    {' '}
-                    <b>Whatsapp</b>
+                    <FormattedMessage id="whatsapp.welcome" values={{ social: <b>Whatsapp</b> }} />
                   </p>
                 </div>
               </div>
             </div>
             <div className="card-body p-0 pb-2">
-              <p className="description pl-3 pt-3 pb-0 mb-2">The team typically replies in a few minutes</p>
+              <p className="description pl-3 pt-3 pb-0 mb-2"><FormattedMessage id="whatsapp.reply-info" /></p>
               <div className="list-unstyled">
                 <WElement pose={this.state.whatsappVisible ? 'enter' : 'exit'} i={1} key={1} href="#!" className="nav-link animated fadeInUp">
                   <div onClick={() => { window.location.href = 'https://wa.me/13056002113?text=Hello Juan, '; }} style={{ cursor: 'pointer' }} className="media px-3 py-2">
@@ -127,7 +126,7 @@ Hi! Click one of our members below to chat on
 
                       <div className="media-body">
                         <p className="mb-1 name">Juan Villagrana</p>
-                        <p style={{ color: 'darkgray' }} className="mb-1 profession">Customer Support</p>
+                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="whatsapp.customer-support" /></p>
                       </div>
                       <div>
                         <span><i className="fab fa-whatsapp gren" /></span>
@@ -158,7 +157,7 @@ Hi! Click one of our members below to chat on
                       />
                       <div className="media-body">
                         <p className="mb-1 name">Héctor Acosta</p>
-                        <p style={{ color: 'darkgray' }} className="mb-1 profession">Technical Support</p>
+                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="whatsapp.technical-support" /></p>
                       </div>
                       <div>
                         <span><i className="fab fa-whatsapp gren" /></span>
@@ -188,8 +187,8 @@ Hi! Click one of our members below to chat on
                       />
                       <div className="media-body">
                         <p className="mb-1 name">Steve Solomon</p>
-                        <p style={{ color: 'darkgray' }} className="mb-1 profession">Sale Support</p>
-                        <p style={{ color: 'orange' }} className="mb-1 profession">I will be back soon</p>
+                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="whatsapp.sale-support" /></p>
+                        <p style={{ color: 'orange' }} className="mb-1 profession"><FormattedMessage id="whatsapp.be-back-soon" /></p>
                       </div>
                       <div>
                         <span><i style={{ color: 'darkgray' }} className="fab fa-whatsapp gren" /></span>
@@ -206,8 +205,8 @@ Hi! Click one of our members below to chat on
           pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
           className="shadow"
         >
-          Need help?
-          <span style={{ fontWeight: 'bold' }}> Chat with us!</span>
+          <FormattedMessage id="whatsapp.need-help" />
+          <span style={{ fontWeight: 'bold' }}> <FormattedMessage id="whatsapp.chat-with-us" /></span>
         </WMessageStyleWrapper>
         <WButton
           style={{
