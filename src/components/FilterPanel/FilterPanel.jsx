@@ -2,7 +2,7 @@ import React from 'react';
 import posed from 'react-pose';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import Item from './Item/Item';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
@@ -43,17 +43,6 @@ class FilterPanel extends React.Component {
       params,
     } = props;
 
-    const { intl } = this.props;
-    this.text = {
-      maker: intl.formattedMessage({ id: 'marketplace.maker' }),
-      model: intl.formattedMessage({ id: 'marketplace.model' }),
-      trim: intl.formattedMessage({ id: 'marketplace.trim' }),
-      year: intl.formattedMessage({ id: 'marketplace.year' }),
-      color: intl.formattedMessage({ id: 'marketplace.color' }),
-      engine: intl.formattedMessage({ id: 'marketplace.engine' }),
-    };
-    this.te = this.props.intl;
-
     this.state = {};
 
     if (params) {
@@ -72,6 +61,18 @@ class FilterPanel extends React.Component {
 
     this.searchWithParams = this.searchWithParams.bind(this);
     this.onBoundChanged = this.onBoundChanged.bind(this);
+  }
+
+  componentWillMount() {
+    const { intl } = this.props;
+    this.text = {
+      maker: intl.formatMessage({ id: 'marketplace.maker' }),
+      model: intl.formatMessage({ id: 'marketplace.model' }),
+      trim: intl.formatMessage({ id: 'marketplace.trim' }),
+      year: intl.formatMessage({ id: 'marketplace.year' }),
+      color: intl.formatMessage({ id: 'marketplace.color' }),
+      engine: intl.formatMessage({ id: 'marketplace.engine' }),
+    };
   }
 
   componentWillReceiveProps(nextProps) {
