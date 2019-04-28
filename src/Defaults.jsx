@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core';
 
 export const OneSignalKey = process.env.NODE_ENV === 'development' ? '5af646ab-8c73-474b-9ebf-f19036693a2b' : '76b26e12-3abb-4faf-8ca2-a589f73a602c';
-export const ApiServer = process.env.NODE_ENV === 'development' ? 'https://api.pierpontglobal.com' : 'http://ppm1.local:3000';
+export const ApiServer = process.env.NODE_ENV === 'development' ? 'http://ppm1.local:3000' : 'https://api.pierpontglobal.com';
 export const StripeKey = process.env.NODE_ENV === 'development' ? 'pk_test_mPENMxq3MENOAxDxZDVUZajS' : 'pk_live_Rnf6s2eReIqXTzHhZGFvFvMA';
 export const WSConnection = process.env.NODE_ENV === 'development' ? 'ws://ppm1.local:3000/cable' : 'wss://api.pierpontglobal.com/cable';
 
