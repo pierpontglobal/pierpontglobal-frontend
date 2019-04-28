@@ -106,7 +106,7 @@ class MenuDrawer extends Component {
           handleOpen={onRequestOpen}
         >
           <MenuTitle>
-            <FormattedMessage id="label.manu" />
+            <FormattedMessage id="label.menu" />
           </MenuTitle>
           <SliderOptions options={menuOptions} onClickOption={afterOptionclick} />
         </Slider>
