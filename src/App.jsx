@@ -10,6 +10,7 @@ import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
 import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 import CarPage from './components/pages/CarBidPage/CarBidPage';
+import ContactPage from './components/pages/ContactPage/ContactPage';
 import NotificationPage from './components/pages/NotificationPage/NotificationPage';
 import './styles.css';
 import AppNav from './components/AppNav/AppNav';
@@ -172,6 +173,8 @@ class App extends React.Component {
                 <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
                 <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />} />
                 <Route exact path="/user/notifications" render={() => (this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />} />
+
+                <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
 
                 <Route render={() => (<NotfoundPage cookies={cookies} />)} />
               </Switch>
