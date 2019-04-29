@@ -61,7 +61,7 @@ const Description = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  margin-top: 24px;
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -140,6 +140,7 @@ const MapsBox = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
+  margin-top: 16px;
 `;
 
 const Wrap = styled.div`

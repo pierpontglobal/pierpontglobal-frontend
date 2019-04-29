@@ -103,6 +103,7 @@
   "marketplace.year": "Año",
   "marketplace.color": "Color",
   "marketplace.engine": "Motor",
+  "marketplace.not-found": "No se han encontrado carros.",
   "contact.title": "¿Tiene alguna pregunta? ¡Nos encantaría saber de ti!",
   "contact.subtitle": "Aquí es cómo ponerse en contacto con nosotros.",
   "contact.hour-support": "Soporte 24 horas",

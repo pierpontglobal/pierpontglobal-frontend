@@ -221,7 +221,7 @@ class MarketPlacePage extends React.Component {
       // no cars found
       return (
         <NotFoundWrapper>
-          <FormattedMessage id=''/>
+          <FormattedMessage id='marketplace.not-found'/>
         </NotFoundWrapper>
       );
     } else {
