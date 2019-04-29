@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import SendIcon from '@material-ui/icons/Send';
 import { IconButton } from '@material-ui/core';
 import MediaQuery from 'react-responsive';
-import InputMask from 'react-input-mask';
 import { AsYouType } from 'libphonenumber-js';
 import axios from 'axios';
 import { ApiServer } from '../../../Defaults';
@@ -210,7 +209,6 @@ class ContactPage extends Component {
     }, () => {
       const { name, email, phone, company, message } = this.state;
 
-      //Make api call
       axios.post(`${ApiServer}/api/v1/user/send-contact-form`, {
         name: name.value,
         email: email.value,
@@ -466,7 +464,7 @@ class ContactPage extends Component {
                   <span style={{ fontSize: '0.8rem' }}>199 # Flagger St #215 Miami Fl, 33131</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
+                  <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
                 </div>
               </MapWrapper>
               <MapWrapper>
@@ -475,7 +473,7 @@ class ContactPage extends Component {
                   <span style={{ fontSize: '0.8rem' }}>Jardines del Fresno, Av. Republica De Colombia</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.4656954292323!2d-69.99003868475685!3d18.507845987416378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf8a4e5fe245bf%3A0x211fbc9e3a1f08c5!2sJardines+del+Fresno!5e0!3m2!1sen!2sdo!4v1556558034607!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
+                <iframe title="Mobile map - dominican republic" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.4656954292323!2d-69.99003868475685!3d18.507845987416378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf8a4e5fe245bf%3A0x211fbc9e3a1f08c5!2sJardines+del+Fresno!5e0!3m2!1sen!2sdo!4v1556558034607!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
                 </div>
               </MapWrapper>
             </MapsBox>
@@ -491,7 +489,7 @@ class ContactPage extends Component {
                   <span style={{ fontSize: '0.8rem' }}>199 # Flagger St #215 Miami Fl, 33131</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
+                  <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
                 </div>
               </MapWrapper>
               <MapWrapper>
@@ -500,7 +498,7 @@ class ContactPage extends Component {
                   <span style={{ fontSize: '0.8rem' }}>Jardines del Fresno, Av. Republica De Colombia</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.4656954292323!2d-69.99003868475685!3d18.507845987416378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf8a4e5fe245bf%3A0x211fbc9e3a1f08c5!2sJardines+del+Fresno!5e0!3m2!1sen!2sdo!4v1556558034607!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
+                <iframe title="Mobile map - dominican republic" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.4656954292323!2d-69.99003868475685!3d18.507845987416378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf8a4e5fe245bf%3A0x211fbc9e3a1f08c5!2sJardines+del+Fresno!5e0!3m2!1sen!2sdo!4v1556558034607!5m2!1sen!2sdo" width="100%" frameborder="0" style={{ border: 'none' }} allowfullscreen></iframe>
                 </div>
               </MapWrapper>
             </MapsBox>
