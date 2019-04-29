@@ -10,6 +10,7 @@ import InputMask from 'react-input-mask';
 import { AsYouType } from 'libphonenumber-js';
 import axios from 'axios';
 import { ApiServer } from '../../../Defaults';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 const styles = theme => ({
   textField: {
@@ -162,6 +163,7 @@ class ContactPage extends Component {
 
   constructor(props) {
     super(props);
+    const { intl } = this.props;
     this.state = {
       sendingMessage: false,
       sent: false,
@@ -186,6 +188,18 @@ class ContactPage extends Component {
         error: false,
         value: ''
       }
+    }
+    this.labels = {
+      sending: intl.formatMessage({id: 'label.sending'}),
+      sent: intl.formatMessage({id: 'label.sent'}),
+      toSend: intl.formatMessage({id: 'label.to-send'}),
+      name: intl.formatMessage({id: 'contact.name'}),
+      phone: intl.formatMessage({id: 'contact.phone'}),
+      email: intl.formatMessage({id: 'contact.email'}),
+      company: intl.formatMessage({id: 'contact.company'}),
+      message: intl.formatMessage({id: 'contact.message'}),
+      dominicanRepublic: intl.formatMessage({id: 'country.dominican-republic'}),
+      miamiFlorida: intl.formatMessage({id: 'country.miami-florida'}),
     }
   }
 
@@ -314,17 +328,17 @@ class ContactPage extends Component {
         <Header>
           <Title>
             <h2>
-              Contact Us
+              <FormattedMessage id="label.contact-us" />
             </h2>
           </Title>
           <Description>
             <p>
               <span>
-                Have any questions? We'd love to hear from you!
+                <FormattedMessage id="contact.title" />
               </span>
               <br />
               <span>
-                Here is how to get in touch with us.
+                <FormattedMessage id="contact.subtitle" />
               </span>
             </p>
           </Description>
@@ -334,15 +348,17 @@ class ContactPage extends Component {
           <ContactBox>
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <img src="/icon_sm.png" alt="Pierpont Global, Inc | Contact page" width="60px" />
-              <h6>24-Hour support</h6>
+              <h6>
+                <FormattedMessage id="contact.hour-support" />
+              </h6>
             </div>
             <div>
               <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <span style={{ fontStyle: 'italic' }}>
                   {
                     (sendingMessage) ?
-                    'Sending message...'
-                    : (sent) ? 'Sent successfully!' : 'Send us a message!'
+                    this.labels.sending
+                    : (sent) ? this.labels.sent : this.labels.toSend
                   }
                 </span>
                 <MessageIcon />
@@ -352,7 +368,7 @@ class ContactPage extends Component {
                   <TextField
                     error={name.error}
                     id="name"
-                    label="Your name"
+                    label={this.labels.name}
                     value={name.value}
                     className={classes.textField}
                     margin="normal"
@@ -363,7 +379,7 @@ class ContactPage extends Component {
                     id="email"
                     value={email.value}
                     autoComplete="email"
-                    label="Your email"
+                    label={this.labels.email}
                     className={classes.textField}
                     margin="normal"
                     onChange={this.handleInput}
@@ -372,7 +388,7 @@ class ContactPage extends Component {
                     error={phone.error}
                     id="phone"
                     value={phone.value}
-                    label="Your phone"
+                    label={this.labels.phone}
                     className={classes.textField}
                     margin="normal"
                     onChange={this.handleInput}
@@ -384,7 +400,7 @@ class ContactPage extends Component {
                     error={company.error}
                     value={company.value}
                     id="company"
-                    label="Your company"
+                    label={this.labels.company}
                     className={classes.textField}
                     margin="normal"
                     onChange={this.handleInput}
@@ -394,7 +410,7 @@ class ContactPage extends Component {
                       error={message.error}
                       id="message"
                       value={message.value}
-                      label="Your message"
+                      label={this.labels.message}
                       className={classes.messageField}
                       multiline
                       rowsMax="4"
@@ -406,30 +422,38 @@ class ContactPage extends Component {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-item' }}>
               <div>
-                Send to: <span style={{ color: 'darkgray' }}>{ sendToEmail }</span>
+                <FormattedMessage id="label.send-to" /> <span style={{ color: 'darkgray' }}>{ sendToEmail }</span>
               </div>
               <SendIconWrapper>
                 <IconButton onClick={this.validateMessage}>
-                  <SendIcon color="secondary" />
+                  <SendIcon color="action" />
                 </IconButton>
               </SendIconWrapper>
             </div>
           </ContactBox>
           <InfoBox>
             <EmailInfo>
-              <div>Sales Support</div>
+              <div>
+                <FormattedMessage id="sale-support" />
+              </div>
               <span onClick={() => this.changeDestinationEmail(saleSupport)}>{saleSupport}</span>
             </EmailInfo>
             <EmailInfo>
-              <div>Customer Service</div>
+              <div>
+              <FormattedMessage id="customer-service" />
+              </div>
               <span onClick={() => this.changeDestinationEmail(customerSupport)}>{customerSupport}</span>
             </EmailInfo>
             <EmailInfo>
-              <div>Technical Support</div>
+              <div>
+                <FormattedMessage id="technical-support" />
+              </div>
               <span onClick={() => this.changeDestinationEmail(technicalSupport)}>{technicalSupport}</span>
             </EmailInfo>
             <EmailInfo>
-              <div>General services</div>
+              <div>
+                <FormattedMessage id="general-services" />
+              </div>
               <span onClick={() => this.changeDestinationEmail(support)}>{support}</span>
             </EmailInfo>
           </InfoBox>
@@ -437,7 +461,7 @@ class ContactPage extends Component {
             <MapsBox>
               <MapWrapper>
                 <div style={{ width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>Miami, Florida</span></div>
+                  <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.miamiFlorida }</span></div>
                   <span style={{ fontSize: '0.8rem' }}>199 # Flagger St #215 Miami Fl, 33131</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -446,7 +470,7 @@ class ContactPage extends Component {
               </MapWrapper>
               <MapWrapper>
                 <div style={{ width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>Dominican Republic</span></div>
+                <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.dominicanRepublic }</span></div>
                   <span style={{ fontSize: '0.8rem' }}>Jardines del Fresno, Av. Republica De Colombia</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -462,7 +486,7 @@ class ContactPage extends Component {
             <MapsBox>
               <MapWrapper>
                 <div style={{ width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>Miami, Florida</span></div>
+                  <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.miamiFlorida }</span></div>
                   <span style={{ fontSize: '0.8rem' }}>199 # Flagger St #215 Miami Fl, 33131</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -471,7 +495,7 @@ class ContactPage extends Component {
               </MapWrapper>
               <MapWrapper>
                 <div style={{ width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>Dominican Republic</span></div>
+                <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.dominicanRepublic }</span></div>
                   <span style={{ fontSize: '0.8rem' }}>Jardines del Fresno, Av. Republica De Colombia</span>
                 </div>
                 <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -486,4 +510,4 @@ class ContactPage extends Component {
   }
 }
 
-export default withStyles(styles)(ContactPage);
+export default withStyles(styles)(injectIntl(ContactPage));
