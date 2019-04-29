@@ -281,7 +281,7 @@ class LandingPage extends React.Component {
           <div className="cards-holder-1">
             <div className="column-1">
               <p className="big-title">
-              Built for dealers by dealers.
+                <FormattedMessage id="landing.built-for" />
               </p>
             </div>
             <div className="cards-holder-2">
