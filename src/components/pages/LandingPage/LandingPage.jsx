@@ -7,11 +7,16 @@ import './font/flaticon.css';
 import './landing_page.css';
 import Button from '../../Btn/Btn';
 import Notifications from '../../notifications/Notifications';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
+    const { intl } = this.props;
     this.state = {};
+    this.lables = {
+
+    } 
   }
 
   render() {
@@ -52,11 +57,11 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            Featuring Inventory from Manheim
+            <FormattedMessage id="landing.featuring-inventory" />
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
-            Pierpont Global is a licensed partner of Manheim and Cox Automotive Inc.
+            <FormattedMessage id="landing.featuring-inventory-text" />
           </p>
         </div>
 
@@ -78,11 +83,11 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            You`ll have access to
+            <FormattedMessage id="landing.you-have-access-to" />
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
-            A platform designed to make buying vehicles much easier .
+            <FormattedMessage id="landing.you-have-access-to-text" />
           </p>
 
           <div className="cards-holder-3">
@@ -100,8 +105,8 @@ class LandingPage extends React.Component {
                   <div style={{ width: '200px', height: '200px', background: '#dedede' }} />
                 }
               />
-              <p className="subtitle-medium">Search Listings</p>
-              <p className="subtitle-follow-up">Our platform ties together thousands of listings, from dozens of Manheim Auction locations, giving you access to infinitely more vehicle options to buy from.</p>
+              <p className="subtitle-medium"><FormattedMessage id="landing.search-listing" /></p>
+              <p className="subtitle-follow-up"><FormattedMessage id="landing.search-listing-text" /></p>
             </div>
             <div className="card-info">
               <Img
@@ -117,8 +122,8 @@ class LandingPage extends React.Component {
                   <div style={{ width: '200px', height: '200px', background: '#dedede' }} />
                 }
               />
-              <p className="subtitle-medium">Place Bids</p>
-              <p className="subtitle-follow-up">Bid on vehicles right from your computer. Using our provided pricing information and condition reports, you’ll have all the info you need to place well calculated bids.</p>
+              <p className="subtitle-medium"><FormattedMessage id="landing.place-bids" /></p>
+              <p className="subtitle-follow-up"><FormattedMessage id="landing.place-bids-text" /></p>
             </div>
             <div style={{ marginBottom: '30px' }} className="card-info">
               <Img
@@ -134,8 +139,8 @@ class LandingPage extends React.Component {
                   <div style={{ width: '200px', height: '200px', background: '#dedede' }} />
                 }
               />
-              <p className="subtitle-medium">Delivery</p>
-              <p className="subtitle-follow-up">We handle the process of delivering the vehicles from the auction to your near port, while giving you tracking updates along the way. We will get you the best ground transport rates, shipping rates, as well as import customs and tax rates. With all invoices provided in real time.</p>
+              <p className="subtitle-medium"><FormattedMessage id="landing.delivery" /></p>
+              <p className="subtitle-follow-up"><FormattedMessage id="landing.delivery-text" /></p>
             </div>
           </div>
 
@@ -158,16 +163,18 @@ class LandingPage extends React.Component {
           <div className="cards-holder-2">
             <div className="column-5">
               <p className="subtitle-medium">
-                Sign up now –
+                <FormattedMessage id="landing.sign-up-now" />
                 <span style={{
                   fontWeight: 'bold',
                 }}
                 >
                   {' '}
-                  Be one of the first to gain access.
+                  <FormattedMessage id="landing.be-first-access" />
                 </span>
               </p>
-              <p style={{ fontStyle: 'italic', fontSize: '16px', textAlign: 'left' }} className="subtitle-follow-up">“Ever since using this platform, running my business has been so much easier. I never realized how inefficient I was working when buying vehicles before.”</p>
+              <p style={{ fontStyle: 'italic', fontSize: '16px', textAlign: 'left' }} className="subtitle-follow-up">
+                <FormattedMessage id="landing.sign-up-quote" />
+              </p>
               <p style={{ alignSelf: 'flex-end', marginTop: '50px' }} className="subtitle-follow-up">— Jorge Abreu, Abreu Motors</p>
             </div>
             <div
@@ -234,9 +241,11 @@ class LandingPage extends React.Component {
           <div style={{ position: 'absolute' }} className="cards-holder-1">
             <div style={{ color: '#ffffff' }} className="column-1">
               <p className="big-title">
-              What makes Pierpont unique?
+              <FormattedMessage id="landing.what-makes-unique" />
               </p>
-              <p style={{ fontSize: '16px', textAlign: 'center', maxWidth: '350px' }} className="subtitle-follow-up">Be apart of a new generation. Were constantly building relationships and new partnerships with U.S. based auction houses, transporting companies, automotive service providers, as well as U.S. and Dominican customs</p>
+              <p style={{ fontSize: '16px', textAlign: 'center', maxWidth: '350px' }} className="subtitle-follow-up">
+                <FormattedMessage id="landing.what-makes-unique-text" />
+              </p>
               <Button
                 type="button"
                 style={{ marginTop: '12px', maxWidth: '300px' }}
@@ -250,7 +259,7 @@ class LandingPage extends React.Component {
                   });
                 }}
               >
-            Sign up now &gt;&gt;
+                <FormattedMessage id="landing.sign-up-now" /> &gt;&gt;
               </Button>
             </div>
           </div>
@@ -308,14 +317,10 @@ class LandingPage extends React.Component {
                 />
 
                 <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
-                Logistics
+                  <FormattedMessage id="label.logistics" />
                 </p>
                 <p>
-                  It`s difficult getting a car from one location to another safely and securely,
-                  especially when you are in another country. That`s
-                  why we`ve created an innovative solution where
-                  we facilitate transporting from auction to port, and shipping from U.S.
-                  to Dominican Republic, without you having to lift a finger at all.
+                  <FormattedMessage id="landing.logistics-text" />
                 </p>
               </div>
 
@@ -352,15 +357,11 @@ class LandingPage extends React.Component {
                 />
 
                 <p style={{ width: '100%', textAlign: 'left' }} className="subtitle-medium">
-                Customs
+                  <FormattedMessage id="landing.customs" />
                 </p>
 
                 <p>
-                  We have experts take your vehicle through customs and handle all
-                  legal aspects of the vehicle leaving the United States. We make
-                  sure all necessary paperwork is processed accordingly, and make
-                  sure your vehicle leaves the port on its designated shipping vessel
-                  in a timely manner, with little to no obstacles
+                <FormattedMessage id="landing.customs-text" />
                 </p>
               </div>
             </div>
@@ -413,7 +414,7 @@ class LandingPage extends React.Component {
           <div style={{ position: 'absolute' }} className="cards-holder-1">
             <div style={{ color: '#ffffff' }} className="column-1">
               <p className="big-title">
-                Start working smarter.
+                <FormattedMessage id="landing.working-smarter" />
               </p>
               <p
                 style={{
@@ -423,7 +424,7 @@ class LandingPage extends React.Component {
                 }}
                 className="subtitle-follow-up"
               >
-                More options. Better pricing. Less headaches.
+                <FormattedMessage id="landing.working-smarter-text" />
               </p>
               <Button
                 type="button"
@@ -440,12 +441,12 @@ class LandingPage extends React.Component {
                   });
                 }}
               >
-                SIGN ME UP
+                <FormattedMessage id="landing.sign-me-up" />
               </Button>
               <p style={{ textAlign: 'center' }}>
-                By continuing you agree to our
+              <FormattedMessage id="landing.by-continuing" />
                 <br />
-                Terms of use
+                <FormattedMessage id="landing.terms-of-use" />
               </p>
             </div>
           </div>
@@ -456,4 +457,4 @@ class LandingPage extends React.Component {
   }
 }
 
-export default LandingPage;
+export default injectIntl(LandingPage);
