@@ -76,7 +76,6 @@ const Footer = styled.div`
 `;
 
 const ContactBox = styled.div`
-  margin: 8px;
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0px 0px 3px 0px #ccc;
@@ -85,6 +84,9 @@ const ContactBox = styled.div`
   min-height: 480px;
   display: grid;
   grid-template-rows: 30% 60% 10%;
+  @media only screen and (min-width: 768px) {
+    box-shadow: 0px 0px 8px 2px #ccc;
+  }
 `;
 
 const InfoBox = styled.div`
@@ -382,7 +384,7 @@ class ContactPage extends Component {
                     error={company.error}
                     value={company.value}
                     id="company"
-                    label="Your compnay"
+                    label="Your company"
                     className={classes.textField}
                     margin="normal"
                     onChange={this.handleInput}
@@ -408,7 +410,7 @@ class ContactPage extends Component {
               </div>
               <SendIconWrapper>
                 <IconButton onClick={this.validateMessage}>
-                  <SendIcon color="action" />
+                  <SendIcon color="secondary" />
                 </IconButton>
               </SendIconWrapper>
             </div>
