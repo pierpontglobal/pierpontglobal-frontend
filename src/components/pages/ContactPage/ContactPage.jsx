@@ -8,7 +8,8 @@ import { IconButton } from '@material-ui/core';
 import MediaQuery from 'react-responsive';
 import InputMask from 'react-input-mask';
 import { AsYouType } from 'libphonenumber-js';
-
+import axios from 'axios';
+import { ApiServer } from '../../../Defaults';
 
 const styles = theme => ({
   textField: {
@@ -95,6 +96,10 @@ const InfoBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media only screen and (min-width: 768px) {
+    justify-content: flex-start;
+    margin-top: 16px;
+  }
 `;
 
 const FormWrapper = styled.div`
@@ -158,6 +163,7 @@ class ContactPage extends Component {
     this.state = {
       sendingMessage: false,
       sent: false,
+      sendToEmail: 'support@pierpontglobal.com',
       name: {
         error: false,
         value: ''
@@ -185,9 +191,17 @@ class ContactPage extends Component {
     this.setState({
       sendingMessage: true,
     }, () => {
+      const { name, email, phone, company, message } = this.state;
+
       //Make api call
-      setTimeout(() => {
-        const { name, email, phone, company, message } = this.state;
+      axios.post(`${ApiServer}/api/v1/user/send-contact-form`, {
+        name: name.value,
+        email: email.value,
+        phone: phone.value,
+        company: company.value,
+        message: message.value
+      }).then(data => {
+        console.log(data);
         this.setState({
           sendingMessage: false,
           sent: true,
@@ -197,7 +211,13 @@ class ContactPage extends Component {
           company: { error: false, value: '' },
           message: { error: false, value: '' },
         });
-      }, 3000)
+      }, err => {
+        console.log(err);
+        this.setState({
+          sendingMessage: false,
+          sent: false,
+        });
+      })
     });
   }
 
@@ -272,9 +292,20 @@ class ContactPage extends Component {
     }
   }
 
+  changeDestinationEmail = (email) => {
+    this.setState({
+      sendToEmail: email,
+    });
+  }
+
   render() {    
-    const { name, email, phone, company, message, sendingMessage, sent} = this.state;
+    const { name, email, phone, company, message, sendingMessage, sent, sendToEmail} = this.state;
     const { classes } = this.props;
+
+    let saleSupport = 'steve@pierpontglobal.com';
+    let customerSupport = 'juan@pierpontglobal.com';
+    let technicalSupport = 'hector@pierpontglobal.com';
+    let support = 'support@pierpontglobal.com';
 
     return (
       <PageWrapper>
@@ -315,7 +346,7 @@ class ContactPage extends Component {
                 <MessageIcon />
               </div>
               <FormWrapper>
-                <form className={classes.container} noValidate autoComplete="off">
+                <form className={classes.container}>
                   <TextField
                     error={name.error}
                     id="name"
@@ -371,7 +402,10 @@ class ContactPage extends Component {
                 </form>
               </FormWrapper>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-item' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-item' }}>
+              <div>
+                Send to: <span style={{ color: 'darkgray' }}>{ sendToEmail }</span>
+              </div>
               <SendIconWrapper>
                 <IconButton onClick={this.validateMessage}>
                   <SendIcon color="action" />
@@ -382,15 +416,19 @@ class ContactPage extends Component {
           <InfoBox>
             <EmailInfo>
               <div>Sales Support</div>
-              <span>steve@pierpontglobal.com</span>
+              <span onClick={() => this.changeDestinationEmail(saleSupport)}>{saleSupport}</span>
             </EmailInfo>
             <EmailInfo>
               <div>Customer Service</div>
-              <span>juan@pierpontglobal.com</span>
+              <span onClick={() => this.changeDestinationEmail(customerSupport)}>{customerSupport}</span>
             </EmailInfo>
             <EmailInfo>
               <div>Technical Support</div>
-              <span>hector@pierpontglobal.com</span>
+              <span onClick={() => this.changeDestinationEmail(technicalSupport)}>{technicalSupport}</span>
+            </EmailInfo>
+            <EmailInfo>
+              <div>General services</div>
+              <span onClick={() => this.changeDestinationEmail(support)}>{support}</span>
             </EmailInfo>
           </InfoBox>
           <MediaQuery maxDeviceWidth={768}>
