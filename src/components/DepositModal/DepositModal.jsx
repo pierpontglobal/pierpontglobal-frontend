@@ -35,12 +35,12 @@ class DepositModal extends React.Component {
     this.getFunds = this.getFunds.bind(this);
 
     this.labels = {
-      outOfDeposit: intl.formattedMessage({ id: 'deposit.out-of-deposit' }),
-      deficientAmount: intl.formattedMessage({ id: 'deposit.deficient-amount' }),
-      necessaryAmount: intl.formattedMessage({ id: 'deposit.necessary-amount' }),
-      availableAmount: intl.formattedMessage({ id: 'deposit.available-amount' }),
-      keepSearching: intl.formattedMessage({ id: 'deposit.keep-searching' }),
-      addDeposit: intl.formattedMessage({ id: 'deposit.add-deposit' }),
+      outOfDeposit: intl.formatMessage({ id: 'deposit.out-of-deposit' }),
+      deficientAmount: intl.formatMessage({ id: 'deposit.deficient-amount' }),
+      necessaryAmount: intl.formatMessage({ id: 'deposit.necessary-amount' }),
+      availableAmount: intl.formatMessage({ id: 'deposit.available-amount' }),
+      keepSearching: intl.formatMessage({ id: 'deposit.keep-searching' }),
+      addDeposit: intl.formatMessage({ id: 'deposit.add-deposit' }),
     };
   }
 
