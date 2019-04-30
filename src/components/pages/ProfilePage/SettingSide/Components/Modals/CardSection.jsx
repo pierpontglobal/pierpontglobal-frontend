@@ -1,11 +1,16 @@
 import React from 'react';
 import { CardElement } from 'react-stripe-elements';
+import { FormattedMessage } from 'react-intl';
 
 function CardSection() {
   return (
     <label style={{ width: '100%' }}>
-      <h4>Card details</h4>
-      <p>Pierpont Global accepts all the mayor credit / debit card issuer brands</p>
+      <h4>
+        <FormattedMessage id="card-section.card-details" />
+      </h4>
+      <p>
+        <FormattedMessage id="card-section.card-details-text" />
+      </p>
 
       {/* <div style={{ marginBottom: '20px' }}>
         <p style={{

@@ -185,5 +185,7 @@
   "success-register.check-email": "Verifica tu correo electrónico para verificar tu identidad.",
   "success-register.verify-spam-folder": "No puedes encontrar el correo? Verifica el dentro del folder 'Spam' o haz click en",
   "success-register.resend": "Reenviar",
-  "success-register.to-try-again": "para intentarlo otra vez."
+  "success-register.to-try-again": "para intentarlo otra vez.",
+  "card-section.card-details": "Detalles de tarjeta",
+  "card-section.card-details-text": "Pierpont Global acepta todas las principales marcas emisoras de tarjetas de crédito / débito"
 }
