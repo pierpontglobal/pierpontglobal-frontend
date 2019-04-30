@@ -187,5 +187,10 @@
   "success-register.resend": "Resend",
   "success-register.to-try-again": "to try again.",
   "card-section.card-details": "Card details",
-  "card-section.card-details-text": "Pierpont Global accepts all the mayor credit / debit card issuer brands"
+  "card-section.card-details-text": "Pierpont Global accepts all the mayor credit / debit card issuer brands",
+  "sign-in.wrong-credentials": "Wrong credentials",
+  "sign-in.forgot-account": "Forgot account?",
+  "sign-in.user-sign-in": "User Sign in",
+  "sign-in.username": "Username",
+  "sign-in.password": "Password"
 }

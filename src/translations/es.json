@@ -187,5 +187,10 @@
   "success-register.resend": "Reenviar",
   "success-register.to-try-again": "para intentarlo otra vez.",
   "card-section.card-details": "Detalles de tarjeta",
-  "card-section.card-details-text": "Pierpont Global acepta todas las principales marcas emisoras de tarjetas de crédito / débito"
+  "card-section.card-details-text": "Pierpont Global acepta todas las principales marcas emisoras de tarjetas de crédito / débito",
+  "sign-in.wrong-credentials": "Credenciales erróneas",
+  "sign-in.forgot-account": "Olvidaste la cuenta?",
+  "sign-in.user-sign-in": "Inicio de sesión",
+  "sign-in.username": "Nombre de usuario",
+  "sign-in.password": "Contraseña"
 }
