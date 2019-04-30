@@ -70,7 +70,6 @@ class NotificationPage extends Component {
   render() {
     return(
       <>
-      Algo..
         <ActionCableProvider cable={this.cable}>
           <NotificationsWrapper>
             <NotificationCard>

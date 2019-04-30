@@ -67,6 +67,7 @@
   "label.to-send": "Envíanos un mensaje!",
   "label.send-to": "Enviar a:",
   "label.logistics": "Logística",
+  "label.not-found-page": "La página que estás buscando no existe.",
   "menu.purchases": "Compras",
   "menu.documents": "Documentos",
   "menu.settings": "Configuraciones",
@@ -139,5 +140,10 @@
   "landing.by-continuing": "Al continuar aceptas nuestros",
   "landing.terms-of-use": "Términos de uso",
   "lang.spanish": "Español",
-  "lang.english": "Inglés"
+  "lang.english": "Inglés",
+  "registration.message": "Sé parte de una nueva generación. Constantemente construimos relaciones y nuevas asociaciones con casas de subastas con sede en los Estados Unidos, empresas de transporte, proveedores de servicios automotrices, así como con las aduanas de los Estados Unidos y la República Dominicana.",
+  "profile.settings.account-name": "Nombre de la cuenta",
+  "profile.settings.address": "Dirección",
+  "profile.settings.email": "Correo",
+  "profile.settings.phone": "Teléfono"
 }

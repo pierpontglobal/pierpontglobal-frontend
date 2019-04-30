@@ -67,6 +67,7 @@
   "label.to-send": "Send us a message!",
   "label.send-to": "Send to:",
   "label.logistics": "Logistics",
+  "label.not-found-page": "The page you are looking for does not exist",
   "menu.purchases": "Purchases",
   "menu.documents": "Documents",
   "menu.settings": "Settings",
@@ -139,5 +140,10 @@
   "landing.by-continuing": "By continuing you agree to our",
   "landing.terms-of-use": "Terms of use",
   "lang.spanish": "Spanish",
-  "lang.english": "English"
+  "lang.english": "English",
+  "registration.message": "Be a part of a new generation. Were constantly building relationships and new partnerships with U.S. based auction houses, transporting companies, automotive service providers, as well as U.S. and Dominican customs",
+  "profile.settings.account-name": "Account name",
+  "profile.settings.address": "Address",
+  "profile.settings.email": "Email",
+  "profile.settings.phone": "Phone"
 }
