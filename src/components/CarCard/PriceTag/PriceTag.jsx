@@ -30,7 +30,6 @@ class PriceTag extends React.Component {
     };
 
     this.request = this.request.bind(this);
-    this.requestPriceLb = this.props.intl.formatMessage({id: 'label.request-price'});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,6 +58,8 @@ class PriceTag extends React.Component {
     const {
       price, className, requesting, vin, color, fontSizeButton,
     } = this.state;
+
+    this.requestPriceLb = this.props.intl.formatMessage({id: 'label.request-price'});
 
     if (price) {
       return (

@@ -189,18 +189,6 @@ class ContactPage extends Component {
         value: ''
       }
     }
-    this.labels = {
-      sending: intl.formatMessage({id: 'label.sending'}),
-      sent: intl.formatMessage({id: 'label.sent'}),
-      toSend: intl.formatMessage({id: 'label.to-send'}),
-      name: intl.formatMessage({id: 'contact.name'}),
-      phone: intl.formatMessage({id: 'contact.phone'}),
-      email: intl.formatMessage({id: 'contact.email'}),
-      company: intl.formatMessage({id: 'contact.company'}),
-      message: intl.formatMessage({id: 'contact.message'}),
-      dominicanRepublic: intl.formatMessage({id: 'country.dominican-republic'}),
-      miamiFlorida: intl.formatMessage({id: 'country.miami-florida'}),
-    }
   }
 
   sendMessage = (message) => {
@@ -315,12 +303,25 @@ class ContactPage extends Component {
 
   render() {    
     const { name, email, phone, company, message, sendingMessage, sent, sendToEmail} = this.state;
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
 
     let saleSupport = 'steve@pierpontglobal.com';
     let customerSupport = 'juan@pierpontglobal.com';
     let technicalSupport = 'hector@pierpontglobal.com';
     let support = 'support@pierpontglobal.com';
+
+    this.labels = {
+      sending: intl.formatMessage({id: 'label.sending'}),
+      sent: intl.formatMessage({id: 'label.sent'}),
+      toSend: intl.formatMessage({id: 'label.to-send'}),
+      name: intl.formatMessage({id: 'contact.name'}),
+      phone: intl.formatMessage({id: 'contact.phone'}),
+      email: intl.formatMessage({id: 'contact.email'}),
+      company: intl.formatMessage({id: 'contact.company'}),
+      message: intl.formatMessage({id: 'contact.message'}),
+      dominicanRepublic: intl.formatMessage({id: 'country.dominican-republic'}),
+      miamiFlorida: intl.formatMessage({id: 'country.miami-florida'}),
+    }
 
     return (
       <PageWrapper>
