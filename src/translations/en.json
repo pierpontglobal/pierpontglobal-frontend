@@ -68,6 +68,7 @@
   "label.send-to": "Send to:",
   "label.logistics": "Logistics",
   "label.not-found-page": "The page you are looking for does not exist",
+  "label.filters": "Filters",
   "menu.purchases": "Purchases",
   "menu.documents": "Documents",
   "menu.settings": "Settings",
@@ -167,5 +168,7 @@
   "deposit.perfoming-transactions": "Performing transactions...",
   "deposit.deposit-amount": "Deposit amount",
   "deposit.please-wait": "Please, wait...",
-  "deposit.allow-funds-delay-msg": "Allow the funds to show in your account after 5 minutes."
+  "deposit.allow-funds-delay-msg": "Allow the funds to show in your account after 5 minutes.",
+  "notification.notifications": "Notifications",
+  "notification.mark-all-as-read": "MARK ALL AS READ"
 }

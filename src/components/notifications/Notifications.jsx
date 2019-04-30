@@ -8,6 +8,7 @@ import axios from 'axios';
 import { ApiServer } from '../../Defaults';
 import posed, { PoseGroup } from 'react-pose';
 import NotificationsType from '../../constants/NotificationTypes';
+import { injectIntl } from 'react-intl';
 
 const Card = posed.div({
   enter: { opacity: 1 },
@@ -83,6 +84,11 @@ class Notifications extends Component {
     this.state = {
       algo: [],
     }
+    const { intl } = this.props;
+    this.labels = {
+      notifications: intl.formatMessage({ id: 'notification.notifications' }),
+      markAllAsRead: intl.formatMessage({ id: 'notification.mark-all-as-read' }),
+    };
   }
 
   componentDidMount = () => {
@@ -121,7 +127,7 @@ class Notifications extends Component {
     return (
      <Wrapper>
       <TitleWrapper>
-        <span style={{ fontWeight: '600' }}>Notifications</span>
+        <span style={{ fontWeight: '600' }}>{ this.labels.notifications }</span>
         <IconButton onClick={this.props.onClose}>
           <Close color="secondary" />
         </IconButton>
@@ -129,7 +135,7 @@ class Notifications extends Component {
       <NotificationsWrapper>
         <ActionsButtons>
           <TotalShow>{ notifications.length }</TotalShow>
-          <Button onClick={this.readAll}>Mark all as read</Button>
+          <Button onClick={this.readAll}>{ this.labels.markAllAsRead }</Button>
         </ActionsButtons>
         <PoseGroup>
           {
@@ -150,4 +156,4 @@ class Notifications extends Component {
   }
 }
 
-export default withCookies(Notifications);
+export default withCookies(injectIntl(Notifications));

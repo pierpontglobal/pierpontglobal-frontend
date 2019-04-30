@@ -4,6 +4,7 @@ import { IconButton } from '@material-ui/core';
 import FilterList from '@material-ui/icons/FilterList';
 import styled from 'styled-components';
 import SearchInput from '../AppNav/SearchInput/SearchInput';
+import { FormattedMessage } from 'react-intl';
 
 const FilterIcon = styled.div`
   display: none;
@@ -33,7 +34,9 @@ function SortBar({ header, className, filterPanelToggle }) {
       <FilterIcon>
         <IconButton color="primary" onClick={filterPanelToggle}>
           <FilterList />
-          <span style={{ fontSize: '0.75em' }}>Filters</span>
+          <span style={{ fontSize: '0.75em' }}>
+            <FormattedMessage id="label.filters" />
+          </span>
         </IconButton>
       </FilterIcon>
     </div>
