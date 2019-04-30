@@ -163,7 +163,6 @@ class ContactPage extends Component {
 
   constructor(props) {
     super(props);
-    const { intl } = this.props;
     this.state = {
       sendingMessage: false,
       sent: false,
