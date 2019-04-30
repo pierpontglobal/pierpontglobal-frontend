@@ -6,7 +6,7 @@ import NotificatinBadge from '../AppNav/notification-badge/NotificatinBadge';
 import Person from '@material-ui/icons/Person';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import LanguageSwitch from '../AppNav/language-switch/LanguageSwitch';
+
 const UserInfoWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -28,7 +28,7 @@ class AccountManager extends React.Component {
 
   // TODO: Verify token validation and re logging if necessary
   getDisplayable() {
-    const { cookies, languages, setLang } = this.props;
+    const { cookies } = this.props;
 
     const token = cookies.get('token', { path: '/' });
 
@@ -44,7 +44,6 @@ class AccountManager extends React.Component {
             <i className="far fa-user" id="inner-sign-in-icon" />
               <FormattedMessage id="label.profile" />
           </button>
-          <LanguageSwitch setLang={setLang} languages={languages} />
         </UserInfoWrapper>
       );
     }

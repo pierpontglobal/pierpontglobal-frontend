@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import SignInModal from '../support/SignInModal/SignInModal';
 import {FormattedMessage} from 'react-intl';
+import LanguageSwitch from './language-switch/LanguageSwitch';
 
 const style = {
   backgroundColor: '#fafafa',
@@ -60,11 +61,10 @@ const AppNavWrapper = styled.div`
 const NavItems = styled.div`
   display: flex;
   justify-content: space-between;
-  align-content: space-between;
   width: 100%;
   align-items: center;
   justify-items: center;
-  @media only screen and (min-width: 600px) {
+  @media only screen and (min-width: 768px) {
     max-width: 950px;
   }
 `;
@@ -74,7 +74,7 @@ const BurgerBtn = styled.i`
   font-size: 1.7em;
   opacity: 0.85;
   margin: 4px 16px;
-  @media only screen and (min-width: 600px) {
+  @media only screen and (min-width: 768px) {
     display: none;
   }
 `;
@@ -89,15 +89,26 @@ const LogoWrapper = styled.button`
   overflow: visible;
   width: 100%;
   max-width: 170px;
-  left: 0;
-  right: 0;
+  left: 0px;
   margin: auto;
   border: none;
-  position: absolute;
-  @media only screen and (min-width: 600px) {
+  position: relative;
+  @media only screen and (min-width: 768px) {
     position: relative;
     margin: 0;
   }
+`;
+
+const MenuLogoWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 class AppNav extends React.Component {
@@ -166,29 +177,31 @@ class AppNav extends React.Component {
             onRequestOpen={this.openMenuSide}
             dealer={dealer}
           />
-          <BurgerBtn onClick={this.openMenuSide}>
-            <BurgerIcon />
-          </BurgerBtn>
-          <LogoWrapper onClick={() => this.goTo('')} >
-            <Img
-              style={{
-                width: '100%',
-                maxWidth: '170px',
-                cursor: 'pointer',
-              }}
-              alt="PierpontGlobal"
-              className="logo"
-              src={[
-                '/logos/sm_logo.webp',
-                '/logos/sm_logo.jp2',
-                '/logos/sm_logo.jxr',
-                '/logos/sm_logo.png',
-              ]}
-              loader={
-                <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
-                }
-            />
-          </LogoWrapper>
+          <MenuLogoWrapper>
+            <BurgerBtn onClick={this.openMenuSide}>
+              <BurgerIcon />
+            </BurgerBtn>
+            <LogoWrapper onClick={() => this.goTo('')} >
+              <Img
+                style={{
+                  width: '100%',
+                  maxWidth: '170px',
+                  cursor: 'pointer',
+                }}
+                alt="PierpontGlobal"
+                className="logo"
+                src={[
+                  '/logos/sm_logo.webp',
+                  '/logos/sm_logo.jp2',
+                  '/logos/sm_logo.jxr',
+                  '/logos/sm_logo.png',
+                ]}
+                loader={
+                  <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
+                  }
+              />
+            </LogoWrapper>
+          </MenuLogoWrapper>
 
           <div className="menu-sider" id="nav-bar-sub-menu">
             <LinkBtn onClick={ () => this.goTo('') }>
@@ -202,7 +215,10 @@ class AppNav extends React.Component {
             </LinkBtn>
           </div>
           
-          <AccountManager setLang={setLang} languages={languages} history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
+          <ButtonsWrapper>
+            <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
+            <LanguageSwitch setLang={setLang} languages={languages} />
+          </ButtonsWrapper>
         </NavItems>
       </AppNavWrapper>
     );

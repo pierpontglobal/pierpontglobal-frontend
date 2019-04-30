@@ -23,6 +23,7 @@ import NotificationTypes from '../../../constants/NotificationTypes';
 
 const styles = theme => ({
   iconButton: {
+    padding: '0px',
     "&:hover": {
       backgroundColor: 'rgba(0, 0, 0, 0);'
     }
