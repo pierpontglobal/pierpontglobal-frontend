@@ -4,6 +4,7 @@ import { BarLoader } from 'react-spinners';
 import { css } from 'emotion';
 import Text from '../../styles/Text/Text';
 import { ApiServer } from '../../../Defaults';
+import { FormattedMessage } from 'react-intl';
 
 const override = css`
     display: block;
@@ -85,7 +86,7 @@ class SuccessfullPortion extends React.Component {
           padding: '10px',
         }}
         >
-          Your account is almost ready!
+          <FormattedMessage id='success-register.account-almost-ready' />
         </Text>
         <p style={{
           color: textColor,
@@ -93,12 +94,12 @@ class SuccessfullPortion extends React.Component {
           padding: '10px',
         }}
         >
-          The message has been sent to
+          <FormattedMessage id='success-register.message-sent' />
           {' '}
           {email}
           {' '}
           <br />
-          Check your email and verify your identity.
+          <FormattedMessage id='success-register.check-email' />
         </p>
         <p style={{
           color: textColor,
@@ -106,7 +107,7 @@ class SuccessfullPortion extends React.Component {
           padding: '10px',
         }}
         >
-          Can`t find the email? Verify your spam folder or click
+          <FormattedMessage id='success-register.verify-spam-folder' />
           {' '}
           <button
             style={{
@@ -122,10 +123,10 @@ class SuccessfullPortion extends React.Component {
             type="button"
             onClick={() => (this.resend(email))}
           >
-          Resend
+          <FormattedMessage id='success-register.resend' />
           </button>
           {' '}
-          to try again.
+          <FormattedMessage id='success-register.to-try-again' />
         </p>
       </div>
     );

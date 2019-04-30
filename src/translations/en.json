@@ -170,5 +170,22 @@
   "deposit.please-wait": "Please, wait...",
   "deposit.allow-funds-delay-msg": "Allow the funds to show in your account after 5 minutes.",
   "notification.notifications": "Notifications",
-  "notification.mark-all-as-read": "MARK ALL AS READ"
+  "notification.mark-all-as-read": "MARK ALL AS READ",
+  "dealer-creator.logout": "Logout",
+  "dealer-creator.market": "Marketplace",
+  "dealer-creator.register-info": "Register your dealer information",
+  "dealer-creator.dealer-name": "Dealer name",
+  "dealer-creator.dealer-phone": "Dealer phone number",
+  "dealer-creator.subscription-detail": "Subscription details",
+  "dealer-creator.subscription-text": "This subscription allows you to review and bid on inventory from licensed US based auctions. Annual subscription cost is",
+  "dealer-creator.save-button-text": "Pay {amount} and reload",
+  "dealer-creator.add-coupon-if-any": "Add a coupon if any",
+  "success-register.account-almost-ready": "Your account is almost ready!",
+  "success-register.message-sent": "The message has been sent to",
+  "success-register.check-email": "Check your email and verify your identity.",
+  "success-register.verify-spam-folder": "Can`t find the email? Verify your spam folder or click",
+  "success-register.resend": "Resend",
+  "success-register.to-try-again": "to try again.",
+  "card-section.card-details": "Card details",
+  "card-section.card-details-text": "Pierpont Global accepts all the mayor credit / debit card issuer brands"
 }
