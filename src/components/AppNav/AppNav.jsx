@@ -150,7 +150,7 @@ class AppNav extends React.Component {
 
   render() {
     const { showModal } = this.state;
-    const { cookies, classes, dealer } = this.props;
+    const { cookies, classes, dealer, languages, setLang } = this.props;
 
     const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
@@ -202,7 +202,7 @@ class AppNav extends React.Component {
             </LinkBtn>
           </div>
           
-          <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
+          <AccountManager setLang={setLang} languages={languages} history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
         </NavItems>
       </AppNavWrapper>
     );

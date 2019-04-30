@@ -3,7 +3,7 @@ import Img from 'react-image';
 import './custom.css';
 import posed from 'react-pose';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 const WButton = posed.div({
   clicked: {
@@ -73,6 +73,7 @@ class WhatsApp extends React.Component {
     this.state = {
       whatsappVisible: false,
     };
+
   }
 
   render() {
@@ -126,7 +127,7 @@ class WhatsApp extends React.Component {
 
                       <div className="media-body">
                         <p className="mb-1 name">Juan Villagrana</p>
-                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="whatsapp.customer-support" /></p>
+                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="customer-service" /></p>
                       </div>
                       <div>
                         <span><i className="fab fa-whatsapp gren" /></span>
@@ -157,7 +158,7 @@ class WhatsApp extends React.Component {
                       />
                       <div className="media-body">
                         <p className="mb-1 name">Héctor Acosta</p>
-                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="whatsapp.technical-support" /></p>
+                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="technical-support" /></p>
                       </div>
                       <div>
                         <span><i className="fab fa-whatsapp gren" /></span>
@@ -187,7 +188,7 @@ class WhatsApp extends React.Component {
                       />
                       <div className="media-body">
                         <p className="mb-1 name">Steve Solomon</p>
-                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="whatsapp.sale-support" /></p>
+                        <p style={{ color: 'darkgray' }} className="mb-1 profession"><FormattedMessage id="sale-support" /></p>
                         <p style={{ color: 'orange' }} className="mb-1 profession"><FormattedMessage id="whatsapp.be-back-soon" /></p>
                       </div>
                       <div>
@@ -226,4 +227,4 @@ class WhatsApp extends React.Component {
   }
 }
 
-export default WhatsApp;
+export default injectIntl(WhatsApp);
