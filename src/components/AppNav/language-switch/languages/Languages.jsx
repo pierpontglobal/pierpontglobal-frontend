@@ -8,6 +8,7 @@ const LanguagesWrapper = styled.div`
   flex-direction: column;
   max-height: 220px;
   overflow-y: scroll;
+  box-shadow: 0px 0px 8px 0px rgb(0, 0, 0, 0.8);
   @media only screen and (min-width: 748px) {
     max-height: 220px;
     overflow-y: scroll;

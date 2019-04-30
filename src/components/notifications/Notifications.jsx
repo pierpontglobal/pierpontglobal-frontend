@@ -60,6 +60,7 @@ const TitleWrapper = styled.div`
 
 const Wrapper = styled.div`
   border: 1.0px solid #3e78c0;
+  box-shadow: 0px 0px 8px 0px rgb(0, 0, 0, 0.8);
 `;
 
 const ActionsButtons = styled.div`
