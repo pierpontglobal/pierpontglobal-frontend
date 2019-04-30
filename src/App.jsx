@@ -199,10 +199,12 @@ class App extends React.Component {
   setDefaultLanguage = () => {
     const { languages } = this.state;
     let langs = [...languages];
-    const browserLocale = navigator.language.split(/[-_]/)[0];
+
+    // Set default to Spanish
+    let defaultLang = 'es';
 
     langs.forEach(lg => {
-      if(lg.abr.toLowerCase() === browserLocale.toLowerCase()) {
+      if(lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
         lg.active = true
       } else {
         lg.active = false
@@ -210,7 +212,8 @@ class App extends React.Component {
     });
 
     this.setState({
-      languages: langs
+      languages: langs,
+      language: defaultLang
     });
   }
 
