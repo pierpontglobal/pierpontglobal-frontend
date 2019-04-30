@@ -14,6 +14,7 @@ import { ApiServer, StripeKey } from '../../../../Defaults';
 import InjectedCheckoutForm from '../SettingSide/Components/Modals/CheckoutForm';
 import SubscriptionCard from '../SubscriptionSide/Components/SubscriptionCard';
 import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 function printNumber(e) {
   e.target.value = new AsYouType('US').input(e.target.value);
@@ -117,7 +118,6 @@ class DealerCreator extends React.Component {
       one_signal_uuid: this.props.cookies.get('one_signal_uuid'),
     });
     this.props.cookies.remove('token', { path: '/' });
-    this.props.cookies.remove('user_id', { path: '/' });
     this.props.history.push('/');
   }
 
@@ -138,7 +138,19 @@ class DealerCreator extends React.Component {
       couponLoading, amountToPay, hasDealer, name, phoneNumber, coupon,
     } = this.state;
 
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
+
+    const labels = {
+      logout: intl.formatMessage({ id: 'dealer-creator.logout' }),
+      market: intl.formatMessage({ id: 'dealer-creator.market' }),
+      registerInfo: intl.formatMessage({ id: 'dealer-creator.register-info' }),
+      dealerName: intl.formatMessage({ id: 'dealer-creator.dealer-name' }),
+      dealerPhone: intl.formatMessage({ id: 'dealer-creator.dealer-phone' }),
+      subscriptionDetail: intl.formatMessage({ id: 'dealer-creator.subscription-detail' }),
+      subscriptionText: intl.formatMessage({ id: 'dealer-creator.subscription-text' }),
+      saveButtonText: intl.formatMessage({ id: 'dealer-creator.save-button-text'}, { amount: amountToPay }),
+      addCouponIfAny: intl.formatMessage({ id: 'dealer-creator.add-coupon-if-any' }),
+    };
 
     return (
       <div style={{
@@ -177,19 +189,19 @@ class DealerCreator extends React.Component {
                       <MuiThemeProvider theme={ButtonTheme}>
                         <Button onClick={this.signOut} style={{ margin: '10px' }} color="secondary">
                           <ExitToApp className={classes.LogoutButtonIcon} />
-                          Logout
+                          {labels.logout}
                         </Button>
                         <Button onClick={this.gotToMarketplace} style={{ margin: '10px' }} color="primary">
-                          Marketplace
+                          {labels.market}
                           <ArrowForwardIos />
                         </Button>
                       </MuiThemeProvider>
                     </div>
-                    <h4>Register your dealer information</h4>
+                    <h4>{labels.registerInfo}</h4>
                     <div style={{ display: hasDealer ? 'none' : 'flex' }} className="section-2">
                       <Form.Field className="popup-form">
                         <TextField
-                          label="Dealer name"
+                          label={labels.dealerName}
                           autoComplete="off"
                           type="text"
                           value={name}
@@ -203,7 +215,7 @@ class DealerCreator extends React.Component {
                       </Form.Field>
                       <Form.Field className="popup-form">
                         <TextField
-                          label="Dealer phone number"
+                          label={labels.dealerPhone}
                           autoComplete="off"
                           type="tel"
                           value={phoneNumber}
@@ -217,7 +229,7 @@ class DealerCreator extends React.Component {
                       </Form.Field>
                     </div>
                     <div style={{ marginBottom: '10px', marginTop: '10px' }}>
-                      <h4>Subscription details</h4>
+                      <h4>{labels.subscriptionDetail}</h4>
                       <div style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -229,7 +241,7 @@ class DealerCreator extends React.Component {
                         <SubscriptionCard planName="PierpontGlobal USA Access" endDate={subscriptionEndDate.toDateString()} />
                       </div>
                       <p style={{ textAlign: 'center' }}>
-                        This subscription allows you to review and bid on inventory from licensed US based auctions. Annual subscription cost is
+                        {labels.subscriptionText}
                         {' '}
                         <span
                           ref={(node) => { this.priceBreackDownHolder = node; }}
@@ -246,7 +258,7 @@ class DealerCreator extends React.Component {
                       </p>
                       <Form.Field style={{ position: 'relative' }}>
                         <TextField
-                          label="Add a coupon if any"
+                          label={labels.addCouponIfAny}
                           autoComplete="off"
                           value={coupon}
                           style={{
@@ -271,7 +283,7 @@ class DealerCreator extends React.Component {
                   )}
                   afterSubmit={() => (!hasDealer) ? this.register() : null }
                   couponField={this.getCouponCode}
-                saveButtonText={`Pay ${amountToPay} and reload`}
+                  saveButtonText={labels.saveButtonText}
                 />
             </Elements>
           </StripeProvider>
@@ -281,4 +293,4 @@ class DealerCreator extends React.Component {
   }
 }
 
-export default withCookies(withStyles(styles)(withRouter(DealerCreator)));
+export default withCookies(withStyles(styles)(withRouter(injectIntl(DealerCreator))));
