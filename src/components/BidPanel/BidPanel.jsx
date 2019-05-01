@@ -2,14 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 import styled from 'styled-components';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Input from '../styles/Input/Input';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 import { ApiServer } from '../../Defaults';
 import PriceTag from '../CarCard/PriceTag/PriceTag';
 import DepositModal from '../DepositModal/DepositModal';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl, intlShape } from 'react-intl';
 
 let bidInput = null;
 
@@ -39,6 +38,7 @@ class BidPanel extends React.Component {
       saleDate,
       carId,
       vin,
+      intl,
     } = this.props;
 
     this.state = {
@@ -53,23 +53,27 @@ class BidPanel extends React.Component {
     this.handleReceived = this.handleReceived.bind(this);
     this.sendBid = this.sendBid.bind(this);
 
-    this.bidAmountPlaceholder = this.props.intl.formatMessage({id: 'label.your-max-bid'});
+    this.bidAmountPlaceholder = intl.formatMessage({ id: 'label.your-max-bid' });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.wholePrice !== this.state.wholePrice) {
+    const {
+      wholePrice, vin, carId, saleDate,
+    } = this.state;
+
+    if (nextProps.wholePrice !== wholePrice) {
       this.setState({ wholePrice: nextProps.wholePrice });
     }
 
-    if (nextProps.vin !== this.state.vin) {
+    if (nextProps.vin !== vin) {
       this.setState({ vin: nextProps.vin });
     }
 
-    if (nextProps.carId !== this.state.carId) {
+    if (nextProps.carId !== carId) {
       this.setState({ carId: nextProps.carId });
     }
 
-    if (nextProps.saleDate !== this.state.saleDate) {
+    if (nextProps.saleDate !== saleDate) {
       this.setState({ saleDate: nextProps.saleDate });
     }
   }
@@ -120,9 +124,6 @@ class BidPanel extends React.Component {
       intendedBid,
       bidPlacingFailed,
     } = this.state;
-
-    console.log('Placeholder >>>>>> ');
-    console.log(this.bidAmountPlaceholder);
 
     return (
       <>

@@ -4,14 +4,12 @@ import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { DefaultTheme } from '../../Defaults';
-import ScaleText from 'react-scale-text';
-import { withRouter } from 'react-router-dom';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import { FormattedMessage } from 'react-intl';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -114,7 +112,7 @@ const DetailedCR = styled(Container)`
 
 function pickHex(color1, color2, color3, weightRaw) {
   const weight = weightRaw > 5 ? 5 : weightRaw;
-  if (weight == null) {
+  if (weight === null) {
     return [169, 169, 169];
   } if (weight === 2.5) {
     return color2;

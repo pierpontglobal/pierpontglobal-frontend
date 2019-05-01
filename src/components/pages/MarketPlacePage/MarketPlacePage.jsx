@@ -4,17 +4,15 @@ import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-prov
 import ActionCable from 'actioncable';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styled from 'styled-components';
+import MediaQuery from 'react-responsive';
+import { CircularProgress } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
 import './styles.css';
 import PPGModal from '../../ppg-modal/PPGModal';
-import MediaQuery from 'react-responsive';
-import { CircularProgress } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { IconButton } from '@material-ui/core';
-import { FormattedMessage } from 'react-intl';
 
 const qs = require('query-string');
 
@@ -54,6 +52,9 @@ const NotFoundWrapper = styled.div`
   justify-content: center;
 `;
 
+async function requestPrice(vin) {
+  await axios.patch(`${ApiServer}/api/v1/car/price-request`, { vin });
+}
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
@@ -71,11 +72,10 @@ class MarketPlacePage extends React.Component {
       size: 0,
       openModalFilter: false,
       showOtherOptionsInModalFilter: false,
-      otherFiltersOptions: null
+      otherFiltersOptions: null,
     };
 
     this.getCars = this.getCars.bind(this);
-    this.requestPrice = this.requestPrice.bind(this);
     this.handleReceived = this.handleReceived.bind(this);
 
     this.carsSection = React.createRef();
@@ -142,7 +142,7 @@ class MarketPlacePage extends React.Component {
       };
 
       carsGroup.push(
-        <CarCard key={carObject.vim} car={carObject} requestFunction={this.requestPrice} />,
+        <CarCard key={carObject.vim} car={carObject} requestFunction={requestPrice} />,
       );
     }
 
@@ -157,7 +157,36 @@ class MarketPlacePage extends React.Component {
       if (this.state.size !== size) {
         this.carsSection.current.scrollTop = 0;
       }
+    });
+  }
 
+  showFilterPanel = () => {
+    this.setState({
+      openModalFilter: true,
+    });
+  }
+
+  onCloseModal = () => {
+    this.setState({
+      openModalFilter: false,
+    });
+  }
+
+  onFilterChange = (/* params */) => {
+    // TODO: Handle on filter change
+  }
+
+  seeAllOptions = (options) => {
+    this.setState({
+      showOtherOptionsInModalFilter: true,
+      otherFiltersOptions: options,
+    });
+  }
+
+  quitOptionsFilters = () => {
+    this.setState({
+      showOtherOptionsInModalFilter: false,
+      otherFiltersOptions: null,
     });
   }
 
@@ -166,52 +195,23 @@ class MarketPlacePage extends React.Component {
     const response = JSON.parse(message);
     const carElements = [];
     for (let j = 0; j < cars.length; j += 1) {
-      const car = cars[j].props.car;
+      const { car } = cars[j].props;
       if (car.vin === response.vin) {
         car.wholePrice = response.mmr;
       }
-      carElements.push(<CarCard key={car.vim} car={car} requestFunction={this.requestPrice} />);
+      carElements.push(<CarCard key={car.vim} car={car} requestFunction={requestPrice} />);
     }
     this.setState({ cars: carElements, loaded: true });
   }
 
-  async requestPrice(vin) {
-    await axios.patch(`${ApiServer}/api/v1/car/price-request`, { vin });
-  }
-
-  showFilterPanel = () => {
-    this.setState({
-      openModalFilter: true
-    });
-  }
-
-  onCloseModal = () => {
-    this.setState({
-      openModalFilter: false
-    });
-  }
-
-  onFilterChange = (params) => {
-    console.log(params);
-  }
-
-  seeAllOptions = (options) => {
-    this.setState({
-      showOtherOptionsInModalFilter: true,
-      otherFiltersOptions: options
-    });
-  }
-
-  quitOptionsFilters = () => {
-    this.setState({
-      showOtherOptionsInModalFilter: false,
-      otherFiltersOptions: null
-    });
-  }
-
   render() {
     const {
-      loaded, cars, carsSectionHeight, openModalFilter, showOtherOptionsInModalFilter, otherFiltersOptions
+      loaded,
+      cars,
+      carsSectionHeight,
+      openModalFilter,
+      showOtherOptionsInModalFilter,
+      otherFiltersOptions,
     } = this.state;
 
     const { cookies } = this.props;
@@ -221,19 +221,19 @@ class MarketPlacePage extends React.Component {
       // no cars found
       return (
         <NotFoundWrapper>
-          <FormattedMessage id='marketplace.not-found'/>
+          <FormattedMessage id="marketplace.not-found" />
         </NotFoundWrapper>
       );
-    } else {
-      return (
-        <div>
-          <ActionCableProvider cable={this.cable}>
-            <ActionCableConsumer
-              channel="PriceQueryChannel"
-              onReceived={this.handleReceived}
-            />
-            <MarketPlaceContainer>
-              {
+    }
+    return (
+      <div>
+        <ActionCableProvider cable={this.cable}>
+          <ActionCableConsumer
+            channel="PriceQueryChannel"
+            onReceived={this.handleReceived}
+          />
+          <MarketPlaceContainer>
+            {
                 loaded ? (
                   <SidePanel>
                     <MediaQuery minDeviceWidth={600}>
@@ -247,17 +247,17 @@ class MarketPlacePage extends React.Component {
                   </SidePanel>
                 ) : null
               }
-              <CarSection ref={this.carsSection}>
-                {
+            <CarSection ref={this.carsSection}>
+              {
                   loaded ? (
                     <div style={{ overflow: 'hidden', position: 'relative' }}>
-                      <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel}/>
+                      <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
                       <hr />
                       <InfiniteScroll
                         dataLength={cars.length}
                         next={this.getCars}
                         hasMore
-                        loader={
+                        loader={(
                           <div style={{
                             width: '100%',
                             display: 'flex',
@@ -265,14 +265,15 @@ class MarketPlacePage extends React.Component {
                             paddingTop: '10px',
                             height: '80px',
                             alignContent: 'center',
-                          }}>
+                          }}
+                          >
                             <CircularProgress />
                           </div>
-                        }
+)}
                         height={carsSectionHeight - 80}
                         endMessage={(
                           <p style={{ textAlign: 'center' }}>
-                            <b><FormattedMessage id='marketplace.end-message' /></b>
+                            <b><FormattedMessage id="marketplace.end-message" /></b>
                           </p>
                         )}
                       >
@@ -287,53 +288,53 @@ class MarketPlacePage extends React.Component {
                       paddingTop: '24px',
                       height: '80px',
                       alignContent: 'center',
-                      marginTop: '8px'
-                    }}>
+                      marginTop: '8px',
+                    }}
+                    >
                       <CircularProgress />
                     </div>
                   )
                 }
-              </CarSection>
-              <PPGModal
-                setOpen={openModalFilter}
-                handleClose={() => this.onCloseModal("openModalFilter")}
-                width="80%"
-                height="80%"
-                setPadding={false}
-                onBackAction={ (!!otherFiltersOptions) ? this.quitOptionsFilters : undefined }
-              >
-                {/* Repeating this component here is not a performance issue. This child component,
+            </CarSection>
+            <PPGModal
+              setOpen={openModalFilter}
+              handleClose={() => this.onCloseModal('openModalFilter')}
+              width="80%"
+              height="80%"
+              setPadding={false}
+              onBackAction={(otherFiltersOptions) ? this.quitOptionsFilters : undefined}
+            >
+              {/* Repeating this component here is not a performance issue. This child component,
                 of the PPGModal is only rendered when the modal is open.  */}
-                { !showOtherOptionsInModalFilter ? (
-                  <FilterPanel
-                    getCars={this.getCars}
-                    availableArguments={this.state.availableArguments}
-                    params={this.params}
-                    handleFilterChange={this.onFilterChange}
-                    onSeeAll={this.seeAllOptions}
+              { !showOtherOptionsInModalFilter ? (
+                <FilterPanel
+                  getCars={this.getCars}
+                  availableArguments={this.state.availableArguments}
+                  params={this.params}
+                  handleFilterChange={this.onFilterChange}
+                  onSeeAll={this.seeAllOptions}
+                />
+              ) : (
+                <div style={{ padding: '16px', height: '100%', overflowX: 'scroll' }}>
+                  <input
+                    className="border-0"
+                    style={{
+                      width: '300px',
+                      padding: '10px',
+                      marginBottom: '20px',
+                      borderRadius: '5px',
+                      boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
+                    }}
+                    placeholder="  Type search term"
                   />
-                ) : (
-                  <div style={{ padding: '16px', height: '100%', overflowX: 'scroll' }}>
-                     <input
-                      className="border-0"
-                      style={{
-                        width: '300px',
-                        padding: '10px',
-                        marginBottom: '20px',
-                        borderRadius: '5px',
-                        boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
-                      }}
-                      placeholder="  Type search term"
-                    />
-                    {otherFiltersOptions}
-                  </div>
-                )}
-              </PPGModal>
-            </MarketPlaceContainer>
-          </ActionCableProvider>
-        </div>
-      );
-    }
+                  {otherFiltersOptions}
+                </div>
+              )}
+            </PPGModal>
+          </MarketPlaceContainer>
+        </ActionCableProvider>
+      </div>
+    );
   }
 }
 

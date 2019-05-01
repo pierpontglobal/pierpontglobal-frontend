@@ -1,20 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
 import SettingSide from './SettingSide/SettingSide';
 import SubscriptionSide from './SubscriptionSide/SubscriptionSide';
-import AlertNotification from './Components/AlertNotification';
 import PurchaseSide from './PurchaseSide/PurchaseSide';
 import PendingSide from './PendingSide/PendingSide';
 import FinancialSide from './FinancialSide/FinancialSide';
 import TransactionsSide from './TransactionsSide/TransactionsSide';
 import NotificationTypes from '../../../constants/NotificationTypes';
 import IssueTypes from '../../../constants/IssueTypes';
-import styled from 'styled-components';
 import './styles.css';
 
 const dealerExample = {
@@ -57,7 +55,6 @@ class ProfilePage extends React.Component {
     this.state = {
       hasDealer: true,
       hasPaymentMethod: true,
-      notifications: [],
     };
 
     this.getDealer = this.getDealer.bind(this);
@@ -86,8 +83,9 @@ class ProfilePage extends React.Component {
         },
       }, () => {
         const { dealer } = this.state;
-        if (!!this.props.setDealer) {
-          this.props.setDealer(dealer);
+        const { setDealer } = this.props;
+        if (setDealer) {
+          setDealer(dealer);
         }
       });
     }
@@ -103,46 +101,44 @@ class ProfilePage extends React.Component {
     }
   }
 
+  sendNotification = (notificationDto) => {
+    axios.post(`${ApiServer}/api/v1/notification`, { ...notificationDto });
+  }
+
+  checkNotifications = async () => {
+    const subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
+    const cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
+
+    const notificationDto = {
+      title: 'Account incomplete',
+      message: 'Please, add a subscription to this account. You won\'t be able to place bids until its complete.',
+      payload: subscriptions,
+      type: NotificationTypes.alert,
+      issue_id: undefined,
+    };
+
+    if (subscriptions === undefined) {
+      this.sendNotification(notificationDto);
+    } else if (!!subscriptions && !subscriptions.active) {
+      this.sendNotification(notificationDto);
+    }
+
+    if (cards === undefined) {
+      notificationDto.payload = cards;
+      notificationDto.message = 'Please, add your card information to your account. You won\'t be able to process any payment before its complete.';
+      notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
+      this.sendNotification(notificationDto);
+    }
+  }
+
   openDealerCreator() {
     this.setState({
       hasDealer: false,
     });
   }
 
-  sendNotification = (notificationDto) => {
-    axios.post(`${ApiServer}/api/v1/notification`, {...notificationDto});
-  }
-
-  checkNotifications = async () => {
-
-    let subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
-    let cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
-
-    let notificationDto = {
-      title: 'Account incomplete',
-      message: `Please, add a subscription to this account. You won't be able to place bids until its complete.`,
-      payload: subscriptions,
-      type: NotificationTypes.alert,
-      issue_id: undefined
-    }
-
-    if (subscriptions == undefined) {
-      this.sendNotification(notificationDto);
-    } else if (!!subscriptions && !subscriptions.active) {
-      this.sendNotification(notificationDto);
-    }
-
-    if (cards == undefined) {
-      notificationDto.payload = cards;
-      notificationDto.message = `Please, add your card information to your account. You won't be able to process any payment before its complete.`;
-      notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
-      this.sendNotification(notificationDto);
-    }
-  }
-
   render() {
     const {
-      notifications,
       hasDealer,
       dealer,
       hasPaymentMethod,
@@ -177,10 +173,6 @@ class ProfilePage extends React.Component {
     );
   }
 }
-
-ProfilePage.propTypes = {
-  cookies: PropTypes.object,
-};
 
 ProfilePage.defaultProps = {
   cookies: {},

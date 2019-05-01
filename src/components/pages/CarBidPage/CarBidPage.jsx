@@ -2,6 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import { ActionCableProvider } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
+import styled from 'styled-components';
+import MediaQuery from 'react-responsive';
+import DirectionsCar from '@material-ui/icons/DirectionsCar';
+import Info from '@material-ui/icons/Info';
 import CarDetailCard from '../../CarDetailCard/CarDetailCard';
 import CarDetailTable from '../../CarDetailTable/CarDetailTable';
 import BidPanel from '../../BidPanel/BidPanel';
@@ -11,10 +15,6 @@ import CarCarousel from '../../CarCarousel/CarCarousel';
 import UserBidCard from '../../UserBidCard/UserBidCard';
 import { ApiServer } from '../../../Defaults';
 import TabsComponent from '../../Tabs/TabsComponent';
-import styled from 'styled-components';
-import MediaQuery from 'react-responsive';
-import DirectionsCar from '@material-ui/icons/DirectionsCar';
-import Info from '@material-ui/icons/Info';
 
 const qs = require('query-string');
 
@@ -121,23 +121,36 @@ class CarBidPage extends React.Component {
 
     const firstTabContent = (
       <div>
-        <div style={{ marginTop: '-15px' }} style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{
+          marginTop: '-15px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+        >
           <div
-            style={{ 
+            style={{
               display: 'flex',
               flexDirection: 'column',
-              width: '100%', 
+              width: '100%',
             }}
           >
             {userBid !== undefined
               ? <UserBidCard bid={userBid} />
-              : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
+              : (
+                <BidPanel
+                  updateUserBidCallback={this.updateUserBidCallback}
+                  carId={car.id}
+                  vin={car.vin}
+                  saleDate={car.saleDate}
+                  wholePrice={car.wholePrice}
+                />
+              )}
             <LocationBar
               currentLocation={car.location}
               transportPrice="277"
               to="to Port Miami, FL"
             />
-            <CarCarousel maxWidth='100%' images={car.images} />
+            <CarCarousel maxWidth="100%" images={car.images} />
           </div>
         </div>
         <CarBottomNav
@@ -182,13 +195,21 @@ class CarBidPage extends React.Component {
                 >
                   {userBid !== undefined
                     ? <UserBidCard bid={userBid} />
-                    : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
+                    : (
+                      <BidPanel
+                        updateUserBidCallback={this.updateUserBidCallback}
+                        carId={car.id}
+                        vin={car.vin}
+                        saleDate={car.saleDate}
+                        wholePrice={car.wholePrice}
+                      />
+                    )}
                   <LocationBar
                     currentLocation={car.location}
                     transportPrice="277"
                     to="to Port Miami, FL"
                   />
-                  <CarCarousel maxWidth='720px' images={car.images} />
+                  <CarCarousel maxWidth="720px" images={car.images} />
                 </div>
               </div>
               <CarBottomNav

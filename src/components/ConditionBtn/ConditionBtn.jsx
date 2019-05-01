@@ -43,7 +43,7 @@ const ConditionBtnWrapper = styled.div`
 `;
 
 function pickHex(color1, color2, color3, weight) {
-  if (weight == null) {
+  if (weight === null) {
     return [169, 169, 169];
   } if (weight === 2.5) {
     return color2;
