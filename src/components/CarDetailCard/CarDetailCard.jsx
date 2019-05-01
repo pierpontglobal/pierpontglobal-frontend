@@ -18,7 +18,7 @@ const ContentText = ({ children, className = 'mb-0' }) => (
 
 function pickHex(color1, color2, color3, weightRaw) {
   const weight = weightRaw > 5 ? 5 : weightRaw;
-  if (weight == null) {
+  if (weight === null) {
     return [169, 169, 169];
   } if (weight === 2.5) {
     return color2;

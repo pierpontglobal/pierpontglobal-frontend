@@ -1,32 +1,21 @@
 import React from 'react';
 import Img from 'react-image';
-import MenuDrawer from './MenuDrawer/MenuDrawer';
-import AccountManager from '../support/AccountManager';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
 import BurgerIcon from '@material-ui/icons/Menu';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
 import SignInModal from '../support/SignInModal/SignInModal';
-import {FormattedMessage} from 'react-intl';
+import AccountManager from '../support/AccountManager';
+import MenuDrawer from './MenuDrawer/MenuDrawer';
 import LanguageSwitch from './language-switch/LanguageSwitch';
 
-const style = {
-  backgroundColor: '#fafafa',
-  boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.09)',
-  border: 'solid 0.5px rgba(0, 0, 0, 0.12)',
-  position: 'fixed',
-  height: '58px',
-  top: 0,
-  overflow: 'show',
-  zIndex: 1000,
-};
-
-const styles = theme => ({
+const styles = () => ({
   iconButton: {
-    "&:hover": {
-      backgroundColor: 'rgba(0, 0, 0, 0);'
-    }
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0);',
+    },
   },
 });
 
@@ -134,6 +123,10 @@ class AppNav extends React.Component {
     });
   }
 
+  goTo = (path) => {
+    this.props.history.push(`/${path}`);
+  }
+
   optionClick(url) {
     if (url) {
       this.props.history.push(url);
@@ -149,10 +142,6 @@ class AppNav extends React.Component {
     });
   }
 
-  goTo = (path) => {
-    this.props.history.push(`/${path}`);
-  }
-
   showSignIn(status) {
     this.setState({
       showModal: status,
@@ -160,8 +149,12 @@ class AppNav extends React.Component {
   }
 
   render() {
-    const { showModal } = this.state;
-    const { cookies, classes, dealer, languages, setLang } = this.props;
+    const { showModal, menuOpen } = this.state;
+    const {
+      dealer,
+      languages,
+      setLang,
+    } = this.props;
 
     const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
@@ -170,7 +163,7 @@ class AppNav extends React.Component {
         <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
         <NavItems userIsLoggedIn={userIsLoggedIn}>
           <MenuDrawer
-            open={this.state.menuOpen}
+            open={menuOpen}
             onMaskClick={this.onTouchEnd}
             afterOptionclick={this.optionClick}
             showSignIn={() => { this.showSignIn(true); }}
@@ -181,7 +174,7 @@ class AppNav extends React.Component {
             <BurgerBtn onClick={this.openMenuSide}>
               <BurgerIcon />
             </BurgerBtn>
-            <LogoWrapper onClick={() => this.goTo('')} >
+            <LogoWrapper onClick={() => this.goTo('')}>
               <Img
                 style={{
                   width: '100%',
@@ -204,17 +197,17 @@ class AppNav extends React.Component {
           </MenuLogoWrapper>
 
           <div className="menu-sider" id="nav-bar-sub-menu">
-            <LinkBtn onClick={ () => this.goTo('') }>
+            <LinkBtn onClick={() => this.goTo('')}>
               <FormattedMessage id="navbar.home" />
             </LinkBtn>
-            <LinkBtn onClick={ () => this.goTo('marketplace') }>
+            <LinkBtn onClick={() => this.goTo('marketplace')}>
               <FormattedMessage id="navbar.market" />
             </LinkBtn>
-            <LinkBtn onClick={ () => this.goTo('contact-us') }>
+            <LinkBtn onClick={() => this.goTo('contact-us')}>
               <FormattedMessage id="navbar.contact-us" />
             </LinkBtn>
           </div>
-          
+
           <ButtonsWrapper>
             <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
             <LanguageSwitch setLang={setLang} languages={languages} />
