@@ -1,5 +1,4 @@
 import React from 'react';
-import Text from '../../styles/Text/Text';
 import { injectIntl, FormattedMessage } from 'react-intl';
 
 function numberWithCommas(x) {
@@ -59,7 +58,7 @@ class PriceTag extends React.Component {
       price, className, requesting, vin, color, fontSizeButton,
     } = this.state;
 
-    this.requestPriceLb = this.props.intl.formatMessage({id: 'label.request-price'});
+    this.requestPriceLb = this.props.intl.formatMessage({ id: 'label.request-price' });
 
     if (price) {
       return (

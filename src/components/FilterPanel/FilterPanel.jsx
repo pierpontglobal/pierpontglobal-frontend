@@ -1,6 +1,5 @@
 import React from 'react';
 import posed from 'react-pose';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { injectIntl } from 'react-intl';
 import Item from './Item/Item';
@@ -270,12 +269,6 @@ class FilterPanel extends React.Component {
     );
   }
 }
-
-FilterPanel.propTypes = {
-  getCars: PropTypes.func,
-  availableArguments: PropTypes.object,
-  params: PropTypes.object,
-};
 
 FilterPanel.defaultProps = {
   getCars: () => {},

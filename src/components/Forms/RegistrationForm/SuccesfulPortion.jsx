@@ -2,9 +2,9 @@ import axios from 'axios';
 import React from 'react';
 import { BarLoader } from 'react-spinners';
 import { css } from 'emotion';
+import { FormattedMessage } from 'react-intl';
 import Text from '../../styles/Text/Text';
 import { ApiServer } from '../../../Defaults';
-import { FormattedMessage } from 'react-intl';
 
 const override = css`
     display: block;
@@ -13,7 +13,7 @@ const override = css`
     width: 300px;
 `;
 
-class SuccessfullPortion extends React.Component {
+class SuccessfulPortion extends React.Component {
   constructor(props) {
     super(props);
     const { loading, textColor, email } = this.props;
@@ -32,6 +32,9 @@ class SuccessfullPortion extends React.Component {
     }
     if (props.textColor !== this.state.textColor) {
       this.setState({ textColor: props.textColor });
+    }
+    if (props.email !== this.state.email) {
+      this.setState({ email: props.email });
     }
   }
 
@@ -86,7 +89,7 @@ class SuccessfullPortion extends React.Component {
           padding: '10px',
         }}
         >
-          <FormattedMessage id='success-register.account-almost-ready' />
+          <FormattedMessage id="success-register.account-almost-ready" />
         </Text>
         <p style={{
           color: textColor,
@@ -94,12 +97,12 @@ class SuccessfullPortion extends React.Component {
           padding: '10px',
         }}
         >
-          <FormattedMessage id='success-register.message-sent' />
+          <FormattedMessage id="success-register.message-sent" />
           {' '}
           {email}
           {' '}
           <br />
-          <FormattedMessage id='success-register.check-email' />
+          <FormattedMessage id="success-register.check-email" />
         </p>
         <p style={{
           color: textColor,
@@ -107,7 +110,7 @@ class SuccessfullPortion extends React.Component {
           padding: '10px',
         }}
         >
-          <FormattedMessage id='success-register.verify-spam-folder' />
+          <FormattedMessage id="success-register.verify-spam-folder" />
           {' '}
           <button
             style={{
@@ -123,14 +126,14 @@ class SuccessfullPortion extends React.Component {
             type="button"
             onClick={() => (this.resend(email))}
           >
-          <FormattedMessage id='success-register.resend' />
+            <FormattedMessage id="success-register.resend" />
           </button>
           {' '}
-          <FormattedMessage id='success-register.to-try-again' />
+          <FormattedMessage id="success-register.to-try-again" />
         </p>
       </div>
     );
   }
 }
 
-export default SuccessfullPortion;
+export default SuccessfulPortion;

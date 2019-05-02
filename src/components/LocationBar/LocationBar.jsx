@@ -1,8 +1,7 @@
 import React from 'react';
-import Text from '../styles/Text/Text';
-import Span from '../styles/Span/Span';
-import TransportDetailsModal from '../pages/CarBidPage/TransportDetailsModal';
 import styled from 'styled-components';
+import Text from '../styles/Text/Text';
+import TransportDetailsModal from '../pages/CarBidPage/TransportDetailsModal';
 
 const LocationBarWrapper = styled.div`
   display: flex;
@@ -77,7 +76,13 @@ function LocationBar({ currentLocation, to }) {
               </span>
             </div>
           </TransportTitleModal>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+          <div style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginTop: '8px',
+          }}
+          >
             <span style={{ fontSize: '0.75em', fontStyle: 'italic' }}>
               {to}
             </span>

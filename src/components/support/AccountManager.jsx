@@ -1,11 +1,9 @@
 import React from 'react';
 import { withCookies } from 'react-cookie';
-import SignInModal from './SignInModal/SignInModal';
 import './styles.css';
-import NotificatinBadge from '../AppNav/notification-badge/NotificatinBadge';
-import Person from '@material-ui/icons/Person';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
+import NotificatinBadge from '../AppNav/notification-badge/NotificatinBadge';
 
 const UserInfoWrapper = styled.div`
   display: flex;
@@ -19,11 +17,6 @@ class AccountManager extends React.Component {
     super(props);
 
     this.getDisplayable = this.getDisplayable.bind(this);
-    this.setClosed = this.setClosed.bind(this);
-  }
-
-  setClosed() {
-    this.setState({ showModal: false });
   }
 
   // TODO: Verify token validation and re logging if necessary
@@ -38,11 +31,11 @@ class AccountManager extends React.Component {
           <NotificatinBadge />
           <button
             type="button"
-            onClick={() => { this.props.history.push('/user')}}
+            onClick={() => { this.props.history.push('/user'); }}
             className="sign_in_button"
           >
             <i className="far fa-user" id="inner-sign-in-icon" />
-              <FormattedMessage id="label.profile" />
+            <FormattedMessage id="label.profile" />
           </button>
         </UserInfoWrapper>
       );
@@ -55,7 +48,7 @@ class AccountManager extends React.Component {
         onClick={this.props.showSignIn}
       >
         <i className="far fa-user" id="inner-sign-in-icon" />
-          <FormattedMessage id='label.sign-in' />
+        <FormattedMessage id="label.sign-in" />
       </button>
     );
   }
