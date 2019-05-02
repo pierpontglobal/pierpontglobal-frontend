@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import { CookiesProvider } from 'react-cookie';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-bootstrap-carousel/dist/react-bootstrap-carousel.css';
+import { IntlProvider } from 'react-intl';
 import App from './App';
-import { IntlProvider, addLocaleData } from "react-intl";
 
 ReactDOM.render(
-  <IntlProvider>
+  <IntlProvider locale="en">
     <CookiesProvider>
       <App />
     </CookiesProvider>

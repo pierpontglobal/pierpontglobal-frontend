@@ -3,16 +3,15 @@ import { withCookies } from 'react-cookie';
 import styled from 'styled-components';
 import Close from '@material-ui/icons/Close';
 import { IconButton, Button } from '@material-ui/core';
-import { identity } from 'rxjs';
 import axios from 'axios';
-import { ApiServer } from '../../Defaults';
 import posed, { PoseGroup } from 'react-pose';
-import NotificationsType from '../../constants/NotificationTypes';
 import { injectIntl } from 'react-intl';
+import { ApiServer } from '../../Defaults';
+import NotificationsType from '../../constants/NotificationTypes';
 
 const Card = posed.div({
   enter: { opacity: 1 },
-  exit: { opacity: 0 }
+  exit: { opacity: 0 },
 });
 
 const NotificationCard = styled(Card)`
@@ -27,7 +26,7 @@ const NotificationCard = styled(Card)`
   overflow: hidden;
   &:hover {
     cursor: pointer;
-    border-left: thick double ${props => (props.type === NotificationsType.alert) ? '#ff6666' : '#6594cd'};
+    border-left: thick double ${props => ((props.type === NotificationsType.alert) ? '#ff6666' : '#6594cd')};
     transition: 0.19s;
   }
 `;
@@ -83,8 +82,7 @@ class Notifications extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      algo: [],
-    }
+    };
     const { intl } = this.props;
     this.labels = {
       notifications: intl.formatMessage({ id: 'notification.notifications' }),
@@ -93,66 +91,76 @@ class Notifications extends Component {
   }
 
   componentDidMount = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
-
+    axios.defaults.headers.common.Authorization = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
   }
 
   showDetail = (id) => {
-    axios.post(`${ApiServer}/api/v1/notification/read?id=${id}`).then(data => {
+    axios.post(`${ApiServer}/api/v1/notification/read?id=${id}`).then((data) => {
       this.animateCardExit(id);
-      console.log('Notification >>');
-      console.log(data.data);
+      // console.log('Notification >>');
+      // console.log(data.data);
       this.props.onRead(data.data);
       this.props.onClose();
     });
   }
 
-  animateCardExit = id => {
+  animateCardExit = (/* id */) => {
     // TODO: Fade exit transition for selected card
   }
 
   readAll = () => {
-    let ids = this.props.notifications.map(n => n.id);
-    axios.post(`${ApiServer}/api/v1/notification/read_all`,{
-      ids: ids
-    }).then(data => {
+    const ids = this.props.notifications.map(n => n.id);
+    axios.post(`${ApiServer}/api/v1/notification/read_all`, {
+      ids,
+    }).then((data) => {
       this.props.onReadAll(data.data);
     });
   }
 
   render() {
     const { notifications } = this.props;
-    console.log(notifications);
+    // console.log(notifications);
     return (
-     <Wrapper>
-      <TitleWrapper>
-        <span style={{ fontWeight: '600' }}>{ this.labels.notifications }</span>
-        <IconButton onClick={this.props.onClose}>
-          <Close color="secondary" />
-        </IconButton>
-      </TitleWrapper>
-      <NotificationsWrapper>
-        <ActionsButtons>
-          <TotalShow>{ notifications.length }</TotalShow>
-          <Button onClick={this.readAll}>{ this.labels.markAllAsRead }</Button>
-        </ActionsButtons>
-        <PoseGroup>
-          {
-            notifications.map((n) => {
-              return (
-                <NotificationCard type={n.notification_type} key={n.id} onClick={() => this.showDetail(n.id)}>
-                  <div><span style={{ fontSize: '0.90rem', fontWeight: '600' }}>{ n.data.title }</span></div>
-                  <div style={{ overflowY: 'scroll' }}><span style={{ fontSize: '0.85rem' }}>{ n.data.message }</span></div>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', width: '100%', fontStyle: 'italic' }}><span style={{ fontSize: '0.75rem', marginTop: '4px' }}>{ new Date(n.data.sent_date).toDateString() }</span></div>
+      <Wrapper>
+        <TitleWrapper>
+          <span style={{ fontWeight: '600' }}>{this.labels.notifications}</span>
+          <IconButton onClick={this.props.onClose}>
+            <Close color="secondary" />
+          </IconButton>
+        </TitleWrapper>
+        <NotificationsWrapper>
+          <ActionsButtons>
+            <TotalShow>{notifications.length}</TotalShow>
+            <Button onClick={this.readAll}>{this.labels.markAllAsRead}</Button>
+          </ActionsButtons>
+          <PoseGroup>
+            {
+              notifications.map(n => (
+                <NotificationCard
+                  type={n.notification_type}
+                  key={n.id}
+                  onClick={() => this.showDetail(n.id)}
+                >
+                  <div><span style={{ fontSize: '0.90rem', fontWeight: '600' }}>{n.data.title}</span></div>
+                  <div style={{ overflowY: 'scroll' }}><span style={{ fontSize: '0.85rem' }}>{n.data.message}</span></div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-end',
+                    width: '100%',
+                    fontStyle: 'italic',
+                  }}
+                  >
+                    <span style={{ fontSize: '0.75rem', marginTop: '4px' }}>
+                      {new Date(n.data.sent_date).toDateString()}
+                    </span>
+                  </div>
                 </NotificationCard>
-              );
-            })
-          } 
-        </PoseGroup>
-      </NotificationsWrapper>
-     </Wrapper>
+              ))
+            }
+          </PoseGroup>
+        </NotificationsWrapper>
+      </Wrapper>
     );
   }
 }

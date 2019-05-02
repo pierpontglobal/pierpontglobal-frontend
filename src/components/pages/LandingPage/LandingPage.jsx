@@ -1,22 +1,17 @@
 import React from 'react';
 import Img from 'react-image';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import VideoBar from '../../Bars/VideoBar';
 import Registration from '../../Forms/RegisterForm';
 import ManheimLogo from './manheim.png';
 import './font/flaticon.css';
 import './landing_page.css';
 import Button from '../../Btn/Btn';
-import Notifications from '../../notifications/Notifications';
-import { FormattedMessage, injectIntl } from 'react-intl';
 
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    const { intl } = this.props;
     this.state = {};
-    this.lables = {
-
-    } 
   }
 
   render() {
@@ -26,7 +21,6 @@ class LandingPage extends React.Component {
         <Registration
           textColor="#ffffff"
           height="500px"
-          background="rgb(65,77,93)"
           background="linear-gradient(0deg, rgba(65,77,93,1) 0%, #3e78c0 100%)"
           openModal={this.openModal}
         />
@@ -230,7 +224,7 @@ class LandingPage extends React.Component {
             ]}
             loader={
               <div style={{ width: '100%', height: '100px', background: '#dedede' }} />
-                  }
+            }
           />
 
           <div style={{
@@ -241,7 +235,7 @@ class LandingPage extends React.Component {
           <div style={{ position: 'absolute' }} className="cards-holder-1">
             <div style={{ color: '#ffffff' }} className="column-1">
               <p className="big-title">
-              <FormattedMessage id="landing.what-makes-unique" />
+                <FormattedMessage id="landing.what-makes-unique" />
               </p>
               <p style={{ fontSize: '16px', textAlign: 'center', maxWidth: '350px' }} className="subtitle-follow-up">
                 <FormattedMessage id="landing.what-makes-unique-text" />
@@ -361,7 +355,7 @@ class LandingPage extends React.Component {
                 </p>
 
                 <p>
-                <FormattedMessage id="landing.customs-text" />
+                  <FormattedMessage id="landing.customs-text" />
                 </p>
               </div>
             </div>
@@ -403,7 +397,7 @@ class LandingPage extends React.Component {
             ]}
             loader={
               <div style={{ width: '100%', height: '100px', background: '#dedede' }} />
-                  }
+            }
           />
 
           <div style={{
@@ -444,7 +438,7 @@ class LandingPage extends React.Component {
                 <FormattedMessage id="landing.sign-me-up" />
               </Button>
               <p style={{ textAlign: 'center' }}>
-              <FormattedMessage id="landing.by-continuing" />
+                <FormattedMessage id="landing.by-continuing" />
                 <br />
                 <FormattedMessage id="landing.terms-of-use" />
               </p>
