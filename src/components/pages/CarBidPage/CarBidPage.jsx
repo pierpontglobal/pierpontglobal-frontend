@@ -60,7 +60,6 @@ class CarBidPage extends React.Component {
 
   async getBids(carId) {
     const response = (await axios.get(`${ApiServer}/api/v1/car/bid?car_id=${carId}`)).data;
-    console.log(response);
     this.setState({
       userBid: parseFloat(response.amount),
     });

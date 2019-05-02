@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import AccountFields from './RegistrationForm/AccountFields';
-import SuccessfulPortion from './RegistrationForm/SuccesfullPortion';
+import SuccessfulPortion from './RegistrationForm/SuccesfulPortion';
 
 const Wrapper = styled.div`
   height: ${props => props.height};
@@ -34,7 +34,6 @@ class Registration extends React.Component {
     this.state = {
       step: 1,
       loading: true,
-      openModal: false,
     };
 
     this.textColor = this.props.textColor ? this.props.textColor : '#000000';
@@ -45,17 +44,17 @@ class Registration extends React.Component {
   }
 
   openModal() {
-    this.setState({ openModal: true });
+    this.setState({ });
   }
 
   closeModal() {
-    this.setState({ openModal: false });
+    this.setState({ });
   }
 
   nextView() {
-    this.setState({
-      step: this.state.step + 1,
-    });
+    this.setState(prevState => ({
+      step: prevState.step + 1,
+    }));
   }
 
   loadingScreenState() {
@@ -66,8 +65,8 @@ class Registration extends React.Component {
 
   render() {
     const { loading } = this.state;
-    switch (this.state.step) {
-      case 1: return (
+    if (this.state.step === 1) {
+      return (
         <Wrapper height={this.props.height} background={this.props.background}>
           <AccountFields
             textColor={this.textColor}
@@ -77,32 +76,18 @@ class Registration extends React.Component {
           />
         </Wrapper>
       );
-      default:
-        if (loading === true) {
-          return (
-
-            <Wrapper height={this.props.height} background={this.props.background}>
-              <SuccessfulPortion
-                email={fieldValues.email}
-                loading
-                fieldValues={fieldValues}
-                signInElement={this.openModal}
-              />
-            </Wrapper>
-          );
-        }
-        return (
-
-          <Wrapper height={this.props.height} background={this.props.background}>
-            <SuccessfulPortion
-              email={fieldValues.email}
-              textColor={this.textColor}
-              fieldValues={fieldValues}
-              signInElement={this.openModal}
-            />
-          </Wrapper>
-        );
     }
+    return (
+      <Wrapper height={this.props.height} background={this.props.background}>
+        <SuccessfulPortion
+          email={fieldValues.email}
+          loading={loading}
+          textColor={this.textColor}
+          fieldValues={fieldValues}
+          signInElement={this.openModal}
+        />
+      </Wrapper>
+    );
   }
 }
 

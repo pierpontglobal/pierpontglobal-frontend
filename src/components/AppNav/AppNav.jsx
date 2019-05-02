@@ -209,7 +209,10 @@ class AppNav extends React.Component {
           </div>
 
           <ButtonsWrapper>
-            <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
+            <AccountManager
+              history={this.props.history}
+              showSignIn={() => { this.showSignIn(true); }}
+            />
             <LanguageSwitch setLang={setLang} languages={languages} />
           </ButtonsWrapper>
         </NavItems>

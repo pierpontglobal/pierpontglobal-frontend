@@ -1,5 +1,4 @@
 import React from 'react';
-import Container from '../styles/Container/Container';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
@@ -62,9 +61,8 @@ function pickHex(color1, color2, color3, weight) {
     Math.round(color1[2] * w1 + color2[2] * w2)];
   return rgb;
 }
-     
 
-function ConditionBtn({ label, score }) {
+function ConditionBtn({ score }) {
   const hexColor = pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], score).join();
   return (
     <ConditionBtnWrapper>

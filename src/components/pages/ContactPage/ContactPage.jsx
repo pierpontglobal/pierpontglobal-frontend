@@ -33,7 +33,6 @@ const PageWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 16px;
 `;
 
 const Header = styled.div`
@@ -100,7 +99,6 @@ const InfoBox = styled.div`
   align-items: center;
   @media only screen and (min-width: 768px) {
     justify-content: flex-start;
-    margin-top: 16px;
   }
 `;
 
@@ -139,7 +137,6 @@ const MapsBox = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
-  margin-top: 16px;
 `;
 
 const Wrap = styled.div`
@@ -203,8 +200,7 @@ class ContactPage extends Component {
         phone: phone.value,
         company: company.value,
         message: message.value,
-      }).then((data) => {
-        console.log(data);
+      }).then(() => {
         this.setState({
           sendingMessage: false,
           sent: true,
@@ -214,8 +210,7 @@ class ContactPage extends Component {
           company: { error: false, value: '' },
           message: { error: false, value: '' },
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         this.setState({
           sendingMessage: false,
           sent: false,
@@ -234,7 +229,6 @@ class ContactPage extends Component {
     }
 
     if (validEmail && message.value.length >= 10 && name.value.length > 0) {
-      console.log(name, email, phone, company, message);
       this.sendMessage({
         message: {
           name: name.value,
@@ -279,7 +273,7 @@ class ContactPage extends Component {
   }
 
   validateEmail = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
 
@@ -327,6 +321,13 @@ class ContactPage extends Component {
       miamiFlorida: intl.formatMessage({ id: 'country.miami-florida' }),
     };
 
+    let sendingLabel = this.labels.toSend;
+    if (sendingMessage) {
+      sendingLabel = this.labels.sending;
+    } else if (sent) {
+      sendingLabel = this.labels.sent;
+    }
+
     return (
       <PageWrapper>
         <Header>
@@ -365,11 +366,7 @@ class ContactPage extends Component {
                 }}
                 >
                   <span style={{ fontStyle: 'italic' }}>
-                    {
-                    (sendingMessage)
-                      ? this.labels.sending
-                      : (sent) ? this.labels.sent : this.labels.toSend
-                  }
+                    { sendingLabel }
                   </span>
                   <MessageIcon />
                 </div>

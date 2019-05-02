@@ -1,24 +1,25 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable react/jsx-closing-tag-location */
 import React from 'react';
-import { StripeProvider } from 'react-stripe-elements';
 import axios from 'axios';
 import Chart from 'chart.js';
 import Select from '@material-ui/core/Select';
 import './style.css';
-import { Elements } from 'react-stripe-elements';
+import { Elements, StripeProvider } from 'react-stripe-elements';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import styled from 'styled-components';
+import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
+import { Button } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
 import AddDeposit from './Components/Modals/AddDeposit';
 import { ApiServer, StripeKey } from '../../../../Defaults';
 import CreateCard from './Components/Modals/CreateCard';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import UnderLine from '../../../Underline/Underline';
-import styled from 'styled-components';
-import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
-import CancelIcon from '@material-ui/icons/CancelOutlined';
-import {Button} from '@material-ui/core';
-import { FormattedMessage } from 'react-intl';
 
 const HeadingStyle = styled.div`
   font-size: 1em;
@@ -103,6 +104,11 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+async function removeCard(cardToken) {
+  await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`);
+  window.location.reload();
+}
+
 export default class SettingSide extends React.Component {
   constructor(props) {
     super(props);
@@ -118,7 +124,6 @@ export default class SettingSide extends React.Component {
       funds: 0,
     };
     this.paymentMethods = this.paymentMethods.bind(this);
-    this.removeCard = this.removeCard.bind(this);
     this.getDefaultPaymentMethod = this.getDefaultPaymentMethod.bind(this);
     this.handleCardChange = this.handleCardChange.bind(this);
     this.getUser = this.getUser.bind(this);
@@ -156,6 +161,71 @@ export default class SettingSide extends React.Component {
       address: `${responseUser.address.primary_address} ${responseUser.address.secondary_address}, ${responseUser.address.zip_code}, ${responseUser.address.city} ${responseUser.address.country}`,
       email: `${responseUser.email}`,
       phone: `${responseUser.phone_number}`,
+    });
+  }
+
+  onDepositSuccess = () => {
+    this.getFunds();
+  }
+
+  onEditProfileInfo = () => {
+    this.setState(
+      prevState => (
+        {
+          editable: !prevState.editable,
+          unEditedInfo: {
+            name: prevState.name,
+            email: prevState.email,
+            address: prevState.address,
+            phone: prevState.phone,
+          },
+        }
+      ),
+    );
+  }
+
+  onCancelEditProfile = () => {
+    const { unEditedInfo } = this.state;
+    this.setState({
+      editable: false,
+      unEditedInfo: {},
+      name: unEditedInfo.name,
+      address: unEditedInfo.address,
+      email: unEditedInfo.email,
+      phone: unEditedInfo.phone,
+    });
+  }
+
+  onSaveEditProfile = () => {
+    // Validate info
+    // Make API CALL to save new info
+    // url:  PATCH: ${ApiServer}/api/v1/user
+    const {
+      name,
+      address,
+      email,
+      phone,
+    } = this.state;
+
+    const names = name.split(' ');
+    const user = {
+      first_name: names[0],
+      last_name: names.slice(1, names.length).join(' '),
+      email,
+      phone_number: phone,
+      address,
+    };
+    axios.patch(`${ApiServer}/api/v1/user`, { user }).then(() => {
+      this.setState({
+        editable: false,
+      });
+    }, () => {
+    });
+  }
+
+  onEditProfileChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value,
     });
   }
 
@@ -249,33 +319,32 @@ export default class SettingSide extends React.Component {
       cardsNumbers.push({
         key: card.id,
         value: card.id,
-        text:
-  <span style={{ fontSize: '15px' }}>
-    {brandSmall}
-    {' '}
-    {card.last4}
-  </span>,
+        text: <span style={{ fontSize: '15px' }}>
+          {brandSmall}
+          {' '}
+          {card.last4}
+        </span>,
       });
 
       const view = (
         <CardHolderLarge key={i}>
-            <CardBrand>
-              {brand}
-            </CardBrand>
-            <CardNumber>
-              XXXX-XXXX-XXXX-
-              {card.last4}
-            </CardNumber>
-            <CardExpDate>
-              {card.exp_month}
-              {' '}
-              /
-              {' '}
-              {card.exp_year}
-            </CardExpDate>
+          <CardBrand>
+            {brand}
+          </CardBrand>
+          <CardNumber>
+            XXXX-XXXX-XXXX-
+            {card.last4}
+          </CardNumber>
+          <CardExpDate>
+            {card.exp_month}
+            {' '}
+            /
+            {' '}
+            {card.exp_year}
+          </CardExpDate>
 
-            <CardActionButtons>
-              {/* <button className="simple-view">
+          <CardActionButtons>
+            {/* <button className="simple-view">
                 <i style={{ color: '#3a7abf', fontSize: '12px' }} className="fas fa-pen" />
                 <span style={{ color: '#3a7abf', fontSize: '12px', margin: 0 }}>
                   {'  '}
@@ -283,20 +352,20 @@ export default class SettingSide extends React.Component {
                 </span>
               </button> */}
 
-              <Button
-                type="button"
-                onClick={(node) => {
-                  node.target.style.cursor = 'wait';
-                  this.removeCard(card.id);
-                }}
-              >
-                <i style={{ color: '#3a7abf', fontSize: '12px', marginRight: '8px' }} className="fas fa-trash-alt" />
-                <span style={{ color: '#3a7abf', fontSize: '12px', margin: 0 }}>
-                  {'  '}
-                  Delete
-                </span>
-              </Button>
-            </CardActionButtons>
+            <Button
+              type="button"
+              onClick={(node) => {
+                node.target.style.cursor = 'wait';
+                removeCard(card.id);
+              }}
+            >
+              <i style={{ color: '#3a7abf', fontSize: '12px', marginRight: '8px' }} className="fas fa-trash-alt" />
+              <span style={{ color: '#3a7abf', fontSize: '12px', margin: 0 }}>
+                {'  '}
+                Delete
+              </span>
+            </Button>
+          </CardActionButtons>
           <hr style={{ margin: 0 }} />
         </CardHolderLarge>
       );
@@ -321,69 +390,6 @@ export default class SettingSide extends React.Component {
     window.location.reload();
   }
 
-  async removeCard(cardToken) {
-    await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`);
-    window.location.reload();
-  }
-
-  onDepositSuccess = (data) => {
-    this.getFunds();
-  }
-
-  onEditProfileInfo = () => {
-    this.setState((prevState) => {
-      return {
-        editable: !prevState.editable,
-        unEditedInfo: {
-          name: prevState.name,
-          email: prevState.email,
-          address: prevState.address,
-          pehon: prevState.phone
-        }
-      }
-    });
-  }
-
-  onCancelEditProfile = () => {
-    const {unEditedInfo} = this.state;
-    this.setState({
-      editable: false,
-      unEditedInfo: {},
-      name: unEditedInfo.name,
-      address: unEditedInfo.address,
-      email: unEditedInfo.email,
-      phone: unEditedInfo.phone
-    });
-  }
-
-  onSaveEditProfile = () => {
-    // Validate info
-    // Make API CALL to save new info
-    // url:  PATCH: ${ApiServer}/api/v1/user
-    const { name, address, email, phone } = this.state;
-    let names = name.split(" ");
-    const user = {
-      first_name: names[0],
-      last_name: names.slice(1, names.length).join(" "),
-      email: email,
-      phone_number: phone,
-      address: address
-    }
-    axios.patch(`${ApiServer}/api/v1/user`, { user: user }).then(data => {
-      this.setState({
-        editable: false
-      });
-    }, err => {
-      console.log(err);
-    })
-  }
-
-  onEditProfileChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value
-    })
-  }
-
   render() {
     const {
       editable,
@@ -391,10 +397,6 @@ export default class SettingSide extends React.Component {
       address,
       email,
       phone,
-      onNameChange,
-      onAddressChange,
-      onEmailChange,
-      onPhoneChange,
       card,
       loading,
       funds,
@@ -429,35 +431,35 @@ export default class SettingSide extends React.Component {
               <FormattedMessage id="label.personal-info" />
             </h4>
             <div>
-              { 
+              {
                 editable
-                ? (
-                  <>
-                    <CancelIcon color="primary" style={{  }} onClick={this.onCancelEditProfile} />
-                    <CheckIcon color="accent" onClick={this.onSaveEditProfile} />
-                  </>
-                ) :
-                (
-                  <button
-                    type="button"
-                    style={{
-                      backgroundColor: '#ffffff',
-                      color: '#000000',
-                      borderRadius: '5px',
-                      padding: '10px 15px',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                    }}
-                    onClick={this.onEditProfileInfo}
-                    className="border-0 button_white"
-                  >
-                    <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
-                    {' '}
-                    <ActionButtonText>
-                      <FormattedMessage id="label.modify-personal-info" />
-                    </ActionButtonText>
-                  </button>
-                )
+                  ? (
+                    <>
+                      <CancelIcon color="primary" style={{}} onClick={this.onCancelEditProfile} />
+                      <CheckIcon color="accent" onClick={this.onSaveEditProfile} />
+                    </>
+                  )
+                  : (
+                    <button
+                      type="button"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        color: '#000000',
+                        borderRadius: '5px',
+                        padding: '10px 15px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                      }}
+                      onClick={this.onEditProfileInfo}
+                      className="border-0 button_white"
+                    >
+                      <i style={{ fontSize: '12px', color: '#000000' }} className="fas fa-pen" />
+                      {' '}
+                      <ActionButtonText>
+                        <FormattedMessage id="label.modify-personal-info" />
+                      </ActionButtonText>
+                    </button>
+                  )
               }
             </div>
           </UnderLine>
@@ -499,11 +501,11 @@ export default class SettingSide extends React.Component {
                 <MenuItem value="">
                   <em><FormattedMessage id="label.none" /></em>
                 </MenuItem>
-                { this.state.cardsNumbers.map(cardNumber => (
+                {this.state.cardsNumbers.map(cardNumber => (
                   <MenuItem value={cardNumber.key}>
                     {cardNumber.text}
                   </MenuItem>
-                )) }
+                ))}
               </Select>
             </FormControl>
             <div>
@@ -515,7 +517,7 @@ export default class SettingSide extends React.Component {
               />
             </div>
             <Card style={{ width: '100%' }}>
-              { this.state.paymentMethods }
+              {this.state.paymentMethods}
             </Card>
           </div>
         </div>

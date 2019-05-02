@@ -4,9 +4,8 @@ import { AsYouType } from 'libphonenumber-js';
 import posed from 'react-pose';
 import { TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { ApiServer } from '../../../Defaults';
 import { FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
+import { ApiServer } from '../../../Defaults';
 
 const Spinner = posed.i({
   rotate: {
@@ -27,10 +26,6 @@ const styles = {
     background: '#EEEEEE !important',
   },
 };
-
-const PrivacyPolicyLink = styled.a`
-
-`;
 
 const validator = require('email-validator');
 
@@ -80,6 +75,8 @@ class AccountFields extends React.Component {
       email,
       phone_number: phone,
     };
+
+    this.props.fieldValues.email = email;
     await axios.post(`${ApiServer}/api/v1/user/subscription`, data);
     this.props.loadinStop();
     return false;
@@ -138,12 +135,11 @@ class AccountFields extends React.Component {
       phone,
     } = this.state;
 
-    const privacyLink =
-      (
-        <a style={{ color: this.props.textColor, textDecoration: 'none', borderBottom: `2px dotted ${this.props.textColor}` }} href="https://www.iubenda.com/privacy-policy/24475288" className="iubenda-nostyle no-brand iubenda-embed" title="Privacy Policy ">
-          <FormattedMessage id="label.privacy-policy" />
-        </a>
-      );
+    const privacyLink = (
+      <a style={{ color: this.props.textColor, textDecoration: 'none', borderBottom: `2px dotted ${this.props.textColor}` }} href="https://www.iubenda.com/privacy-policy/24475288" className="iubenda-nostyle no-brand iubenda-embed" title="Privacy Policy ">
+        <FormattedMessage id="label.privacy-policy" />
+      </a>
+    );
 
     return (
       <div style={{

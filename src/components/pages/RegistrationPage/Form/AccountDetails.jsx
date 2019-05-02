@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 import PasswordField from 'material-ui-password-field';
-import { Button } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 
 class AccountDetails extends Component {
   constructor(props) {
