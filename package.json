@@ -70,9 +70,11 @@
     "react-text-mask": "^5.4.3",
     "react-timeago": "^4.3.0",
     "reactstrap": "^6.5.0",
+    "rxjs": "^6.5.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.84.0",
     "styled-components": "^4.0.2",
+    "terser": "^3.17.0",
     "uglifyjs-3-webpack-plugin": "^1.2.4",
     "whatwg-fetch": "^3.0.0",
     "yarn": "^1.13.0"

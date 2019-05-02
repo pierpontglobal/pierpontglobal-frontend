@@ -1,11 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import { injectIntl } from 'react-intl';
 import Modal from '../Modal/Modal';
 import Information from '../BidModal/Information/Information';
 import Btn from '../Btn/Btn';
 import { ApiServer } from '../../Defaults';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { InlineFunctions } from 'terser';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -20,7 +19,7 @@ class DepositModal extends React.Component {
       intendedBid,
       onSearch,
       onAddDeposit,
-      intl
+      intl,
     } = this.props;
 
     this.state = {
@@ -44,14 +43,14 @@ class DepositModal extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.getFunds();
+  }
+
   componentWillReceiveProps(newProperties) {
     if (newProperties.intendedBid !== this.state.intendedBid) {
       this.setState({ intendedBid: newProperties.intendedBid });
     }
-  }
-
-  componentDidMount() {
-    this.getFunds();
   }
 
   async getFunds() {

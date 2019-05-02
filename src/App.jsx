@@ -142,7 +142,7 @@ class App extends React.Component {
       dealer: dealer
     });
   }
-  
+
   componentWillMount() {
     const { cookies } = this.props;
 
@@ -155,7 +155,7 @@ class App extends React.Component {
         appId: OneSignalKey,
       });
       this.OneSignal.on('subscriptionChange', (isSubscribed) => {
-        console.log(`The user subscription status is: ${isSubscribed}`);
+        // console.log(`The user subscription status is: ${isSubscribed}`);
         this.OneSignal.getUserId((id) => {
           if (isSubscribed) {
             if (cookies.get('token', { path: '/' })) {
@@ -209,7 +209,7 @@ class App extends React.Component {
     let defaultLang = 'es';
 
     langs.forEach(lg => {
-      if(lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
+      if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
         lg.active = true
       } else {
         lg.active = false
@@ -226,7 +226,7 @@ class App extends React.Component {
     const { cookies } = this.props;
     const { dealer, languages, language } = this.state;
     return (
-      <IntlProvider locale={language} messages={messages[language]}>
+      <IntlProvider locale={language || 'en'} messages={messages[language]}>
         <MuiThemeProvider theme={DefaultTheme}>
           <div>
             <Router>

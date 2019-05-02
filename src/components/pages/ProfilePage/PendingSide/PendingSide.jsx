@@ -2,9 +2,6 @@ import React from 'react';
 import '../styles.css';
 import posed from 'react-pose';
 import { Tabs, Tab, Icon } from '@material-ui/core';
-import Pending from './tabs/pending';
-import History from './tabs/history';
-import Other from './tabs/other';
 
 const DivTabs = posed.div({
   normal: {
