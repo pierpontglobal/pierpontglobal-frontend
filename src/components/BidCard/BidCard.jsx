@@ -5,6 +5,7 @@ import Text from '../styles/Text/Text';
 import './styles.css';
 import SimpleButton from './SimpleButton';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import styled from 'styled-components';
 
 const Completionist = () => <FormattedMessage id="bid.process-start" />;
 
@@ -16,10 +17,10 @@ function numberWithCommas(x) {
 
 const ExpandableDiv = posed.div({
   retracted: {
-    height: '80px',
+    height: '120px',
   },
   expanded: {
-    height: '280px',
+    height: '430px',
   },
 });
 
@@ -32,12 +33,20 @@ const RotatableIcon = posed.i({
   },
 });
 
+const CompletedTimerText = styled.div`
+  @media only screen and (max-width: 768px){
+    & > span {
+      font-size: 0.75rem;
+    }
+  }
+`;
+
 const renderer = ({
   days, hours, minutes, seconds, completed
 }) => {
   if (completed) {
     // Render a completed state
-    return <Completionist />;
+    return (<CompletedTimerText><Completionist /></CompletedTimerText>);
   }
   // Render a countdown
   return (
@@ -46,6 +55,86 @@ const renderer = ({
     </span>
   );
 };
+
+const AuctionTimerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: auto;
+  padding: 8px;
+  align-items: space-between;
+  justify-content: center;
+  @media only screen and (max-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
+
+const RetractedContent = styled.div`
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const AuctionGoesOnText = styled.div`
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ExpandableContent = styled.div`
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const AuctionDetail = styled.div`
+  width: 100%;
+  max-height: 320px;
+  overflow-y: auto;
+`;
+
+const AuctionDetailContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media only screen and (min-width: 768px) {
+    width: 30%;
+    margin: 12px 10px;
+  }
+`;
+
+const AuctionDetailName = styled.div`
+  & > span {
+    font-weight: 600;
+  }
+`;
+
+const AuctionDetailValue = styled.div`
+  & > span {
+    font-weight: 200;
+  }
+  @media only screen and (min-width: 768px) {
+    min-width: 200px;
+    text-align: left;
+    & > span {
+      margin-left: 24px;
+    }
+  }
+`;
+
+const LineSeparator = styled.hr`
+  visibility: ${props => ((props.expanded) ? 'visible' : 'hidden')};
+`;
 
 class BidCard extends React.Component {
   constructor(props) {
@@ -71,6 +160,7 @@ class BidCard extends React.Component {
     };
 
     this.lbDays = this.props.intl.formatMessage({id: 'label.days' });
+    this.disabledText = this.props.intl.formatMessage({id: 'label.cancel-bid-disabled' });
   }
 
   render() {
@@ -94,12 +184,7 @@ class BidCard extends React.Component {
           overflow: 'hidden',
         }}
       >
-        <div style={{
-          display: 'flex',
-          padding: '10px',
-          justifyContent: 'space-between',
-        }}
-        >
+        <RetractedContent>
           <div className="pt-md-3 pt-1">
             <div>
               <Text
@@ -117,26 +202,28 @@ class BidCard extends React.Component {
                 lineHeight={1.67}
                 className="mb-0"
               >
-                {`${<FormattedMessage id="label.order-number" />}: ${orderNumber}`}
+                <FormattedMessage id="label.order-number" />
+                :
+                { orderNumber }
               </Text>
             </div>
           </div>
           <div style={{
             display: 'flex',
-            justifyContent: 'center',
-            justifyItems: 'center',
-            alignContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'center',
           }}
           >
-            <div className="d-flex flex-column pr-3">
+            <AuctionTimerWrapper>
               <Text
                 opacity={0.54}
                 size="0.75em"
                 lineHeight={1.67}
                 className="mb-0 text-right"
               >
-                <FormattedMessage id="label.auction-goes-on" />
+                <AuctionGoesOnText>
+                  <FormattedMessage id="label.auction-goes-on" />
+                </AuctionGoesOnText>
               </Text>
               <Countdown
                 date={auctionDate}
@@ -154,7 +241,7 @@ class BidCard extends React.Component {
                   {numberWithCommas(bid)}
                 </span>
               </Text>
-            </div>
+            </AuctionTimerWrapper>
             <button
               className="border-0 fas fa-car"
               type="button"
@@ -165,6 +252,7 @@ class BidCard extends React.Component {
                 margin: '10px',
                 lineHeight: '12px',
                 cursor: 'pointer',
+                minWidth: '80px'
               }}
               onClick={() => { window.location.href = `/marketplace/car?vin=${vin}`; }}
             >
@@ -175,48 +263,50 @@ class BidCard extends React.Component {
             </button>
             <RotatableIcon onClick={() => { this.setState({ status: !status }); }} style={{ color: 'rgb(59, 68, 75)', marginRight: '10px', cursor: 'pointer' }} className="fas fa-angle-down" />
           </div>
-        </div>
+        </RetractedContent>
         <div style={{ padding: '0 30px' }}>
-          <hr />
-          <div style={{ width: '80%', float: 'left' }}>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.id" /></div>
-              <div>{data.car_id ? data.car_id : NotAvailableLabel}</div>
+          <LineSeparator expanded={status} />
+          <ExpandableContent>
+            <AuctionDetail>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.id" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.car_id ? data.car_id : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.maker" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.car_maker ? data.car_maker : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.model" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.car_model ? data.car_model : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.year" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.year ? data.year : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.trim" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.trim ? data.trim : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.vin" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.vin ? data.vin : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+              <AuctionDetailContainer>
+                <AuctionDetailName><FormattedMessage id="car.channel" /></AuctionDetailName>
+                <AuctionDetailValue><span>{data.channel ? data.channel : NotAvailableLabel}</span></AuctionDetailValue>
+              </AuctionDetailContainer>
+            </AuctionDetail>
+            <div style={{ marginTop: '24px' }}>
+              <SimpleButton text={<FormattedMessage id="label.modify-bid-amount" />} iconClass="fas fa-pen" />
+              <SimpleButton
+                text={<FormattedMessage id="label.cancel-bid" />}
+                iconClass="fas fa-times"
+                disabledText={this.disabledText}
+                disabled={passBidRemovalAction}
+              />
             </div>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.maker" /></div>
-              <div>{data.car_maker ? data.car_maker : NotAvailableLabel}</div>
-            </div>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.model" /></div>
-              <div>{data.car_model ? data.car_model : NotAvailableLabel}</div>
-            </div>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.year" /></div>
-              <div>{data.year ? data.year : NotAvailableLabel}</div>
-            </div>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.trim" /></div>
-              <div>{data.trim ? data.trim : NotAvailableLabel}</div>
-            </div>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.vin" /></div>
-              <div>{data.vin ? data.vin : NotAvailableLabel}</div>
-            </div>
-            <div className="auction-detail-conatiner">
-              <div className="auction-detail-name"><FormattedMessage id="car.channel" /></div>
-              <div>{data.channel ? data.channel : NotAvailableLabel}</div>
-            </div>
-          </div>
-          <div style={{ width: '20%', float: 'left' }}>
-            <SimpleButton text={<FormattedMessage id="label.modify-bid-amount" />} iconClass="fas fa-pen" />
-            <SimpleButton
-              text={<FormattedMessage id="label.cancel-bid" />}
-              iconClass="fas fa-times"
-              disabledText={<FormattedMessage id="label.cancel-bid-disabled" />}
-              disabled={passBidRemovalAction}
-            />
-          </div>
+          </ExpandableContent>
         </div>
       </ExpandableDiv>
     );

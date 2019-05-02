@@ -107,7 +107,12 @@ class App extends React.Component {
           abr: "en",
           name: <FormattedMessage id="lang.english" />,
           active: true
-        }
+        },
+        // {
+        //   abr: "fr",
+        //   name: <FormattedMessage id="lang.french" />,
+        //   active: false
+        // },
       ],
       language: navigator.language.split(/[-_]/)[0],
     }
