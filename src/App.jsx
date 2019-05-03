@@ -4,6 +4,13 @@ import {
 } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
 import axios from 'axios';
+import { MuiThemeProvider } from '@material-ui/core';
+import styled from 'styled-components';
+import { IntlProvider, FormattedMessage, addLocaleData } from 'react-intl';
+import locale_en from 'react-intl/locale-data/en';
+import locale_es from 'react-intl/locale-data/es';
+import messages_es from './translations/es.json';
+import messages_en from './translations/en.json';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
@@ -14,18 +21,8 @@ import ContactPage from './components/pages/ContactPage/ContactPage';
 import NotificationPage from './components/pages/NotificationPage/NotificationPage';
 import './styles.css';
 import AppNav from './components/AppNav/AppNav';
-import { MuiThemeProvider } from '@material-ui/core';
 import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
-import styled from 'styled-components';
-import messages_es from './translations/es.json';
-import messages_en from './translations/en.json';
-import {
-  IntlProvider, FormattedMessage, injectIntl, addLocaleData,
-} from 'react-intl';
-
-import locale_en from 'react-intl/locale-data/en';
-import locale_es from 'react-intl/locale-data/es';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
 
 addLocaleData([...locale_en, ...locale_es]);
@@ -121,6 +118,7 @@ class App extends React.Component {
 
     axios.interceptors.request.use((config) => {
       config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
+      config.params = { lang: this.state.language };
 
       return config;
     }, error => Promise.reject(error));
@@ -189,7 +187,8 @@ class App extends React.Component {
 
   setLanguage = (lang) => {
     const { languages } = this.state;
-    const langs = [...languages];
+    let langs = [...languages];
+
     langs.forEach((lg) => {
       if (lg.abr === lang.abr) {
         lg.active = true;
@@ -211,8 +210,7 @@ class App extends React.Component {
 
     // Set default to Spanish
     const defaultLang = 'es';
-
-    langs.forEach((lg) => {
+    langs.forEach( (lg) => {
       if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
         lg.active = true;
       } else {

@@ -1,20 +1,62 @@
 import React from 'react';
 import TimeAgo from 'react-timeago';
+import styled from 'styled-components';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import ColorBtn from './ColorBtn/ColorBtn';
-import Container from '../styles/Container/Container';
-import Text from '../styles/Text/Text';
 import Span from '../styles/Span/Span';
 
-const ContentText = ({ children, className = 'mb-0' }) => (
-  <Text
-    className={className}
-    fontSize="0.875em"
-    lineHeight={1.64}
-  >
-    {children}
-  </Text>
-);
+const Container = styled.div`
+    background-color: #fafafa;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    width: 100%;
+    padding: 8px;
+`;
+
+const CardTitle = styled.div`
+  width: 100%;
+  margin-bottom: 8px;
+  text-align: center;
+  & > h4 {
+    font-size: 1.45em;
+    font-weight: 400;
+    line-height: 1.34;
+  }
+`;
+
+const ContentText = styled.div`
+  font-size: 0.875em;
+  line-height: 1.64;
+  display: flex;
+  justify-content: ${props => (props.justify ? props.justify : 'space-between')};
+  align-items: center;
+  padding: 8px;
+  @media only screen and (min-width: 768) {
+    justify-content: flex-start;
+  }
+`;
+
+const ContentValue = styled.div`
+  color: ${props => props.fontColor};
+  font-size: "14px";
+  font-weight: 600;
+  line-height: 1.33;
+  min-width: 160px;
+  text-align: left;
+  @media only screen and (min-width: 768) {
+    margin-left: 8px;
+  }
+`;
+
+const ConditionBtnWrapper = styled.div`
+  overflow: visible;
+  width: calc(100% - 120px);
+  margin: 0 auto;
+  margin-top: 8px;
+`;
 
 function pickHex(color1, color2, color3, weightRaw) {
   const weight = weightRaw > 5 ? 5 : weightRaw;
@@ -44,43 +86,33 @@ function CarDetailCard({ car }) {
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
   return (
-    <Container
-      style={{ maxWidth: '100%' }}
-      className="pl-3 py-3 mb-3"
-      maxWidth="22em"
-      backgroundColor="#fafafa"
-      boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
-    >
-      <Text
-        fontSize="2em"
-        fontWeight={300}
-        lineHeight={1.34}
-      >
-        {car.title}
-      </Text>
+    <Container>
+      <CardTitle>
+        <h4>
+          {car.title}
+        </h4>
+      </CardTitle>
       <ContentText>
         <Span fontWeight={600}>Sale Date: </Span>
-        <Span
-          fontSize="14px"
-          fontWeight={600}
-          lineHeight={1.33}
-          className="mb-2"
+        <ContentValue
           fontColor={diference < 0 ? 'rgb(169,169,169)' : `rgb(${pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], diffDays)})`}
         >
           <TimeAgo date={car.saleDate} />
-        </Span>
+        </ContentValue>
       </ContentText>
       <ContentText>
         <Span fontWeight={600}>VIN: </Span>
-        {car.vin}
+        <ContentValue>
+          {car.vin}
+        </ContentValue>
       </ContentText>
-      <ContentText className="d-flex">
+      <ContentText justify="space-around" style={{ marginTop: '8px' }}>
         <Span
           style={{ width: '30%' }}
           className="d-flex"
           fontWeight={600}
         >
-                    Exterior:
+          Exterior:
           <ColorBtn color={car.exteriorColor} />
         </Span>
         <Span
@@ -88,13 +120,13 @@ function CarDetailCard({ car }) {
           className="d-flex pr-4"
           fontWeight={600}
         >
-                    Interior:
+          Interior:
           <ColorBtn color={car.interiorColor} />
         </Span>
       </ContentText>
-      <Container width="96px">
+      <ConditionBtnWrapper>
         { car.score ? <ConditionBtn score={car.score} /> : <ConditionBtn score={null} />}
-      </Container>
+      </ConditionBtnWrapper>
     </Container>
   );
 }

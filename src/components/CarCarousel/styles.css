@@ -6,10 +6,25 @@
     text-align: center;
 }
 
-.image-gallery-image img {
-    height: auto;
-    width: 100%;
-    vertical-align: middle;
+.image-gallery-content:not(.fullscreen) .image-gallery-image img {
+  object-fit: cover;
+  object-position: center center;
+  max-height: 480px;
+  width: 100%;
+  vertical-align: middle;
+}
+
+@media only screen and (max-width: 768px) {
+  .image-gallery-content:not(.fullscreen) .image-gallery-image img {
+    max-height: 280px;
+  }  
+}
+
+.image-gallery-thumbnail img {
+  width: auto;
+  height: 75px;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .fullscreen {

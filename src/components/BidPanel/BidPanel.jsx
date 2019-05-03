@@ -171,16 +171,13 @@ class BidPanel extends React.Component {
             >
               <Input
                 className="input mr-3 border-0"
-                maxWidth="200px"
+                width="100%"
                 backgroundColor="#3A70B4"
                 borderRadius="4px"
-                fontSize="20px"
                 ref={(node) => { bidInput = node; }}
                 style={{
-                  padding: '20px',
                   outline: 'none',
-                  textAlign: 'right',
-
+                  textAlign: 'center',
                 }}
                 type="number"
                 fontColor="#ffffff"
@@ -218,15 +215,13 @@ class BidPanel extends React.Component {
                 />
               </button>
             </Container>
-            <Text
-              fontSize="0.75em"
-              lineHeight={1.33}
-              fontColor="rgba(255, 255, 255, 0.87)"
+            <div
+              style={{fontSize: '0.75em', lineHeight: '1.33', fontColor: 'rgba(255, 255, 255, 0.87)', color: 'white', textAlign: 'center', marginTop: '8px'}}
             >
               <FormattedMessage id="bid.retract-msg" />
               {' '}
               {saleDate}
-            </Text>
+            </div>
           </div>
         </BidPanelWrapper>
       </>

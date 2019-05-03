@@ -1,12 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
+import PropTypes from 'prop-types';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Tab from './Tab/Tab';
 import DealerTab from './DealerTab/DealerTab';
 import FundTab from './FundTab/FundTab';
 import Container from '../styles/Container/Container';
 import { ApiServer } from '../../Defaults';
-import { FormattedMessage, injectIntl } from 'react-intl';
+
 class AccountPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +51,7 @@ class AccountPanel extends React.Component {
       one_signal_uuid: this.props.cookies.get('one_signal_uuid'),
     });
     this.props.cookies.remove('token', { path: '/' });
-    window.location.href = '/';
+    this.props.history.push('/');
   }
 
   render() {

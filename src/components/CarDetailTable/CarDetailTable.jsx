@@ -1,8 +1,29 @@
 import React from 'react';
-import Detail from './Detail/Detail';
-import Container from '../styles/Container/Container';
-import Text from '../styles/Text/Text';
 import { FormattedMessage } from 'react-intl';
+import styled from 'styled-components';
+import Detail from './Detail/Detail';
+
+const Container = styled.div`
+    background-color: #fafafa;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    width: 100%;
+    padding: 8px;
+`;
+
+const CardTitle = styled.div`
+  width: 100%;
+  margin-bottom: 8px;
+  text-align: center;
+  & > span {
+    font-size: 1.15em;
+    font-weight: 600;
+    line-height: 1.34;
+  }
+`;
 
 function CarDetailTable({ car }) {
   return (
@@ -11,13 +32,9 @@ function CarDetailTable({ car }) {
       backgroundColor="#fafafa"
       boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
     >
-      <Text
-        className="mb-0 py-3 pl-3"
-        fontWeight={600}
-        lineHeight={1.31}
-      >
+      <CardTitle>
         <FormattedMessage id="label.vehicle-specs" />
-      </Text>
+      </CardTitle>
       <div>
         {Object.keys(car).map(
           (key, i) => (
