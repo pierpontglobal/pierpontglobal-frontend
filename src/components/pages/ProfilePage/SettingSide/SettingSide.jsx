@@ -20,6 +20,7 @@ import CreateCard from './Components/Modals/CreateCard';
 import ProfileForm from '../../../ProfileForm/ProfileForm';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import UnderLine from '../../../Underline/Underline';
+import SubscribeButton from './Components/SubscribeButton';
 
 const HeadingStyle = styled.div`
   font-size: 1em;
@@ -422,6 +423,20 @@ export default class SettingSide extends React.Component {
             />
             <DepositProgress className="tablet-up" amount={funds} />
             <AddDeposit onSuccess={this.onDepositSuccess} cookies={this.props.cookies} />
+          </div>
+        </div>
+
+        <div className="card content-holder-box">
+          <UnderLine>
+            <h4 className="mb-0">
+              <FormattedMessage id="label.notifications" />
+            </h4>
+          </UnderLine>
+          <div className="content-main">
+            <FormattedMessage id="label.notification.explanation" />
+            <br />
+            <br />
+            <SubscribeButton />
           </div>
         </div>
 

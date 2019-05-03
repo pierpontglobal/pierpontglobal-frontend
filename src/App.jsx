@@ -98,14 +98,14 @@ class App extends React.Component {
       },
       languages: [
         {
-          abr: "es",
+          abr: 'es',
           name: <FormattedMessage id="lang.spanish" />,
-          active: false
+          active: false,
         },
         {
-          abr: "en",
+          abr: 'en',
           name: <FormattedMessage id="lang.english" />,
-          active: true
+          active: true,
         },
         // {
         //   abr: "fr",
@@ -114,7 +114,7 @@ class App extends React.Component {
         // },
       ],
       language: navigator.language.split(/[-_]/)[0],
-    }
+    };
 
     axios.interceptors.request.use((config) => {
       config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
@@ -139,7 +139,7 @@ class App extends React.Component {
 
   setDealer = (dealer) => {
     this.setState({
-      dealer: dealer
+      dealer,
     });
   }
 
@@ -153,6 +153,8 @@ class App extends React.Component {
     this.OneSignal.push(() => {
       this.OneSignal.init({
         appId: OneSignalKey,
+        autoResubscribe: true,
+        allowLocalhostAsSecureOrigin: true,
       });
       this.OneSignal.on('subscriptionChange', (isSubscribed) => {
         // console.log(`The user subscription status is: ${isSubscribed}`);
@@ -196,19 +198,18 @@ class App extends React.Component {
     });
     this.setState({
       languages: langs,
-      language: lang.abr
+      language: lang.abr,
     }, () => {
       console.log(this.state);
-    })
+    });
   }
 
   setDefaultLanguage = () => {
     const { languages } = this.state;
-    let langs = [...languages];
+    const langs = [...languages];
 
     // Set default to Spanish
     const defaultLang = 'es';
-
     langs.forEach( (lg) => {
       if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
         lg.active = true;
@@ -248,8 +249,8 @@ class App extends React.Component {
                     <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                     <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                    <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />} />
-                    <Route exact path="/user/notifications" render={() => (this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />} />
+                    <Route path="/user" render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
+                    <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
                     <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
 
@@ -266,4 +267,4 @@ class App extends React.Component {
   }
 }
 
-export default withCookies(App);
+export default injectIntl(withCookies(App));

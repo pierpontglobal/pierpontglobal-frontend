@@ -69,7 +69,7 @@ class AccountPanel extends React.Component {
         <div>
           <DealerTab dealer={dealer} />
 
-          { inner
+          {inner
             ? (
               <div>
                 {inner}
@@ -136,11 +136,6 @@ class AccountPanel extends React.Component {
     );
   }
 }
-
-AccountPanel.propTypes = {
-  cookies: PropTypes.object,
-  dealer: PropTypes.object,
-};
 
 AccountPanel.defaultProps = {
   cookies: {},
