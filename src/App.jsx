@@ -6,7 +6,9 @@ import { withCookies } from 'react-cookie';
 import axios from 'axios';
 import { MuiThemeProvider } from '@material-ui/core';
 import styled from 'styled-components';
-import { IntlProvider, FormattedMessage, addLocaleData } from 'react-intl';
+import {
+  IntlProvider, FormattedMessage, addLocaleData, injectIntl,
+} from 'react-intl';
 import locale_en from 'react-intl/locale-data/en';
 import locale_es from 'react-intl/locale-data/es';
 import messages_es from './translations/es.json';
@@ -187,7 +189,7 @@ class App extends React.Component {
 
   setLanguage = (lang) => {
     const { languages } = this.state;
-    let langs = [...languages];
+    const langs = [...languages];
 
     langs.forEach((lg) => {
       if (lg.abr === lang.abr) {
@@ -210,7 +212,7 @@ class App extends React.Component {
 
     // Set default to Spanish
     const defaultLang = 'es';
-    langs.forEach( (lg) => {
+    langs.forEach((lg) => {
       if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
         lg.active = true;
       } else {
