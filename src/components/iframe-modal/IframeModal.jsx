@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import PPGModal from '../ppg-modal/PPGModal';
 import styled from 'styled-components';
 import { CircularProgress } from '@material-ui/core';
+import PPGModal from '../ppg-modal/PPGModal';
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -22,7 +22,7 @@ class IframeModal extends Component {
     super(props);
     this.state = {
       isLoading: true,
-    }
+    };
   }
 
   iframeHasLoaded = () => {
@@ -32,28 +32,30 @@ class IframeModal extends Component {
   }
 
   render() {
-    const { src, width, height, open, handleClose } = this.props;
+    const {
+      src, width, height, open, handleClose,
+    } = this.props;
     const { isLoading } = this.state;
 
-    return(
+    return (
       <PPGModal
         setOpen={open}
         handleClose={handleClose}
         width={width}
         height={height}
         setPadding={false}
-        onBackAction={ handleClose }
+        onBackAction={handleClose}
       >
         {
-          (isLoading) ? 
-            (
+          (isLoading)
+            ? (
               <LoadingWrapper>
                 <CircularProgress />
               </LoadingWrapper>
             ) : null
         }
         <FrameWrapper>
-          <iframe onLoad={this.iframeHasLoaded} src={src} width="100%" height={ (isLoading) ? '0%' : '100%' } />
+          <iframe title="Autocheck modal" onLoad={this.iframeHasLoaded} src={src} width="100%" height={(isLoading) ? '0%' : '100%'} />
         </FrameWrapper>
       </PPGModal>
     );

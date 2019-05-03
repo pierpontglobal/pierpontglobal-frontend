@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import IframeModal from '../iframe-modal/IframeModal';
 
 function numberWithCommas(x) {
@@ -269,14 +268,13 @@ function gotToCarDetail(vin, event, history) {
           return;
         }
       }
-      console.log(event.target);
       history.push(`/marketplace/car?vin=${vin}`);
     }
   }
 }
 
 function CarCard({
-  key, car, requestFunction, history, intl
+  key, car, requestFunction, history, intl,
 }) {
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
