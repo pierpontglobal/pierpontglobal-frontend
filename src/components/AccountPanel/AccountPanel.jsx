@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
-import PropTypes from 'prop-types';
 import Tab from './Tab/Tab';
 import DealerTab from './DealerTab/DealerTab';
 import FundTab from './FundTab/FundTab';
@@ -68,7 +67,7 @@ class AccountPanel extends React.Component {
         <div>
           <DealerTab dealer={dealer} />
 
-          { inner
+          {inner
             ? (
               <div>
                 {inner}
@@ -135,11 +134,6 @@ class AccountPanel extends React.Component {
     );
   }
 }
-
-AccountPanel.propTypes = {
-  cookies: PropTypes.object,
-  dealer: PropTypes.object,
-};
 
 AccountPanel.defaultProps = {
   cookies: {},

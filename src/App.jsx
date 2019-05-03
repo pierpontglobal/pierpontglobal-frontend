@@ -20,7 +20,7 @@ import OauthPage from './components/pages/OauthPage/OauthPage';
 import styled from 'styled-components';
 import messages_es from './translations/es.json';
 import messages_en from './translations/en.json';
-import { IntlProvider, FormattedMessage } from 'react-intl';
+import { IntlProvider, FormattedMessage, injectIntl } from 'react-intl';
 import { addLocaleData } from 'react-intl';
 import locale_en from 'react-intl/locale-data/en';
 import locale_es from 'react-intl/locale-data/es';
@@ -153,6 +153,8 @@ class App extends React.Component {
     this.OneSignal.push(() => {
       this.OneSignal.init({
         appId: OneSignalKey,
+        autoResubscribe: true,
+        allowLocalhostAsSecureOrigin: true,
       });
       this.OneSignal.on('subscriptionChange', (isSubscribed) => {
         // console.log(`The user subscription status is: ${isSubscribed}`);
@@ -265,4 +267,4 @@ class App extends React.Component {
   }
 }
 
-export default withCookies(App);
+export default injectIntl(withCookies(App));
