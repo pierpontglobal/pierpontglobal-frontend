@@ -20,8 +20,10 @@ import OauthPage from './components/pages/OauthPage/OauthPage';
 import styled from 'styled-components';
 import messages_es from './translations/es.json';
 import messages_en from './translations/en.json';
-import { IntlProvider, FormattedMessage, injectIntl } from 'react-intl';
-import { addLocaleData } from 'react-intl';
+import {
+  IntlProvider, FormattedMessage, injectIntl, addLocaleData,
+} from 'react-intl';
+
 import locale_en from 'react-intl/locale-data/en';
 import locale_es from 'react-intl/locale-data/es';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
@@ -99,14 +101,14 @@ class App extends React.Component {
       },
       languages: [
         {
-          abr: "es",
+          abr: 'es',
           name: <FormattedMessage id="lang.spanish" />,
-          active: false
+          active: false,
         },
         {
-          abr: "en",
+          abr: 'en',
           name: <FormattedMessage id="lang.english" />,
-          active: true
+          active: true,
         },
         // {
         //   abr: "fr",
@@ -115,7 +117,7 @@ class App extends React.Component {
         // },
       ],
       language: navigator.language.split(/[-_]/)[0],
-    }
+    };
 
     axios.interceptors.request.use((config) => {
       config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
@@ -139,7 +141,7 @@ class App extends React.Component {
 
   setDealer = (dealer) => {
     this.setState({
-      dealer: dealer
+      dealer,
     });
   }
 
@@ -187,8 +189,8 @@ class App extends React.Component {
 
   setLanguage = (lang) => {
     const { languages } = this.state;
-    let langs = [...languages];
-    langs.forEach(lg => {
+    const langs = [...languages];
+    langs.forEach((lg) => {
       if (lg.abr === lang.abr) {
         lg.active = true;
       } else {
@@ -197,30 +199,30 @@ class App extends React.Component {
     });
     this.setState({
       languages: langs,
-      language: lang.abr
+      language: lang.abr,
     }, () => {
       console.log(this.state);
-    })
+    });
   }
 
   setDefaultLanguage = () => {
     const { languages } = this.state;
-    let langs = [...languages];
+    const langs = [...languages];
 
     // Set default to Spanish
-    let defaultLang = 'es';
+    const defaultLang = 'es';
 
-    langs.forEach(lg => {
+    langs.forEach((lg) => {
       if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
-        lg.active = true
+        lg.active = true;
       } else {
-        lg.active = false
+        lg.active = false;
       }
     });
 
     this.setState({
       languages: langs,
-      language: defaultLang
+      language: defaultLang,
     });
   }
 
@@ -249,8 +251,8 @@ class App extends React.Component {
                     <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                     <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                    <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />} />
-                    <Route exact path="/user/notifications" render={() => (this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />} />
+                    <Route path="/user" render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
+                    <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
                     <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
 

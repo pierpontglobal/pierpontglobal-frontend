@@ -22,6 +22,10 @@
 </head>
 
 <body style="font-family: 'Raleway', sans-serif;">
+  <button onclick="window.registration.update();"
+    style="position: fixed; z-index: 1000000; background: #000000; padding: 10px; color: white;">
+    Update
+  </button>
   <div id="root">
     <noscript>
       <h1
@@ -86,15 +90,30 @@
 <script async src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
   integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-<script async
-  type="text/javascript">(function (w, d) { var loader = function () { var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s, tag); }; if (w.addEventListener) { w.addEventListener("load", loader, false); } else if (w.attachEvent) { w.attachEvent("onload", loader); } else { w.onload = loader; } })(window, document);</script>
+<script async type="text/javascript">
+  (function (w, d) {
+    var loader = function () {
+      var s = d.createElement("script"),
+        tag = d.getElementsByTagName("script")[0];
+      s.src = "https://cdn.iubenda.com/iubenda.js";
+      tag.parentNode.insertBefore(s, tag);
+    };
+    if (w.addEventListener) {
+      w.addEventListener("load", loader, false);
+    } else if (w.attachEvent) {
+      w.attachEvent("onload", loader);
+    } else {
+      w.onload = loader;
+    }
+  })(window, document);
+</script>
 
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
       .then(function (reg) {
-      }).catch(function (err) {
-      });
+        window.registration = reg
+      }).catch(function (err) {});
   }
 </script>
 
