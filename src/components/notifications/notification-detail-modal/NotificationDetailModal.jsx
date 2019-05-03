@@ -126,38 +126,46 @@ class NotificationDetailModal extends Component {
           {
             // Only if notification as an issue
             (notification.issue !== undefined)
-            ? (
-              <>
-                <div style={{ marginTop: '16px' }}>
-                  <div style={{ fontWeight: '600', color: 'darkred' }}>
-                    STATUS: {notification.issue.title}
+              ? (
+                <>
+                  <div style={{ marginTop: '16px' }}>
+                    <div style={{ fontWeight: '600', color: 'darkred' }}>
+                      STATUS:
+                      {notification.issue.title}
+                    </div>
+                    <div>
+                      <span style={{ fontWeight: '600' }}>Issue: </span>
+                      {notification.issue.description}
+                    </div>
+                    {
+                      (notification.issue.solutions !== undefined)
+                        ? (
+                          <>
+                            <div>
+                              <div>
+                                <span style={{ fontWeight: '600' }}>Solutions</span>
+                              </div>
+                              <div>
+                                <ul>
+                                  {notification.issue.solutions.map(sol => (
+                                    <li>
+                                      <span style={{ fontWeight: '600' }}>
+                                        { sol.velocity }
+                                        { ':' }
+                                      </span>
+                                      { sol.description }
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </>
+                        )
+                        : null
+                    }
                   </div>
-                  <div>
-                    <span style={{ fontWeight: '600' }}>Issue: </span>{notification.issue.description}
-                  </div>
-                  {
-                    (notification.issue.solutions !== undefined)
-                    ? (
-                      <>
-                        <div>
-                          <div>
-                            <span style={{ fontWeight: '600' }}>Solutions</span>
-                          </div>
-                          <div>
-                            <ul>
-                              {notification.issue.solutions.map((sol) => (
-                                <li><span style={{ fontWeight: '600' }}>{ sol.velocity }: </span>{ sol.description }</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </>
-                    )
-                    : null
-                  }
-                </div>
-              </>
-            ) : null
+                </>
+              ) : null
           }
         </Content>
         <Footer>
