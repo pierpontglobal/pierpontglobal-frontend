@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { injectIntl } from 'react-intl';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
@@ -17,10 +18,10 @@ import './styles.css';
 
 const dealerExample = {
   image: null,
-  name: 'Dealer name',
-  address: 'Address...',
-  email: 'dealer@example.com',
-  number: '+1 (809) 123-5555',
+  name: '',
+  address: '',
+  email: '',
+  number: '',
 };
 
 const Wrapper = styled.div`
@@ -91,14 +92,18 @@ class ProfilePage extends React.Component {
     }
   }
 
-  async getPaymentMethod() {
-    try {
-      await axios.get(`${ApiServer}/api/v1/user/subscriptions`);
-    } catch (e) {
-      this.setState({
-        hasPaymentMethod: false,
-      });
-    }
+  getPaymentMethod = () => {
+
+    axios.get(`${ApiServer}/api/v1/user/subscriptions`).then((data) => {
+
+    }, (err) => {
+      if (err.response.status === 404) {
+        this.openDealerCreator();
+      }
+      if (err.response.status === 503) {
+        this.props.history.push('/');
+      }
+    });
   }
 
   sendNotification = (notificationDto) => {
@@ -106,26 +111,34 @@ class ProfilePage extends React.Component {
   }
 
   checkNotifications = async () => {
+    const { intl } = this.props;
+
     const subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
     const cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
 
+    const messages = {
+      accountIncomplete: intl.formatMessage({ id: 'profile.account-incomplete' }),
+      subsText: intl.formatMessage({ id: 'profile.account-incomplete-subscription-text' }),
+      cardsText: intl.formatMessage({ id: 'profiel.account-incomplete-cards-text' }),
+    };
+
     const notificationDto = {
-      title: 'Account incomplete',
-      message: 'Please, add a subscription to this account. You won\'t be able to place bids until its complete.',
+      title: messages.accountIncomplete,
+      message: messages.subsText,
       payload: subscriptions,
       type: NotificationTypes.alert,
       issue_id: undefined,
     };
 
-    if (subscriptions === undefined) {
+    if (subscriptions === null || subscriptions === undefined) {
       this.sendNotification(notificationDto);
     } else if (!!subscriptions && !subscriptions.active) {
       this.sendNotification(notificationDto);
     }
 
-    if (cards === undefined) {
+    if (cards === null || cards === undefined) {
       notificationDto.payload = cards;
-      notificationDto.message = 'Please, add your card information to your account. You won\'t be able to process any payment before its complete.';
+      notificationDto.message = messages.cardsText;
       notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
       this.sendNotification(notificationDto);
     }
@@ -178,4 +191,4 @@ ProfilePage.defaultProps = {
   cookies: {},
 };
 
-export default ProfilePage;
+export default withRouter(injectIntl(ProfilePage));

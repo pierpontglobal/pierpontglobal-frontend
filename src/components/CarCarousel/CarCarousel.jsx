@@ -5,11 +5,14 @@ import './styles.css';
 
 function CarCarousel({ images, maxWidth }) {
   return (
-    <div style={{ maxWidth: maxWidth, justifySelf: 'center', }}>
+    <div style={{ maxWidth, justifySelf: 'center' }}>
       <ImageGallery
-        items={images.map(i => ({ original: i, thumbnail: `${i}?width=354&height=200` }))}
+        items={
+          images.map(i => ({ original: i, thumbnail: `${i}?width=354&height=200` }))
+        }
         disableThumbnailScroll
         showPlayButton={false}
+        lazyLoad={true}
       />
     </div>
   );

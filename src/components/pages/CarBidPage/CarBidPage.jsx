@@ -28,6 +28,10 @@ const SideMenuWrapper = styled.div`
   }
 `;
 
+const TabWrapper = styled.div`
+  width: 100%;
+`;
+
 class CarBidPage extends React.Component {
   constructor(props) {
     super(props);
@@ -119,9 +123,8 @@ class CarBidPage extends React.Component {
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
 
     const firstTabContent = (
-      <div>
+      <TabWrapper>
         <div style={{
-          marginTop: '-15px',
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -144,26 +147,30 @@ class CarBidPage extends React.Component {
                   wholePrice={car.wholePrice}
                 />
               )}
-            <LocationBar
-              currentLocation={car.location}
-              transportPrice="277"
-              to="to Port Miami, FL"
-            />
-            <CarCarousel maxWidth="100%" images={car.images} />
+            <div style={{ padding: '16px' }}>
+              <LocationBar
+                currentLocation={car.location}
+                transportPrice="277"
+                to="to Port Miami, FL"
+              />
+              <CarCarousel maxWidth="100%" overflow="auto" images={car.images} />
+            </div>
           </div>
         </div>
         <CarBottomNav
           prev={car}
           next={car}
         />
-      </div>
+      </TabWrapper>
     );
 
     const secondTabContent = (
-      <div style={{ width: '100%' }} className="d-flex flex-column mr-3">
-        <CarDetailCard car={car} />
-        <CarDetailTable car={car} />
-      </div>
+      <TabWrapper flexDirection="column">
+        <div style={{ padding: '16px', marginTop: '16px' }}>
+          <CarDetailCard car={car} />
+          <CarDetailTable car={car} />
+        </div>
+      </TabWrapper>
     );
 
     const tabOptions = [
@@ -182,9 +189,9 @@ class CarBidPage extends React.Component {
     return (
       <div>
         <ActionCableProvider cable={this.cable}>
-          <MediaQuery minDeviceWidth={1224}>
+          <MediaQuery minDeviceWidth={768}>
             <React.Fragment>
-              <div style={{ marginTop: '-15px' }} className="d-flex justify-content-center">
+              <div style={{ marginTop: '16px' }} className="d-flex justify-content-center">
                 <SideMenuWrapper>
                   <CarDetailCard car={car} />
                   <CarDetailTable car={car} />
@@ -217,7 +224,7 @@ class CarBidPage extends React.Component {
               />
             </React.Fragment>
           </MediaQuery>
-          <MediaQuery maxDeviceWidth={1224}>
+          <MediaQuery maxDeviceWidth={768}>
             <TabsComponent options={tabOptions} />
           </MediaQuery>
         </ActionCableProvider>
