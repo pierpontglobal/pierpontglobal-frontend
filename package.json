@@ -9,6 +9,7 @@
     "@types/styled-components": "^4.0.2",
     "actioncable": "^5.2.2",
     "axios": "^0.18.0",
+    "babel-loader": "8.0.4",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.3",
@@ -77,12 +78,13 @@
     "styled-components": "^4.0.2",
     "terser": "^3.17.0",
     "uglifyjs-3-webpack-plugin": "^1.2.4",
+    "webpack": "4.19.1",
     "whatwg-fetch": "^3.0.0",
     "yarn": "^1.13.0"
   },
   "scripts": {
-    "start": "PORT=4000 react-scripts start --env=production && cra-append-sw --mode dev ./public/service-worker.js",
-    "build": "yarn add cra-append-sw && react-scripts build && yarn cra-append-sw ./public/service-worker.js",
+    "start": "PORT=4000 react-scripts start --env=production",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
