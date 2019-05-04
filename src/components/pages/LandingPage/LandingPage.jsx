@@ -253,8 +253,10 @@ class LandingPage extends React.Component {
                   });
                 }}
               >
-                <FormattedMessage id="landing.sign-up-now" /> &gt;&gt;
-              </Button>
+                <FormattedMessage id="landing.sign-up-now" />
+{' '}
+&gt;&gt;
+</Button>
             </div>
           </div>
         </div>
