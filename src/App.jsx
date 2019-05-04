@@ -232,6 +232,8 @@ class App extends React.Component {
     return (
       <IntlProvider locale={language || 'en'} messages={messages[language]}>
         <MuiThemeProvider theme={DefaultTheme}>
+
+        
           <div>
             <Router>
               <div style={{

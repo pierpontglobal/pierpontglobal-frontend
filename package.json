@@ -26,6 +26,7 @@
     "libphonenumber-js": "^1.6.9",
     "lodash": "^4.17.11",
     "material-ui-password-field": "^2.0.1",
+    "notistack": "^0.8.2",
     "onsenui": "^2.10.6",
     "prop-types": "^15.6.2",
     "public-ip": "^3.0.0",

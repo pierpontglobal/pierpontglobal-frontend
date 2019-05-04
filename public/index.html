@@ -22,7 +22,7 @@
 </head>
 
 <body style="font-family: 'Raleway', sans-serif;">
-  <button onclick="window.registration.update();"
+  <button id='notification' onclick="window.registration.update();"
     style="position: fixed; z-index: 1000000; background: #000000; padding: 10px; color: white; display: none">
     Update
   </button>
@@ -125,12 +125,10 @@
             switch (newWorker.state) {
               case 'installed':
 
-                alert('test');
-
                 // There is a new service worker available, show the notification
                 if (navigator.serviceWorker.controller) {
-                  let notification = document.getElementById('notification ');
-                  notification.className = 'show';
+                  let notification = document.getElementById('notification');
+                  notification.style.display = 'block';
                 }
 
                 break;
