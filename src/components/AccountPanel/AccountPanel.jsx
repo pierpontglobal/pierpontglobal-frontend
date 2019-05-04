@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
-import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import Tab from './Tab/Tab';
 import DealerTab from './DealerTab/DealerTab';
