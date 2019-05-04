@@ -332,7 +332,7 @@ function CarCard({
             <DropDownIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
           </DetailTitle>
           <hr style={{ margin: '0 0 5px' }} />
-          <input hidden name="VIN" value={vin} />
+          <input hidden name="VIN" value={vin} readOnly />
           <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
             <Detail>
               <DetailLabel>

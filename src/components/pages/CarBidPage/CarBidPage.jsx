@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import MediaQuery from 'react-responsive';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Info from '@material-ui/icons/Info';
+import { injectIntl } from 'react-intl';
 import CarDetailCard from '../../CarDetailCard/CarDetailCard';
 import CarDetailTable from '../../CarDetailTable/CarDetailTable';
 import BidPanel from '../../BidPanel/BidPanel';
@@ -117,10 +118,16 @@ class CarBidPage extends React.Component {
     const {
       userBid,
       cookies,
+      car,
     } = this.state;
 
-    const { car } = this.state;
+    const { intl } = this.props;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
+
+    const labels = {
+      carBidPreview: intl.formatMessage({ id: 'car-bid.preview' }),
+      cardBidSpecifications: intl.formatMessage({ id: 'car-bid.specifications' }),
+    };
 
     const firstTabContent = (
       <TabWrapper>
@@ -175,12 +182,12 @@ class CarBidPage extends React.Component {
 
     const tabOptions = [
       {
-        label: 'Preview',
+        label: labels.carBidPreview,
         item: firstTabContent,
         icon: <DirectionsCar />,
       },
       {
-        label: 'Specifications',
+        label: labels.cardBidSpecifications,
         item: secondTabContent,
         icon: <Info />,
       },
@@ -233,4 +240,4 @@ class CarBidPage extends React.Component {
   }
 }
 
-export default CarBidPage;
+export default injectIntl(CarBidPage);

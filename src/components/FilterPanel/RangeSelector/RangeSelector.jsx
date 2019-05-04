@@ -162,6 +162,7 @@ class RangeSelector extends React.Component {
               data-content={item.key}
               data-number={item.doc_count}
               className="column-item"
+              key={i}
               style={{
                 height: `${item.doc_count * 100 / (maxCount)}%`,
                 position: 'absolute',

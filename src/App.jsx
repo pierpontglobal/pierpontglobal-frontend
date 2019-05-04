@@ -201,8 +201,6 @@ class App extends React.Component {
     this.setState({
       languages: langs,
       language: lang.abr,
-    }, () => {
-      console.log(this.state);
     });
   }
 
