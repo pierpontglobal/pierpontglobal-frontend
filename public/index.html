@@ -118,13 +118,14 @@
 
           // An updated service worker has appeared in reg.installing!
           newWorker = reg.installing;
-          alert('test');
 
           newWorker.addEventListener('statechange', () => {
 
             // Has service worker state changed?
             switch (newWorker.state) {
               case 'installed':
+
+                alert('test');
 
                 // There is a new service worker available, show the notification
                 if (navigator.serviceWorker.controller) {
