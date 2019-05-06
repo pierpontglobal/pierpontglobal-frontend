@@ -68,7 +68,7 @@ class NotificationDetailModal extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const { selectedNotification } = this.props;
     this.setState({
       notification: selectedNotification,
