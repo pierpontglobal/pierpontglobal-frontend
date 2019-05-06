@@ -64,6 +64,7 @@ function SubscribeButton(props) {
   OneSignal.push(() => {
     // If we're on an unsupported browser, do nothing
     if (!OneSignal.isPushNotificationsSupported()) {
+      console.log(OneSignal);
       return;
     }
     updateMangeWebPushSubscriptionButton(props);
