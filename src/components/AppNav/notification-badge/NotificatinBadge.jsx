@@ -57,7 +57,7 @@ class NotificationBadge extends Component {
   componentWillMount = () => {
     this.userToken = this.props.cookies.get('token', { path: '/' });
 
-    this.cable = ActionCable.createConsumer(`${WSConnection  }?token=${  this.userToken}`);
+    this.cable = ActionCable.createConsumer(`${WSConnection}?token=${this.userToken}`);
 
     this.subscription = this.cable.subscriptions.create({
       channel: 'AdminNotificationChannel',
@@ -137,8 +137,8 @@ class NotificationBadge extends Component {
   render() {
     const { classes, cookies } = this.props;
     const {
- notifications, open, openNotificationModal, selectedNotification 
-} = this.state;
+      notifications, open, openNotificationModal, selectedNotification,
+    } = this.state;
     return (
       <>
         <ActionCableProvider cable={this.cable}>
