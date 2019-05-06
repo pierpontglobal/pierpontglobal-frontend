@@ -152,8 +152,6 @@ class App extends React.Component {
 
     this.OneSignal = window.OneSignal || [];
 
-    console.log(this.OneSignal);
-
     this.OneSignal.push(() => {
       this.OneSignal.init({
         appId: OneSignalKey,

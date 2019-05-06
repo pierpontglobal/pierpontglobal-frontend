@@ -21,43 +21,9 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-  <style>
-    .font-button {
-      font-size: 14px !important;
-      line-height: 14px !important;
-      text-align: center !important;
-      color: white !important;
-    }
-
-    .update-button {
-      position: fixed;
-      cursor: pointer;
-      z-index: 1000000;
-      background: #000000;
-      padding: 10px;
-      display: none;
-      max-width: 200px;
-      bottom: 20px;
-      left: 20px;
-      border: none;
-      outline: none;
-      opacity: 0;
-      border-radius: 5px;
-      background-color: #3A3E43;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-      transition: 1s;
-    }
-  </style>
-
 </head>
 
 <body style="font-family: 'Raleway', sans-serif;">
-  <button id='notification' class="update-button font-button" onclick="updateSW();">
-    <i class="material-icons font-button">
-      update
-    </i>
-    There is a new version available, click to update now!
-  </button>
   <div id="root">
     <noscript>
       <h1

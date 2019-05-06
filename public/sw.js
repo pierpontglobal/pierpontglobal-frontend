@@ -3,17 +3,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 console.log('New SW added');
 
 workbox.routing.registerRoute(
-  new RegExp('/static/js/bundle.js'),
-  new workbox.strategies.CacheFirst(),
-);
-
-workbox.routing.registerRoute(
-  new RegExp('/static/js/1.chunk.js'),
-  new workbox.strategies.CacheFirst(),
-);
-
-workbox.routing.registerRoute(
-  new RegExp('/static/js/main.chunk.js'),
+  new RegExp('/static/js/*'),
   new workbox.strategies.CacheFirst(),
 );
 
@@ -324,7 +314,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "index.html",
-    "revision": "e2d28efaa4d7e9a94b7ff70905a06605"
+    "revision": "14adfae18ab988ff694b090cf60c65d9"
   },
   {
     "url": "logos/loading_logo.png",
@@ -420,6 +410,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "OneSignalSDKWorker.js",
-    "revision": "b5f3b65bfa7f54da37c3caca4eefe97c"
+    "revision": "d1a8068aa9e5239cde7f85692515daae"
   }
 ]);
