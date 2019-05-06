@@ -1,11 +1,12 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
-console.log('New SW added');
+console.log('New SW added 15');
 
 workbox.routing.registerRoute(
   new RegExp('/static/js/*'),
-  new workbox.strategies.CacheFirst(),
+  new workbox.strategies.StaleWhileRevalidate(),
 );
+
 
 workbox.precaching.precacheAndRoute([
   {
@@ -410,6 +411,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "OneSignalSDKWorker.js",
-    "revision": "d1a8068aa9e5239cde7f85692515daae"
+    "revision": "24e4afd7fd4c7234f340963023080210"
   }
 ]);

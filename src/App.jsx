@@ -26,6 +26,7 @@ import AppNav from './components/AppNav/AppNav';
 import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
+import packageJson from '../package.json';
 
 addLocaleData([...locale_en, ...locale_es]);
 
@@ -89,6 +90,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { cookies } = this.props;
+
+    alert(packageJson.version);
 
     this.state = {
       dealer: {
