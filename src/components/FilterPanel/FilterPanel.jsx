@@ -271,7 +271,7 @@ class FilterPanel extends React.Component {
 }
 
 FilterPanel.defaultProps = {
-  getCars: () => {},
+  getCars: () => { },
   availableArguments: {},
   params: {},
 };

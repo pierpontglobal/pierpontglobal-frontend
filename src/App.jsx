@@ -26,6 +26,7 @@ import AppNav from './components/AppNav/AppNav';
 import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
+import packageJson from '../package.json';
 
 addLocaleData([...locale_en, ...locale_es]);
 
@@ -145,7 +146,7 @@ class App extends React.Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { cookies } = this.props;
 
     this.setDefaultLanguage();
@@ -155,9 +156,9 @@ class App extends React.Component {
     this.OneSignal.push(() => {
       this.OneSignal.init({
         appId: OneSignalKey,
-        autoResubscribe: true,
         allowLocalhostAsSecureOrigin: true,
       });
+
       this.OneSignal.on('subscriptionChange', (isSubscribed) => {
         // console.log(`The user subscription status is: ${isSubscribed}`);
         this.OneSignal.getUserId((id) => {
@@ -230,8 +231,6 @@ class App extends React.Component {
     return (
       <IntlProvider locale={language || 'en'} messages={messages[language]}>
         <MuiThemeProvider theme={DefaultTheme}>
-
-        
           <div>
             <Router>
               <div style={{

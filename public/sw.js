@@ -1,30 +1,14 @@
-/**
- * Welcome to your Workbox-powered service worker!
- *
- * You'll need to register this file in your web app and you should
- * disable HTTP caching for this file too.
- * See https://goo.gl/nhQhGp
- *
- * The rest of the code is auto-generated. Please don't update this file
- * directly; instead, make changes to your Workbox build configuration
- * and re-run your build process.
- * See https://goo.gl/2aRDsh
- */
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+console.log('New SW added 15');
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
+workbox.routing.registerRoute(
+  new RegExp('/static/js/*'),
+  new workbox.strategies.StaleWhileRevalidate(),
+);
 
-/**
- * The workboxSW.precacheAndRoute() method efficiently caches and responds to
- * requests for URLs in the manifest.
- * See https://goo.gl/S9QRab
- */
-self.__precacheManifest = [
+
+workbox.precaching.precacheAndRoute([
   {
     "url": "favicon.ico",
     "revision": "78801f3afbbc1ca6ebf89c2439c78649"
@@ -331,7 +315,7 @@ self.__precacheManifest = [
   },
   {
     "url": "index.html",
-    "revision": "03acb342ac2b5ba9bcae3b302822ba06"
+    "revision": "14adfae18ab988ff694b090cf60c65d9"
   },
   {
     "url": "logos/loading_logo.png",
@@ -427,11 +411,6 @@ self.__precacheManifest = [
   },
   {
     "url": "OneSignalSDKWorker.js",
-    "revision": "ebb63ca15bba16b550232b0b0f66c726"
-  },
-  {
-    "url": "service-worker.js",
-    "revision": "2f8f5dc818653cd3063196e350f295e4"
+    "revision": "24e4afd7fd4c7234f340963023080210"
   }
-].concat(self.__precacheManifest || []);
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+]);

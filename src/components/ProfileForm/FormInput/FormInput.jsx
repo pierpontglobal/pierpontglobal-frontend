@@ -63,7 +63,6 @@ function FormInput({
         <InputComponent
           type="text"
           defaultValue={value}
-          value={value}
           onChange={onChange}
           disabled={!editable}
           id={id}

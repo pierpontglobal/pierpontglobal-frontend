@@ -68,7 +68,7 @@ class NotificationDetailModal extends Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const { selectedNotification } = this.props;
     this.setState({
       notification: selectedNotification,
@@ -92,7 +92,7 @@ class NotificationDetailModal extends Component {
             {/* <AlertCount>{ alerts.length }</AlertCount> */}
             <div style={{ marginLeft: '8px' }}>
               <span style={{ fontWeight: '600', color: 'white' }}>
-                { notification.data.title }
+                {notification.data.title}
               </span>
             </div>
           </Title>
@@ -103,11 +103,11 @@ class NotificationDetailModal extends Component {
         <Content>
           <div style={{ margin: '8px 0px' }}>
             {
-            (notification.notification_type === NotificationTypes.alert)
-              ? <Warning color="primary" /> : <Info color="primary" />
+              (notification.notification_type === NotificationTypes.alert)
+                ? <Warning color="primary" /> : <Info color="primary" />
             }
             <span>
-              { notification.data.message }
+              {notification.data.message}
             </span>
           </div>
           <hr />
@@ -121,7 +121,7 @@ class NotificationDetailModal extends Component {
           </div>
           <div>
             <span style={{ fontWeight: '600' }}>Read date: </span>
-            <span>{ new Date(notification.read_at).toDateString() }</span>
+            <span>{new Date(notification.read_at).toDateString()}</span>
           </div>
           {
             // Only if notification as an issue
@@ -151,10 +151,10 @@ class NotificationDetailModal extends Component {
                                   {notification.issue.solutions.map((sol, i) => (
                                     <li key={i}>
                                       <span style={{ fontWeight: '600' }}>
-                                        { sol.velocity }
-                                        { ':' }
+                                        {sol.velocity}
+                                        {':'}
                                       </span>
-                                      { sol.description }
+                                      {sol.description}
                                     </li>
                                   ))}
                                 </ul>
