@@ -142,7 +142,7 @@ class MarketPlacePage extends React.Component {
       };
 
       carsGroup.push(
-        <CarCard key={carObject.vim} car={carObject} requestFunction={requestPrice} />,
+        <CarCard key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
       );
     }
 
@@ -199,7 +199,7 @@ class MarketPlacePage extends React.Component {
       if (car.vin === response.vin) {
         car.wholePrice = response.mmr;
       }
-      carElements.push(<CarCard key={car.vim} car={car} requestFunction={requestPrice} />);
+      carElements.push(<CarCard key={car.vin} car={car} requestFunction={requestPrice} />);
     }
     this.setState({ cars: carElements, loaded: true });
   }

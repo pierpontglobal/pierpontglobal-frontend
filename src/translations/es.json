@@ -19,7 +19,7 @@
   "label.notifications": "Notificaciones",
   "label.subscribe": "Subcribete para recibir notificaciones",
   "label.unsubscribe": "No recibir notificaciones",
-  "label.notification.explanation": "Autoriza a este dispositiov para recibir notificaciones de eventos importantes que esten sucediendo con respecto a tu cuenta y poder darte cuenta de promociones de forma instantánea.",
+  "label.notification.explanation": "Autoriza a este dispositivo para recibir notificaciones de eventos importantes que esten sucediendo con respecto a tu cuenta y poder darte cuenta de promociones de forma instantánea.",
   "label.funds": "Fondos",
   "label.menu": "Menú",
   "label.market": "Mercado",
@@ -73,6 +73,9 @@
   "label.logistics": "Logística",
   "label.not-found-page": "La página que estás buscando no existe.",
   "label.filters": "Filtros",
+  "label.deposit.remaining": "Disponible",
+  "label.deposit.holding": "En apuestas",
+  "label.deposit.total": "Total",
   "menu.purchases": "Compras",
   "menu.documents": "Documentos",
   "menu.settings": "Configuraciones",
@@ -200,5 +203,9 @@
   "sign-in.forgot-account": "Olvidaste la cuenta?",
   "sign-in.user-sign-in": "Inicio de sesión",
   "sign-in.username": "Nombre de usuario",
-  "sign-in.password": "Contraseña"
+  "sign-in.password": "Contraseña",
+  "car-bid.preview": "Vista rápida",
+  "car-bid.specifications": "Especificaciones",
+  "deposit-progress.available": "disponible",
+  "deposit-progress.in-holdings": "en apuestas"
 }

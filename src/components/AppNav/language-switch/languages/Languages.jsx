@@ -52,11 +52,11 @@ class Languages extends Component {
   render() {
     const { languages } = this.props;
 
-    return(
+    return (
       <LanguagesWrapper>
         {
           languages.map(lang => (
-            <LanguageWrapper onClick={() => this.setLanguage(lang)}>
+            <LanguageWrapper key={lang.abr} onClick={() => this.setLanguage(lang)}>
               <AbrWrapper active={lang.active}>
                 <span>{ lang.abr }</span>
               </AbrWrapper>

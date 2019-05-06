@@ -96,8 +96,8 @@ class NotificationDetailModal extends Component {
               </span>
             </div>
           </Title>
-          <IconButton>
-            <Close onClick={this.onClose} />
+          <IconButton onClick={this.onClose}>
+            <Close />
           </IconButton>
         </Header>
         <Content>
@@ -125,7 +125,7 @@ class NotificationDetailModal extends Component {
           </div>
           {
             // Only if notification as an issue
-            (notification.issue !== undefined)
+            (notification.issue)
               ? (
                 <>
                   <div style={{ marginTop: '16px' }}>
@@ -138,7 +138,8 @@ class NotificationDetailModal extends Component {
                       {notification.issue.description}
                     </div>
                     {
-                      (notification.issue.solutions !== undefined)
+                      // tslint:disable-next-line
+                      (notification.issue.solutions)
                         ? (
                           <>
                             <div>
@@ -147,8 +148,8 @@ class NotificationDetailModal extends Component {
                               </div>
                               <div>
                                 <ul>
-                                  {notification.issue.solutions.map(sol => (
-                                    <li>
+                                  {notification.issue.solutions.map((sol, i) => (
+                                    <li key={i}>
                                       <span style={{ fontWeight: '600' }}>
                                         {sol.velocity}
                                         {':'}

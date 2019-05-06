@@ -73,6 +73,9 @@
   "label.logistics": "Logistics",
   "label.not-found-page": "The page you are looking for does not exist",
   "label.filters": "Filters",
+  "label.deposit.remaining": "Remaining",
+  "label.deposit.holding": "Holdings",
+  "label.deposit.total": "Total",
   "menu.purchases": "Purchases",
   "menu.documents": "Documents",
   "menu.settings": "Settings",
@@ -200,5 +203,9 @@
   "sign-in.forgot-account": "Forgot account?",
   "sign-in.user-sign-in": "User Sign in",
   "sign-in.username": "Username",
-  "sign-in.password": "Password"
+  "sign-in.password": "Password",
+  "car-bid.preview": "Preview",
+  "car-bid.specifications": "Specifications",
+  "deposit-progress.available": "available",
+  "deposit-progress.in-holdings": "in holdings"
 }

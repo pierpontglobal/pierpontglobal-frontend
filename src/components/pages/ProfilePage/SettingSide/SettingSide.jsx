@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { Button } from '@material-ui/core';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import AddDeposit from './Components/Modals/AddDeposit';
 import { ApiServer, StripeKey } from '../../../../Defaults';
 import CreateCard from './Components/Modals/CreateCard';
@@ -110,7 +110,7 @@ async function removeCard(cardToken) {
   window.location.reload();
 }
 
-export default class SettingSide extends React.Component {
+class SettingSide extends React.Component {
   constructor(props) {
     super(props);
 
@@ -248,6 +248,7 @@ export default class SettingSide extends React.Component {
     };
 
     const { funds } = this.state;
+    const { intl } = this.props;
     const amount = funds;
 
     const progressPercentage = parseFloat(amount.balance - amount.holding);
@@ -261,9 +262,9 @@ export default class SettingSide extends React.Component {
       }],
 
       labels: [
-        'Remaining',
-        'Holdings',
-        'Total',
+        intl.formatMessage({ id: 'label.deposit.remaining' }),
+        intl.formatMessage({ id: 'label.deposit.holding' }),
+        intl.formatMessage({ id: 'label.deposit.total' }),
       ],
     };
 
@@ -516,8 +517,8 @@ export default class SettingSide extends React.Component {
                 <MenuItem value="">
                   <em><FormattedMessage id="label.none" /></em>
                 </MenuItem>
-                {this.state.cardsNumbers.map(cardNumber => (
-                  <MenuItem key={cardNumber.key} value={cardNumber.key}>
+                {this.state.cardsNumbers.map((cardNumber, i) => (
+                  <MenuItem key={i} value={cardNumber.key}>
                     {cardNumber.text}
                   </MenuItem>
                 ))}
@@ -540,3 +541,6 @@ export default class SettingSide extends React.Component {
     );
   }
 }
+
+
+export default injectIntl(SettingSide);
