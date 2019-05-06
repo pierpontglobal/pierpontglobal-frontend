@@ -91,8 +91,6 @@ class App extends React.Component {
     super(props);
     const { cookies } = this.props;
 
-    alert(packageJson.version);
-
     this.state = {
       dealer: {
         image: null,
