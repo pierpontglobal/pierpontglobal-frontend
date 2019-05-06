@@ -36,7 +36,7 @@ class SliderOptions extends Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     // Select active option based on url
     this.selectActiveOption();
   }

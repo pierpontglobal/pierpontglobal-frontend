@@ -54,7 +54,7 @@ class NotificationBadge extends Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.userToken = this.props.cookies.get('token', { path: '/' });
 
     this.cable = ActionCable.createConsumer(`${WSConnection  }?token=${  this.userToken}`);

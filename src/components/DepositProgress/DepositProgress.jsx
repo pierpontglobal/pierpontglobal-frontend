@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
 import './styles.css';
@@ -60,10 +59,6 @@ function DepositProgress({ amount, className }) {
     </Container>
   );
 }
-
-DepositProgress.propTypes = {
-  amount: PropTypes.number,
-};
 
 DepositProgress.defaultProps = {
   amount: 0,

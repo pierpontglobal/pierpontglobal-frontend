@@ -29,7 +29,7 @@ class NotificationPage extends Component {
     };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.cable = ActionCable.createConsumer(WSConnection);
     this.userId = this.props.cookies.get('user_id', { path: '/' });
 

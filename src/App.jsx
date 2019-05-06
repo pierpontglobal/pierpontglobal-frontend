@@ -145,19 +145,21 @@ class App extends React.Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { cookies } = this.props;
 
     this.setDefaultLanguage();
 
     this.OneSignal = window.OneSignal || [];
 
+    console.log(this.OneSignal);
+
     this.OneSignal.push(() => {
       this.OneSignal.init({
         appId: OneSignalKey,
-        autoResubscribe: true,
         allowLocalhostAsSecureOrigin: true,
       });
+
       this.OneSignal.on('subscriptionChange', (isSubscribed) => {
         // console.log(`The user subscription status is: ${isSubscribed}`);
         this.OneSignal.getUserId((id) => {
@@ -232,8 +234,6 @@ class App extends React.Component {
     return (
       <IntlProvider locale={language || 'en'} messages={messages[language]}>
         <MuiThemeProvider theme={DefaultTheme}>
-
-        
           <div>
             <Router>
               <div style={{

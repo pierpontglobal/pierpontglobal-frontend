@@ -517,7 +517,7 @@ export default class SettingSide extends React.Component {
                   <em><FormattedMessage id="label.none" /></em>
                 </MenuItem>
                 {this.state.cardsNumbers.map(cardNumber => (
-                  <MenuItem value={cardNumber.key}>
+                  <MenuItem key={cardNumber.key} value={cardNumber.key}>
                     {cardNumber.text}
                   </MenuItem>
                 ))}

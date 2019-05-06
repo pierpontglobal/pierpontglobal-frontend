@@ -22,8 +22,7 @@ function DealerTab({ dealer }) {
         className="border-0"
         height="70px"
         width="70px"
-        borderRadius="50%"
-        src={ dealer.image ? dealer.image || Building : Building}
+        src={dealer.image ? dealer.image || Building : Building}
         alt="pierpont"
       />
       <div style={{
