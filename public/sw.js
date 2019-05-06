@@ -1,5 +1,22 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
+console.log('New SW added');
+
+workbox.routing.registerRoute(
+  new RegExp('/static/js/bundle.js'),
+  new workbox.strategies.CacheFirst(),
+);
+
+workbox.routing.registerRoute(
+  new RegExp('/static/js/1.chunk.js'),
+  new workbox.strategies.CacheFirst(),
+);
+
+workbox.routing.registerRoute(
+  new RegExp('/static/js/main.chunk.js'),
+  new workbox.strategies.CacheFirst(),
+);
+
 workbox.precaching.precacheAndRoute([
   {
     "url": "favicon.ico",
@@ -307,7 +324,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "index.html",
-    "revision": "72ed060ad6775e210cf38e4b14785af1"
+    "revision": "e2d28efaa4d7e9a94b7ff70905a06605"
   },
   {
     "url": "logos/loading_logo.png",
@@ -398,7 +415,11 @@ workbox.precaching.precacheAndRoute([
     "revision": "d8d7deec4f56344eac90829d877feb13"
   },
   {
-    "url": "onesignal.js",
-    "revision": "6758caf6192c0d7633330c29beec94c9"
+    "url": "OneSignalSDKUpdaterWorker.js",
+    "revision": "ebb63ca15bba16b550232b0b0f66c726"
+  },
+  {
+    "url": "OneSignalSDKWorker.js",
+    "revision": "b5f3b65bfa7f54da37c3caca4eefe97c"
   }
 ]);
