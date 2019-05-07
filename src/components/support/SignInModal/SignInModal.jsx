@@ -1,13 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
+import { withRouter } from 'react-router-dom';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { ApiServer } from '../../../Defaults';
 import Modal from '../../Modal/Modal';
 import Input from '../../styles/Input/Input';
 import Button from '../../Btn/Btn';
 import './styles.css';
-import { withRouter } from 'react-router-dom';
-import { FormattedMessage, injectIntl } from 'react-intl';
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -135,7 +135,7 @@ class SignInModal extends React.Component {
             onClick={() => { this.setState({ rotate: 'rotate' }); }}
           >
             <div style={{ position: 'relative' }}>
-              <FormattedMessage id='label.sign-in' />
+              <FormattedMessage id="label.sign-in" />
               <i
                 style={{
                   position: 'absolute',

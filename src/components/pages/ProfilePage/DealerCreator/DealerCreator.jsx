@@ -3,18 +3,23 @@ import './styles.css';
 import { Form } from 'semantic-ui-react';
 import axios from 'axios';
 import { Elements, StripeProvider } from 'react-stripe-elements';
-import { TextField, MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import {
+  TextField,
+  MuiThemeProvider,
+  createMuiTheme,
+  Button,
+} from '@material-ui/core';
 import { AsYouType } from 'libphonenumber-js';
-import { Button } from '@material-ui/core';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 import { withStyles } from '@material-ui/core/styles';
 import { withCookies } from 'react-cookie';
+import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 import { ApiServer, StripeKey } from '../../../../Defaults';
 import InjectedCheckoutForm from '../SettingSide/Components/Modals/CheckoutForm';
 import SubscriptionCard from '../SubscriptionSide/Components/SubscriptionCard';
-import { withRouter } from 'react-router-dom';
-import { injectIntl } from 'react-intl';
+
 
 function printNumber(e) {
   e.target.value = new AsYouType('US').input(e.target.value);
@@ -28,6 +33,7 @@ const ButtonTheme = createMuiTheme({
   typography: { useNextVariants: true },
 });
 
+// eslint-disable-next-line no-unused-vars
 const styles = theme => ({
   LogoutButtonIcon: {
     transform: 'rotate(180deg)',
@@ -66,16 +72,8 @@ class DealerCreator extends React.Component {
     return this.state.coupon;
   }
 
-  async register() {
-    this.setState({
-      loading: true,
-    });
-    const { name, phoneNumber } = this.state;
-    const data = {
-      name,
-      phone_number: phoneNumber,
-    };
-    await axios.post(`${ApiServer}/api/v1/user/dealers`, data);
+  gotToMarketplace = () => {
+    this.props.history.push('/marketplace');
   }
 
   async verifyCoupon(couponRequested) {
@@ -121,8 +119,16 @@ class DealerCreator extends React.Component {
     this.props.history.push('/');
   }
 
-  gotToMarketplace = () => {
-    this.props.history.push('/marketplace');
+  async register() {
+    this.setState({
+      loading: true,
+    });
+    const { name, phoneNumber } = this.state;
+    const data = {
+      name,
+      phone_number: phoneNumber,
+    };
+    await axios.post(`${ApiServer}/api/v1/user/dealers`, data);
   }
 
   render() {
@@ -135,7 +141,8 @@ class DealerCreator extends React.Component {
     );
 
     const {
-      couponLoading, amountToPay, hasDealer, name, phoneNumber, coupon,
+      // eslint-disable-next-line no-unused-vars
+      couponLoading, amountToPay, hasDealer, name, phoneNumber, coupon, loading,
     } = this.state;
 
     const { classes, intl } = this.props;
@@ -148,7 +155,7 @@ class DealerCreator extends React.Component {
       dealerPhone: intl.formatMessage({ id: 'dealer-creator.dealer-phone' }),
       subscriptionDetail: intl.formatMessage({ id: 'dealer-creator.subscription-detail' }),
       subscriptionText: intl.formatMessage({ id: 'dealer-creator.subscription-text' }),
-      saveButtonText: intl.formatMessage({ id: 'dealer-creator.save-button-text'}, { amount: amountToPay }),
+      saveButtonText: intl.formatMessage({ id: 'dealer-creator.save-button-text' }, { amount: amountToPay }),
       addCouponIfAny: intl.formatMessage({ id: 'dealer-creator.add-coupon-if-any' }),
     };
 
@@ -281,10 +288,10 @@ class DealerCreator extends React.Component {
                     </div>
                   </div>
                   )}
-                  afterSubmit={() => (!hasDealer) ? this.register() : null }
-                  couponField={this.getCouponCode}
-                  saveButtonText={labels.saveButtonText}
-                />
+                afterSubmit={() => (!hasDealer ? this.register() : null)}
+                couponField={this.getCouponCode}
+                saveButtonText={labels.saveButtonText}
+              />
             </Elements>
           </StripeProvider>
         </div>

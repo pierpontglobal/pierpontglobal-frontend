@@ -1,11 +1,11 @@
 import React from 'react';
 import Countdown from 'react-countdown-now';
 import posed from 'react-pose';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import styled from 'styled-components';
 import Text from '../styles/Text/Text';
 import './styles.css';
 import SimpleButton from './SimpleButton';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import styled from 'styled-components';
 
 const Completionist = () => <FormattedMessage id="bid.process-start" />;
 
@@ -42,7 +42,7 @@ const CompletedTimerText = styled.div`
 `;
 
 const renderer = ({
-  days, hours, minutes, seconds, completed
+  days, hours, minutes, seconds, completed,
 }) => {
   if (completed) {
     // Render a completed state
@@ -159,8 +159,8 @@ class BidCard extends React.Component {
       data,
     };
 
-    this.lbDays = this.props.intl.formatMessage({id: 'label.days' });
-    this.disabledText = this.props.intl.formatMessage({id: 'label.cancel-bid-disabled' });
+    this.lbDays = this.props.intl.formatMessage({ id: 'label.days' });
+    this.disabledText = this.props.intl.formatMessage({ id: 'label.cancel-bid-disabled' });
   }
 
   render() {
@@ -252,7 +252,7 @@ class BidCard extends React.Component {
                 margin: '10px',
                 lineHeight: '12px',
                 cursor: 'pointer',
-                minWidth: '80px'
+                minWidth: '80px',
               }}
               onClick={() => { window.location.href = `/marketplace/car?vin=${vin}`; }}
             >
@@ -270,31 +270,45 @@ class BidCard extends React.Component {
             <AuctionDetail>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.id" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.car_id ? data.car_id : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.car_id ? data.car_id : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.maker" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.car_maker ? data.car_maker : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.car_maker ? data.car_maker : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.model" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.car_model ? data.car_model : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.car_model ? data.car_model : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.year" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.year ? data.year : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.year ? data.year : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.trim" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.trim ? data.trim : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.trim ? data.trim : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.vin" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.vin ? data.vin : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.vin ? data.vin : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
               <AuctionDetailContainer>
                 <AuctionDetailName><FormattedMessage id="car.channel" /></AuctionDetailName>
-                <AuctionDetailValue><span>{data.channel ? data.channel : NotAvailableLabel}</span></AuctionDetailValue>
+                <AuctionDetailValue>
+                  <span>{data.channel ? data.channel : NotAvailableLabel}</span>
+                </AuctionDetailValue>
               </AuctionDetailContainer>
             </AuctionDetail>
             <div style={{ marginTop: '24px' }}>

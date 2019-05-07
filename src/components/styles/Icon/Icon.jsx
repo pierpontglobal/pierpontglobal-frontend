@@ -1,5 +1,5 @@
-import styled, {css} from 'styled-components';
-import {containerProps} from '../Properties/Properties';
+import styled, { css } from 'styled-components';
+import { containerProps } from '../Properties/Properties';
 
 const Icon = styled.i`
     ${containerProps}

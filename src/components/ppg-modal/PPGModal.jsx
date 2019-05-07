@@ -14,17 +14,20 @@ const styles = theme => ({
     padding: theme.spacing.unit * 4,
     outline: 'none',
     minHeight: '180px',
-    minWidth: '220px'
-  }
+    minWidth: '220px',
+  },
 });
 
 function PPGModal(props) {
-  const { setOpen, classes, width, height, setPadding, onlyChildren, onBackAction } = props;
+  const {
+    setOpen, classes, width, height, setPadding, onlyChildren, onBackAction,
+  } = props;
 
+  // eslint-disable-next-line prefer-const
   let style = {
     argin: 'auto',
-    width: width,
-    height: height,
+    width,
+    height,
     overflowY: 'scroll',
     padding: '32px',
   };
@@ -42,25 +45,24 @@ function PPGModal(props) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       {
         !onlyChildren
-          ? 
-          (
+          ? (
             <div
-                style={style}
-                className={classes.paper}
-              >
+              style={style}
+              className={classes.paper}
+            >
               <div style={{ position: 'absolute', top: '5px', left: '5px' }}>
                 {
                   (onBackAction) ? (
                     <IconButton onClick={props.onBackAction}>
                       <ArrowBackIcon />
                     </IconButton>
-                    ) 
-                  : null
+                  )
+                    : null
                 }
               </div>
               <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
@@ -71,7 +73,7 @@ function PPGModal(props) {
               {props.children}
             </div>
           )
-        : props.children
+          : props.children
       }
     </Modal>
   );

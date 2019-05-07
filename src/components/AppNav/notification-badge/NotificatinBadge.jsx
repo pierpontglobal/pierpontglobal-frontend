@@ -72,7 +72,7 @@ class NotificationBadge extends Component {
   handleReceived = (data) => {
     const { notifications } = this.state;
 
-    const new_noti = {
+    const NewNoti = {
       id: data.notification_id,
       data: {
         sent_date: data.sent_date,
@@ -83,9 +83,8 @@ class NotificationBadge extends Component {
       notification_type: data.notification_type,
       read_at: undefined,
     };
-    console.log('Received: ', data);
     this.setState({
-      notifications: [new_noti, ...notifications],
+      notifications: [NewNoti, ...notifications],
     });
   }
 
@@ -103,7 +102,7 @@ class NotificationBadge extends Component {
     this.setState(state => ({ open: !state.open }));
   };
 
-  handleClose = (event) => {
+  handleClose = () => {
     this.setState({ open: false });
   };
 
@@ -167,7 +166,13 @@ class NotificationBadge extends Component {
               >
                 <ClickAwayListener onClickAway={this.handleClose}>
                   <div style={{ width: '100%', backgroundColor: '#efeded' }}>
-                    <Notifications onReadAll={this.onReadAllNotification} onRead={this.onReadNotification} cookies={cookies} notifications={notifications} onClose={this.handleClose} />
+                    <Notifications
+                      onReadAll={this.onReadAllNotification}
+                      onRead={this.onReadNotification}
+                      cookies={cookies}
+                      notifications={notifications}
+                      onClose={this.handleClose}
+                    />
                   </div>
                 </ClickAwayListener>
               </Grow>
@@ -179,7 +184,10 @@ class NotificationBadge extends Component {
             setPadding={false}
             onlyChildren
           >
-            <NotificationDetailModal handleClose={this.closeNotificationModal} selectedNotification={selectedNotification} />
+            <NotificationDetailModal
+              handleClose={this.closeNotificationModal}
+              selectedNotification={selectedNotification}
+            />
           </PPGModal>
         </ActionCableProvider>
       </>

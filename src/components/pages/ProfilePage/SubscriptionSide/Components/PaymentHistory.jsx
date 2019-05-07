@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import PaySubscription from './PaySubscription';
 import './styles.css';
 
@@ -92,10 +91,5 @@ class PaymentHistory extends React.Component {
     );
   }
 }
-
-PaymentHistory.propTypes = {
-  paymentsHistory: PropTypes.array.isRequired,
-  pendingInvoices: PropTypes.array.isRequired,
-};
 
 export default PaymentHistory;

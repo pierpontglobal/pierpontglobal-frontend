@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import {
   BrowserRouter as Router, Route, Switch, Redirect,
@@ -9,10 +10,10 @@ import styled from 'styled-components';
 import {
   IntlProvider, FormattedMessage, addLocaleData, injectIntl,
 } from 'react-intl';
-import locale_en from 'react-intl/locale-data/en';
-import locale_es from 'react-intl/locale-data/es';
-import messages_es from './translations/es.json';
-import messages_en from './translations/en.json';
+import LocaleEn from 'react-intl/locale-data/en';
+import LocaleEs from 'react-intl/locale-data/es';
+import MessagesEs from './translations/es.json';
+import MessagesEn from './translations/en.json';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
@@ -27,12 +28,12 @@ import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
 
-addLocaleData([...locale_en, ...locale_es]);
+addLocaleData([...LocaleEn, ...LocaleEs]);
 
 // TODO: This switch was on porpuse for testing ONLY purposes!!!
 const messages = {
-  es: messages_es,
-  en: messages_en,
+  es: MessagesEs,
+  en: MessagesEn,
 };
 
 const car = {
@@ -139,12 +140,6 @@ class App extends React.Component {
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
   }
 
-  setDealer = (dealer) => {
-    this.setState({
-      dealer,
-    });
-  }
-
   componentDidMount() {
     const { cookies } = this.props;
 
@@ -179,12 +174,10 @@ class App extends React.Component {
     });
   }
 
-  verifyUserLoggedIn() {
-    const { cookies } = this.props;
-    if (cookies.get('token', { path: '/' })) {
-      return true;
-    }
-    return false;
+  setDealer = (dealer) => {
+    this.setState({
+      dealer,
+    });
   }
 
   setLanguage = (lang) => {
@@ -224,6 +217,14 @@ class App extends React.Component {
     });
   }
 
+  verifyUserLoggedIn() {
+    const { cookies } = this.props;
+    if (cookies.get('token', { path: '/' })) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     const { cookies } = this.props;
     const { dealer, languages, language } = this.state;
@@ -240,7 +241,14 @@ class App extends React.Component {
                 flexDirection: 'column',
               }}
               >
-                <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                <AppNav
+                  languages={languages}
+                  setLang={this.setLanguage}
+                  cookies={cookies}
+                  openModal={this.openModal}
+                  dealer={dealer}
+                  verifyUserLoggedIn={this.verifyUserLoggedIn}
+                />
                 <PageHolder>
                   <Switch>
                     <Route exact path="/oauth/login" render={() => <OauthPage />} />
