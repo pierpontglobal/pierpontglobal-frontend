@@ -25,6 +25,7 @@ const CustomPopper = styled(Popper)`
   height: 100% !important;
   transform: none !important;
   top: 60px !important;
+  background-color: white !important;
   @media only screen and (min-width: 748px) {
     width: 18% !important;
     right: 12% !important;
@@ -37,8 +38,40 @@ const Wrapper = styled.div`
   margin-right: 0px;
   @media only screen and (min-width: 768px) {
     margin-left: 32px;
-    margin-right: 16px;
   }
+`;
+
+const LanguageIconLabeled = styled(IconButton)`
+:hover::after {
+  content: 'Change language';
+  padding: 4px;
+  font-size: 12px;
+  border-radius: 4px;
+  width: 100px;
+  color: white;
+  background-color: rgb(59, 68, 75);
+  position: absolute;
+  top: 48px;
+  text-align: center;
+  font-weight: 200;
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.3);
+  transition: 1s;
+}
+:hover::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  text-align: center;
+  font-weight: 200;
+  width: 0; 
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  position: absolute;
+  color: white;
+  border-bottom: 20px solid rgb(59, 68, 75);
+  transition: 1s;
+}
 `;
 
 class LanguageSwitch extends Component {
@@ -63,7 +96,7 @@ class LanguageSwitch extends Component {
     const { classes, languages, setLang } = this.props;
     return (
       <Wrapper>
-        <IconButton
+        <LanguageIconLabeled
           disableRipple
           onClick={this.handleOpen}
           className={classes.iconButton}
@@ -74,10 +107,11 @@ class LanguageSwitch extends Component {
           aria-haspopup="true"
         >
           <LanguageIcon color="primary" />
-        </IconButton>
-        <CustomPopper open={open} anchorEl={this.anchorEl} transition disablePortal>
+        </LanguageIconLabeled>
+        <CustomPopper color="primary" open={open} anchorEl={this.anchorEl} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
+              color="primary"
               {...TransitionProps}
               id="menu-list-grow"
               style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom', width: '100%' }}

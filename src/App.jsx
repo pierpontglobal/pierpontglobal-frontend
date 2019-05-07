@@ -26,6 +26,7 @@ import AppNav from './components/AppNav/AppNav';
 import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
+import SupportPage from './components/pages/SupportPage/SupportPage.jsx';
 
 addLocaleData([...locale_en, ...locale_es]);
 
@@ -257,6 +258,7 @@ class App extends React.Component {
                     <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
                     <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
+                    <Route exact path="/support" render={() => (<SupportPage />)} />
 
                     <Route render={() => (<NotfoundPage cookies={cookies} />)} />
                   </Switch>

@@ -73,7 +73,6 @@ class WhatsApp extends React.Component {
     this.state = {
       whatsappVisible: false,
     };
-
   }
 
   render() {
@@ -88,7 +87,12 @@ class WhatsApp extends React.Component {
         }}
         className="outerWhatsApp"
       >
-        <WList pose={this.state.whatsappVisible ? 'visible' : 'hidden'} style={{ borderRadius: '10px', display: this.state.whatsappVisible ? 'flex' : 'none' }} className="chat-box animated shadow" id="chat-box">
+        <WList
+          pose={this.state.whatsappVisible ? 'visible' : 'hidden'}
+          style={{ marginRight: '70px', borderRadius: '10px', display: this.state.whatsappVisible ? 'flex' : 'none' }}
+          className="chat-box animated shadow"
+          id="chat-box"
+        >
           <div className="card card-radius-all border-0">
             <div className="card-header card-radius" style={{ backgroundColor: '#2db742' }}>
               <div className="d-flex">
@@ -207,7 +211,10 @@ class WhatsApp extends React.Component {
           className="shadow"
         >
           <FormattedMessage id="whatsapp.need-help" />
-          <span style={{ fontWeight: 'bold' }}> <FormattedMessage id="whatsapp.chat-with-us" /></span>
+          <span style={{ fontWeight: 'bold' }}>
+            {' '}
+            <FormattedMessage id="whatsapp.chat-with-us" />
+          </span>
         </WMessageStyleWrapper>
         <WButton
           style={{

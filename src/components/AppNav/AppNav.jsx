@@ -1,6 +1,7 @@
 import React from 'react';
 import Img from 'react-image';
 import './styles.css';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 import { withRouter } from 'react-router-dom';
 import BurgerIcon from '@material-ui/icons/Menu';
 import styled from 'styled-components';
@@ -10,6 +11,7 @@ import SignInModal from '../support/SignInModal/SignInModal';
 import AccountManager from '../support/AccountManager';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import LanguageSwitch from './language-switch/LanguageSwitch';
+
 
 const styles = () => ({
   iconButton: {
@@ -29,6 +31,47 @@ const LinkBtn = styled.div`
   text-decoration: 'none';
   &:hover {
     cursor: pointer;
+  }
+`;
+
+const Help = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  cursor: pointer;
+  :hover::after {
+    content: 'Visit the tutorial page';
+    padding: 4px;
+    border-radius: 4px;
+    width: 100px;
+    font-size: 12px;
+    color: white;
+    background-color: rgb(59, 68, 75);
+    position: absolute;
+    top: 48px;
+    text-align: center;
+    font-weight: 200;
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.3);
+    transition: 1s;
+  }
+  :hover::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    text-align: center;
+    font-weight: 200;
+    width: 0; 
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    position: absolute;
+    color: white;
+    border-bottom: 20px solid rgb(59, 68, 75);
+    transition: 1s;
   }
 `;
 
@@ -191,7 +234,7 @@ class AppNav extends React.Component {
                 ]}
                 loader={
                   <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
-                  }
+                }
               />
             </LogoWrapper>
           </MenuLogoWrapper>
@@ -214,6 +257,9 @@ class AppNav extends React.Component {
               showSignIn={() => { this.showSignIn(true); }}
             />
             <LanguageSwitch setLang={setLang} languages={languages} />
+            <Help onClick={() => this.goTo('support')}>
+              <HelpOutline color="primary" />
+            </Help>
           </ButtonsWrapper>
         </NavItems>
       </AppNavWrapper>
