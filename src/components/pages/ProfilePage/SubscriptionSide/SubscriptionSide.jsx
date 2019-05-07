@@ -2,13 +2,13 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import UnderLine from '../../../Underline/Underline';
 import './styles.css';
 import CardComponent from './Components/CardComponent';
 import SubscriptionCard from './Components/SubscriptionCard';
 import PaymentHistory from './Components/PaymentHistory';
 import { ApiServer } from '../../../../Defaults';
-import styled from 'styled-components';
 
 const HeadingStyle = styled.div`
   font-size: 1em;
@@ -195,10 +195,6 @@ class SubscriptionSide extends React.Component {
     return (<div />);
   }
 }
-
-SubscriptionSide.propTypes = {
-  cookies: PropTypes.object,
-};
 
 SubscriptionSide.defaultProps = {
   cookies: {},

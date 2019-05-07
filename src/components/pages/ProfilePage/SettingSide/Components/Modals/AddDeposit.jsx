@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-import { ApiServer } from '../../../../../../Defaults';
 import styled from 'styled-components';
-import PPGModal from '../../../../../ppg-modal/PPGModal';
 import CloseIcon from '@material-ui/icons/Close';
 import { withRouter } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
+import PPGModal from '../../../../../ppg-modal/PPGModal';
+import { ApiServer } from '../../../../../../Defaults';
 
 const ModalWrapper = styled.div`
   width: 90%;
@@ -92,7 +91,7 @@ const TransactionSuccessKeyValue = styled.div`
 
 const Underline = styled.div`
   width: 100%;
-  height: ${props => !props.height ? '100%' : props.height};
+  height: ${props => (!props.height ? '100%' : props.height)};
   background-color: #ccc;
 `;
 
@@ -148,9 +147,10 @@ class AddDeposit extends React.Component {
 
   onCloseModal() {
     this.setState({ open: false });
-    if (this.state.status === 'success') {
-      //window.location.reload();
-    }
+  }
+
+  gotToTransactions = () => {
+    this.props.history.push('/user/transactions');
   }
 
   async sendDeposit(node) {
@@ -197,10 +197,6 @@ class AddDeposit extends React.Component {
     }
   }
 
-  gotToTransactions = () => {
-    this.props.history.push('/user/transactions');
-  }
-
   render() {
     const { open, status, charge } = this.state;
 
@@ -216,11 +212,11 @@ class AddDeposit extends React.Component {
             <h3 style={{ color: '#B20000' }}>
               <i style={{ color: '#B20000' }} className="fas fa-times" />
               {' '}
-            {this.labels.transactionFailed}
+              { this.labels.transactionFailed }
             </h3>
             <hr />
             <p style={{ marginTop: '20px' }}>
-            {this.labels.transactionFailedText}
+              {this.labels.transactionFailedText}
             </p>
           </>
         );
@@ -228,7 +224,7 @@ class AddDeposit extends React.Component {
       case 'success':
         title = 'Transaction successful.';
         gridRows = '18% 0.5% 62% 0.5% 19%';
-        if ( window.innerWidth <= 768 ) {
+        if (window.innerWidth <= 768) {
           gridRows = '13% 0.5% 73% 0.5% 13%';
         }
         content = (
@@ -237,19 +233,27 @@ class AddDeposit extends React.Component {
               <span style={{ fontWeight: '600' }}>{ this.labels.visitTransactionTab }</span>
             </div>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>{ this.labels.transactionNumber } </span>
+              <span style={{ fontWeight: 900 }}>
+                { this.labels.transactionNumber }
+              </span>
               <span>{charge.id}</span>
             </TransactionSuccessKeyValue>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>{ this.labels.userIdentifier } </span>
+              <span style={{ fontWeight: 900 }}>
+                { this.labels.userIdentifier }
+              </span>
               <span>{charge.customer}</span>
             </TransactionSuccessKeyValue>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>{ this.labels.sourceId } </span>
+              <span style={{ fontWeight: 900 }}>
+                { this.labels.sourceId }
+              </span>
               <span>{charge.source.id}</span>
             </TransactionSuccessKeyValue>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>{ this.labels.date } </span>
+              <span style={{ fontWeight: 900 }}>
+                { this.labels.date }
+              </span>
               <span>{(new Date(charge.created * 1000)).toDateString()}</span>
             </TransactionSuccessKeyValue>
           </div>
@@ -257,9 +261,8 @@ class AddDeposit extends React.Component {
         footer = (
           <TransactionButton
             type="button"
-            onClick={ this.gotToTransactions }
+            onClick={this.gotToTransactions}
           >
-
             <i style={{ fontSize: '12px', color: 'rgb(59, 68, 75)' }} className="fas fa-file-invoice-dollar" />
             {' '}
             { this.labels.transactions }
@@ -268,7 +271,14 @@ class AddDeposit extends React.Component {
         break;
       case 'sending':
         content = (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '100%',
+          }}
+          >
             <h3>
               <i style={{ color: 'rgb(59, 68, 75)' }} className="fas fa-spinner loading" />
               {' '}
@@ -279,56 +289,54 @@ class AddDeposit extends React.Component {
         footer = this.labels.pleaseWait;
         break;
       default:
-       content = 
-       (
-        <DepositForm>
-          <div style={{ display: 'flex', flexDirection: 'row', margin: '16px 0px' }}>
-            <div style={{
-              height: '41px',
-              width: '41px',
-              backgroundColor: '#dedede',
-              fontSize: '16px',
-              textAlign: 'center',
-              lineHeight: '41px',
-              fontWeight: 900,
-              borderRadius: '5px 0 0 5px',
-              border: 'gray solid 0.5px',
-            }}
-            >
-          $
+        content = (
+          <DepositForm>
+            <div style={{ display: 'flex', flexDirection: 'row', margin: '16px 0px' }}>
+              <div style={{
+                height: '41px',
+                width: '41px',
+                backgroundColor: '#dedede',
+                fontSize: '16px',
+                textAlign: 'center',
+                lineHeight: '41px',
+                fontWeight: 900,
+                borderRadius: '5px 0 0 5px',
+                border: 'gray solid 0.5px',
+              }}
+              >
+            $
+              </div>
+              <input
+                className="input-single-amount"
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder={this.labels.depositAmount}
+                ref={(node) => { this.amount = node; }}
+              />
             </div>
-            <input
-              className="input-single-amount"
-              type="number"
-              min="0.01"
-              step="0.01"
-              placeholder={this.labels.depositAmount}
-              ref={(node) => { this.amount = node; }}
-            />
-          </div>
-          <button
-            type="button"
-            className="border-0 shadow green_button"
-            style={{
-              backgroundColor: '#10b364',
-              color: '#ffffff',
-              borderRadius: '5px',
-              padding: '10px 30px',
-              cursor: 'pointer',
-            }}
-            onClick={this.sendDeposit}
-          >
-            <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
-            {' '}
-            { this.labels.addDeposit }
-          </button>
-        </DepositForm>
-       );
-       footer = this.labels.allowFundsDelay;
+            <button
+              type="button"
+              className="border-0 shadow green_button"
+              style={{
+                backgroundColor: '#10b364',
+                color: '#ffffff',
+                borderRadius: '5px',
+                padding: '10px 30px',
+                cursor: 'pointer',
+              }}
+              onClick={this.sendDeposit}
+            >
+              <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
+              {' '}
+              { this.labels.addDeposit }
+            </button>
+          </DepositForm>
+        );
+        footer = this.labels.allowFundsDelay;
     }
 
-    const baseModalContent = 
-    (
+    const baseModalContent = (
       <ModalWrapper gridRows={gridRows}>
         <ModalHeader>
           <HeaderTitle>{ title }</HeaderTitle>
@@ -344,7 +352,7 @@ class AddDeposit extends React.Component {
         </ModalFooter>
       </ModalWrapper>
     );
-    
+
     return (
       <AddDepositButtonWrapper>
         <button
@@ -363,22 +371,18 @@ class AddDeposit extends React.Component {
           {' '}
           { this.labels.addDeposit }
         </button>
-        <PPGModal 
+        <PPGModal
           setPadding={false}
-          onlyChildren={true} 
-          setOpen={open} 
+          onlyChildren
+          setOpen={open}
           handleClose={this.onCloseModal}
         >
-         { baseModalContent }
+          {baseModalContent}
         </PPGModal>
       </AddDepositButtonWrapper>
     );
   }
 }
-
-AddDeposit.propTypes = {
-  cookies: PropTypes.object,
-};
 
 AddDeposit.defaultProps = {
   cookies: {},
