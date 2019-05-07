@@ -191,6 +191,9 @@ class App extends React.Component {
     const { languages } = this.state;
     const langs = [...languages];
 
+    const { cookies } = this.props;
+    cookies.set('language', lang.abr, { path: '/' });
+
     langs.forEach((lg) => {
       if (lg.abr === lang.abr) {
         lg.active = true;
@@ -207,9 +210,10 @@ class App extends React.Component {
   setDefaultLanguage = () => {
     const { languages } = this.state;
     const langs = [...languages];
+    const { cookies } = this.props;
 
     // Set default to Spanish
-    const defaultLang = 'es';
+    const defaultLang = cookies.get('language') || 'en';
     langs.forEach((lg) => {
       if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
         lg.active = true;
