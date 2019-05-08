@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 import Tab from './Tab/Tab';
 import DealerTab from './DealerTab/DealerTab';
 import FundTab from './FundTab/FundTab';
@@ -141,4 +142,4 @@ AccountPanel.defaultProps = {
   dealer: {},
 };
 
-export default withCookies(injectIntl(AccountPanel));
+export default withCookies(injectIntl(withRouter(AccountPanel)));

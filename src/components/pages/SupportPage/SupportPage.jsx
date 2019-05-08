@@ -3,6 +3,8 @@ import { withCookies } from 'react-cookie';
 import styled from 'styled-components';
 import 'video-react/dist/video-react.css';
 import { Player } from 'video-react';
+import tutorials from './tutorials';
+import { withRouter } from 'react-router-dom';
 
 const Container = styled.div`
 display: grid;
@@ -118,63 +120,6 @@ const MenuItem = styled.div`
   }
 `;
 
-const tutorials = [
-  {
-    id: 1,
-    category: 'basics',
-    title: 'Sample Item 1',
-    video: {
-      url: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
-      sample: 'https://via.placeholder.com/550',
-    },
-    body: [
-      {
-        heading: 'TestHeading 1', content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id quam vel sapien maximus egestas non efficitur mi. Donec nec feugiat urna, a efficitur ex. Fusce ullamcorper eros felis, quis egestas lacus pulvinar at. Maecenas maximus interdum facilisis. Vivamus mattis consequat metus, lobortis aliquam lacus. Etiam dapibus vulputate nibh. Morbi egestas blandit neque vel condimentum. Aliquam elementum eget quam laoreet scelerisque. Fusce sit amet velit mollis, fermentum tellus vitae, bibendum nulla. Proin elementum odio nec justo vehicula euismod.
-      Fusce quis cursus lectus. Ut ac nisl sed turpis pellentesque faucibus nec id purus. Duis pretium, neque quis blandit tempus, elit quam pretium nibh, id aliquam lorem ligula eget odio. Maecenas iaculis condimentum eros quis iaculis. Nulla vestibulum ornare sollicitudin. Pellentesque porttitor libero tempus, ultrices metus vitae, placerat tortor. Duis rhoncus dictum ipsum non laoreet.
-      Donec ut nisi vel enim commodo facilisis in vitae ligula. Maecenas ultricies velit sed nunc ultricies aliquam.`,
-      },
-      {
-        heading: 'TestHeading 2',
-        content: <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id quam vel sapien maximus egestas non efficitur mi. Donec nec feugiat urna, a efficitur ex. Fusce ullamcorper eros felis, quis egestas lacus pulvinar at. Maecenas maximus interdum facilisis. Vivamus mattis consequat metus, lobortis aliquam lacus. Etiam dapibus vulputate nibh. Morbi egestas blandit neque vel condimentum. Aliquam elementum eget quam laoreet scelerisque. Fusce sit amet velit mollis, fermentum tellus vitae, bibendum nulla. Proin elementum odio nec justo vehicula euismod.
-          Fusce quis cursus lectus. Ut ac nisl sed turpis pellentesque faucibus nec id purus. Duis pretium, neque quis blandit tempus, elit quam pretium nibh, id aliquam lorem ligula eget odio. Maecenas iaculis condimentum eros quis iaculis. Nulla vestibulum ornare sollicitudin. Pellentesque porttitor libero tempus, ultrices metus vitae, placerat tortor. Duis rhoncus dictum ipsum non laoreet.
-          Donec ut nisi vel enim commodo facilisis in vitae
-          {' '}
-          <span style={{ color: 'red' }}>ligula</span>
-          . Maecenas ultricies velit sed nunc ultricies aliquam.
-        </p>,
-      },
-    ],
-  },
-  {
-    id: 2,
-    category: 'basics',
-    title: 'Sample Item 2',
-    video: {
-      url: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
-      sample: 'https://via.placeholder.com/550',
-    },
-    body: [
-      {
-        heading: 'TestHeading 1', content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id quam vel sapien maximus egestas non efficitur mi. Donec nec feugiat urna, a efficitur ex. Fusce ullamcorper eros felis, quis egestas lacus pulvinar at. Maecenas maximus interdum facilisis. Vivamus mattis consequat metus, lobortis aliquam lacus. Etiam dapibus vulputate nibh. Morbi egestas blandit neque vel condimentum. Aliquam elementum eget quam laoreet scelerisque. Fusce sit amet velit mollis, fermentum tellus vitae, bibendum nulla. Proin elementum odio nec justo vehicula euismod.
-      Fusce quis cursus lectus. Ut ac nisl sed turpis pellentesque faucibus nec id purus. Duis pretium, neque quis blandit tempus, elit quam pretium nibh, id aliquam lorem ligula eget odio. Maecenas iaculis condimentum eros quis iaculis. Nulla vestibulum ornare sollicitudin. Pellentesque porttitor libero tempus, ultrices metus vitae, placerat tortor. Duis rhoncus dictum ipsum non laoreet.
-      Donec ut nisi vel enim commodo facilisis in vitae ligula. Maecenas ultricies velit sed nunc ultricies aliquam.`,
-      },
-      {
-        heading: 'TestHeading 2',
-        content: <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id quam vel sapien maximus egestas non efficitur mi. Donec nec feugiat urna, a efficitur ex. Fusce ullamcorper eros felis, quis egestas lacus pulvinar at. Maecenas maximus interdum facilisis. Vivamus mattis consequat metus, lobortis aliquam lacus. Etiam dapibus vulputate nibh. Morbi egestas blandit neque vel condimentum. Aliquam elementum eget quam laoreet scelerisque. Fusce sit amet velit mollis, fermentum tellus vitae, bibendum nulla. Proin elementum odio nec justo vehicula euismod.
-          Fusce quis cursus lectus. Ut ac nisl sed turpis pellentesque faucibus nec id purus. Duis pretium, neque quis blandit tempus, elit quam pretium nibh, id aliquam lorem ligula eget odio. Maecenas iaculis condimentum eros quis iaculis. Nulla vestibulum ornare sollicitudin. Pellentesque porttitor libero tempus, ultrices metus vitae, placerat tortor. Duis rhoncus dictum ipsum non laoreet.
-          Donec ut nisi vel enim commodo facilisis in vitae
-          {' '}
-          <span style={{ color: 'red' }}>ligula</span>
-          . Maecenas ultricies velit sed nunc ultricies aliquam.
-        </p>,
-      },
-    ],
-  },
-];
-
 function getTutorial(id) {
   return tutorials.find(tutorial => tutorial.id === id);
 }
@@ -188,6 +133,12 @@ class SupportPage extends React.Component {
     };
   }
 
+  setTutorial = (id) => {
+    this.setState({
+      tutorialId: id,
+    });
+  }
+
   render() {
     const { tutorialId } = this.state;
     const tutorial = getTutorial(tutorialId);
@@ -196,21 +147,33 @@ class SupportPage extends React.Component {
       <Container>
         <MenuContainer>
           <MenuItemHeading>Basics</MenuItemHeading>
-          <MenuItem>Sample Item</MenuItem>
+          <MenuItem onClick={() => this.setTutorial(1)}>How to sign up</MenuItem>
+          <MenuItem onClick={() => this.setTutorial(2)}>Creating a dealer</MenuItem>
+          <MenuItem onClick={() => this.setTutorial(3)}>Adding/Removing a new card</MenuItem>
+          <MenuItem onClick={() => this.setTutorial(4)}>Push notifications</MenuItem>
+          <MenuItemHeading>Bids</MenuItemHeading>
+          <MenuItem>Placing a bid</MenuItem>
+          <MenuItem>Viewing your current bids information</MenuItem>
+          <MenuItemHeading>FAQs</MenuItemHeading>
+          <MenuItem>View FAQs here</MenuItem>
         </MenuContainer>
         <BodyContainer>
           <Title>{tutorial.title}</Title>
           <hr style={{ margin: '0 30px' }} />
-          <VideoHolder>
-            <Player
-              laysInline
-              poster={tutorial.video.sample}
-              src={tutorial.video.url}
-            />
-          </VideoHolder>
+          {
+            tutorial.video ? (
+              <VideoHolder>
+                <Player
+                  laysInline
+                  poster={tutorial.video.sample}
+                  src={tutorial.video.url}
+                />
+              </VideoHolder>)
+              : null
+          }
 
           {tutorial.body.map((textBody, i) => (
-            <div key={i}>
+            <div key={i} style={{ marginTop: '16px' }}>
               <Subtitle>{textBody.heading}</Subtitle>
               <TextBody>
                 {textBody.content}
@@ -223,4 +186,4 @@ class SupportPage extends React.Component {
   }
 }
 
-export default withCookies(SupportPage);
+export default withCookies(withRouter(SupportPage));
