@@ -142,7 +142,7 @@ const tutorials = [
           {' '}
           <span style={{ color: 'red' }}>ligula</span>
           . Maecenas ultricies velit sed nunc ultricies aliquam.
-        </p>,
+                 </p>,
       },
     ],
   },
@@ -169,7 +169,7 @@ const tutorials = [
           {' '}
           <span style={{ color: 'red' }}>ligula</span>
           . Maecenas ultricies velit sed nunc ultricies aliquam.
-        </p>,
+                 </p>,
       },
     ],
   },
