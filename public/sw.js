@@ -315,7 +315,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "index.html",
-    "revision": "cdc824195cc9dad245831e24e70e61cf"
+    "revision": "18f440cd41b0c6917ece7098dadca1f7"
   },
   {
     "url": "logos/loading_logo.png",
@@ -411,6 +411,6 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "OneSignalSDKWorker.js",
-    "revision": "24e4afd7fd4c7234f340963023080210"
+    "revision": "d41d8cd98f00b204e9800998ecf8427e"
   }
 ]);
