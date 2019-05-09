@@ -258,6 +258,7 @@ class AppNav extends React.Component {
             />
             <LanguageSwitch setLang={setLang} languages={languages} />
             <Help onClick={() => this.goTo('support')}>
+            
               <HelpOutline color="primary" />
             </Help>
           </ButtonsWrapper>

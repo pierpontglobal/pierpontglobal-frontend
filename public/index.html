@@ -38,20 +38,9 @@
           window.location.reload(true);
         }
 
-        function reveal_update() {
-          const selector = 'update_button';
-          const update_button = document.getElementById(selector);
-          if (update_button !== null)
-            update_button.style.opacity = '1';
-        }
-        setTimeout(reveal_update, 5000);
+        window.fallbackReload = setTimeout(reload_cache, 5000);
       </script>
 
-      <button id='update_button'
-        style="opacity: 0; position: fixed; top: 20px; left: 20px; width: 80px; height: 90px; background: #3A3E43; border-radius: 8px; color: white; transition: 0.4s;"
-        onclick="reload_cache()"><i class="material-icons" style="color: white;">
-          update
-        </i> <br />New updates! <br />Click here</button>
       <style>
         .full-page-loader {
           display: flex;

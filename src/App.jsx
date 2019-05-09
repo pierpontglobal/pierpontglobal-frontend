@@ -88,6 +88,7 @@ const PageHolder = styled.div`
 
 class App extends React.Component {
   constructor(props) {
+    clearTimeout(window.fallbackReload);
     super(props);
     const { cookies } = this.props;
 
