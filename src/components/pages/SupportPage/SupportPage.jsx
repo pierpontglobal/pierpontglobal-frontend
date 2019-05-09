@@ -3,8 +3,8 @@ import { withCookies } from 'react-cookie';
 import styled from 'styled-components';
 import 'video-react/dist/video-react.css';
 import { Player } from 'video-react';
-import tutorials from './tutorials';
 import { withRouter } from 'react-router-dom';
+import tutorials from './tutorials/tutorials';
 
 const Container = styled.div`
 display: grid;
@@ -18,7 +18,14 @@ grid-template-areas:
   grid-template-rows: 100%;
   grid-template-areas: 
     "menu body";
-  }
+}
+
+@media only screen and (min-width: 1200px) {
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 100%;
+  grid-template-areas: 
+    "menu body";
+}
 `;
 
 const BodyContainer = styled.div`
@@ -27,6 +34,11 @@ const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 100px;
+
+@media only screen and (min-width: 768px) {
+  padding-left: 10%;
+  padding-right: 10%;
+}
 `;
 
 const Title = styled.div`
@@ -85,6 +97,7 @@ const MenuItem = styled.div`
   background: #fafafa;
   cursor: pointer;
   transition: 1s;
+  padding-right: 40px;
   
   :hover {
     background: #dedede;
@@ -143,7 +156,7 @@ class SupportPage extends React.Component {
     if (tutorial.youtube) {
       return (
         <VideoHolder>
-          { tutorial.iframe }
+          {tutorial.iframe}
         </VideoHolder>
       );
     }

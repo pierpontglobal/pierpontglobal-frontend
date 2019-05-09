@@ -254,6 +254,14 @@ workbox.precaching.precacheAndRoute([
     "revision": "fa21635ce37057f098b9cd1efdaa29b1"
   },
   {
+    "url": "images/supportpage/payment-methods-section.png",
+    "revision": "c6d447e6e0491d6d792e99bd8a55c5fd"
+  },
+  {
+    "url": "images/supportpage/register-form.png",
+    "revision": "d8b54416ac8b3200b63d8b00061bd3c7"
+  },
+  {
     "url": "images/whatsapp/hector/hector.jp2",
     "revision": "3a70e7a07a7a37d4afb2e7c4dbc7d654"
   },
