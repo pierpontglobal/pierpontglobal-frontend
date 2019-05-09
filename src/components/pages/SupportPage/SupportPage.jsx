@@ -139,6 +139,25 @@ class SupportPage extends React.Component {
     });
   }
 
+  getVideoHolder = (tutorial) => {
+    if (tutorial.youtube) {
+      return (
+        <VideoHolder>
+          { tutorial.iframe }
+        </VideoHolder>
+      );
+    }
+    return (
+      <VideoHolder>
+        <Player
+          laysInline
+          poster={tutorial.video.sample}
+          src={tutorial.video.url}
+        />
+      </VideoHolder>
+    );
+  }
+
   render() {
     const { tutorialId } = this.state;
     const tutorial = getTutorial(tutorialId);
@@ -152,7 +171,7 @@ class SupportPage extends React.Component {
           <MenuItem onClick={() => this.setTutorial(3)}>Adding/Removing a new card</MenuItem>
           <MenuItem onClick={() => this.setTutorial(4)}>Push notifications</MenuItem>
           <MenuItemHeading>Bids</MenuItemHeading>
-          <MenuItem>Placing a bid</MenuItem>
+          <MenuItem onClick={() => this.setTutorial(5)}>Placing a bid</MenuItem>
           <MenuItem>Viewing your current bids information</MenuItem>
           <MenuItemHeading>FAQs</MenuItemHeading>
           <MenuItem>View FAQs here</MenuItem>
@@ -161,14 +180,10 @@ class SupportPage extends React.Component {
           <Title>{tutorial.title}</Title>
           <hr style={{ margin: '0 30px' }} />
           {
-            tutorial.video ? (
-              <VideoHolder>
-                <Player
-                  laysInline
-                  poster={tutorial.video.sample}
-                  src={tutorial.video.url}
-                />
-              </VideoHolder>)
+            tutorial.video
+              ? (
+                this.getVideoHolder(tutorial.video)
+              )
               : null
           }
 
