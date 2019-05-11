@@ -228,8 +228,12 @@
   "support.faqs": "FAQs",
   "support.view-faqs-here": "View FAQs here",
   "support.topic": "Topic",
-  "support.basics.navigate-to-then": "Navigate to the {link} and then go to the {section} section in the {place}.",
+  "support.basics.nagivate-to-the": "Navigate to the",
   "support.profile-page": "Profile page",
-  "support.payment-methods": "Payment Methods",
-  "support.setting-side": "Settings side"
+  "support.basics.got-to-payment-methods": "and then go to the 'Payment Methods' section in the settings side.",
+  "support.basics.here-you-can-click": "Here you can click",
+  "support.basics.add-payment-method": "+ Add payment method",
+  "support.basics-popup-dialog-text": ", and a pop up dialog will appear asking you the information for the new card.",
+  "support.basics.add-card-paragraph": "Here you will add the new credit card number, expiration date and security code (CVC) located at the back of the card."
+
 }

@@ -227,8 +227,11 @@
   "support.faqs": "FAQs",
   "support.view-faqs-here": "Ver FAQs aquí",
   "support.topic": "Tópico",
-  "support.basics.navigate-to-then": "Navega a {link} y luego dirígete a la sección {section} en el {place}.",
-  "support.profile-page": "Página de perfil",
-  "support.payment-methods": "Métodos de pago",
-  "support.setting-side": "Panel de configuración"
+  "support.basics.nagivate-to-the": "Navega hacia la",
+  "support.basics.profile-page": "Página de perfil",
+  "support.basics.got-to-payment-methods": "y luego dirígete a la sección 'Métodos de pagos' en el panel de configuración",
+  "support.basics.here-you-can-click": "Aquí puedes hacer click",
+  "support.basics.add-payment-method": "+ Agregar método de pago",
+  "support.basics.popup-dialog-text": ", y aparecerá un cuadro de diálogo emergente que le pedirá la información de la nueva tarjeta.",
+  "support.basics.add-card-paragraph": "Aquí agregará el nuevo número de tarjeta de crédito, la fecha de vencimiento y el código de seguridad (CVC) que se encuentran en la parte posterior de la tarjeta."
 }
