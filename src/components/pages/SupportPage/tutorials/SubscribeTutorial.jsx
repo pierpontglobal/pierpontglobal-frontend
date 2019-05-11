@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const Button = styled.button`
   padding: 4px;
@@ -20,19 +21,20 @@ const Button = styled.button`
 function SubscribeTutorial() {
   return (
     <div>
-      Nagivate to the
+      <FormattedMessage id="support.bids.navigate-to-the" />
       <Button>
-        <Link to="/user">Profile page</Link>
+        <Link to="/user">
+          <FormattedMessage id="support.bids.profile-page" />
+        </Link>
       </Button>
-      and then go to the "Notifications" section in the settings side.
+      <FormattedMessage id="support.bids.subscribe-text-1" />
       <br />
       <br />
-      To subscribe or unsubscribe just click the button to switch the desitred behaviour.
-      Note that if you unsubcribe you'll only be receiving notifications by our app or email,
-      this notification WILL NOT reach to your phone directly. So if you want the notification
-appears in the screen of your phone, choose
+      <FormattedMessage id="support.bids.subscribe.text-2" />
       {' '}
-      <b>"SUBSCRIBE FROM PUSH NOTIFICATIONS"</b>
+      <b>
+        <FormattedMessage id="support.bids.subscribe-piush-notificacions" />
+      </b>
       .
     </div>
   );

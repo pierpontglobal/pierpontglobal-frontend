@@ -245,12 +245,12 @@ class SupportPage extends React.Component {
         onClick: () => this.setTutorial(5),
         text: labels.placingBid,
       },
-      {
-        type: 'Item',
-        id: 6,
-        onClick: () => this.setTutorial(6),
-        text: labels.viewingCurrentBidInfo,
-      },
+      // {
+      //   type: 'Item',
+      //   id: 6,
+      //   onClick: () => this.setTutorial(6),
+      //   text: labels.viewingCurrentBidInfo,
+      // },
       {
         type: 'heading',
         onClick: null,

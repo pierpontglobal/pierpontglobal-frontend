@@ -1,13 +1,15 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const RemovingCardTutorial = () => (
   <div>
-    To remove a card just click the
+    <FormattedMessage id="support.basics.remove-card.to-remove-card-click" />
     {' '}
-    <b>"DELETE"</b>
+    <b>
+      <FormattedMessage id="support.basics.remove-card.delete" />
+    </b>
     {' '}
-    button located at the
-        end of each card as you can see in the previous image where the card is being displayed.
+    <FormattedMessage id="support.basics.remove-card.text" />
   </div>
 );
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const Button = styled.button`
   padding: 4px;
@@ -49,24 +50,22 @@ export function PlaceBidTutorial() {
   return (
     <div>
       <p>
-        Nagivate to the
+        <FormattedMessage id="support.basics.place-bid.navigate-to-the" />
         <Button>
-          <Link to="/marketplace">Marketplace page</Link>
+          <Link to="/marketplace">
+            <FormattedMessage id="support.basics.place-bid.marketplace-page" />
+          </Link>
         </Button>
-        and find the car you like most, you can use our advanced filters located in the left panel.
-        Once you have it, click on it an you'll be redirected to the detail page
-        of the selected car.
+        <FormattedMessage id="support.basics.place-bid.text-1" />
       </p>
       <br />
       <p>
-        Once you're there, introduce your max bid for the car and click on
+        <FormattedMessage id="support.basics.place-bid.text-2" />
         {' '}
-        <b>"bid"</b>
-        . If
-                you don't have enaough funds, a modal will appear showing you how much
-                you should have. Click on the "green button" ADD FUNDS, in order to make a
-                deposit with that amount. Once you make the deposit, you can find the car again
-                and you'll be able the place the bid with the amount you tried before.
+        <b>
+          <FormattedMessage id="support.basics.place-bid.bid" />
+        </b>
+        <FormattedMessage id="support.basics.place-bid.text-3" />
       </p>
     </div>
   );

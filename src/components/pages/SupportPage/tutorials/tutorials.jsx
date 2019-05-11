@@ -82,6 +82,29 @@ const tutorials = ([
       },
     ],
   },
+  {
+    id: 7,
+    category: <FormattedMessage id="support.faqs" />,
+    title: <FormattedMessage id="support.view-faqs" />,
+    body: [
+      // {
+      //   heading: <FormattedMessage id="support.faqs.question-1-title" />,
+      //   content: 'Response for question #1',
+      // },
+      // {
+      //   heading: <FormattedMessage id="support.faqs.question-2-title" />,
+      //   content: 'Response for question #2',
+      // },
+      // {
+      //   heading: <FormattedMessage id="support.faqs.question-2-title" />,
+      //   content: 'Response for question #3',
+      // },
+      {
+        heading: <FormattedMessage id="ppg.in-construction" />,
+        content: '',
+      },
+    ],
+  },
 ]);
 
 export default tutorials;
