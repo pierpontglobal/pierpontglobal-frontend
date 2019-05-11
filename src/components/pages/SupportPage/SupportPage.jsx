@@ -6,6 +6,7 @@ import { Player } from 'video-react';
 import { withRouter } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import { Select, MenuItem } from '@material-ui/core';
+import { injectIntl } from 'react-intl';
 import tutorials from './tutorials/tutorials';
 
 const Container = styled.div`
@@ -187,31 +188,45 @@ class SupportPage extends React.Component {
 
   render() {
     const { tutorialId } = this.state;
+    const { intl } = this.props;
     const tutorial = getTutorial(tutorialId);
+
+    const labels = {
+      basics: intl.formatMessage({ id: 'support.basics' }),
+      howToSingUp: intl.formatMessage({ id: 'support.how-to-sign-up' }),
+      creatingDealer: intl.formatMessage({ id: 'support.creating-a-dealer' }),
+      addingRemovingCard: intl.formatMessage({ id: 'support.adding-removing-cards' }),
+      bids: intl.formatMessage({ id: 'support.bids' }),
+      placingBid: intl.formatMessage({ id: 'support.placing-a-bid' }),
+      viewingCurrentBidInfo: intl.formatMessage({ id: 'support.viewing-current-bid-info' }),
+      faqs: intl.formatMessage({ id: 'support.faqs' }),
+      viewFaqsHere: intl.formatMessage({ id: 'support.view-faqs-here' }),
+      topic: intl.formatMessage({ id: 'support.topic' }),
+    };
 
     const menuItems = [
       {
         type: 'heading',
         onClick: null,
-        text: 'Basics',
+        text: labels.basics,
       },
       {
         type: 'Item',
         id: 1,
         onClick: () => this.setTutorial(1),
-        text: 'How to sign up',
+        text: labels.howToSingUp,
       },
       {
         type: 'Item',
         id: 2,
         onClick: () => this.setTutorial(2),
-        text: 'Creating a dealer',
+        text: labels.creatingDealer,
       },
       {
         type: 'Item',
         id: 3,
         onClick: () => this.setTutorial(3),
-        text: 'Adding/Removing a new card',
+        text: labels.addingRemovingCard,
       },
       {
         type: 'Item',
@@ -222,30 +237,30 @@ class SupportPage extends React.Component {
       {
         type: 'heading',
         onClick: null,
-        text: 'Bids',
+        text: labels.bids,
       },
       {
         type: 'Item',
         id: 5,
         onClick: () => this.setTutorial(5),
-        text: 'Placing a bid',
+        text: labels.placingBid,
       },
       {
         type: 'Item',
         id: 6,
         onClick: () => this.setTutorial(6),
-        text: 'Viewing your current bids information',
+        text: labels.viewingCurrentBidInfo,
       },
       {
         type: 'heading',
         onClick: null,
-        text: 'FAQs',
+        text: labels.faqs,
       },
       {
         type: 'Item',
         id: 7,
         onClick: () => this.setTutorial(7),
-        text: 'View FAQs here',
+        text: labels.viewFaqsHere,
       },
     ];
 
@@ -274,7 +289,9 @@ class SupportPage extends React.Component {
         <MenuContainer>
           <MediaQuery maxDeviceWidth={768}>
             <TopicBar>
-              <ShortTitle>Topic:</ShortTitle>
+              <ShortTitle>
+                { labels.topic }
+              </ShortTitle>
               <Select
                 value={tutorialId}
                 onChange={this.changeTutorialIdSelect}
@@ -312,4 +329,4 @@ class SupportPage extends React.Component {
   }
 }
 
-export default withCookies(withRouter(SupportPage));
+export default withCookies(withRouter(injectIntl(SupportPage)));
