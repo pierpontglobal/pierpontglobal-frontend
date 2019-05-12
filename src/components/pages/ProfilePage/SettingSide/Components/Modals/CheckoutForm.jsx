@@ -20,7 +20,7 @@ class CheckoutForm extends React.Component {
   async registerCard(token) {
     await axios.post(`${ApiServer}/api/v1/user/cards`, {
       card_token: token,
-      coupon: !!(this.props.couponField) ? this.props.couponField() : null,
+      coupon: this.props.couponField ? this.props.couponField() : null,
     });
   }
 
@@ -74,6 +74,7 @@ class CheckoutForm extends React.Component {
             borderRadius: '5px',
             padding: '10px 30px',
             cursor: 'pointer',
+            marginBottom: '20px',
           }}
           onClick={() => {
             this.setState({
@@ -81,7 +82,7 @@ class CheckoutForm extends React.Component {
             });
           }}
         >
-          { saveButtonText }
+          {saveButtonText}
           {' '}
           <i style={{ float: 'rigth', fontSize: '14px', display }} className="fas fa-spinner loading" />
         </button>
