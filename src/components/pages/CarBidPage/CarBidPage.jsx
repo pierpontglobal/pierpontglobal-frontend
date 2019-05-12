@@ -164,10 +164,6 @@ class CarBidPage extends React.Component {
             </div>
           </div>
         </div>
-        <CarBottomNav
-          prev={car}
-          next={car}
-        />
       </TabWrapper>
     );
 
@@ -233,6 +229,10 @@ class CarBidPage extends React.Component {
           </MediaQuery>
           <MediaQuery maxDeviceWidth={768}>
             <TabsComponent options={tabOptions} />
+            <CarBottomNav
+              prev={car}
+              next={car}
+            />
           </MediaQuery>
         </ActionCableProvider>
       </div>

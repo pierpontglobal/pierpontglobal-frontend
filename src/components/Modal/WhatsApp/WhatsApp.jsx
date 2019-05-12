@@ -65,6 +65,15 @@ const WMessageStyleWrapper = styled(WMessage)`
   }
 `;
 
+const WWrapper = posed.div({
+  normal: {
+    y: 0,
+  },
+  moveToTop: {
+    y: -76,
+  },
+});
+
 
 class WhatsApp extends React.Component {
   constructor() {
@@ -72,14 +81,22 @@ class WhatsApp extends React.Component {
 
     this.state = {
       whatsappVisible: false,
+      wWPosition: 'normal',
+    };
+
+    window.changeWWPosition = (target) => {
+      this.setState({
+        wWPosition: target,
+      });
     };
   }
 
   render() {
-    const { whatsappVisible } = this.state;
+    const { whatsappVisible, wWPosition } = this.state;
 
     return (
-      <div
+      <WWrapper
+        pose={wWPosition}
         style={{
           position: 'fixed',
           right: '20px',
@@ -241,7 +258,7 @@ class WhatsApp extends React.Component {
             {this.state.whatsappVisible ? <i className="fas fa-times" /> : <i className="fab fa-whatsapp" />}
           </span>
         </WButton>
-      </div>
+      </WWrapper>
     );
   }
 }

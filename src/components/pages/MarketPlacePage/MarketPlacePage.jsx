@@ -142,7 +142,7 @@ class MarketPlacePage extends React.Component {
       };
 
       carsGroup.push(
-        <CarCard key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
+        <CarCard caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
       );
     }
 
@@ -234,53 +234,53 @@ class MarketPlacePage extends React.Component {
           />
           <MarketPlaceContainer>
             {
-                loaded ? (
-                  <SidePanel>
-                    <MediaQuery minDeviceWidth={600}>
-                      <FilterPanel
-                        getCars={this.getCars}
-                        availableArguments={this.state.availableArguments}
-                        params={this.params}
-                        onSeeAll={this.seeAllOptions}
-                      />
-                    </MediaQuery>
-                  </SidePanel>
-                ) : null
-              }
+              loaded ? (
+                <SidePanel>
+                  <MediaQuery minDeviceWidth={600}>
+                    <FilterPanel
+                      getCars={this.getCars}
+                      availableArguments={this.state.availableArguments}
+                      params={this.params}
+                      onSeeAll={this.seeAllOptions}
+                    />
+                  </MediaQuery>
+                </SidePanel>
+              ) : null
+            }
             <CarSection ref={this.carsSection}>
               {
-                  loaded ? (
-                    <div style={{ overflow: 'hidden', position: 'relative' }}>
-                      <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
-                      <hr />
-                      <InfiniteScroll
-                        dataLength={cars.length}
-                        next={this.getCars}
-                        hasMore
-                        loader={(
-                          <div style={{
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            paddingTop: '10px',
-                            height: '80px',
-                            alignContent: 'center',
-                          }}
-                          >
-                            <CircularProgress />
-                          </div>
-)}
-                        height={carsSectionHeight - 80}
-                        endMessage={(
-                          <p style={{ textAlign: 'center' }}>
-                            <b><FormattedMessage id="marketplace.end-message" /></b>
-                          </p>
-                        )}
-                      >
-                        {cars}
-                      </InfiniteScroll>
-                    </div>
-                  ) : (
+                loaded ? (
+                  <div style={{ overflow: 'hidden', position: 'relative' }}>
+                    <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
+                    <hr />
+                    <InfiniteScroll
+                      dataLength={cars.length}
+                      next={this.getCars}
+                      hasMore
+                      loader={(
+                        <div style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          paddingTop: '10px',
+                          height: '80px',
+                          alignContent: 'center',
+                        }}
+                        >
+                          <CircularProgress />
+                        </div>
+                      )}
+                      height={carsSectionHeight - 80}
+                      endMessage={(
+                        <p style={{ textAlign: 'center' }}>
+                          <b><FormattedMessage id="marketplace.end-message" /></b>
+                        </p>
+                      )}
+                    >
+                      {cars}
+                    </InfiniteScroll>
+                  </div>
+                ) : (
                     <div style={{
                       width: '100%',
                       display: 'flex',
@@ -294,7 +294,7 @@ class MarketPlacePage extends React.Component {
                       <CircularProgress />
                     </div>
                   )
-                }
+              }
             </CarSection>
             <PPGModal
               setOpen={openModalFilter}
@@ -306,7 +306,7 @@ class MarketPlacePage extends React.Component {
             >
               {/* Repeating this component here is not a performance issue. This child component,
                 of the PPGModal is only rendered when the modal is open.  */}
-              { !showOtherOptionsInModalFilter ? (
+              {!showOtherOptionsInModalFilter ? (
                 <FilterPanel
                   getCars={this.getCars}
                   availableArguments={this.state.availableArguments}
@@ -315,21 +315,21 @@ class MarketPlacePage extends React.Component {
                   onSeeAll={this.seeAllOptions}
                 />
               ) : (
-                <div style={{ padding: '16px', height: '100%', overflowX: 'scroll' }}>
-                  <input
-                    className="border-0"
-                    style={{
-                      width: '300px',
-                      padding: '10px',
-                      marginBottom: '20px',
-                      borderRadius: '5px',
-                      boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
-                    }}
-                    placeholder="  Type search term"
-                  />
-                  {otherFiltersOptions}
-                </div>
-              )}
+                  <div style={{ padding: '16px', height: '100%', overflowX: 'scroll' }}>
+                    <input
+                      className="border-0"
+                      style={{
+                        width: '300px',
+                        padding: '10px',
+                        marginBottom: '20px',
+                        borderRadius: '5px',
+                        boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
+                      }}
+                      placeholder="  Type search term"
+                    />
+                    {otherFiltersOptions}
+                  </div>
+                )}
             </PPGModal>
           </MarketPlaceContainer>
         </ActionCableProvider>

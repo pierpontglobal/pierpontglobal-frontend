@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PrevBtn from './PrevBtn/PrevBtn';
 import NextBtn from './NextBtn/NextBtn';
@@ -16,6 +16,16 @@ const Container = styled.div`
 `;
 
 function CarBottomNav({ prev, next }) {
+  useEffect(() => {
+    setTimeout(() => {
+      window.changeWWPosition('moveToTop');
+    }, 1000);
+    return () => {
+      setTimeout(() => {
+        window.changeWWPosition('normal');
+      }, 1000);
+    };
+  }, []);
   return (
     <Container>
       <PrevBtn car={prev} />

@@ -16,13 +16,9 @@ function PrevBtn({ car }) {
   return (
     <div className="d-flex flex-row ml-auto pr-2 pr-md-0 mx-auto">
       <div className="d-flex align-items-center pr-3">
-        <Icon
-          className="fas fa-arrow-left"
-          color="#4276c1"
-          width="13.3px"
-          height="13.3px"
-          size="0.9375em"
-        />
+        <i style={{ color: '#4276c1' }} className="material-icons">
+          arrow_back
+        </i>
       </div>
       <div className="pt-2 pr-md-5">
         <Text
@@ -31,7 +27,7 @@ function PrevBtn({ car }) {
           lineHeight={1.31}
           fontColor="#3e78c0"
         >
-                    Previous Vehicle
+          Previous Vehicle
         </Text>
         {footerText(car.title)}
         {footerText(car.price)}

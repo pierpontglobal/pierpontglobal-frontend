@@ -22,19 +22,15 @@ function NextBtn({ car }) {
           lineHeight={1.31}
           fontColor="#3e78c0"
         >
-                    Next Vehicle
+          Next Vehicle
         </Text>
         {footerText(car.title)}
         {footerText(car.price)}
       </div>
       <div className="d-flex align-items-center">
-        <Icon
-          className="fas fa-arrow-right"
-          color="#4276c1"
-          width="13.3px"
-          height="13.3px"
-          size="0.9375em"
-        />
+        <i style={{ color: '#4276c1' }} className="material-icons">
+          arrow_forward
+        </i>
       </div>
     </div>
   );
