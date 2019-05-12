@@ -6,7 +6,7 @@ import Detail from './Detail/Detail';
 const Container = styled.div`
     background-color: #fafafa;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
-    border-radius: 2px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
