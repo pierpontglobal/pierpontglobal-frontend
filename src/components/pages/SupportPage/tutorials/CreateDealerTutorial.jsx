@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const ResponsiveImageCentered = styled.img`
   margin: 0 auto;
@@ -41,36 +42,33 @@ function CreateDealerTutorial() {
   return (
     <div>
       <p>
-        To start using our app you must complete your dealer information. This includes your dealer
-        name, your dealer phone and your credit or debit card information.
-        A Pop up like the following will appear in your profile page if you haven't complete
-        any of this information.
+        <FormattedMessage id="support.create-dealer.text-1" />
       </p>
       <div>
         <ResponsiveImageCentered alt="Register dealer image | Pierpont Global, Incc" src="/images/supportpage/register-form.png" />
         <ImageText style={{ margin: '16px' }}>
           <p>
-            First, introduce your dealer name and your dealer phone. Then, you're
-            ready to introduce your dealer card and subscription details.
-            If you've any coupon, introduce it and the price will automatically be
-            ajusted depending on your coupon dicount percentage.
-Then, introduce your card number, the expiration date and the security code.
+            <FormattedMessage id="support.create-dealer.text-2" />
             <br />
-            <b>Note: </b>
+            <b>
+              <FormattedMessage id="support.create-dealer.note" />
+            </b>
             {' '}
-            We'll charge almost
+            <FormattedMessage id="support.create-dealer.text-3" />
             {' '}
             <i>US$1.00</i>
             {' '}
-            dollar to confirm your credit card.
+            <FormattedMessage id="support.create-dealer.text-4" />
             <br />
             <br />
-            Here you have the option to sign out or go to to
+            <FormattedMessage id="support.create-dealer.text-5" />
             <Button>
-              <Link to="/marketplace">Marketplace page</Link>
+              <Link to="/marketplace">
+                <FormattedMessage id="support.create-dealer.marketplace-page" />
+              </Link>
             </Button>
             {' '}
-            to start viewing the cars in our rich inventory!
+            <FormattedMessage id="support.create-dealer.text-6" />
           </p>
         </ImageText>
       </div>

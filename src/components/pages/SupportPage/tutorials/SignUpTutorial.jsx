@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import NextArrowIcon from '@material-ui/icons/NavigateNext';
+import { FormattedMessage } from 'react-intl';
 
 const Button = styled.button`
   padding: 4px;
@@ -48,31 +49,35 @@ function SignUpTutorial() {
   return (
     <div>
       <StepsWrapper>
-        <Step>Home Page</Step>
+        <Step>
+          <FormattedMessage id="support.basics.sign-up.home-page" />
+        </Step>
         <NextArrow />
-        <Step>Fill out form</Step>
+        <Step>
+          <FormattedMessage id="support.basics.sign-up.fill-out-form" />
+        </Step>
         <NextArrow />
-        <Step>Click confirmation button in email</Step>
+        <Step>
+          <FormattedMessage id="support.basics.sign-up.click-confirmation" />
+        </Step>
         <NextArrow />
-        <Step>Complete information</Step>
+        <Step>
+          <FormattedMessage id="support.basics.sign-up.complete-information" />
+        </Step>
         <NextArrow />
-        <Step>Select username and password</Step>
+        <Step>
+          <FormattedMessage id="support.basics.sign-up.select-username-password" />
+        </Step>
       </StepsWrapper>
       <p style={{ marginTop: '16px' }}>
-        To sign up in Pierpont Global, just go to the "Home" page a fill out
-        the sign up form placed there.
-        After that, a confirmation email will be sent to the specified email in the next seconds.
-        Once you click the "confirmation button" you'll be redirected to Pierpont Global in order
-        to continue the sign up process.
-        Here, location information will be set automatically based on your location,
-        click next if everytinh looks well to you and select a
-        username and a password for your account.
+        <FormattedMessage id="support.basics.sign-up.text-1" />
       </p>
       <p>
-        We beleive this is such an easy sign up process, if you have any
-        troubles when signin up, please, do not hesitate to
+        <FormattedMessage id="support.basics.sign-up.text-2" />
         <Button>
-          <Link to="contact-us">contact us!</Link>
+          <Link to="contact-us">
+            <FormattedMessage id="support.basics.sign-up.text-2.contact-us" />
+          </Link>
         </Button>
       </p>
     </div>

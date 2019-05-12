@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-
+import { FormattedMessage } from 'react-intl';
 import SignUpTutorial from './SignUpTutorial';
 import CreateDealerTutorial from './CreateDealerTutorial';
 import AddingCardTutorial from './AddingCardTutorial';
@@ -13,72 +13,95 @@ import { PlaceBidTutorial, PlaceBidVideo } from './PlaceBidTutorial';
 const tutorials = ([
   {
     id: 1,
-    category: 'basics',
-    title: 'How to Sign Up',
+    category: <FormattedMessage id="support.basics" />,
+    title: <FormattedMessage id="support.how-to-sign-up" />,
     body: [
       {
-        heading: 'Sign up process',
+        heading: <FormattedMessage id="support.sign-up-process" />,
         content: <SignUpTutorial />,
       },
     ],
   },
   {
     id: 2,
-    category: 'basics',
-    title: 'Creating a dealer',
+    category: <FormattedMessage id="support.basics" />,
+    title: <FormattedMessage id="support.creating-a-dealer" />,
     // video: {
     //   url: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
     //   sample: 'https://via.placeholder.com/550',
     // },
     body: [
       {
-        heading: 'Steps to register a dealer',
+        heading: <FormattedMessage id="support.steps-to-register-a-dealer" />,
         content: <CreateDealerTutorial />,
       },
     ],
   },
   {
     id: 3,
-    category: 'basics',
-    title: 'Adding / Removing Cards',
+    category: <FormattedMessage id="support.basics" />,
+    title: <FormattedMessage id="support.adding-removing-cards" />,
     body: [
       {
-        heading: 'Adding a card',
+        heading: <FormattedMessage id="support.adding-a-card" />,
         content: <AddingCardTutorial />,
       },
       {
-        heading: 'Removing a card',
+        heading: <FormattedMessage id="support.removing-a-card" />,
         content: <RemovingCardTutorial />,
       },
     ],
   },
   {
     id: 4,
-    category: 'basics',
-    title: 'Push notifications',
+    category: <FormattedMessage id="support.basics" />,
+    title: <FormattedMessage id="support.push-notifications" />,
     body: [
       {
-        heading: 'What is it?',
+        heading: <FormattedMessage id="support.what-is-it" />,
         content: <PushNotificationTutorial />,
       },
       {
-        heading: 'Subscribe / unsubscribe',
+        heading: <FormattedMessage id="support.subscribe-unsubscribe" />,
         content: <SubscribeTutorial />,
       },
     ],
   },
   {
     id: 5,
-    category: 'bids',
-    title: 'Place a bid',
+    category: <FormattedMessage id="support.bids" />,
+    title: <FormattedMessage id="support.place-a-bid" />,
     video: {
       youtube: true,
       iframe: <PlaceBidVideo />,
     },
     body: [
       {
-        heading: 'How to place a bid?',
+        heading: <FormattedMessage id="support.how-to-place-a-bid" />,
         content: <PlaceBidTutorial />,
+      },
+    ],
+  },
+  {
+    id: 7,
+    category: <FormattedMessage id="support.faqs" />,
+    title: <FormattedMessage id="support.view-faqs" />,
+    body: [
+      // {
+      //   heading: <FormattedMessage id="support.faqs.question-1-title" />,
+      //   content: 'Response for question #1',
+      // },
+      // {
+      //   heading: <FormattedMessage id="support.faqs.question-2-title" />,
+      //   content: 'Response for question #2',
+      // },
+      // {
+      //   heading: <FormattedMessage id="support.faqs.question-2-title" />,
+      //   content: 'Response for question #3',
+      // },
+      {
+        heading: <FormattedMessage id="ppg.in-construction" />,
+        content: '',
       },
     ],
   },

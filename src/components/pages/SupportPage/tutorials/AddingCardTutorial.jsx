@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const ResponsiveImageCentered = styled.img`
   margin: 0 auto;
@@ -39,24 +40,26 @@ const Button = styled.button`
 
 const AddingCardTutorial = () => (
   <div>
-    Nagivate to the
+    <FormattedMessage id="support.basics.nagivate-to-the" />
     <Button>
-      <Link to="/user">Profile page</Link>
+      <Link to="/user">
+        <FormattedMessage id="support.basics.profile-page" />
+      </Link>
     </Button>
-    and then go to the "Payment Methods" section in the settings side.
+    <FormattedMessage id="support.basics.got-to-payment-methods" />
     <ResponsiveImageCentered style={{ marginTop: '16px' }} imageWidth="55%" src="/images/supportPage/payment-methods-section.png" />
     <ImageText style={{ marginTop: '16px' }}>
       <p>
-        Here you can click
+        <FormattedMessage id="support.basics.here-you-can-click" />
         {' '}
-        <b>"+ Add payment method"</b>
-        , and a pop up dialog will
-                appear asking you the information for the new card.
+        <b>
+          <FormattedMessage id="support.basics.add-payment-method" />
+        </b>
+        <FormattedMessage id="support.basics.popup-dialog-text" />
       </p>
       <br />
       <p>
-        Here you will add the new credit card number, expiration date and security
-        code (CVC) located at the back of the card.
+        <FormattedMessage id="support.basics.add-card-paragraph" />
       </p>
     </ImageText>
   </div>
