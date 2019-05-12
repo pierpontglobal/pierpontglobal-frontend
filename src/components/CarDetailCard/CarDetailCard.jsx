@@ -89,7 +89,7 @@ function CarDetailCard({ car }) {
     <Container>
       <CardTitle>
         <h4>
-          {car.title}
+          {`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}
         </h4>
       </CardTitle>
       <ContentText>

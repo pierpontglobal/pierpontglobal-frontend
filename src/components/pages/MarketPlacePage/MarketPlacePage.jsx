@@ -91,11 +91,16 @@ class MarketPlacePage extends React.Component {
 
     const { page, size } = this.state;
 
+    console.log(this.params);
+
     Object.keys(this.params).forEach((key) => {
-      if (this.params[key] !== '' && key !== 'page') {
+      if ((this.params[key] !== '' && this.params[key] !== null) && key !== '') {
         str += `&${key}=${encodeURIComponent(this.params[key])}`;
       }
     });
+    str = str.substr(1, str.length);
+
+    console.log(str);
 
     window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
     const response = await axios.get(`${ApiServer}/api/v1/car/query?${str}&limit=${page * 20}&offset=0`);

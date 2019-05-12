@@ -197,8 +197,10 @@ class AppNav extends React.Component {
       dealer,
       languages,
       setLang,
+      history,
     } = this.props;
 
+    window.historyManager = history;
     const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
     return (

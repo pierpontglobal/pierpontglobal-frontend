@@ -37,14 +37,23 @@ function CarDetailTable({ car }) {
       </CardTitle>
       <div>
         {Object.keys(car).map(
-          (key, i) => (
-            <Detail
-              key={i}
-              stripe={i === 0 || i % 2 === 0}
-              title={key}
-              text={car[key] ? (Array.isArray(car[key]) ? `${car[key].length} ${<FormattedMessage id="label.elements" />}` : car[key]) : <FormattedMessage id="label.not-available" />}
-            />
-          ),
+          (key, i) => {
+            let text = '';
+            if (car[key]) {
+              text = (Array.isArray(car[key]) ? `${car[key].length} ${<FormattedMessage id="label.elements" />}` : car[key]);
+            } else {
+              text = <FormattedMessage id="label.not-available" />;
+            }
+
+            return (
+              <Detail
+                key={i}
+                stripe={i === 0 || i % 2 === 0}
+                title={key}
+                text={text}
+              />
+            );
+          },
         )}
       </div>
     </Container>

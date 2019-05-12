@@ -2,11 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { ActionCableProvider } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import MediaQuery from 'react-responsive';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Info from '@material-ui/icons/Info';
 import { injectIntl } from 'react-intl';
+import { withCookies } from 'react-cookie';
 import CarDetailCard from '../../CarDetailCard/CarDetailCard';
 import CarDetailTable from '../../CarDetailTable/CarDetailTable';
 import BidPanel from '../../BidPanel/BidPanel';
@@ -32,6 +34,43 @@ const SideMenuWrapper = styled.div`
 const TabWrapper = styled.div`
   width: 100%;
 `;
+
+
+function createCarObject(data) {
+  const carInfo = data.car_information;
+  const saleInfo = data.sale_information;
+
+  const car = {
+    id: carInfo.id,
+    year: carInfo.year,
+    maker: carInfo.car_maker,
+    model: carInfo.car_model,
+    title: `${carInfo.year ? carInfo.year : 'x'}
+    ${carInfo.car_maker ? carInfo.car_maker : ''}
+    ${carInfo.car_model ? carInfo.car_model : ''}
+    ${carInfo.trim ? carInfo.trim : ''}`,
+    saleDate: `${new Date(saleInfo.auction_start_date).toLocaleString()}`,
+    vin: carInfo.vin,
+    trim: carInfo.trim,
+    odometer: `${carInfo.odometer} ${carInfo.odometer_unit}`,
+    engine: carInfo.engine,
+    transmission: carInfo.transmission ? 'Automatic' : 'Manual',
+    fuelType: carInfo.car_fuel,
+    doors: carInfo.doors,
+    exteriorColor: carInfo.color_name_exterior,
+    interiorColor: carInfo.color_name_interior,
+    score: carInfo.cr,
+    carBodyStyle: carInfo.car_body_style,
+    carType: carInfo.car_type_code,
+    vehicleType: carInfo.car_vehicle_type,
+    displacement: carInfo.displacement,
+    images: carInfo.images.reverse().map(image => (image.f3)),
+    location: saleInfo.action_location,
+    wholePrice: saleInfo.whole_price,
+  };
+
+  return car;
+}
 
 class CarBidPage extends React.Component {
   constructor(props) {
@@ -60,7 +99,38 @@ class CarBidPage extends React.Component {
 
   componentDidMount() {
     const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    this.setNextPrev(parameters.position);
     this.getCarInfo(parameters.vin);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.search !== nextProps.history.location.search) {
+      const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+      this.setNextPrev(parameters.position);
+      this.getCarInfo(parameters.vin);
+    }
+  }
+
+  setNextPrev = async (position) => {
+    this.setState({
+      search: this.props.history.location.search,
+    });
+    const caller = this.props.cookies.get('list_caller');
+
+    const prevNextResponse = await axios.get(`${ApiServer}/api/v1/car/query?${caller}&limit=3&offset=${position - 1}`);
+    const { cars } = prevNextResponse.data;
+
+    if (position === '0') {
+      this.setState({
+        prevCar: undefined,
+        nextCar: createCarObject(cars[1]),
+      });
+    } else {
+      this.setState({
+        prevCar: createCarObject(cars[0]),
+        nextCar: createCarObject(cars[2]),
+      });
+    }
   }
 
   async getBids(carId) {
@@ -108,6 +178,10 @@ class CarBidPage extends React.Component {
     });
   }
 
+  goTo = (path) => {
+    this.props.history.push(`/${path}`);
+  }
+
   updateUserBidCallback(userBid) {
     this.setState({
       userBid,
@@ -119,7 +193,12 @@ class CarBidPage extends React.Component {
       userBid,
       cookies,
       car,
+      nextCar,
+      prevCar,
     } = this.state;
+
+    const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    const position = parameters.position;
 
     const { intl } = this.props;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
@@ -222,16 +301,20 @@ class CarBidPage extends React.Component {
                 </div>
               </div>
               <CarBottomNav
-                prev={car}
-                next={car}
+                prev={prevCar}
+                next={nextCar}
+                position={position}
+                goTo={this.goTo}
               />
             </React.Fragment>
           </MediaQuery>
           <MediaQuery maxDeviceWidth={768}>
             <TabsComponent options={tabOptions} />
             <CarBottomNav
-              prev={car}
-              next={car}
+              prev={prevCar}
+              next={nextCar}
+              position={position}
+              goTo={this.goTo}
             />
           </MediaQuery>
         </ActionCableProvider>
@@ -240,4 +323,4 @@ class CarBidPage extends React.Component {
   }
 }
 
-export default injectIntl(CarBidPage);
+export default withRouter(withCookies(injectIntl(CarBidPage)));

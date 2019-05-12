@@ -15,7 +15,9 @@ const Container = styled.div`
   min-height: 72px;
 `;
 
-function CarBottomNav({ prev, next }) {
+function CarBottomNav({
+  prev, next, position, goTo,
+}) {
   useEffect(() => {
     setTimeout(() => {
       window.changeWWPosition('moveToTop');
@@ -28,8 +30,8 @@ function CarBottomNav({ prev, next }) {
   }, []);
   return (
     <Container>
-      <PrevBtn car={prev} />
-      <NextBtn car={next} />
+      <PrevBtn car={prev} onClick={() => goTo(`marketplace/car?vin=${prev.vin}&position=${parseInt(position, 10) - 1}`)} />
+      <NextBtn car={next} onClick={() => goTo(`marketplace/car?vin=${next.vin}&position=${parseInt(position, 10) + 1}`)} />
     </Container>
   );
 }
