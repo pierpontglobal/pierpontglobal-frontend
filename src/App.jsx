@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import {
   BrowserRouter as Router, Route, Switch, Redirect,
@@ -27,7 +28,7 @@ import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
 import SupportPage from './components/pages/SupportPage/SupportPage.jsx';
-
+import { APIContext } from './utils/API';
 addLocaleData([...locale_en, ...locale_es]);
 
 // TODO: This switch was on porpuse for testing ONLY purposes!!!
@@ -120,14 +121,19 @@ class App extends React.Component {
       language: navigator.language.split(/[-_]/)[0],
     };
 
-    axios.interceptors.request.use((config) => {
+    this.API = axios.create({
+      baseURL: ApiServer,
+      responseType: 'json',
+    });
+
+    this.API.interceptors.request.use((config) => {
       config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
       config.params = { lang: this.state.language };
 
       return config;
     }, error => Promise.reject(error));
 
-    axios.interceptors.response.use(response => response,
+    this.API.interceptors.response.use(response => response,
       (error) => {
         if (error.response.request.responseURL.includes('oauth/token')) {
           return error.response;
@@ -139,12 +145,6 @@ class App extends React.Component {
       });
 
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
-  }
-
-  setDealer = (dealer) => {
-    this.setState({
-      dealer,
-    });
   }
 
   componentDidMount() {
@@ -181,12 +181,10 @@ class App extends React.Component {
     });
   }
 
-  verifyUserLoggedIn() {
-    const { cookies } = this.props;
-    if (cookies.get('token', { path: '/' })) {
-      return true;
-    }
-    return false;
+  setDealer = (dealer) => {
+    this.setState({
+      dealer,
+    });
   }
 
   setLanguage = (lang) => {
@@ -230,44 +228,54 @@ class App extends React.Component {
     });
   }
 
+  verifyUserLoggedIn() {
+    const { cookies } = this.props;
+    if (cookies.get('token', { path: '/' })) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     const { cookies } = this.props;
     const { dealer, languages, language } = this.state;
     return (
       <IntlProvider locale={language || 'en'} messages={messages[language]}>
         <MuiThemeProvider theme={DefaultTheme}>
-          <div>
-            <Router>
-              <div style={{
-                position: 'fixed',
-                height: '100%',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-              >
-                <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
-                <PageHolder>
-                  <Switch>
-                    <Route exact path="/oauth/login" render={() => <OauthPage />} />
-                    <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
-                    <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
-                    <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
+          <APIContext.Provider value={this.API}>
+            <div>
+              <Router>
+                <div style={{
+                  position: 'fixed',
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+                >
+                  <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                  <PageHolder>
+                    <Switch>
+                      <Route exact path="/oauth/login" render={() => <OauthPage />} />
+                      <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
+                      <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
+                      <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
-                    <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                    <Route path="/user" render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
-                    <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
+                      <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
+                      <Route path="/user" render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
+                      <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
-                    <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
-                    <Route exact path="/support" render={() => (<SupportPage />)} />
+                      <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
+                      <Route exact path="/support" render={() => (<SupportPage />)} />
 
-                    <Route render={() => (<NotfoundPage cookies={cookies} />)} />
-                  </Switch>
-                </PageHolder>
-              </div>
-            </Router>
-          </div>
-          <WhatsApp />
+                      <Route render={() => (<NotfoundPage cookies={cookies} />)} />
+                    </Switch>
+                  </PageHolder>
+                </div>
+              </Router>
+            </div>
+            <WhatsApp />
+          </APIContext.Provider>
         </MuiThemeProvider>
       </IntlProvider>
     );

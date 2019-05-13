@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { withCookies } from 'react-cookie';
+import { withRouter } from 'react-router-dom';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import withAPI from '../../../utils/withAPI';
 import { ApiServer } from '../../../Defaults';
 import Modal from '../../Modal/Modal';
 import Input from '../../styles/Input/Input';
 import Button from '../../Btn/Btn';
 import './styles.css';
-import { withRouter } from 'react-router-dom';
-import { FormattedMessage, injectIntl } from 'react-intl';
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -23,6 +24,8 @@ class SignInModal extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.signIn = this.signIn.bind(this);
     this.signInModal = this.signInModal.bind(this);
+
+    this.API = this.props.API;
   }
 
   componentWillReceiveProps(newProps) {
@@ -163,10 +166,10 @@ class SignInModal extends React.Component {
       password: this.password.value,
       grant_type: 'password',
     };
-    const response = await axios.post(`${ApiServer}/oauth/token`, data);
+    const response = await this.API.post('/oauth/token', data);
     if (response.status === 200) {
       cookies.set('token', response.data.access_token, { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) });
-      axios.post(`${ApiServer}/api/v1/user/notifier`, {
+      this.API.post('/api/v1/user/notifier', {
         one_signal_uuid: cookies.get('one_signal_uuid'),
       });
       this.props.notifyClosed();
@@ -191,4 +194,4 @@ class SignInModal extends React.Component {
   }
 }
 
-export default withCookies(withRouter(injectIntl(SignInModal)));
+export default withCookies(withRouter(injectIntl(withAPI(SignInModal))));
