@@ -6,7 +6,7 @@ import Detail from './Detail/Detail';
 const Container = styled.div`
     background-color: #fafafa;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
-    border-radius: 2px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
@@ -37,14 +37,23 @@ function CarDetailTable({ car }) {
       </CardTitle>
       <div>
         {Object.keys(car).map(
-          (key, i) => (
-            <Detail
-              key={i}
-              stripe={i === 0 || i % 2 === 0}
-              title={key}
-              text={car[key] ? (Array.isArray(car[key]) ? `${car[key].length} ${<FormattedMessage id="label.elements" />}` : car[key]) : <FormattedMessage id="label.not-available" />}
-            />
-          ),
+          (key, i) => {
+            let text = '';
+            if (car[key]) {
+              text = (Array.isArray(car[key]) ? `${car[key].length} ${<FormattedMessage id="label.elements" />}` : car[key]);
+            } else {
+              text = <FormattedMessage id="label.not-available" />;
+            }
+
+            return (
+              <Detail
+                key={i}
+                stripe={i === 0 || i % 2 === 0}
+                title={key}
+                text={text}
+              />
+            );
+          },
         )}
       </div>
     </Container>

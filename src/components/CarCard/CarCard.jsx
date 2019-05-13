@@ -6,6 +6,7 @@ import posed from 'react-pose';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
+import { withCookies } from 'react-cookie';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -260,7 +261,7 @@ const CRPriceContainer = styled.div`
     }
 `;
 
-function gotToCarDetail(vin, event, history) {
+function gotToCarDetail(vin, event, history, position, caller, cookies) {
   if (!!event && !!event.target) {
     if (event.target.tagName === 'LI' || event.target.tagName === 'SPAN' || event.target.tagName === 'DIV') {
       if (event.target.id) {
@@ -268,13 +269,14 @@ function gotToCarDetail(vin, event, history) {
           return;
         }
       }
-      history.push(`/marketplace/car?vin=${vin}`);
+      cookies.set('list_caller', caller, { path: '/' });
+      history.push(`/marketplace/car?vin=${vin}&position=${position}`);
     }
   }
 }
 
 function CarCard({
-  key, car, requestFunction, history, intl,
+  key, car, requestFunction, history, intl, position, caller, cookies,
 }) {
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
@@ -305,7 +307,7 @@ function CarCard({
       <CarContainer
         key={key}
         id="car-card"
-        onClick={e => gotToCarDetail(vin, e, history)}
+        onClick={e => gotToCarDetail(vin, e, history, position, caller, cookies)}
         on
       >
         <Carousel
@@ -364,7 +366,7 @@ function CarCard({
           <DetailedCR>
             <ConditionBtn label={<FormattedMessage id="label.condition" />} score={cr} />
             <AutoCheckBtn onClick={() => { changeAutocheckSource(crUrl); setOpenAutocheck(true); }}>
-              <span id="autocheck-btn">{ labels.autocheckBtn }</span>
+              <span id="autocheck-btn">{labels.autocheckBtn}</span>
             </AutoCheckBtn>
           </DetailedCR>
           <PriceContainer>
@@ -384,4 +386,4 @@ function CarCard({
   );
 }
 
-export default withRouter(injectIntl(CarCard));
+export default withCookies(withRouter(injectIntl(CarCard)));

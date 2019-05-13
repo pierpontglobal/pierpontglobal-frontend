@@ -19,7 +19,7 @@ const WButton = posed.div({
 const WList = posed.div({
   hidden: {
     opacity: 0,
-    y: 100,
+    y: 700,
     transition: { duration: 400 },
   },
   visible: {
@@ -31,7 +31,7 @@ const WList = posed.div({
 
 const WMessage = posed.div({
   clicked: {
-    y: 80,
+    y: 120,
     opacity: 0,
   },
   normal: {
@@ -65,6 +65,15 @@ const WMessageStyleWrapper = styled(WMessage)`
   }
 `;
 
+const WWrapper = posed.div({
+  normal: {
+    y: 0,
+  },
+  moveToTop: {
+    y: -76,
+  },
+});
+
 
 class WhatsApp extends React.Component {
   constructor() {
@@ -72,12 +81,22 @@ class WhatsApp extends React.Component {
 
     this.state = {
       whatsappVisible: false,
+      wWPosition: 'normal',
+    };
+
+    window.changeWWPosition = (target) => {
+      this.setState({
+        wWPosition: target,
+      });
     };
   }
 
   render() {
+    const { whatsappVisible, wWPosition } = this.state;
+
     return (
-      <div
+      <WWrapper
+        pose={wWPosition}
         style={{
           position: 'fixed',
           right: '20px',
@@ -89,7 +108,8 @@ class WhatsApp extends React.Component {
       >
         <WList
           pose={this.state.whatsappVisible ? 'visible' : 'hidden'}
-          style={{ marginRight: '70px', borderRadius: '10px', display: this.state.whatsappVisible ? 'flex' : 'none' }}
+          style={{ marginRight: '70px', borderRadius: '10px', display: 'none' }}
+          ref={(node) => { this.wList = node; }}
           className="chat-box animated shadow"
           id="chat-box"
         >
@@ -220,7 +240,16 @@ class WhatsApp extends React.Component {
           style={{
             zIndex: 200, position: 'absolute', right: 0, bottom: 0,
           }}
-          onClick={() => { this.setState({ whatsappVisible: !this.state.whatsappVisible }); }}
+          onClick={() => {
+            if (!whatsappVisible) {
+              this.wList.style.display = 'flex';
+            } else {
+              setTimeout(() => {
+                this.wList.style.display = 'none';
+              }, 500);
+            }
+            this.setState({ whatsappVisible: !whatsappVisible });
+          }}
           pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
           id="chat-icon"
           className="icon d-flex justify-content-center align-items-center"
@@ -229,7 +258,7 @@ class WhatsApp extends React.Component {
             {this.state.whatsappVisible ? <i className="fas fa-times" /> : <i className="fab fa-whatsapp" />}
           </span>
         </WButton>
-      </div>
+      </WWrapper>
     );
   }
 }

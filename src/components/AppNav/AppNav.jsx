@@ -197,8 +197,10 @@ class AppNav extends React.Component {
       dealer,
       languages,
       setLang,
+      history,
     } = this.props;
 
+    window.historyManager = history;
     const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
     return (
@@ -258,7 +260,6 @@ class AppNav extends React.Component {
             />
             <LanguageSwitch setLang={setLang} languages={languages} />
             <Help onClick={() => this.goTo('support')}>
-            
               <HelpOutline color="primary" />
             </Help>
           </ButtonsWrapper>
