@@ -87,21 +87,33 @@ const tutorials = ([
     category: <FormattedMessage id="support.faqs" />,
     title: <FormattedMessage id="support.view-faqs" />,
     body: [
-      // {
-      //   heading: <FormattedMessage id="support.faqs.question-1-title" />,
-      //   content: 'Response for question #1',
-      // },
-      // {
-      //   heading: <FormattedMessage id="support.faqs.question-2-title" />,
-      //   content: 'Response for question #2',
-      // },
-      // {
-      //   heading: <FormattedMessage id="support.faqs.question-2-title" />,
-      //   content: 'Response for question #3',
-      // },
       {
-        heading: <FormattedMessage id="ppg.in-construction" />,
-        content: '',
+        heading: <FormattedMessage id="support.faqs.question-1-title" />,
+        content: <FormattedMessage id="support.faqs.question-1-response" />,
+      },
+      {
+        heading: <FormattedMessage id="support.faqs.question-2-title" />,
+        content: <FormattedMessage id="support.faqs.question-2-response" />,
+      },
+      {
+        heading: <FormattedMessage id="support.faqs.question-3-title" />,
+        content: <FormattedMessage id="support.faqs.question-3-response" />,
+      },
+      {
+        heading: <FormattedMessage id="support.faqs.question-4-title" />,
+        content: <FormattedMessage id="support.faqs.question-4-response" />,
+      },
+      {
+        heading: <FormattedMessage id="support.faqs.question-5-title" />,
+        content: <FormattedMessage id="support.faqs.question-5-response" />,
+      },
+      {
+        heading: <FormattedMessage id="support.faqs.question-6-title" />,
+        content: <FormattedMessage id="support.faqs.question-6-response" />,
+      },
+      {
+        heading: <FormattedMessage id="support.faqs.question-7-title" />,
+        content: <FormattedMessage id="support.faqs.question-7-response" />,
       },
     ],
   },

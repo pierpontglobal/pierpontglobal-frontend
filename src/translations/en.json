@@ -268,7 +268,18 @@
   "support.create-dealer.marketplace-page": "Marketplace page",
   "support.create-dealer.text-6": "to start viewing the cars in our rich inventory!",
   "support.view-faqs": "Frequently asked questions",
-  "support.faqs.question-1-title": "Can the yearly subscription payment amount change?",
-  "support.faqs.question-2-title": "Can the yearly subscription payment amount change?",
-  "support.faqs.question-3-title": "Can the yearly subscription payment amount change?"
+  "support.faqs.question-1-title": "What benefits do I get by registering?",
+  "support.faqs.question-1-response": "You get access to a rich car inventory based on Manheim inventory. Pierpont Global will provide you with auction buying, consulting, documentation handling and transportation of your vehicle to your country.",
+  "support.faqs.question-2-title": "Is my information kept private?",
+  "support.faqs.question-2-response": "Yes, all user information is encrypted before sent to any server and decrypt in the server in order to fulfill your request.",
+  "support.faqs.question-3-title": "What should I do for register?",
+  "support.faqs.question-3-response": "For register, first you need to fill and send the form located in the Home page. Then complete the sign up process. Once completed, you'll be asked to register the dealer you run by providen the name, the phone an the credit / debit card.",
+  "support.faqs.question-4-title": "How much do I pay for registration?",
+  "support.faqs.question-4-response": "In order to register your dealer you have to pay US$ 499.99 yearly subscription.",
+  "support.faqs.question-5-title": "I don't have a Promo code. Can I still register without promo code?",
+  "support.faqs.question-5-response": "Yes, you can register without promo code. This field is optional in the dealer registration form, so you can skip it and complete registration without the code.",
+  "support.faqs.question-6-title": "Do you accept payments in cryptocurrency?",
+  "support.faqs.question-6-response": "We currently do not accept any payment in cryptocurrency.",
+  "support.faqs.question-7-title": "How do I know how much to deposit?",
+  "support.faqs.question-7-response": "The deposit depends on the amount of your bid. Please, see the \"Place a bid\" tutorial."
 }

@@ -267,7 +267,18 @@
   "support.create-dealer.marketplace-page": "Página de mercado",
   "support.create-dealer.text-6": "Para empezar a ver los coches en nuestro rico inventario!",
   "support.view-faqs": "Preguntas frecuentes",
-  "support.faqs.question-1-title": "¿Puede cambiar la cantidad del pago de la suscripción anual?",
-  "support.faqs.question-2-title": "¿Puede cambiar la cantidad del pago de la suscripción anual?",
-  "support.faqs.question-3-title": "¿Puede cambiar la cantidad del pago de la suscripción anual?"
+  "support.faqs.question-1-title": "¿Qué beneficios obtengo por registrarme?",
+  "support.faqs.question-1-response": "Usted obtiene acceso a un rico inventario de automóviles basado en el inventario de Manheim. Pierpont Global le proporcionará la compra de subastas, consultoría, manejo de documentación y transporte de su vehículo a su país.",
+  "support.faqs.question-2-title": "¿Es my información mentenida privada?",
+  "support.faqs.question-2-response": "Sí, toda la información del usuario se cifra antes de enviarse a cualquier servidor y descifrar en el servidor para cumplir con su solicitud.",
+  "support.faqs.question-3-title": "¿Qué debo hacer para registrarme?",
+  "support.faqs.question-3-response": "Para registrarse, primero debe completar y enviar el formulario ubicado en la página de inicio. Luego completa el proceso de registro. Una vez completado, se le pedirá que registre al distribuidor que maneja para proporcionar el nombre, el teléfono y la tarjeta de crédito / débito.",
+  "support.faqs.question-4-title": "¿Cuánto pago por registrar mi dealer?",
+  "support.faqs.question-4-response": "Para registrar su distribuidor, debe pagar una suscripción anual de US$ 499.99.",
+  "support.faqs.question-5-title": "No tengo un código de promoción. Aún puedo registrarme sin este código?",
+  "support.faqs.question-5-response": "Sí, puedes registrarte sin código promocional. Este campo es opcional en el formulario de registro del distribuidor, por lo que puede omitirlo y completar el registro sin el código.",
+  "support.faqs.question-6-title": "¿Aceptan pagos en criptomonedas?",
+  "support.faqs.question-6-response": "No, actualmente no aceptamos ningún pago en criptomonedas.",
+  "support.faqs.question-7-title": "¿Cómo se cuánto tengo que depositar?",
+  "support.faqs.question-7-response": "El depósito depende de la cantidad de su apuesta. Por favor, vea el tutorial de \"Haciendo una apuesta\"."
 }
