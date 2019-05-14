@@ -260,6 +260,7 @@ class App extends React.Component {
 
                     <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
                     <Route exact path="/support" render={() => (<SupportPage />)} />
+                    <Route exact path="/support/:tutorial" render={() => (<SupportPage />)} />
 
                     <Route render={() => (<NotfoundPage cookies={cookies} />)} />
                   </Switch>
