@@ -147,14 +147,6 @@ class SupportPage extends React.Component {
     };
   }
 
-  // componentWillReceiveProps = () => {
-  //   const currentTutorial = this.getTutorial(this.props.match.params.tutorial || 1);
-  //   console.log(currentTutorial);
-  //   this.setState({
-  //     tutorialId: currentTutorial.id,
-  //   });
-  // }
-
   componentWillReceiveProps = (newProps) => {
     const currentTutorial = this.getTutorial(newProps.match.params.tutorial || 1);
     this.setState({
