@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { injectIntl } from 'react-intl';
 import Modal from '../Modal/Modal';
 import Information from '../BidModal/Information/Information';
 import Btn from '../Btn/Btn';
@@ -18,6 +19,7 @@ class DepositModal extends React.Component {
       intendedBid,
       onSearch,
       onAddDeposit,
+      intl,
     } = this.props;
 
     this.state = {
@@ -30,6 +32,19 @@ class DepositModal extends React.Component {
     };
 
     this.getFunds = this.getFunds.bind(this);
+
+    this.labels = {
+      outOfDeposit: intl.formatMessage({ id: 'deposit.out-of-deposit' }),
+      deficientAmount: intl.formatMessage({ id: 'deposit.deficient-amount' }),
+      necessaryAmount: intl.formatMessage({ id: 'deposit.necessary-amount' }),
+      availableAmount: intl.formatMessage({ id: 'deposit.available-amount' }),
+      keepSearching: intl.formatMessage({ id: 'deposit.keep-searching' }),
+      addDeposit: intl.formatMessage({ id: 'deposit.add-deposit' }),
+    };
+  }
+
+  componentDidMount() {
+    this.getFunds();
   }
 
   componentWillReceiveProps(newProperties) {
@@ -38,15 +53,9 @@ class DepositModal extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.getFunds();
-  }
-
   async getFunds() {
     const { intendedBid } = this.state;
     const fundsResponse = (await axios.get(`${ApiServer}/api/v1/user/funds`)).data;
-
-    console.log(fundsResponse);
 
     const availableFunds = parseFloat(fundsResponse.balance) - parseFloat(fundsResponse.holding);
     const deficit = ((intendedBid * 10 / 100) - availableFunds);
@@ -64,12 +73,12 @@ class DepositModal extends React.Component {
 
     return (
       <Modal
-        title="Out of deposit"
+        title={this.labels.outOfDeposit}
         show={show}
       >
         <div className="pt-2">
           <Information
-            label="Deficient amount"
+            label={this.labels.deficientAmount}
             text={`$ ${numberWithCommas(deficit.toFixed(2))}`}
             fontSize="16px"
             fontWeight={600}
@@ -77,7 +86,7 @@ class DepositModal extends React.Component {
             className="mb-0 pb-2 border-bottom"
           />
           <Information
-            label="Necessary amount"
+            label={this.labels.necessaryAmount}
             text={`$ ${numberWithCommas((intendedBid * 10 / 100).toFixed(2))}`}
             fontSize="14px"
             fontWeight="normal"
@@ -85,7 +94,7 @@ class DepositModal extends React.Component {
             className="mb-0 pt-2"
           />
           <Information
-            label="Available amount"
+            label={this.labels.availableAmount}
             text={`$ ${numberWithCommas(availableFunds.toFixed(2))}`}
             fontSize="14px"
             fontWeight="normal"
@@ -104,7 +113,7 @@ class DepositModal extends React.Component {
             hoverColor="#4c87cc"
             onClick={onSearch}
           >
-                    KEEP&nbsp;SEARCHING
+            { this.labels.keepSearching }
           </Btn>
           <Btn
             className="w-100"
@@ -113,7 +122,7 @@ class DepositModal extends React.Component {
             hoverColor="#23d17a"
             onClick={onAddDeposit}
           >
-                    ADD DEPOSIT
+            { this.labels.addDeposit }
           </Btn>
         </div>
       </Modal>
@@ -121,4 +130,4 @@ class DepositModal extends React.Component {
   }
 }
 
-export default DepositModal;
+export default injectIntl(DepositModal);

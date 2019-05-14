@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles.css';
 import posed from 'react-pose';
+import { FormattedMessage } from 'react-intl';
 
 const FlyDownDiv = posed.div({
   normal: {
@@ -33,7 +34,7 @@ class NotFoundPage extends React.Component {
         <FlyDownDiv pose={this.state.textPlace} className="center-holder">
           <span className="big-text">404</span>
           <div>
-              The page you are looking for does not exist
+            <FormattedMessage id="label.not-found-page" />
           </div>
         </FlyDownDiv>
       </div>

@@ -2,6 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { ActionCableProvider } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
+import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+import MediaQuery from 'react-responsive';
+import DirectionsCar from '@material-ui/icons/DirectionsCar';
+import Info from '@material-ui/icons/Info';
+import { injectIntl } from 'react-intl';
+import { withCookies } from 'react-cookie';
 import CarDetailCard from '../../CarDetailCard/CarDetailCard';
 import CarDetailTable from '../../CarDetailTable/CarDetailTable';
 import BidPanel from '../../BidPanel/BidPanel';
@@ -11,10 +18,6 @@ import CarCarousel from '../../CarCarousel/CarCarousel';
 import UserBidCard from '../../UserBidCard/UserBidCard';
 import { ApiServer } from '../../../Defaults';
 import TabsComponent from '../../Tabs/TabsComponent';
-import styled from 'styled-components';
-import MediaQuery from 'react-responsive';
-import DirectionsCar from '@material-ui/icons/DirectionsCar';
-import Info from '@material-ui/icons/Info';
 
 const qs = require('query-string');
 
@@ -27,6 +30,47 @@ const SideMenuWrapper = styled.div`
     width: 100%;
   }
 `;
+
+const TabWrapper = styled.div`
+  width: 100%;
+`;
+
+
+function createCarObject(data) {
+  const carInfo = data.car_information;
+  const saleInfo = data.sale_information;
+
+  const car = {
+    id: carInfo.id,
+    year: carInfo.year,
+    maker: carInfo.car_maker,
+    model: carInfo.car_model,
+    title: `${carInfo.year ? carInfo.year : 'x'}
+    ${carInfo.car_maker ? carInfo.car_maker : ''}
+    ${carInfo.car_model ? carInfo.car_model : ''}
+    ${carInfo.trim ? carInfo.trim : ''}`,
+    saleDate: `${new Date(saleInfo.auction_start_date).toLocaleString()}`,
+    vin: carInfo.vin,
+    trim: carInfo.trim,
+    odometer: `${carInfo.odometer} ${carInfo.odometer_unit}`,
+    engine: carInfo.engine,
+    transmission: carInfo.transmission ? 'Automatic' : 'Manual',
+    fuelType: carInfo.car_fuel,
+    doors: carInfo.doors,
+    exteriorColor: carInfo.color_name_exterior,
+    interiorColor: carInfo.color_name_interior,
+    score: carInfo.cr,
+    carBodyStyle: carInfo.car_body_style,
+    carType: carInfo.car_type_code,
+    vehicleType: carInfo.car_vehicle_type,
+    displacement: carInfo.displacement,
+    images: carInfo.images.reverse().map(image => (image.f3)),
+    location: saleInfo.action_location,
+    wholePrice: saleInfo.whole_price,
+  };
+
+  return car;
+}
 
 class CarBidPage extends React.Component {
   constructor(props) {
@@ -55,12 +99,42 @@ class CarBidPage extends React.Component {
 
   componentDidMount() {
     const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    this.setNextPrev(parameters.position);
     this.getCarInfo(parameters.vin);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.search !== nextProps.history.location.search) {
+      const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+      this.setNextPrev(parameters.position);
+      this.getCarInfo(parameters.vin);
+    }
+  }
+
+  setNextPrev = async (position) => {
+    this.setState({
+      search: this.props.history.location.search,
+    });
+    const caller = this.props.cookies.get('list_caller');
+
+    const prevNextResponse = await axios.get(`${ApiServer}/api/v1/car/query?${caller}&limit=3&offset=${position - 1}`);
+    const { cars } = prevNextResponse.data;
+
+    if (position === '0') {
+      this.setState({
+        prevCar: undefined,
+        nextCar: createCarObject(cars[1]),
+      });
+    } else {
+      this.setState({
+        prevCar: createCarObject(cars[0]),
+        nextCar: createCarObject(cars[2]),
+      });
+    }
   }
 
   async getBids(carId) {
     const response = (await axios.get(`${ApiServer}/api/v1/car/bid?car_id=${carId}`)).data;
-    console.log(response);
     this.setState({
       userBid: parseFloat(response.amount),
     });
@@ -104,6 +178,10 @@ class CarBidPage extends React.Component {
     });
   }
 
+  goTo = (path) => {
+    this.props.history.push(`/${path}`);
+  }
+
   updateUserBidCallback(userBid) {
     this.setState({
       userBid,
@@ -114,54 +192,77 @@ class CarBidPage extends React.Component {
     const {
       userBid,
       cookies,
+      car,
+      nextCar,
+      prevCar,
     } = this.state;
 
-    const { car } = this.state;
+    const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    const position = parameters.position;
+
+    const { intl } = this.props;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
 
+    const labels = {
+      carBidPreview: intl.formatMessage({ id: 'car-bid.preview' }),
+      cardBidSpecifications: intl.formatMessage({ id: 'car-bid.specifications' }),
+    };
+
     const firstTabContent = (
-      <div>
-        <div style={{ marginTop: '-15px' }} style={{ display: 'flex', justifyContent: 'center' }}>
+      <TabWrapper>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+        >
           <div
-            style={{ 
+            style={{
               display: 'flex',
               flexDirection: 'column',
-              width: '100%', 
+              width: '100%',
             }}
           >
             {userBid !== undefined
               ? <UserBidCard bid={userBid} />
-              : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
-            <LocationBar
-              currentLocation={car.location}
-              transportPrice="277"
-              to="to Port Miami, FL"
-            />
-            <CarCarousel maxWidth='100%' images={car.images} />
+              : (
+                <BidPanel
+                  updateUserBidCallback={this.updateUserBidCallback}
+                  carId={car.id}
+                  vin={car.vin}
+                  saleDate={car.saleDate}
+                  wholePrice={car.wholePrice}
+                />
+              )}
+            <div style={{ padding: '16px' }}>
+              <LocationBar
+                currentLocation={car.location}
+                transportPrice="277"
+                to="to Port Miami, FL"
+              />
+              <CarCarousel maxWidth="100%" overflow="auto" images={car.images} />
+            </div>
           </div>
         </div>
-        <CarBottomNav
-          prev={car}
-          next={car}
-        />
-      </div>
+      </TabWrapper>
     );
 
     const secondTabContent = (
-      <div style={{ width: '100%' }} className="d-flex flex-column mr-3">
-        <CarDetailCard car={car} />
-        <CarDetailTable car={car} />
-      </div>
+      <TabWrapper flexDirection="column">
+        <div style={{ padding: '16px', marginTop: '16px' }}>
+          <CarDetailCard car={car} />
+          <CarDetailTable car={car} />
+        </div>
+      </TabWrapper>
     );
 
     const tabOptions = [
       {
-        label: 'Preview',
+        label: labels.carBidPreview,
         item: firstTabContent,
         icon: <DirectionsCar />,
       },
       {
-        label: 'Specifications',
+        label: labels.cardBidSpecifications,
         item: secondTabContent,
         icon: <Info />,
       },
@@ -170,9 +271,9 @@ class CarBidPage extends React.Component {
     return (
       <div>
         <ActionCableProvider cable={this.cable}>
-          <MediaQuery minDeviceWidth={1224}>
+          <MediaQuery minDeviceWidth={768}>
             <React.Fragment>
-              <div style={{ marginTop: '-15px' }} className="d-flex justify-content-center">
+              <div style={{ marginTop: '16px' }} className="d-flex justify-content-center">
                 <SideMenuWrapper>
                   <CarDetailCard car={car} />
                   <CarDetailTable car={car} />
@@ -182,23 +283,39 @@ class CarBidPage extends React.Component {
                 >
                   {userBid !== undefined
                     ? <UserBidCard bid={userBid} />
-                    : <BidPanel updateUserBidCallback={this.updateUserBidCallback} carId={car.id} vin={car.vin} saleDate={car.saleDate} wholePrice={car.wholePrice} />}
+                    : (
+                      <BidPanel
+                        updateUserBidCallback={this.updateUserBidCallback}
+                        carId={car.id}
+                        vin={car.vin}
+                        saleDate={car.saleDate}
+                        wholePrice={car.wholePrice}
+                      />
+                    )}
                   <LocationBar
                     currentLocation={car.location}
                     transportPrice="277"
                     to="to Port Miami, FL"
                   />
-                  <CarCarousel maxWidth='720px' images={car.images} />
+                  <CarCarousel maxWidth="720px" images={car.images} />
                 </div>
               </div>
               <CarBottomNav
-                prev={car}
-                next={car}
+                prev={prevCar}
+                next={nextCar}
+                position={position}
+                goTo={this.goTo}
               />
             </React.Fragment>
           </MediaQuery>
-          <MediaQuery maxDeviceWidth={1224}>
+          <MediaQuery maxDeviceWidth={768}>
             <TabsComponent options={tabOptions} />
+            <CarBottomNav
+              prev={prevCar}
+              next={nextCar}
+              position={position}
+              goTo={this.goTo}
+            />
           </MediaQuery>
         </ActionCableProvider>
       </div>
@@ -206,4 +323,4 @@ class CarBidPage extends React.Component {
   }
 }
 
-export default CarBidPage;
+export default withRouter(withCookies(injectIntl(CarBidPage)));

@@ -4,19 +4,37 @@ import {
 } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
 import axios from 'axios';
+import { MuiThemeProvider } from '@material-ui/core';
+import styled from 'styled-components';
+import {
+  IntlProvider, FormattedMessage, addLocaleData, injectIntl,
+} from 'react-intl';
+import locale_en from 'react-intl/locale-data/en';
+import locale_es from 'react-intl/locale-data/es';
+import messages_es from './translations/es.json';
+import messages_en from './translations/en.json';
 import MarketPlacePage from './components/pages/MarketPlacePage/MarketPlacePage';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 import NotfoundPage from './components/pages/NotFoundPage/NotFoundPage';
 import RegistrationPage from './components/pages/RegistrationPage/RegistrationPage';
 import ProfilePage from './components/pages/ProfilePage/ProfilePage';
 import CarPage from './components/pages/CarBidPage/CarBidPage';
+import ContactPage from './components/pages/ContactPage/ContactPage';
 import NotificationPage from './components/pages/NotificationPage/NotificationPage';
 import './styles.css';
 import AppNav from './components/AppNav/AppNav';
-import { MuiThemeProvider } from '@material-ui/core';
 import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
-import styled from 'styled-components';
+import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
+import SupportPage from './components/pages/SupportPage/SupportPage.jsx';
+
+addLocaleData([...locale_en, ...locale_es]);
+
+// TODO: This switch was on porpuse for testing ONLY purposes!!!
+const messages = {
+  es: messages_es,
+  en: messages_en,
+};
 
 const car = {
   year: '2017',
@@ -70,6 +88,7 @@ const PageHolder = styled.div`
 
 class App extends React.Component {
   constructor(props) {
+    clearTimeout(window.fallbackReload);
     super(props);
     const { cookies } = this.props;
 
@@ -80,11 +99,30 @@ class App extends React.Component {
         address: null,
         email: null,
         number: null,
-      }
-    }
+      },
+      languages: [
+        {
+          abr: 'es',
+          name: <FormattedMessage id="lang.spanish" />,
+          active: false,
+        },
+        {
+          abr: 'en',
+          name: <FormattedMessage id="lang.english" />,
+          active: true,
+        },
+        // {
+        //   abr: "fr",
+        //   name: <FormattedMessage id="lang.french" />,
+        //   active: false
+        // },
+      ],
+      language: navigator.language.split(/[-_]/)[0],
+    };
 
     axios.interceptors.request.use((config) => {
       config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
+      config.params = { lang: this.state.language };
 
       return config;
     }, error => Promise.reject(error));
@@ -105,21 +143,25 @@ class App extends React.Component {
 
   setDealer = (dealer) => {
     this.setState({
-      dealer: dealer
+      dealer,
     });
   }
-  
-  componentWillMount() {
+
+  componentDidMount() {
     const { cookies } = this.props;
+
+    this.setDefaultLanguage();
 
     this.OneSignal = window.OneSignal || [];
 
     this.OneSignal.push(() => {
       this.OneSignal.init({
         appId: OneSignalKey,
+        allowLocalhostAsSecureOrigin: true,
       });
+
       this.OneSignal.on('subscriptionChange', (isSubscribed) => {
-        console.log(`The user subscription status is: ${isSubscribed}`);
+        // console.log(`The user subscription status is: ${isSubscribed}`);
         this.OneSignal.getUserId((id) => {
           if (isSubscribed) {
             if (cookies.get('token', { path: '/' })) {
@@ -147,40 +189,89 @@ class App extends React.Component {
     return false;
   }
 
+  setLanguage = (lang) => {
+    const { languages } = this.state;
+    const langs = [...languages];
+
+    const { cookies } = this.props;
+    cookies.set('language', lang.abr, { path: '/' });
+
+    langs.forEach((lg) => {
+      if (lg.abr === lang.abr) {
+        lg.active = true;
+      } else {
+        lg.active = false;
+      }
+    });
+    this.setState({
+      languages: langs,
+      language: lang.abr,
+    });
+  }
+
+  setDefaultLanguage = () => {
+    const { languages } = this.state;
+    const langs = [...languages];
+    const { cookies } = this.props;
+
+    // Set default to Spanish
+    const defaultLang = cookies.get('language') || 'en';
+    langs.forEach((lg) => {
+      if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
+        lg.active = true;
+      } else {
+        lg.active = false;
+      }
+    });
+
+    this.setState({
+      languages: langs,
+      language: defaultLang,
+    });
+  }
+
   render() {
     const { cookies } = this.props;
-    const { dealer } = this.state;
+    const { dealer, languages, language } = this.state;
     return (
-      <MuiThemeProvider theme={DefaultTheme}>
-        <Router>
-          <div style={{
-            position: 'fixed',
-            height: '100%',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          >
-            <AppNav cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
-            <PageHolder>
-              <Switch>
-                <Route exact path="/oauth/login" render={() => <OauthPage />} />
-                <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
-                <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
-                <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
+      <IntlProvider locale={language || 'en'} messages={messages[language]}>
+        <MuiThemeProvider theme={DefaultTheme}>
+          <div>
+            <Router>
+              <div style={{
+                position: 'fixed',
+                height: '100%',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+              >
+                <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                <PageHolder>
+                  <Switch>
+                    <Route exact path="/oauth/login" render={() => <OauthPage />} />
+                    <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
+                    <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
+                    <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
 
-                <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                <Route path="/user" render={() => (this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />} />
-                <Route exact path="/user/notifications" render={() => (this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />} />
+                    <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
+                    <Route path="/user" render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
+                    <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
-                <Route render={() => (<NotfoundPage cookies={cookies} />)} />
-              </Switch>
-            </PageHolder>
+                    <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
+                    <Route exact path="/support" render={() => (<SupportPage />)} />
+
+                    <Route render={() => (<NotfoundPage cookies={cookies} />)} />
+                  </Switch>
+                </PageHolder>
+              </div>
+            </Router>
           </div>
-        </Router>
-      </MuiThemeProvider>
+          <WhatsApp />
+        </MuiThemeProvider>
+      </IntlProvider>
     );
   }
 }
 
-export default withCookies(App);
+export default injectIntl(withCookies(App));

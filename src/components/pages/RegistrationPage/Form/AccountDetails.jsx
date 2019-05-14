@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
 import PasswordField from 'material-ui-password-field';
-import { Button } from '@material-ui/core';
-import { TextField } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 
 class AccountDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      passwordIncorrect: false,
     };
     this.saveAndContinue = this.saveAndContinue.bind(this);
     this.back = this.back.bind(this);
@@ -26,22 +24,19 @@ class AccountDetails extends Component {
   }
 
   async verifyPassword(node, ik) {
-    const value = node.target.value;
+    const { value } = node.target;
     const status = await this.props.handleChangePassword(value, ik);
     if (!status) {
       this.setState({
-        passwordIncorrect: true,
       });
     } else {
       this.setState({
-        passwordIncorrect: false,
       });
     }
   }
 
   render() {
     const { values } = this.props;
-    const { passwordIncorrect } = this.state;
     return (
       <Form color="blue">
         <h1 className="ui centered">Account Details</h1>

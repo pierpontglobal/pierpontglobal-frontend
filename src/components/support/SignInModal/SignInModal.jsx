@@ -7,6 +7,7 @@ import Input from '../../styles/Input/Input';
 import Button from '../../Btn/Btn';
 import './styles.css';
 import { withRouter } from 'react-router-dom';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 class SignInModal extends React.Component {
   constructor(props) {
@@ -49,10 +50,17 @@ class SignInModal extends React.Component {
 
   signInModal() {
     const { rotate, failed } = this.state;
+    const { intl } = this.props;
     document.getElementsByTagName('body')[0].style.overflow = 'hidden';
 
+    const labels = {
+      userSignIn: intl.formatMessage({ id: 'sign-in.user-sign-in' }),
+      username: intl.formatMessage({ id: 'sign-in.username' }),
+      password: intl.formatMessage({ id: 'sign-in.password' }),
+    };
+
     return (
-      <Modal style={{ position: 'absolute' }} height="320px" show notifyClosed={this.closeModal} title="User sign in">
+      <Modal style={{ position: 'absolute' }} height="320px" show notifyClosed={this.closeModal} title={labels.userSignIn}>
         <form
           style={{
             display: 'flex',
@@ -64,8 +72,10 @@ class SignInModal extends React.Component {
           }}
           onSubmit={this.signIn}
         >
-          <img className="phone-only" style={{ marginBottom: '20px' }} width="200" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
-          <p style={{ color: 'red', display: failed ? 'block' : 'none' }}>Wrong credentials</p>
+          <img className="phone-only" style={{ marginBottom: '20px' }} width="80" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
+          <p style={{ color: 'red', display: failed ? 'block' : 'none' }}>
+            <FormattedMessage id="sign-in.wrong-credentials" />
+          </p>
           <Input
             style={{
               height: '40px',
@@ -79,7 +89,7 @@ class SignInModal extends React.Component {
             maxWidth="300px"
             maxHeight="40px"
             borderRadius="4px"
-            placeholder="Username"
+            placeholder={labels.username}
             required
           />
 
@@ -97,7 +107,7 @@ class SignInModal extends React.Component {
             maxWidth="300px"
             maxHeight="40px"
             borderRadius="4px"
-            placeholder="Password"
+            placeholder={labels.password}
             required
           />
 
@@ -110,7 +120,7 @@ class SignInModal extends React.Component {
               color: '#000000',
             }}
           >
-          Forgot account?
+            <FormattedMessage id="sign-in.forgot-account" />
           </a>
 
           <Button
@@ -125,7 +135,7 @@ class SignInModal extends React.Component {
             onClick={() => { this.setState({ rotate: 'rotate' }); }}
           >
             <div style={{ position: 'relative' }}>
-              Sign In
+              <FormattedMessage id='label.sign-in' />
               <i
                 style={{
                   position: 'absolute',
@@ -181,4 +191,4 @@ class SignInModal extends React.Component {
   }
 }
 
-export default withCookies(withRouter(SignInModal));
+export default withCookies(withRouter(injectIntl(SignInModal)));

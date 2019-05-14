@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 import styled from 'styled-components';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import Input from '../styles/Input/Input';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
@@ -37,6 +38,7 @@ class BidPanel extends React.Component {
       saleDate,
       carId,
       vin,
+      intl,
     } = this.props;
 
     this.state = {
@@ -50,22 +52,28 @@ class BidPanel extends React.Component {
 
     this.handleReceived = this.handleReceived.bind(this);
     this.sendBid = this.sendBid.bind(this);
+
+    this.bidAmountPlaceholder = intl.formatMessage({ id: 'label.your-max-bid' });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.wholePrice !== this.state.wholePrice) {
+    const {
+      wholePrice, vin, carId, saleDate,
+    } = this.state;
+
+    if (nextProps.wholePrice !== wholePrice) {
       this.setState({ wholePrice: nextProps.wholePrice });
     }
 
-    if (nextProps.vin !== this.state.vin) {
+    if (nextProps.vin !== vin) {
       this.setState({ vin: nextProps.vin });
     }
 
-    if (nextProps.carId !== this.state.carId) {
+    if (nextProps.carId !== carId) {
       this.setState({ carId: nextProps.carId });
     }
 
-    if (nextProps.saleDate !== this.state.saleDate) {
+    if (nextProps.saleDate !== saleDate) {
       this.setState({ saleDate: nextProps.saleDate });
     }
   }
@@ -145,7 +153,7 @@ class BidPanel extends React.Component {
               lineHeight={1.33}
               fontColor="#ffffff"
             >
-            Whole price:
+              <FormattedMessage id="label.whole-price" />
             </Text>
             <PriceTag
               color="white"
@@ -163,20 +171,17 @@ class BidPanel extends React.Component {
             >
               <Input
                 className="input mr-3 border-0"
-                maxWidth="200px"
+                width="100%"
                 backgroundColor="#3A70B4"
                 borderRadius="4px"
-                fontSize="20px"
                 ref={(node) => { bidInput = node; }}
                 style={{
-                  padding: '20px',
                   outline: 'none',
-                  textAlign: 'right',
-
+                  textAlign: 'center',
                 }}
                 type="number"
                 fontColor="#ffffff"
-                placeholder="Your max bid"
+                placeholder={this.bidAmountPlaceholder}
                 placeholderColor="#ffffff"
                 placeholderOpacity={0.54}
               />
@@ -194,7 +199,7 @@ class BidPanel extends React.Component {
                 onClick={() => (this.sendBid(parseFloat(bidInput.value), carId))}
                 type="button"
               >
-              BID
+                <FormattedMessage id="label.bid" />
                 <i
                   style={{
                     display: loading ? 'block' : 'none',
@@ -210,15 +215,13 @@ class BidPanel extends React.Component {
                 />
               </button>
             </Container>
-            <Text
-              fontSize="0.75em"
-              lineHeight={1.33}
-              fontColor="rgba(255, 255, 255, 0.87)"
+            <div
+              style={{fontSize: '0.75em', lineHeight: '1.33', fontColor: 'rgba(255, 255, 255, 0.87)', color: 'white', textAlign: 'center', marginTop: '8px'}}
             >
-            You will have to retract your bid until:
+              <FormattedMessage id="bid.retract-msg" />
               {' '}
               {saleDate}
-            </Text>
+            </div>
           </div>
         </BidPanelWrapper>
       </>
@@ -226,4 +229,4 @@ class BidPanel extends React.Component {
   }
 }
 
-export default BidPanel;
+export default injectIntl(BidPanel);

@@ -1,27 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const editStyle = {
-  width: 'auto',
-  height: '40px',
-  color: '#707070',
-  border: 'none',
-  borderRadius: '4px',
-  backgroundColor: '#eeeeee',
-  fontSize: '14px',
-  lineHeight: 1.36,
-};
-
-const noEditStyle = {
-  width: 'auto',
-  height: '40px',
-  border: 'none',
-  backgroundColor: 'transparent',
-  color: '#707070',
-  fontSize: '14px',
-  lineHeight: 1.36,
-};
-
 const InputContent = styled.div`
   width: 100%;
   display: flex;
@@ -60,10 +39,10 @@ const InputWrapper = styled.div`
 const InputComponent = styled.input`
   width: 100%;
   height: 40px;
-  color: ${props => !props.disabled ? '#707070' : ''};
+  color: ${props => (!props.disabled ? '#707070' : '')};
   border: none;
-  border-radius: ${props => !props.disabled ? '' : '4px'};
-  background-color: ${props => !props.disabled ? '#eeeeee' : ''};
+  border-radius: ${props => (!props.disabled ? '' : '4px')};
+  background-color: ${props => (!props.disabled ? '#eeeeee' : '')};
   font-size: 14px;
   line-height: 1.36;
   text-align: left;
@@ -72,7 +51,9 @@ const InputComponent = styled.input`
   }
 `;
 
-function FormInput({ label, editable, value, onChange, id }) {
+function FormInput({
+  label, editable, value, onChange, id,
+}) {
   return (
     <InputContent>
       <SpanWrapper>
@@ -82,7 +63,6 @@ function FormInput({ label, editable, value, onChange, id }) {
         <InputComponent
           type="text"
           defaultValue={value}
-          value={value}
           onChange={onChange}
           disabled={!editable}
           id={id}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
+import { ActionCableProvider } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
 import { WSConnection } from '../../../Defaults';
 
@@ -26,51 +26,47 @@ class NotificationPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notifications: [],
-      isLoading: false,
-    }
+    };
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.cable = ActionCable.createConsumer(WSConnection);
     this.userId = this.props.cookies.get('user_id', { path: '/' });
 
 
-    this.subscription = this.cable.subscriptions.create({
-      channel: 'AdminNotificationChannel',
-      user_id: this.userId
-    },
-    {
-      received: (data) => {
+    this.subscription = this.cable.subscriptions.create(
+      {
+        channel: 'AdminNotificationChannel',
+        user_id: this.userId,
+      },
+      {
+        received: (data) => {
           this.handleReceived(data);
-      }
-    });
-    console.log(this.subscription);
+        },
+      },
+    );
+    // console.log(this.subscription);
   }
 
   componentDidMount = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
+    axios.defaults.headers.common.Authorization = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
 
     // Fetch Notifications for current user
     setTimeout(() => {
       this.setState({
-        isLoading: false
       });
-    }, 3000)
+    }, 3000);
   }
 
-  handleReceived = (data) => {
-    console.log('Recevied new data!! Yei!');
-    console.log(data);
+  handleReceived = (/* data */) => {
+    // console.log('Recevied new data!! Yei!');
+    // console.log(data);
   }
 
 
   render() {
-    return(
+    return (
       <>
-      Algo..
         <ActionCableProvider cable={this.cable}>
           <NotificationsWrapper>
             <NotificationCard>

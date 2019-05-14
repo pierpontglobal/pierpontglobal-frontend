@@ -1,30 +1,23 @@
 import React from 'react';
 import Img from 'react-image';
-import MenuDrawer from './MenuDrawer/MenuDrawer';
-import AccountManager from '../support/AccountManager';
 import './styles.css';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 import { withRouter } from 'react-router-dom';
 import BurgerIcon from '@material-ui/icons/Menu';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
 import SignInModal from '../support/SignInModal/SignInModal';
+import AccountManager from '../support/AccountManager';
+import MenuDrawer from './MenuDrawer/MenuDrawer';
+import LanguageSwitch from './language-switch/LanguageSwitch';
 
-const style = {
-  backgroundColor: '#fafafa',
-  boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.09)',
-  border: 'solid 0.5px rgba(0, 0, 0, 0.12)',
-  position: 'fixed',
-  height: '58px',
-  top: 0,
-  overflow: 'show',
-  zIndex: 1000,
-};
 
-const styles = theme => ({
+const styles = () => ({
   iconButton: {
-    "&:hover": {
-      backgroundColor: 'rgba(0, 0, 0, 0);'
-    }
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0);',
+    },
   },
 });
 
@@ -38,6 +31,47 @@ const LinkBtn = styled.div`
   text-decoration: 'none';
   &:hover {
     cursor: pointer;
+  }
+`;
+
+const Help = styled.div`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  cursor: pointer;
+  :hover::after {
+    content: 'Visit the tutorial page';
+    padding: 4px;
+    border-radius: 4px;
+    width: 100px;
+    font-size: 12px;
+    color: white;
+    background-color: rgb(59, 68, 75);
+    position: absolute;
+    top: 48px;
+    text-align: center;
+    font-weight: 200;
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.3);
+    transition: 1s;
+  }
+  :hover::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    text-align: center;
+    font-weight: 200;
+    width: 0; 
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    position: absolute;
+    color: white;
+    border-bottom: 20px solid rgb(59, 68, 75);
+    transition: 1s;
   }
 `;
 
@@ -58,12 +92,12 @@ const AppNavWrapper = styled.div`
 
 const NavItems = styled.div`
   display: flex;
+  justify-content: space-between;
   width: 100%;
   align-items: center;
-  justify-content: ${props => props.userIsLoggedIn ? 'space-betweem' : 'flex-start'};
-  @media only screen and (min-width: 600px) {
+  justify-items: center;
+  @media only screen and (min-width: 768px) {
     max-width: 950px;
-    justify-content: space-between;
   }
 `;
 
@@ -72,7 +106,7 @@ const BurgerBtn = styled.i`
   font-size: 1.7em;
   opacity: 0.85;
   margin: 4px 16px;
-  @media only screen and (min-width: 600px) {
+  @media only screen and (min-width: 768px) {
     display: none;
   }
 `;
@@ -85,15 +119,28 @@ const LogoWrapper = styled.button`
   align-items: center;
   justify-items: center;
   overflow: visible;
+  width: 100%;
   max-width: 170px;
-  position: relative;
-  width: auto;
-  left: auto;
-  margin: 0;
+  left: 0px;
+  margin: auto;
   border: none;
-  @media only screen and (max-width: 600px) {
-    margin-left: ${props => props.userIsLoggedIn ? '' : '12%'}
+  position: relative;
+  @media only screen and (min-width: 768px) {
+    position: relative;
+    margin: 0;
   }
+`;
+
+const MenuLogoWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 class AppNav extends React.Component {
@@ -119,6 +166,10 @@ class AppNav extends React.Component {
     });
   }
 
+  goTo = (path) => {
+    this.props.history.push(`/${path}`);
+  }
+
   optionClick(url) {
     if (url) {
       this.props.history.push(url);
@@ -134,10 +185,6 @@ class AppNav extends React.Component {
     });
   }
 
-  goTo = (path) => {
-    this.props.history.push(`/${path}`);
-  }
-
   showSignIn(status) {
     this.setState({
       showModal: status,
@@ -145,9 +192,15 @@ class AppNav extends React.Component {
   }
 
   render() {
-    const { showModal } = this.state;
-    const { cookies, classes, dealer } = this.props;
+    const { showModal, menuOpen } = this.state;
+    const {
+      dealer,
+      languages,
+      setLang,
+      history,
+    } = this.props;
 
+    window.historyManager = history;
     const userIsLoggedIn = this.props.verifyUserLoggedIn();
 
     return (
@@ -155,43 +208,61 @@ class AppNav extends React.Component {
         <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
         <NavItems userIsLoggedIn={userIsLoggedIn}>
           <MenuDrawer
-            open={this.state.menuOpen}
+            open={menuOpen}
             onMaskClick={this.onTouchEnd}
             afterOptionclick={this.optionClick}
             showSignIn={() => { this.showSignIn(true); }}
             onRequestOpen={this.openMenuSide}
             dealer={dealer}
           />
-          <BurgerBtn onClick={this.openMenuSide}>
-            <BurgerIcon />
-          </BurgerBtn>
-          <LogoWrapper onClick={() => this.goTo('')} >
-            <Img
-              style={{
-                width: '100%',
-                cursor: 'pointer',
-              }}
-              alt="PierpontGlobal"
-              className="logo"
-              src={[
-                '/logos/sm_logo.webp',
-                '/logos/sm_logo.jp2',
-                '/logos/sm_logo.jxr',
-                '/logos/sm_logo.png',
-              ]}
-              loader={
-                <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
+          <MenuLogoWrapper>
+            <BurgerBtn onClick={this.openMenuSide}>
+              <BurgerIcon />
+            </BurgerBtn>
+            <LogoWrapper onClick={() => this.goTo('')}>
+              <Img
+                style={{
+                  width: '100%',
+                  maxWidth: '170px',
+                  cursor: 'pointer',
+                }}
+                alt="PierpontGlobal"
+                className="logo"
+                src={[
+                  '/logos/sm_logo.webp',
+                  '/logos/sm_logo.jp2',
+                  '/logos/sm_logo.jxr',
+                  '/logos/sm_logo.png',
+                ]}
+                loader={
+                  <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
                 }
-            />
-          </LogoWrapper>
+              />
+            </LogoWrapper>
+          </MenuLogoWrapper>
 
           <div className="menu-sider" id="nav-bar-sub-menu">
-            <LinkBtn onClick={ () => this.goTo('') }>Home</LinkBtn>
-            <LinkBtn onClick={ () => this.goTo('marketplace') }>MarketPlace</LinkBtn>
-            <LinkBtn onClick={ () => this.goTo('contact-us') }>Contact&nbsp;Us</LinkBtn>
+            <LinkBtn onClick={() => this.goTo('')}>
+              <FormattedMessage id="navbar.home" />
+            </LinkBtn>
+            <LinkBtn onClick={() => this.goTo('marketplace')}>
+              <FormattedMessage id="navbar.market" />
+            </LinkBtn>
+            <LinkBtn onClick={() => this.goTo('contact-us')}>
+              <FormattedMessage id="navbar.contact-us" />
+            </LinkBtn>
           </div>
-          
-          <AccountManager history={this.props.history} showSignIn={() => { this.showSignIn(true); }} />
+
+          <ButtonsWrapper>
+            <AccountManager
+              history={this.props.history}
+              showSignIn={() => { this.showSignIn(true); }}
+            />
+            <LanguageSwitch setLang={setLang} languages={languages} />
+            <Help onClick={() => this.goTo('support')}>
+              <HelpOutline color="primary" />
+            </Help>
+          </ButtonsWrapper>
         </NavItems>
       </AppNavWrapper>
     );

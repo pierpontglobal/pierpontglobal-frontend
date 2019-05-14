@@ -1,5 +1,5 @@
 import React from 'react';
-import Text from '../../styles/Text/Text';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -58,6 +58,8 @@ class PriceTag extends React.Component {
       price, className, requesting, vin, color, fontSizeButton,
     } = this.state;
 
+    this.requestPriceLb = this.props.intl.formatMessage({ id: 'label.request-price' });
+
     if (price) {
       return (
         <p
@@ -87,12 +89,14 @@ class PriceTag extends React.Component {
           <div className="progress">
             <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{ width: '100%' }} />
           </div>
-          <p style={{ fontSize: '9px', textAlign: 'center', color }}>Allow up to 10 seconds to retrieve the price</p>
+          <p style={{ fontSize: '9px', textAlign: 'center', color }}>
+            <FormattedMessage id="label.allow-up-retrieve-price" values={{ seconds: 10 }} />
+          </p>
         </div>
       );
     }
-    return (<button style={{ fontSize: fontSizeButton, fontWeight: '200' }} type="button" data-vin={vin} className="border-0 btn btn-info" onClick={this.request}>Request price</button>);
+    return (<button style={{ fontSize: fontSizeButton, fontWeight: '200' }} type="button" data-vin={vin} className="border-0 btn btn-info" onClick={this.request}>{this.requestPriceLb}</button>);
   }
 }
 
-export default PriceTag;
+export default injectIntl(PriceTag);

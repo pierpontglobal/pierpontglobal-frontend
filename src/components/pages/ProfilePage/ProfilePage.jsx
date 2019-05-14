@@ -1,28 +1,27 @@
 import React from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+import { injectIntl } from 'react-intl';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
 import SettingSide from './SettingSide/SettingSide';
 import SubscriptionSide from './SubscriptionSide/SubscriptionSide';
-import AlertNotification from './Components/AlertNotification';
 import PurchaseSide from './PurchaseSide/PurchaseSide';
 import PendingSide from './PendingSide/PendingSide';
 import FinancialSide from './FinancialSide/FinancialSide';
 import TransactionsSide from './TransactionsSide/TransactionsSide';
 import NotificationTypes from '../../../constants/NotificationTypes';
 import IssueTypes from '../../../constants/IssueTypes';
-import styled from 'styled-components';
 import './styles.css';
 
 const dealerExample = {
   image: null,
-  name: 'Dealer name',
-  address: 'Address...',
-  email: 'dealer@example.com',
-  number: '+1 (809) 123-5555',
+  name: '',
+  address: '',
+  email: '',
+  number: '',
 };
 
 const Wrapper = styled.div`
@@ -57,7 +56,6 @@ class ProfilePage extends React.Component {
     this.state = {
       hasDealer: true,
       hasPaymentMethod: true,
-      notifications: [],
     };
 
     this.getDealer = this.getDealer.bind(this);
@@ -86,20 +84,63 @@ class ProfilePage extends React.Component {
         },
       }, () => {
         const { dealer } = this.state;
-        if (!!this.props.setDealer) {
-          this.props.setDealer(dealer);
+        const { setDealer } = this.props;
+        if (setDealer) {
+          setDealer(dealer);
         }
       });
     }
   }
 
-  async getPaymentMethod() {
-    try {
-      await axios.get(`${ApiServer}/api/v1/user/subscriptions`);
-    } catch (e) {
-      this.setState({
-        hasPaymentMethod: false,
-      });
+  getPaymentMethod = () => {
+
+    axios.get(`${ApiServer}/api/v1/user/subscriptions`).then((data) => {
+
+    }, (err) => {
+      if (err.response.status === 404) {
+        this.openDealerCreator();
+      }
+      if (err.response.status === 503) {
+        this.props.history.push('/');
+      }
+    });
+  }
+
+  sendNotification = (notificationDto) => {
+    axios.post(`${ApiServer}/api/v1/notification`, { ...notificationDto });
+  }
+
+  checkNotifications = async () => {
+    const { intl } = this.props;
+
+    const subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
+    const cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
+
+    const messages = {
+      accountIncomplete: intl.formatMessage({ id: 'profile.account-incomplete' }),
+      subsText: intl.formatMessage({ id: 'profile.account-incomplete-subscription-text' }),
+      cardsText: intl.formatMessage({ id: 'profiel.account-incomplete-cards-text' }),
+    };
+
+    const notificationDto = {
+      title: messages.accountIncomplete,
+      message: messages.subsText,
+      payload: subscriptions,
+      type: NotificationTypes.alert,
+      issue_id: undefined,
+    };
+
+    if (subscriptions === null || subscriptions === undefined) {
+      this.sendNotification(notificationDto);
+    } else if (!!subscriptions && !subscriptions.active) {
+      this.sendNotification(notificationDto);
+    }
+
+    if (cards === null || cards === undefined) {
+      notificationDto.payload = cards;
+      notificationDto.message = messages.cardsText;
+      notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
+      this.sendNotification(notificationDto);
     }
   }
 
@@ -109,40 +150,8 @@ class ProfilePage extends React.Component {
     });
   }
 
-  sendNotification = (notificationDto) => {
-    axios.post(`${ApiServer}/api/v1/notification`, {...notificationDto});
-  }
-
-  checkNotifications = async () => {
-
-    let subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
-    let cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
-
-    let notificationDto = {
-      title: 'Account incomplete',
-      message: `Please, add a subscription to this account. You won't be able to place bids until its complete.`,
-      payload: subscriptions,
-      type: NotificationTypes.alert,
-      issue_id: undefined
-    }
-
-    if (subscriptions == undefined) {
-      this.sendNotification(notificationDto);
-    } else if (!!subscriptions && !subscriptions.active) {
-      this.sendNotification(notificationDto);
-    }
-
-    if (cards == undefined) {
-      notificationDto.payload = cards;
-      notificationDto.message = `Please, add your card information to your account. You won't be able to process any payment before its complete.`;
-      notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
-      this.sendNotification(notificationDto);
-    }
-  }
-
   render() {
     const {
-      notifications,
       hasDealer,
       dealer,
       hasPaymentMethod,
@@ -178,12 +187,8 @@ class ProfilePage extends React.Component {
   }
 }
 
-ProfilePage.propTypes = {
-  cookies: PropTypes.object,
-};
-
 ProfilePage.defaultProps = {
   cookies: {},
 };
 
-export default ProfilePage;
+export default withRouter(injectIntl(ProfilePage));

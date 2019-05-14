@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import PPGModal from '../../../../../ppg-modal/PPGModal';
 import CloseIcon from '@material-ui/icons/Close';
 import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 const ModalWrapper = styled.div`
   width: 90%;
@@ -107,7 +108,7 @@ class AddDeposit extends React.Component {
   constructor(props) {
     super(props);
 
-    const { cookies } = props;
+    const { cookies, intl } = props;
 
     this.state = {
       open: false,
@@ -119,6 +120,26 @@ class AddDeposit extends React.Component {
     this.onOpenModal = this.onOpenModal.bind(this);
     this.onCloseModal = this.onCloseModal.bind(this);
     this.sendDeposit = this.sendDeposit.bind(this);
+
+    this.labels = {
+      sending: intl.formatMessage({ id: 'deposit.sending' }),
+      success: intl.formatMessage({ id: 'deposit.success' }),
+      error: intl.formatMessage({ id: 'deposit.error' }),
+      addDeposit: intl.formatMessage({ id: 'deposit.add-deposit' }),
+      transactionFailed: intl.formatMessage({ id: 'deposit.transaction-failed' }),
+      transactionFailedText: intl.formatMessage({ id: 'deposit.transaction-failed-text' }),
+      transactionSuccess: intl.formatMessage({ id: 'deposit.transaction-success' }),
+      visitTransactionTab: intl.formatMessage({ id: 'deposit.visit-transaction-tab' }),
+      transactionNumber: intl.formatMessage({ id: 'deposit.transaction-number' }),
+      userIdentifier: intl.formatMessage({ id: 'deposit.user-identifier' }),
+      sourceId: intl.formatMessage({ id: 'deposit.source-id' }),
+      date: intl.formatMessage({ id: 'deposit.date' }),
+      transactions: intl.formatMessage({ id: 'deposit.transactions' }),
+      performingTransactions: intl.formatMessage({ id: 'deposit.perfoming-transactions' }),
+      depositAmount: intl.formatMessage({ id: 'deposit.deposit-amount' }),
+      pleaseWait: intl.formatMessage({ id: 'deposit.please-wait' }),
+      allowFundsDelay: intl.formatMessage({ id: 'deposit.allow-funds-delay-msg' }),
+    };
   }
 
   onOpenModal() {
@@ -183,7 +204,7 @@ class AddDeposit extends React.Component {
   render() {
     const { open, status, charge } = this.state;
 
-    let title = 'ADD DEPOSIT';
+    let title = this.labels.addDeposit;
     let content = null;
     let footer = '';
     let gridRows = '20% 0.5% 54% 0.5% 25%';
@@ -195,13 +216,11 @@ class AddDeposit extends React.Component {
             <h3 style={{ color: '#B20000' }}>
               <i style={{ color: '#B20000' }} className="fas fa-times" />
               {' '}
-            Transaction failed.
+            {this.labels.transactionFailed}
             </h3>
             <hr />
             <p style={{ marginTop: '20px' }}>
-            Verify your default payment method and try again. Y
-            ou can also contact the technical support representative
-            ! Just click the WhatsApp plugin in the corner.
+            {this.labels.transactionFailedText}
             </p>
           </>
         );
@@ -215,22 +234,22 @@ class AddDeposit extends React.Component {
         content = (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-              <span style={{ fontWeight: '600' }}>Visit the transaction tab for more details</span>
+              <span style={{ fontWeight: '600' }}>{ this.labels.visitTransactionTab }</span>
             </div>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>Transaction number: </span>
+              <span style={{ fontWeight: 900 }}>{ this.labels.transactionNumber } </span>
               <span>{charge.id}</span>
             </TransactionSuccessKeyValue>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>User identifier: </span>
+              <span style={{ fontWeight: 900 }}>{ this.labels.userIdentifier } </span>
               <span>{charge.customer}</span>
             </TransactionSuccessKeyValue>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>Source id: </span>
+              <span style={{ fontWeight: 900 }}>{ this.labels.sourceId } </span>
               <span>{charge.source.id}</span>
             </TransactionSuccessKeyValue>
             <TransactionSuccessKeyValue>
-              <span style={{ fontWeight: 900 }}>Date: </span>
+              <span style={{ fontWeight: 900 }}>{ this.labels.date } </span>
               <span>{(new Date(charge.created * 1000)).toDateString()}</span>
             </TransactionSuccessKeyValue>
           </div>
@@ -243,7 +262,7 @@ class AddDeposit extends React.Component {
 
             <i style={{ fontSize: '12px', color: 'rgb(59, 68, 75)' }} className="fas fa-file-invoice-dollar" />
             {' '}
-              Transactions
+            { this.labels.transactions }
           </TransactionButton>
         );
         break;
@@ -253,11 +272,11 @@ class AddDeposit extends React.Component {
             <h3>
               <i style={{ color: 'rgb(59, 68, 75)' }} className="fas fa-spinner loading" />
               {' '}
-              Performing transactions...
+              { this.labels.performingTransactions }
             </h3>
           </div>
         );
-        footer = 'Please, wait...';
+        footer = this.labels.pleaseWait;
         break;
       default:
        content = 
@@ -283,7 +302,7 @@ class AddDeposit extends React.Component {
               type="number"
               min="0.01"
               step="0.01"
-              placeholder="Deposit amount"
+              placeholder={this.labels.depositAmount}
               ref={(node) => { this.amount = node; }}
             />
           </div>
@@ -301,11 +320,11 @@ class AddDeposit extends React.Component {
           >
             <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
             {' '}
-        ADD DEPOSIT
+            { this.labels.addDeposit }
           </button>
         </DepositForm>
        );
-       footer = 'Allow the funds to show in your account after 5 minutes.';
+       footer = this.labels.allowFundsDelay;
     }
 
     const baseModalContent = 
@@ -342,7 +361,7 @@ class AddDeposit extends React.Component {
         >
           <i style={{ fontSize: '14px', color: '#ffffff' }} className="fas fa-money-bill-alt" />
           {' '}
-          ADD DEPOSIT
+          { this.labels.addDeposit }
         </button>
         <PPGModal 
           setPadding={false}
@@ -365,4 +384,4 @@ AddDeposit.defaultProps = {
   cookies: {},
 };
 
-export default withRouter(AddDeposit);
+export default withRouter(injectIntl(AddDeposit));

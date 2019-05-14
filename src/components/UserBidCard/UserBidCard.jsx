@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Btn from '../Btn/Btn';
 import Container from '../styles/Container/Container';
 import Text from '../styles/Text/Text';
@@ -16,7 +17,7 @@ function UserBidCard({ bid }) {
       backgroundColor="#fafafa"
       boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
     >
-      <div className="d-flex flex-column">
+      <div className="d-flex flex-column" style={{ justifyContent: 'space-between' }}>
         <Text
           className="d-flex mb-3 mb-sm-0"
           fontSize="0.75em"
@@ -24,12 +25,12 @@ function UserBidCard({ bid }) {
           lineHeight={1.33}
           fontColor="#10b364"
         >
-          Your bid:
+          <FormattedMessage id="label.your-bid" />
         </Text>
         <Text
           className="mb-0"
-          fontSize="2.5em"
-          fontWeight="100"
+          fontSize="1.65em"
+          fontWeight="400"
           lineHeight={1.33}
         >
           {`$${numberWithCommas(bid.toFixed(2))}`}
@@ -40,9 +41,9 @@ function UserBidCard({ bid }) {
         color="#3c79c0"
         hoverColor="#4c87cc"
         maxWidth="260px"
-        onClick={() => (window.location.href = '/user/purchase')}
+        onClick={() => { window.location.href = '/user/purchase'; }}
       >
-        VIEW ALL YOUR OPEN BIDS
+        <FormattedMessage id="label.view-open-bids" />
       </Btn>
     </Container>
   );

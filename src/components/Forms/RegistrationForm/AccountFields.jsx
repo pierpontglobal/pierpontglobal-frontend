@@ -4,8 +4,8 @@ import { AsYouType } from 'libphonenumber-js';
 import posed from 'react-pose';
 import { TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
 import { ApiServer } from '../../../Defaults';
-
 
 const Spinner = posed.i({
   rotate: {
@@ -50,6 +50,12 @@ class AccountFields extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+
+    // Form labels
+    this.firstnameLabel = <FormattedMessage id="home.signup-form.firstname-label" />;
+    this.lastnameLabel = <FormattedMessage id="home.signup-form.lastname-label" />;
+    this.emailLabel = <FormattedMessage id="home.signup-form.email-label" />;
+    this.phoneLabel = <FormattedMessage id="home.signup-form.phone-label" />;
   }
 
   async saveAndContinue(e) {
@@ -69,6 +75,8 @@ class AccountFields extends React.Component {
       email,
       phone_number: phone,
     };
+
+    this.props.fieldValues.email = email;
     await axios.post(`${ApiServer}/api/v1/user/subscription`, data);
     this.props.loadinStop();
     return false;
@@ -127,6 +135,12 @@ class AccountFields extends React.Component {
       phone,
     } = this.state;
 
+    const privacyLink = (
+      <a style={{ color: this.props.textColor, textDecoration: 'none', borderBottom: `2px dotted ${this.props.textColor}` }} href="https://www.iubenda.com/privacy-policy/24475288" className="iubenda-nostyle no-brand iubenda-embed" title="Privacy Policy ">
+        <FormattedMessage id="label.privacy-policy" />
+      </a>
+    );
+
     return (
       <div style={{
         display: 'flex',
@@ -159,11 +173,11 @@ class AccountFields extends React.Component {
             }}
             className="subtitle-medium"
           >
-            Sign Up for early access
+            <FormattedMessage id="home.signup-form.title" />
           </p>
 
           <TextField
-            label="Your first name"
+            label={this.firstnameLabel}
             autoComplete="given-name"
             type="text"
             name="fname"
@@ -182,7 +196,7 @@ class AccountFields extends React.Component {
           />
 
           <TextField
-            label="Your last name"
+            label={this.lastnameLabel}
             autoComplete="family-name"
             type="text"
             name="lname"
@@ -211,7 +225,7 @@ class AccountFields extends React.Component {
 
             <TextField
               error={wrongEmail}
-              label="Email"
+              label={this.emailLabel}
               autoComplete="email"
               type="email"
               name="email"
@@ -244,7 +258,7 @@ class AccountFields extends React.Component {
           </div>
 
           <TextField
-            label="Phone number"
+            label={this.phoneLabel}
             autoComplete="tel"
             type="tel"
             name="phone"
@@ -277,15 +291,11 @@ class AccountFields extends React.Component {
               borderRadius: '4px',
             }}
           >
-            Sign up now >>
+            <FormattedMessage id="home.signup-form.button" />
           </button>
 
           <p style={{ color: this.props.textColor, maxWidth: '300px' }} className="subtitle-follow-up">
-            *We don’t share your personal info with anyone. Check out our
-            {' '}
-            <a style={{ color: this.props.textColor, textDecoration: 'none', borderBottom: `2px dotted ${this.props.textColor}` }} href="https://www.iubenda.com/privacy-policy/24475288" className="iubenda-nostyle no-brand iubenda-embed" title="Privacy Policy ">Privacy Policy</a>
-            {' '}
-            for more information
+            <FormattedMessage id="signup-form.disclaimer" values={{ privacy: privacyLink }} />
           </p>
         </form>
       </div>

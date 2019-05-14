@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Input, TextField, Button } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import queryString from 'query-string';
 import { ApiServer } from '../../../Defaults';
@@ -41,8 +41,7 @@ function oauthLogin(pk, username, password) {
       password,
     }).then((response) => {
       window.location.href = `${response.data.callback}?token=${response.data.token}`;
-    }).catch((err) => {
-      console.log(err);
+    }).catch(() => {
     });
   } else {
     alert('App not registered!');

@@ -1,12 +1,14 @@
 import React from 'react';
 import Text from '../../styles/Text/Text';
-import Icon from '../../styles/Icon/Icon';
 
-function NextBtn({ car }) {
+function NextBtn({ car, onClick }) {
+  const carAvailable = (car !== undefined);
+  car = carAvailable ? car : { title: 'Not Available', car: 'Not Available' };
+
   const footerText = text => (
     <Text
       className="mb-0"
-      opacity={0.54}
+      fontColor="darkgray"
       fontSize="0.75em"
       lineHeight={1.33}
     >
@@ -14,27 +16,23 @@ function NextBtn({ car }) {
     </Text>
   );
   return (
-    <div className="d-flex flex-row mx-auto">
+    <div onClick={onClick} className="d-flex flex-row mx-auto">
       <div className="pt-2 pr-3 text-right">
         <Text
           className="mb-0"
           fontWeight={600}
           lineHeight={1.31}
-          fontColor="#3e78c0"
+          fontColor={carAvailable ? '#3e78c0' : 'dimgray'}
         >
-                    Next Vehicle
+          Next Vehicle
         </Text>
         {footerText(car.title)}
         {footerText(car.price)}
       </div>
       <div className="d-flex align-items-center">
-        <Icon
-          className="fas fa-arrow-right"
-          color="#4276c1"
-          width="13.3px"
-          height="13.3px"
-          size="0.9375em"
-        />
+        <i style={{ color: carAvailable ? '#4276c1' : 'dimgray' }} className="material-icons">
+          arrow_forward
+        </i>
       </div>
     </div>
   );

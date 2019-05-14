@@ -14,10 +14,12 @@
 
   <link rel='dns-prefetch' href="https://cdn.iubenda.com/iubenda.js" />
 
-  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://js.stripe.com/v3/" onerror="onStripeLoadError()"></script>
 
   <link rel="manifest" href="/manifest.json" />
-  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
 
@@ -29,6 +31,16 @@
         This app rely on JavaScript please upgrade your device</h1>
     </noscript>
     <div class="full-page-loader">
+
+      <script>
+        function reload_cache() {
+          navigator.serviceWorker.getRegistration().then((ost) => ost.unregister());
+          window.location.reload(true);
+        }
+
+        window.fallbackReload = setTimeout(reload_cache, 5000);
+      </script>
+
       <style>
         .full-page-loader {
           display: flex;
@@ -86,15 +98,25 @@
 <script async src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
   integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-<script async
-  type="text/javascript">(function (w, d) { var loader = function () { var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s, tag); }; if (w.addEventListener) { w.addEventListener("load", loader, false); } else if (w.attachEvent) { w.attachEvent("onload", loader); } else { w.onload = loader; } })(window, document);</script>
+<script async type="text/javascript">
+  (function (w, d) {
+    var loader = function () {
+      var s = d.createElement("script"),
+        tag = d.getElementsByTagName("script")[0];
+      s.src = "https://cdn.iubenda.com/iubenda.js";
+      tag.parentNode.insertBefore(s, tag);
+    };
+    if (w.addEventListener) {
+      w.addEventListener("load", loader, false);
+    } else if (w.attachEvent) {
+      w.attachEvent("onload", loader);
+    } else {
+      w.onload = loader;
+    }
+  })(window, document);
 
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(function (reg) {
-      }).catch(function (err) {
-      });
+  function onStripeLoadError() {
+    console.log('Please, check your internet connection.')
   }
 </script>
 

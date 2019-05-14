@@ -8,15 +8,17 @@ import Typography from '@material-ui/core/Typography';
 
 function TabContainer({ children, dir }) {
   return (
-    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
-      {children}
-    </Typography>
+    <div style={{ width: '100%', marginTop: '8px' }}>
+      <Typography component="div" dir={dir}>
+        {children}
+      </Typography>
+    </div>
   );
 }
 
 const styles = theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#fff',
     width: '100%',
   },
 });
@@ -30,7 +32,7 @@ class TabsComponent extends React.Component {
     this.setState({ value });
   };
 
-  handleChangeIndex = index => {
+  handleChangeIndex = (index) => {
     this.setState({ value: index });
   };
 
@@ -43,12 +45,12 @@ class TabsComponent extends React.Component {
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
-            indicatorColor="primary"
+            indicatorColor="action"
             textColor="primary"
             variant="fullWidth"
           >
             {options.map((tab, index) => (
-                <Tab key={index} label={tab.label} icon={tab.icon} />
+              <Tab key={index} label={tab.label} icon={tab.icon} />
             ))}
           </Tabs>
         </AppBar>
@@ -57,11 +59,11 @@ class TabsComponent extends React.Component {
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
-            {options.map((tab, index) => (
-                <TabContainer key={index} dir={theme.direction}>
-                    { tab.item }
-                </TabContainer>
-            ))}
+          {options.map((tab, index) => (
+            <TabContainer key={index} dir={theme.direction}>
+              { tab.item }
+            </TabContainer>
+          ))}
         </SwipeableViews>
       </div>
     );

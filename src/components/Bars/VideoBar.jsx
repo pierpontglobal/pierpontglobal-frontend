@@ -5,6 +5,7 @@ import Button from '../Btn/Btn';
 import '../../../node_modules/react-modal-video/css/modal-video.min.css';
 import './styles.css';
 import styled from 'styled-components';
+import { FormattedMessage } from 'react-intl';
 
 const VideoBarText = styled.div`
 margin-right: 0;
@@ -34,10 +35,12 @@ class VideoBar extends React.Component {
     return (
       <InfoBar>
         <VideoBarText>
-          It’s never been easier to buy cars from the United States
+          <FormattedMessage id="home.slogan" />
         </VideoBarText>
         <VideoModal channel="youtube" isOpen={this.state.isOpen} videoId="XEcELW3hkuQ" onClose={() => this.setState({ isOpen: false })} />
-        <Button height="50px" onClick={this.openModal} color="#0bb761">Watch promo video</Button>
+        <Button height="50px" onClick={this.openModal} color="#0bb761">
+          <FormattedMessage id="home.watch-promo" />
+        </Button>
       </InfoBar>
     );
   }

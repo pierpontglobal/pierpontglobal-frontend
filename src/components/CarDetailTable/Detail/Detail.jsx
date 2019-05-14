@@ -1,23 +1,41 @@
 import React from 'react';
-import Container from '../../styles/Container/Container';
-import Span from '../../styles/Span/Span';
 import _ from 'lodash';
+import styled from 'styled-components';
+import Span from '../../styles/Span/Span';
 
-function Detail({stripe, title, text}) {
-    return (
-        <Container
-            className="mb-0 pl-3" 
-            height="28px"
-            fontSize="0.875em"
-            lineHeight={2}
-            backgroundColor={stripe && '#f2f2f2'}
-        >
-            <Span fontWeight={600}>
-                {_.upperFirst(title)}:&nbsp;
-            </Span>
-            {text}
-        </Container>
-    )
+const Container = styled.div`
+  height: 28px;
+  font-size: 0.875em;
+  line-height: 2;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: ${props => (props.stripe ? '#f2f2f2' : 'ffffff')};
+`;
+
+const DetailValue = styled.div`
+  text-align: left;
+  margin-left: 8px;
+  overflow: hidden;
+  @media only screen and (min-width: 768px) {
+    margin-left: 2px;
+  }
+`;
+
+function Detail({ stripe, title, text }) {
+  return (
+    <Container
+      stripe={stripe}
+    >
+      <Span fontWeight={600}>
+        {_.upperFirst(title)}
+        { ':' }
+      </Span>
+      <DetailValue>
+        {text}
+      </DetailValue>
+    </Container>
+  );
 }
 
 export default Detail;

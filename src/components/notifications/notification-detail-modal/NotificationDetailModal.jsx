@@ -37,12 +37,6 @@ const Title = styled.div`
   align-items: center;
 `;
 
-const AlertCount = styled.div`
-  border-radius: 8px;
-  background-color: #b30000;
-  padding: 4px 8px;
-`;
-
 const Content = styled.div`
   width: 100%;
   height: 100%;
@@ -70,17 +64,14 @@ const Footer = styled.div`
 class NotificationDetailModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      alerts: [],
+    this.state = { 
     };
   }
 
   componentWillMount = () => {
     const { selectedNotification } = this.props;
-    console.log('Notification detail: >>>>>');
-    console.log(selectedNotification);
     this.setState({
-      notification: selectedNotification
+      notification: selectedNotification,
     });
   }
 
@@ -90,9 +81,8 @@ class NotificationDetailModal extends Component {
   }
 
   render() {
-    const { alerts } = this.state;
     const {
-      notification
+      notification,
     } = this.state;
 
     return (
@@ -102,21 +92,23 @@ class NotificationDetailModal extends Component {
             {/* <AlertCount>{ alerts.length }</AlertCount> */}
             <div style={{ marginLeft: '8px' }}>
               <span style={{ fontWeight: '600', color: 'white' }}>
-                { notification.data.title }
+                {notification.data.title}
               </span>
             </div>
           </Title>
-          <IconButton>
-            <Close onClick={this.onClose} />
+          <IconButton onClick={this.onClose}>
+            <Close />
           </IconButton>
         </Header>
         <Content>
           <div style={{ margin: '8px 0px' }}>
             {
-              (notification.notification_type === NotificationTypes.alert) ?
-              <Warning color="primary" /> : <Info color="primary" />
+              (notification.notification_type === NotificationTypes.alert)
+                ? <Warning color="primary" /> : <Info color="primary" />
             }
-            <span> { notification.data.message } </span>
+            <span>
+              {notification.data.message}
+            </span>
           </div>
           <hr />
           <div>
@@ -129,43 +121,52 @@ class NotificationDetailModal extends Component {
           </div>
           <div>
             <span style={{ fontWeight: '600' }}>Read date: </span>
-            <span>{ new Date(notification.read_at).toDateString() }</span>
+            <span>{new Date(notification.read_at).toDateString()}</span>
           </div>
           {
             // Only if notification as an issue
-            (notification.issue != undefined)
-            ? (
-              <>
-                <div style={{ marginTop: '16px' }}>
-                  <div style={{ fontWeight: '600', color: 'darkred' }}>
-                    STATUS: {notification.issue.title}
+            (notification.issue)
+              ? (
+                <>
+                  <div style={{ marginTop: '16px' }}>
+                    <div style={{ fontWeight: '600', color: 'darkred' }}>
+                      STATUS:
+                      {notification.issue.title}
+                    </div>
+                    <div>
+                      <span style={{ fontWeight: '600' }}>Issue: </span>
+                      {notification.issue.description}
+                    </div>
+                    {
+                      // tslint:disable-next-line
+                      (notification.issue.solutions)
+                        ? (
+                          <>
+                            <div>
+                              <div>
+                                <span style={{ fontWeight: '600' }}>Solutions</span>
+                              </div>
+                              <div>
+                                <ul>
+                                  {notification.issue.solutions.map((sol, i) => (
+                                    <li key={i}>
+                                      <span style={{ fontWeight: '600' }}>
+                                        {sol.velocity}
+                                        {':'}
+                                      </span>
+                                      {sol.description}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </>
+                        )
+                        : null
+                    }
                   </div>
-                  <div>
-                    <span style={{ fontWeight: '600' }}>Issue: </span>{notification.issue.description}
-                  </div>
-                  {
-                    (notification.issue.solutions !== undefined)
-                    ? (
-                      <>
-                        <div>
-                          <div>
-                            <span style={{ fontWeight: '600' }}>Solutions</span>
-                          </div>
-                          <div>
-                            <ul>
-                              {notification.issue.solutions.map((sol) => (
-                                <li><span style={{ fontWeight: '600' }}>{ sol.velocity }: </span>{ sol.description }</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </>
-                    )
-                    : null
-                  }
-                </div>
-              </>
-            ) : null
+                </>
+              ) : null
           }
         </Content>
         <Footer>
