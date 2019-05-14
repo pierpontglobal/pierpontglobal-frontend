@@ -88,6 +88,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "cypress:prod": "cypress run --env configFile=prod",
+    "cypress:dev": "cypress run --env configFile=dev",
     "cypress:open": "cypress open"
   },
   "browserslist": [

@@ -12,6 +12,16 @@
 // the project's config changing)
 
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-}
+  console.log('cypress plugin index config >>>>>');
+  console.log(config); // see what all is in here!
+
+  // modify config values
+  config.defaultCommandTimeout = 10000;
+  config.baseUrl = 'https://pierpontglobal.com';
+
+  // modify env var value
+  config.env.ENVIRONMENT = 'production';
+
+  // return config
+  return config;
+};

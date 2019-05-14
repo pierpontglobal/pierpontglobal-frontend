@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { WebServer } from '../../../src/Defaults';
 
 /**
@@ -7,11 +8,9 @@ import { WebServer } from '../../../src/Defaults';
 
 describe('Verify login modal appears', () => {
   it('Renders SignIn modal', () => {
-
     cy.visit(`${WebServer}/?signIn=true`);
 
     cy.get('.my-modal-main')
       .should('be.visible');
-
   });
 });
