@@ -259,7 +259,7 @@ class AppNav extends React.Component {
               showSignIn={() => { this.showSignIn(true); }}
             />
             <LanguageSwitch setLang={setLang} languages={languages} />
-            <Help onClick={() => this.goTo('support')}>
+            <Help onClick={() => this.goTo('support/1')}>
               <HelpOutline color="primary" />
             </Help>
           </ButtonsWrapper>
