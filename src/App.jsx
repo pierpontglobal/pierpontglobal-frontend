@@ -30,7 +30,6 @@ import SupportPage from './components/pages/SupportPage/SupportPage.jsx';
 
 addLocaleData([...locale_en, ...locale_es]);
 
-// TODO: This switch was on porpuse for testing ONLY purposes!!!
 const messages = {
   es: messages_es,
   en: messages_en,
@@ -117,7 +116,7 @@ class App extends React.Component {
         //   active: false
         // },
       ],
-      language: navigator.language.split(/[-_]/)[0],
+      language: this.getBrowserLocale(),
     };
 
     axios.interceptors.request.use((config) => {
@@ -139,6 +138,10 @@ class App extends React.Component {
       });
 
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
+  }
+
+  getBrowserLocale = () => {
+    return navigator.language.split(/[-_]/)[0];
   }
 
   setDealer = (dealer) => {

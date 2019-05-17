@@ -47,7 +47,7 @@ const Card = styled.div`
   align-items: center;
   flex-direction: column;
   border-radius: 8px;
-  box-shadow: 0px 0px 5px 0px #ccc;
+  box-shadow: 0px 0px 5px 0px rgb(0,0,0,0.15);
   border: 1.2px solid #ccc;
 `;
 

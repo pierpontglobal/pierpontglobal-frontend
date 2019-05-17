@@ -91,7 +91,7 @@ div.cards-holder-2 {
 }
 
 .landing-page-icon {
-    width: 60%;
+    width: 30%;
     font-weight: 100;
     margin: 0 !important; 
 }
@@ -147,4 +147,39 @@ div.cards-holder-2 {
     div.cards-holder-3 {
         flex-direction: row;
     }
+}
+
+/* Typed Text */
+.typewriter {
+  display: inline-block;
+}
+
+.typewriter-text {
+  display: inline-block;
+  overflow: hidden;
+  letter-spacing: 2px;
+  animation: typing 5s steps(30, end), blink .75s step-end infinite;
+  white-space: nowrap;
+  font-size: 30px;
+  font-weight: 700;
+  border-right: 2px solid #3e78c0;
+  box-sizing: border-box;
+}
+
+@keyframes typing {
+  from { 
+      width: 0% 
+  }
+  to { 
+      width: 100% 
+  }
+}
+
+@keyframes blink {
+  from, to { 
+      border-color: transparent 
+  }
+  50% { 
+      border-color: #3e78c0; 
+  }
 }

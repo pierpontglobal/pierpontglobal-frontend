@@ -50,16 +50,16 @@ const TitleWrapper = styled.div`
   align-items: center;
   color: white;
   background-color: #3e78c0;
-  -webkit-box-shadow: -4px 12px 10px -14px rgba(0,0,0,0.75);
-  -moz-box-shadow: -4px 12px 10px -14px rgba(0,0,0,0.75);
-  box-shadow: -4px 12px 10px -14px rgba(0,0,0,0.75);
+  -webkit-box-shadow: -4px 12px 10px -14px rgba(0,0,0,0.15);
+  -moz-box-shadow: -4px 12px 10px -14px rgba(0,0,0,0.15);
+  box-shadow: -4px 12px 10px -14px rgba(0,0,0,0.15);
   width: 100%;
   padding: 8px 16px;
 `;
 
 const Wrapper = styled.div`
   border: 1.0px solid #3e78c0;
-  box-shadow: 0px 0px 8px 0px rgb(0, 0, 0, 0.8);
+  box-shadow: 0px 0px 8px 0px rgb(0, 0, 0, 0.18);
 `;
 
 const ActionsButtons = styled.div`
@@ -77,6 +77,13 @@ const TotalShow = styled.span`
   margin-left: 4px;
   font-size: 0.9rem;
 `;
+
+const PossibleLongTextFormatter = (text, maxLength) => {
+  if (text.length > maxLength) {
+    return `${text.substr(0, maxLength)}...`;
+  }
+  return text;
+};
 
 class Notifications extends Component {
   constructor(props) {
@@ -142,7 +149,7 @@ class Notifications extends Component {
                   onClick={() => this.showDetail(n.id)}
                 >
                   <div><span style={{ fontSize: '0.90rem', fontWeight: '600' }}>{n.data.title}</span></div>
-                  <div style={{ overflowY: 'scroll' }}><span style={{ fontSize: '0.85rem' }}>{n.data.message}</span></div>
+                  <div style={{ overflowY: 'scroll' }}><span style={{ fontSize: '0.85rem' }}>{PossibleLongTextFormatter(n.data.message, 120)}</span></div>
                   <div style={{
                     display: 'flex',
                     alignItems: 'flex-end',

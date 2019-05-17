@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import AccountFields from './RegistrationForm/AccountFields';
 import SuccessfulPortion from './RegistrationForm/SuccesfulPortion';
@@ -10,8 +11,6 @@ const Wrapper = styled.div`
   background-position: center 8%; /* Center the image */
   background-size: cover;
 `;
-
-const React = require('react');
 
 const fieldValues = {
   username: null,

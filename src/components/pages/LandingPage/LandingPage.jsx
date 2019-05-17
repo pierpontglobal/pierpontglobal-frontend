@@ -1,6 +1,7 @@
 import React from 'react';
 import Img from 'react-image';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import styled from 'styled-components';
 import VideoBar from '../../Bars/VideoBar';
 import Registration from '../../Forms/RegisterForm';
 import ManheimLogo from './manheim.png';
@@ -8,15 +9,56 @@ import './font/flaticon.css';
 import './landing_page.css';
 import Button from '../../Btn/Btn';
 
+const RegisterFormWrapper = styled.div`
+  animation: 0.58s ease-out slideInFromRight;
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(30vw) rotate(45deg);
+      opacity: 0;
+    }
+    90% {
+      transform: rotate(1deg);
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`;
+
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showRegisterForm: false,
+    };
+  }
+
+  componentDidMount = () => {
+    // Intersection observer
+    if (window.IntersectionObserver) {
+      const FormWrapper = document.querySelector('#form-wrapper');
+      const options = {
+        root: null, // document viewport as a trigger
+        threshold: 0.94,
+      };
+      this.observer = new IntersectionObserver((entry) => {
+        if (entry[0].isIntersecting) {
+          this.setState({
+            showRegisterForm: true,
+          }, () => {
+            this.observer.unobserve(document.querySelector('#form-wrapper'));
+          });
+        }
+      }, options);
+      this.observer.observe(FormWrapper);
+    }
   }
 
   render() {
+    const { showRegisterForm } = this.state;
     return (
-      <div>
+      <div id="landing-page">
         <VideoBar />
         <Registration
           textColor="#ffffff"
@@ -77,7 +119,11 @@ class LandingPage extends React.Component {
               color: '#393e44',
             }}
           >
-            <FormattedMessage id="landing.you-have-access-to" />
+            <div className="typewriter">
+              <div className="typewriter-text">
+                <FormattedMessage id="landing.you-have-access-to" />
+              </div>
+            </div>
           </p>
 
           <p className="title-follow-up" style={{ color: '#393e44' }}>
@@ -154,7 +200,7 @@ class LandingPage extends React.Component {
           alignItems: 'center',
         }}
         >
-          <div className="cards-holder-2">
+          <div className="cards-holder-2" id="form-wrapper">
             <div className="column-5">
               <p className="subtitle-medium">
                 <FormattedMessage id="landing.sign-up-now" />
@@ -171,25 +217,28 @@ class LandingPage extends React.Component {
               </p>
               <p style={{ alignSelf: 'flex-end', marginTop: '50px' }} className="subtitle-follow-up">— Jorge Abreu, Abreu Motors</p>
             </div>
-            <div
-              style={{
-                padding: '20px',
-                background: '#ffffff',
-                display: 'flex',
-                justifyContent: 'center',
-                alignContent: 'center',
-                flexDirection: 'column',
-                alignItems: 'center',
-                overflow: 'hidden',
-                position: 'relative',
-              }}
-              className="shadow column-5"
-            >
-              <Registration backgroundColor="rgb(255, 255, 255, 0.8)" openModal={this.openModal} />
-            </div>
+            {
+              showRegisterForm ? (
+                <RegisterFormWrapper
+                  style={{
+                    padding: '20px',
+                    background: '#ffffff',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    overflow: 'hidden',
+                    position: 'relative',
+                  }}
+                  className="shadow column-5"
+                >
+                  <Registration backgroundColor="rgb(255, 255, 255, 0.8)" openModal={this.openModal} />
+                </RegisterFormWrapper>
+              ) : null
+            }
           </div>
         </div>
-
         <div style={{
           paddingTop: '100px',
           paddingBottom: '100px',

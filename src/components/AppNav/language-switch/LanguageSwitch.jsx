@@ -54,7 +54,7 @@ const LanguageIconLabeled = styled(IconButton)`
   top: 48px;
   text-align: center;
   font-weight: 200;
-  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
   transition: 1s;
 }
 :hover::before {
