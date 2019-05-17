@@ -1,2 +1,2 @@
 importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js');
-importScripts('/sw.js?OGU4ZTI2YzI2MGMxYTJkNzU0MjI2M2I2');
+importScripts('/sw.js?NjFhNTUxNDU2OWFkZmMyZmM3NWVmM2Ew');

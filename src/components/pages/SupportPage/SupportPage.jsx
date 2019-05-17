@@ -139,24 +139,23 @@ const MenuItemBody = styled.div`
     transition: 1s;
   }
 `;
-
-function getTutorial(id) {
-  return tutorials.find(tutorial => tutorial.id === id);
-}
-
 class SupportPage extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       tutorialId: 1,
     };
   }
 
-  setTutorial = (id) => {
+  componentWillReceiveProps = (newProps) => {
+    const currentTutorial = this.getTutorial(newProps.match.params.tutorial || 1);
     this.setState({
-      tutorialId: id,
+      tutorialId: currentTutorial.id,
     });
+  }
+
+  setTutorial = (id) => {
+    this.props.history.push(`/support/${id}`);
   }
 
   changeTutorialIdSelect = (event) => {
@@ -164,7 +163,7 @@ class SupportPage extends React.Component {
     if (value === '') {
       return;
     }
-    this.setState({ tutorialId: value });
+    this.setTutorial(value);
   }
 
   getVideoHolder = (tutorial) => {
@@ -186,10 +185,18 @@ class SupportPage extends React.Component {
     );
   }
 
+  getTutorial = (id) => {
+    const tutorial = tutorials.find(t => t.id === Number(id));
+    if (!tutorial) {
+      return tutorials.find(t => t.id === 1);
+    }
+    return tutorial;
+  }
+
   render() {
     const { tutorialId } = this.state;
     const { intl } = this.props;
-    const tutorial = getTutorial(tutorialId);
+    const tutorial = this.getTutorial(tutorialId);
 
     const labels = {
       basics: intl.formatMessage({ id: 'support.basics' }),
