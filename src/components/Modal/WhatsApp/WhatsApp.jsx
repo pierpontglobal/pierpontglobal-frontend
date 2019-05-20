@@ -140,7 +140,7 @@ class WhatsApp extends React.Component {
 
     return (
       <>
-        <ClickHandlerWrapper isVisible={whatsappVisible} onClick={this.handleOnClose} />
+        <ClickHandlerWrapper data-cy="ws-click-handler" isVisible={whatsappVisible} onClick={this.handleOnClose} />
         <WWrapper
           pose={wWPosition}
           style={{
@@ -157,6 +157,7 @@ class WhatsApp extends React.Component {
             ref={(node) => { this.wList = node; }}
             className="chat-box animated shadow"
             id="chat-box"
+            data-cy="ws-list-component"
           >
             <div className="card card-radius-all border-0">
               <div className="card-header card-radius" style={{ backgroundColor: '#2db742' }}>
@@ -291,6 +292,7 @@ class WhatsApp extends React.Component {
               pose={this.state.whatsappVisible ? 'clicked' : 'normal'}
               id="chat-icon"
               className="icon d-flex justify-content-center align-items-center"
+              data-cy="whatsapp-button"
             >
               <span id="icon-html">
                 {this.state.whatsappVisible ? <i className="fas fa-times" /> : <i className="fab fa-whatsapp" />}

@@ -90,6 +90,7 @@ class SignInModal extends React.Component {
             maxHeight="40px"
             borderRadius="4px"
             placeholder={labels.username}
+            data-cy="username"
             required
           />
 
@@ -108,6 +109,7 @@ class SignInModal extends React.Component {
             maxHeight="40px"
             borderRadius="4px"
             placeholder={labels.password}
+            data-cy="password"
             required
           />
 
@@ -129,6 +131,7 @@ class SignInModal extends React.Component {
             color="#3e78c0"
             height="50px"
             width="160px"
+            cypressId="submit-login"
             style={{
               color: 'gray',
             }}

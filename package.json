@@ -84,10 +84,18 @@
     "yarn": "^1.13.0"
   },
   "scripts": {
-    "start": "./workbox-update.sh && PORT=4000 react-scripts start --env=production",
+    "start": "PORT=4000 react-scripts start --env=production",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "yarn start & cypress run",
+    "eject": "react-scripts eject",
+    "e2e": "cypress run",
+    "cy:run": "cypress run",
+    "cy:run:record": "cypress run --record",
+    "cy:open": "cypress open",
+    "cleanup": "rm -fr mochawesome-report",
+    "merge_reports": "mochawesome-merge --reportDir mochawesome-report > mochawesome-report/output.json",
+    "generate_mochawesome_report": "marge mochawesome-report/output.json",
+    "e2e_mochawesome": "yarn run cleanup; cypress run; yarn run merge_reports; yarn run generate_mochawesome_report"
   },
   "browserslist": [
     ">0.2%",
@@ -97,12 +105,20 @@
   ],
   "devDependencies": {
     "babel-eslint": "9.0.0",
+    "cypress": "^3.2.0",
     "eslint": "5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-google": "^0.12.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "mocha": "5.2.0",
+    "mocha-junit-reporter": "^1.22.0",
+    "mocha-multi-reporters": "^1.1.7",
+    "mochawesome": "^3.1.2",
+    "mochawesome-merge": "^1.0.7",
+    "mochawesome-report-generator": "^3.1.5",
+    "rimraf": "^2.6.3",
     "webpack-cli": "^3.3.0"
   }
 }

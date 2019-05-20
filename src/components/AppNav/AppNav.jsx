@@ -147,17 +147,25 @@ class AppNav extends React.Component {
   constructor(props) {
     super(props);
 
-    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-
     this.state = {
       menuOpen: false,
-      showModal: this.params.signIn || false,
+      showModal: false,
     };
 
     this.openMenuSide = this.openMenuSide.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.optionClick = this.optionClick.bind(this);
     this.showSignIn = this.showSignIn.bind(this);
+  }
+
+  componentDidMount = () => {
+    setTimeout(() => {
+      this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+      console.log(this.params);
+      this.setState({
+        showModal: this.params.signIn || false,
+      });
+    }, 0);
   }
 
   onTouchEnd() {
@@ -242,13 +250,13 @@ class AppNav extends React.Component {
           </MenuLogoWrapper>
 
           <div className="menu-sider" id="nav-bar-sub-menu">
-            <LinkBtn onClick={() => this.goTo('')}>
+            <LinkBtn data-cy="navbar-home" onClick={() => this.goTo('')}>
               <FormattedMessage id="navbar.home" />
             </LinkBtn>
-            <LinkBtn onClick={() => this.goTo('marketplace')}>
+            <LinkBtn data-cy="navbar-marketplace" onClick={() => this.goTo('marketplace')}>
               <FormattedMessage id="navbar.market" />
             </LinkBtn>
-            <LinkBtn onClick={() => this.goTo('contact-us')}>
+            <LinkBtn data-cy="navbar-contact" onClick={() => this.goTo('contact-us')}>
               <FormattedMessage id="navbar.contact-us" />
             </LinkBtn>
           </div>

@@ -1,0 +1,80 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 0,
+    "passes": 0,
+    "pending": 0,
+    "failures": 0,
+    "start": "2019-05-17T21:50:50.828Z",
+    "end": "2019-05-17T21:50:54.721Z",
+    "duration": 3893,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 1,
+    "hasOther": true,
+    "skipped": 1,
+    "hasSkipped": true,
+    "passPercentClass": "danger",
+    "pendingPercentClass": "danger"
+  },
+  "suites": {
+    "uuid": "3bb065cb-7ae3-4f62-89da-bc6507daa673",
+    "title": "",
+    "fullFile": "",
+    "file": "",
+    "beforeHooks": [],
+    "afterHooks": [],
+    "tests": [],
+    "suites": [
+      {
+        "uuid": "1796f17b-cc89-4e80-beed-b845b98f13e4",
+        "title": "Marketplace page",
+        "fullFile": "",
+        "file": "",
+        "beforeHooks": [],
+        "afterHooks": [],
+        "tests": [
+          {
+            "title": "Sample test with secure route renders it",
+            "fullTitle": "Marketplace page Sample test with secure route renders it",
+            "duration": 3225,
+            "state": "failed",
+            "pass": false,
+            "fail": true,
+            "pending": false,
+            "code": "cy.visit(_Routes.default.marketplace);",
+            "err": {
+              "message": "TypeError: Cannot read property 'access_token' of undefined\n\nBecause this error occurred during a 'before each' hook we are skipping the remaining tests in the current suite: 'Marketplace page'",
+              "estack": "TypeError: Cannot read property 'access_token' of undefined\n\nBecause this error occurred during a 'before each' hook we are skipping the remaining tests in the current suite: 'Marketplace page'\n    at Context.<anonymous> (http://localhost:4000/__cypress/tests?p=cypress/support/index.js-126:27:37)"
+            },
+            "isRoot": false,
+            "uuid": "fd96a2b6-e915-435f-80be-cd646c10ef31",
+            "isHook": false,
+            "skipped": false
+          }
+        ],
+        "suites": [],
+        "passes": [],
+        "failures": [
+          "fd96a2b6-e915-435f-80be-cd646c10ef31"
+        ],
+        "pending": [],
+        "skipped": [],
+        "duration": 3225,
+        "root": false,
+        "rootEmpty": false,
+        "_timeout": 2000
+      }
+    ],
+    "passes": [],
+    "failures": [],
+    "pending": [],
+    "skipped": [],
+    "duration": 0,
+    "root": true,
+    "rootEmpty": true,
+    "_timeout": 2000
+  },
+  "copyrightYear": 2019
+}

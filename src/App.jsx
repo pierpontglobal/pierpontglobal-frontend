@@ -27,6 +27,7 @@ import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
 import SupportPage from './components/pages/SupportPage/SupportPage.jsx';
+import ApplicationRoutes from './constants/Routes';
 
 addLocaleData([...locale_en, ...locale_es]);
 
@@ -252,18 +253,18 @@ class App extends React.Component {
                 <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
                 <PageHolder>
                   <Switch>
-                    <Route exact path="/oauth/login" render={() => <OauthPage />} />
-                    <Route exact path="/" render={() => (<LandingPage cookies={cookies} />)} />
-                    <Route exact path="/marketplace" render={() => (<MarketPlacePage cookies={cookies} />)} />
-                    <Route exact path="/marketplace/car" render={() => (<CarPage cookies={cookies} car={car} />)} />
+                    <Route exact path={ApplicationRoutes.oauthPage} render={() => <OauthPage />} />
+                    <Route exact path={ApplicationRoutes.home} render={() => (<LandingPage cookies={cookies} />)} />
+                    <Route exact path={ApplicationRoutes.marketplace} render={() => (<MarketPlacePage cookies={cookies} />)} />
+                    <Route exact path={ApplicationRoutes.carPage} render={() => (<CarPage cookies={cookies} car={car} />)} />
 
-                    <Route exact path="/user/confirm" render={() => (<RegistrationPage cookies={cookies} />)} />
-                    <Route path="/user" render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
-                    <Route exact path="/user/notifications" render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
+                    <Route exact path={ApplicationRoutes.registrationPage} render={() => (<RegistrationPage cookies={cookies} />)} />
+                    <Route path={ApplicationRoutes.profilePage} render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/?signIn=true" />)} />
+                    <Route exact path={ApplicationRoutes.notificationPage} render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
-                    <Route exact path="/contact-us" render={() => (<ContactPage cookies={cookies} />)} />
-                    <Route exact path="/support" render={() => (<SupportPage />)} />
-                    <Route exact path="/support/:tutorial" render={() => (<SupportPage />)} />
+                    <Route exact path={ApplicationRoutes.contactPage} render={() => (<ContactPage cookies={cookies} />)} />
+                    <Route exact path={ApplicationRoutes.supportPage} render={() => (<SupportPage />)} />
+                    <Route exact path={ApplicationRoutes.supportPageTutorial} render={() => (<SupportPage />)} />
 
                     <Route render={() => (<NotfoundPage cookies={cookies} />)} />
                   </Switch>

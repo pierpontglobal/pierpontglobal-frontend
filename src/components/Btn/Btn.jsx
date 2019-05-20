@@ -13,6 +13,7 @@ function Btn({
   marginTop = '0px',
   marginBottom = '0px',
   type = 'button',
+  cypressId,
 }) {
   return (
     <Button
@@ -30,6 +31,7 @@ function Btn({
       fontColor="#ffffff"
       hoverColor={hoverColor}
       onClick={onClick}
+      data-cy={cypressId}
     >
       {children}
     </Button>
