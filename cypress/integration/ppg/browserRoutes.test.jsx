@@ -20,7 +20,7 @@ describe('Secure routes should redirects user to Home page', () => {
   });
 
   it('Navigate to Profile without logged in, should redirect to Home page', () => {
-    cy.visit(`${Cypress.config().baseUrl + ApplicationRoutes.profilePage}`);
+    cy.visit(`${Cypress.config().baseUrl + ApplicationRoutes.profilePage.default}`);
     cy.wait(600); // Waits for redirection
     cy.url().should('include', ApplicationRoutes.home)
     // Test if login modal appears too

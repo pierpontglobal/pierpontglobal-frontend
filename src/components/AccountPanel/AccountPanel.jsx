@@ -51,7 +51,11 @@ class AccountPanel extends React.Component {
       one_signal_uuid: this.props.cookies.get('one_signal_uuid'),
     });
     this.props.cookies.remove('token', { path: '/' });
-    this.props.history.push('/');
+    this.navigateTo('/');
+  }
+
+  navigateTo = (path) => {
+    this.props.history.push(path);
   }
 
   render() {
@@ -68,7 +72,6 @@ class AccountPanel extends React.Component {
       >
         <div>
           <DealerTab dealer={dealer} />
-
           {inner
             ? (
               <div>
@@ -83,37 +86,36 @@ class AccountPanel extends React.Component {
             searchKey="purchase"
             name={this.lbPurchases}
             icon="fas fa-shopping-cart"
-            onClick={() => { window.location.href = '/user/purchase'; }}
+            path="/user/purchase"
           />
           <Tab
             searchKey="pending"
             name={this.lbPending}
             icon="fas fa-sync-alt"
             notification={0}
-            onClick={() => { window.location.href = '/user/pending'; }}
+            path="/user/pending"
           />
           <Tab
             name={this.lbDocuments}
             icon="fas fa-file"
-            onClick={this.markSelected}
           />
           <Tab
             searchKey="financial"
             name={this.lbFinancialAnalysis}
             icon="fas fa-dollar-sign"
-            onClick={() => { window.location.href = '/user/financial'; }}
+            path="/user/financial"
           />
           <Tab
             searchKey="subscription"
             name={this.lbSubscription}
             icon="far fa-newspaper"
-            onClick={() => { window.location.href = '/user/subscription'; }}
+            path="/user/subscription"
           />
           <Tab
             searchKey="transactions"
             name={this.lbTransactions}
             icon="fas fa-file-invoice-dollar"
-            onClick={() => { window.location.href = '/user/transactions'; }}
+            path="/user/transactions"
           />
           <Tab
             name={<FormattedMessage id="label.sign-out" />}
@@ -129,7 +131,7 @@ class AccountPanel extends React.Component {
             icon="fas fa-cog"
             selected={selected}
             className="border-top pt-2"
-            onClick={() => { window.location.href = '/user'; }}
+            onClick={() => this.navigateTo('/user') }
           />
         </div>
       </Container>

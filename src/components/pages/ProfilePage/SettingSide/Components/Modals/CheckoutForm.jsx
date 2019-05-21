@@ -37,7 +37,7 @@ class CheckoutForm extends React.Component {
           this.setState({
             display: 'none',
           });
-          window.location.reload(true);
+          // window.location.reload(true);
         });
         this.props.onClose();
       } catch (e) {

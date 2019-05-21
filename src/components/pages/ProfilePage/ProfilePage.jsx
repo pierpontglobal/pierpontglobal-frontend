@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { injectIntl } from 'react-intl';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
@@ -14,15 +15,8 @@ import FinancialSide from './FinancialSide/FinancialSide';
 import TransactionsSide from './TransactionsSide/TransactionsSide';
 import NotificationTypes from '../../../constants/NotificationTypes';
 import IssueTypes from '../../../constants/IssueTypes';
+import ApplicationRoutes from '../../../constants/Routes';
 import './styles.css';
-
-const dealerExample = {
-  image: null,
-  name: '',
-  address: '',
-  email: '',
-  number: '',
-};
 
 const Wrapper = styled.div`
   background-color: #dedede;
@@ -49,140 +43,157 @@ const RouterWrapper = styled.div`
     margin-left: 300px;
   }
 `;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 12px;
+`;
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      hasDealer: true,
-      hasPaymentMethod: true,
+      hasDealer: false,
+      hasActiveSubscription: false,
+      cards: [],
+      subscription: {},
+      user: {},
+      dealer: {},
+      loading: true,
     };
-
-    this.getDealer = this.getDealer.bind(this);
-    this.openDealerCreator = this.openDealerCreator.bind(this);
-    this.getDealer();
-    this.getPaymentMethod();
   }
 
-  componentDidMount() {
-    this.checkNotifications();
+  componentDidMount = () => {
+    this.getUserSettings();
   }
 
-  async getDealer() {
-    const responseDealer = await axios.get(`${ApiServer}/api/v1/user/dealers`);
-    const responseUser = await axios.get(`${ApiServer}/api/v1/user`);
-
-    if (responseDealer.data === null) {
-      this.openDealerCreator();
-    } else {
-      this.setState({
-        dealer: {
-          name: responseDealer.data.name,
-          address: responseDealer.data.address1,
-          number: responseDealer.data.phone_number,
-          email: responseUser.data.email,
-        },
-      }, () => {
-        const { dealer } = this.state;
-        const { setDealer } = this.props;
-        if (setDealer) {
-          setDealer(dealer);
-        }
-      });
-    }
+  componentWillReceiveProps = (newProps) => {
+    console.log(newProps);
   }
 
-  getPaymentMethod = () => {
-
-    axios.get(`${ApiServer}/api/v1/user/subscriptions`).then((data) => {
-
-    }, (err) => {
-      if (err.response.status === 404) {
-        this.openDealerCreator();
-      }
-      if (err.response.status === 503) {
-        this.props.history.push('/');
-      }
+  getUserSettings = () => {
+    axios.get(`${ApiServer}/api/v1/user/settings`).then((data) => {
+      this.setUserSettings(data.data);
+    }, err => {
+      console.log('User settings >>>');
+      console.log(err);
     });
   }
 
-  sendNotification = (notificationDto) => {
-    axios.post(`${ApiServer}/api/v1/notification`, { ...notificationDto });
+  setUserSettings = (settings) => {
+    const {
+      user,
+      dealer,
+      card_sources,
+      subcripcion_details } = settings;
+
+      console.log(user, dealer, card_sources, subcripcion_details);
+
+      this.setState({
+        user: user,
+        dealer: !!dealer ? {
+          name: dealer.name,
+          address: dealer.address1,
+          number: dealer.phone_number,
+          email: user.email,
+        } : null,
+        cards: card_sources,
+        subscription: subcripcion_details,
+        loading: false,
+      }, () => {
+        // Check for notifications
+        if (!dealer || !card_sources || !subcripcion_details) {
+          this.checkNotifications();
+        }
+      });
   }
 
-  checkNotifications = async () => {
-    const { intl } = this.props;
+  sendNotification = (notifications) => {
+    axios.post(`${ApiServer}/api/v1/notification`, { notifications: notifications });
+  }
 
-    const subscriptions = (await axios.get(`${ApiServer}/api/v1/user/subscriptions`)).data;
-    const cards = (await axios.get(`${ApiServer}/api/v1/user/cards/default`)).data;
+  checkNotifications = () => {
+    const { intl } = this.props;
+    const { user, dealer, subscription, cards } = this.state;
 
     const messages = {
       accountIncomplete: intl.formatMessage({ id: 'profile.account-incomplete' }),
       subsText: intl.formatMessage({ id: 'profile.account-incomplete-subscription-text' }),
-      cardsText: intl.formatMessage({ id: 'profiel.account-incomplete-cards-text' }),
+      cardsText: intl.formatMessage({ id: 'profile.account-incomplete-cards-text' }),
+      dealerText: intl.formatMessage({ id: 'profile.account-incomplete-dealer-text' }),
     };
 
     const notificationDto = {
       title: messages.accountIncomplete,
       message: messages.subsText,
-      payload: subscriptions,
+      payload: user,
       type: NotificationTypes.alert,
       issue_id: undefined,
     };
 
-    if (subscriptions === null || subscriptions === undefined) {
-      this.sendNotification(notificationDto);
-    } else if (!!subscriptions && !subscriptions.active) {
-      this.sendNotification(notificationDto);
+    let notifications = [notificationDto];
+
+    if (!subscription) {
+      const subscriptionNoti = {...notificationDto};
+      notifications.push(subscriptionNoti);
+    } else if (!!subscription && !subscription.active) {
+      const subscriptionNoti = {...notificationDto};
+      notifications.push(subscriptionNoti);
     }
 
-    if (cards === null || cards === undefined) {
-      notificationDto.payload = cards;
-      notificationDto.message = messages.cardsText;
-      notificationDto.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
-      this.sendNotification(notificationDto);
+    if (!cards) {
+      const cardNoti = {...notificationDto};
+      cardNoti.message = messages.cardsText;
+      cardNoti.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
+      notifications.push(cardNoti);
     }
-  }
 
-  openDealerCreator() {
-    this.setState({
-      hasDealer: false,
-    });
+    if (!dealer) {
+      const dealerNoti = {...notificationDto};
+      dealerNoti.message = messages.cardsText;
+      notifications.push(dealerNoti);
+    }
+
+    this.sendNotification(notifications);
   }
 
   render() {
     const {
-      hasDealer,
       dealer,
-      hasPaymentMethod,
+      user, cards, loading,
+      subscription,
     } = this.state;
     const { cookies } = this.props;
 
     return (
-      <Wrapper>
-        <DealerCreator show={!hasDealer || !hasPaymentMethod} hasDealer={hasDealer} />
-        <AccountPanelWrapper>
-          <AccountPanel dealer={dealer || dealerExample} />
-        </AccountPanelWrapper>
-        <RouterWrapper>
-          <Router>
-            <Switch>
-              <Route exact path="/user" render={() => (<SettingSide cookies={cookies} />)} />
-              <Route exact path="/user/purchase" render={() => (<PurchaseSide cookies={cookies} />)} />
-              <Route exact path="/user/pending" render={() => (<PendingSide cookies={cookies} />)} />
-              <Route exact path="/user/financial" render={() => (<FinancialSide cookies={cookies} />)} />
-              <Route
-                exact
-                path="/user/subscription"
-                render={() => (
-                  <SubscriptionSide cookies={cookies} />
-                )}
-              />
-              <Route exact path="/user/transactions" render={() => (<TransactionsSide cookies={cookies} />)} />
-            </Switch>
-          </Router>
-        </RouterWrapper>
-      </Wrapper>
+      loading ? 
+        <LoadingWrapper>
+            <LinearProgress />
+        </LoadingWrapper> 
+        : (
+        <Wrapper>
+          <DealerCreator show={!dealer || !subscription} hasDealer={!dealer} />
+          <AccountPanelWrapper>
+            <AccountPanel dealer={dealer} />
+          </AccountPanelWrapper>
+          <RouterWrapper>
+              <Switch>
+                <Route exact path={ApplicationRoutes.profilePage.default} render={() => (<SettingSide cookies={cookies} />)} />
+                <Route path={ApplicationRoutes.profilePage.purchase} render={() => (<PurchaseSide cookies={cookies} />)} />
+                <Route path={ApplicationRoutes.profilePage.pending} render={() => (<PendingSide cookies={cookies} />)} />
+                <Route path={ApplicationRoutes.profilePage.financial} render={() => (<FinancialSide cookies={cookies} />)} />
+                <Route
+                  exact
+                  path={ApplicationRoutes.profilePage.subscription}
+                  render={() => (
+                    <SubscriptionSide cookies={cookies} />
+                  )}
+                />
+                <Route exact path={ApplicationRoutes.profilePage.transactions} render={() => (<TransactionsSide cookies={cookies} />)} />
+              </Switch>
+          </RouterWrapper>
+        </Wrapper>
+      )
     );
   }
 }

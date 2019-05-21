@@ -72,6 +72,11 @@ const WWrapper = posed.div({
   moveToTop: {
     y: -76,
   },
+  exit: {
+    y: 50,
+    opacity: 0,
+    transition: { duration: 200 }
+  }
 });
 
 const ClickHandlerWrapper = styled.div`
@@ -137,20 +142,15 @@ class WhatsApp extends React.Component {
 
   render() {
     const { whatsappVisible, wWPosition } = this.state;
+    const { shown } = this.props;
 
     return (
       <>
         <ClickHandlerWrapper data-cy="ws-click-handler" isVisible={whatsappVisible} onClick={this.handleOnClose} />
         <WWrapper
-          pose={wWPosition}
-          style={{
-            position: 'fixed',
-            right: '20px',
-            bottom: '20px',
-            zIndex: 1500,
-            minWidth: '300px',
-          }}
-          className="outerWhatsApp"
+          pose={ (!shown) ? 'exit' : wWPosition }
+          className="outerWhatsApp slide-in"
+          id="wrapper"
         >
           <WListComponent
             pose={this.state.whatsappVisible ? 'visible' : 'hidden'}
@@ -177,7 +177,6 @@ class WhatsApp extends React.Component {
                   <WElement pose={this.state.whatsappVisible ? 'enter' : 'exit'} i={1} key={1} href="#!" className="nav-link animated fadeInUp">
                     <div onClick={() => { window.location.href = 'https://wa.me/13056002113?text=Hello Juan, '; }} style={{ cursor: 'pointer' }} className="media px-3 py-2">
                       <div className="d-flex justify-content-end w-100 align-items-center">
-
                         <Img
                           style={{
                             width: '60px',

@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import {
   IntlProvider, FormattedMessage, addLocaleData, injectIntl,
 } from 'react-intl';
+import SavedCarsDrawer from './components/SavedCars/SavedCarsDrawer';
 import locale_en from 'react-intl/locale-data/en';
 import locale_es from 'react-intl/locale-data/es';
 import messages_es from './translations/es.json';
@@ -86,6 +87,15 @@ const PageHolder = styled.div`
   }
 `;
 
+const SavedCarsIconWrapper = styled.div`
+  position: fixed;
+  top: 45%;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+  background-color: black;
+`;
+
 class App extends React.Component {
   constructor(props) {
     clearTimeout(window.fallbackReload);
@@ -93,6 +103,9 @@ class App extends React.Component {
     const { cookies } = this.props;
 
     this.state = {
+      showSavedCarsPanel: false,
+      showWhastapp: true,
+      userSignedIn: false,
       dealer: {
         image: null,
         name: null,
@@ -153,6 +166,8 @@ class App extends React.Component {
 
   componentDidMount() {
     const { cookies } = this.props;
+
+    this.verifyUserLoggedIn();
 
     this.setDefaultLanguage();
 
@@ -234,6 +249,23 @@ class App extends React.Component {
     });
   }
 
+  toggleSavedCarsPanel = () => {
+    this.setState((prevState, props) => ({
+      showSavedCarsPanel: !prevState.showSavedCarsPanel,
+    }), () => {
+      // this.showHideWhatsapp();
+    });
+  }
+
+  showHideWhatsapp = () => {
+    console.log('try to hide ws');
+    if (this.state.showSavedCarsPanel) {
+      this.setState({ showWhastapp: false });
+    } else {
+      this.setState({ showWhastapp: true });
+    }
+  }
+
   render() {
     const { cookies } = this.props;
     const { dealer, languages, language } = this.state;
@@ -251,6 +283,14 @@ class App extends React.Component {
               }}
               >
                 <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                {
+                  !(this.verifyUserLoggedIn()) ? null : (
+                    <>
+                      <SavedCarsIconWrapper onClick={() => this.toggleSavedCarsPanel()} />
+                      <SavedCarsDrawer open={this.state.showSavedCarsPanel} handleClose={() => this.toggleSavedCarsPanel()} />
+                    </>
+                  )
+                }
                 <PageHolder>
                   <Switch>
                     <Route exact path={ApplicationRoutes.oauthPage} render={() => <OauthPage />} />
@@ -259,7 +299,7 @@ class App extends React.Component {
                     <Route exact path={ApplicationRoutes.carPage} render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                     <Route exact path={ApplicationRoutes.registrationPage} render={() => (<RegistrationPage cookies={cookies} />)} />
-                    <Route path={ApplicationRoutes.profilePage} render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/?signIn=true" />)} />
+                    <Route path={ApplicationRoutes.profilePage.default} render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/?signIn=true" />)} />
                     <Route exact path={ApplicationRoutes.notificationPage} render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
                     <Route exact path={ApplicationRoutes.contactPage} render={() => (<ContactPage cookies={cookies} />)} />
@@ -272,7 +312,7 @@ class App extends React.Component {
               </div>
             </Router>
           </div>
-          <WhatsApp />
+          <WhatsApp shown={this.state.showWhastapp} />
         </MuiThemeProvider>
       </IntlProvider>
     );

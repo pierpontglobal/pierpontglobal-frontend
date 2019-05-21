@@ -155,3 +155,43 @@
 }
 
 @media only screen and (min-width: 768px) {}
+
+.slide-out {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1500;
+  min-width: 300px;
+  animation: slide-out 1s ease-in-out;
+}
+
+.slide-in {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1500;
+  min-width: 300px;
+  animation: slide-in 1s ease-in-out;
+}
+
+@keyframes slide-out {
+  0% {
+    opacity: 1;
+    bottom: 20px;
+  }
+  100% {
+    opacity: 0;
+    bottom: -80px;
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    bottom: -80px;
+  }
+  100% {
+    opacity: 1;
+    bottom: 20px;
+  }
+}

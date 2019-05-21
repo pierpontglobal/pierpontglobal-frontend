@@ -1,14 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import RoundBadge from '../../RoundBadge/RoundBadge';
 import Container from '../../styles/Container/Container';
 import Span from '../../styles/Span/Span';
 import './styles.css';
 
 function Tab({
-  icon, name, selected, notification, onClick, className = '', searchKey,
+  icon, name, selected, notification, onClick, path, className = '', searchKey,
 }) {
   let isSelected = selected === name;
-  const handleClick = () => onClick(name);
+  const handleClick = () => {
+    if (!!onClick) {
+      onClick(name)
+    }
+  }
 
   const location = window.location.pathname.split('/');
   const urlSearchKey = location[location.length - 1];
@@ -16,7 +21,7 @@ function Tab({
     isSelected = true;
   }
 
-  return (
+  const containerComponent = (
     <Container
       style={{
         padding: '10px',
@@ -51,15 +56,27 @@ function Tab({
         {name}
       </Span>
       {
-                (notification > 0 && !isSelected)
-                    && (
-                    <RoundBadge
-                      className="align-self-center"
-                      count={notification < 10 ? notification : '9+'}
-                    />
-                    )
-            }
+        (notification > 0 && !isSelected)
+          && (
+          <RoundBadge
+            className="align-self-center"
+            count={notification < 10 ? notification : '9+'}
+          />
+          )
+      }
     </Container>
+  );
+
+  if (!!path) {
+    return (
+      <Link to={path}>
+        { containerComponent }
+      </Link>
+    );
+  }
+  
+  return (
+    containerComponent
   );
 }
 
