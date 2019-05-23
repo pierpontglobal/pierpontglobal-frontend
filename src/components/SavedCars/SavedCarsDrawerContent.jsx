@@ -6,6 +6,7 @@ import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CarDisplay from './CarDisplay/CarDisplay';
 import { ApiServer } from '../../Defaults';
+import ApplicationRoutes from '../../constants/Routes';
 
 const Wrapper = styled.div`
   max-width: 400px;
@@ -118,7 +119,9 @@ class SavedCarsDrawerContent extends Component {
       cars: cars
     }, () => {
       // Propage removed car to marketplace
-      this.props.removedBookmarkedCar(carVin);
+      if(window.location.href.includes(ApplicationRoutes.marketplace)) {
+        this.props.removedBookmarkedCar(carVin);
+      }
     });
   }
 
