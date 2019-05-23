@@ -71,11 +71,6 @@ const WWrapper = posed.div({
   },
   moveToTop: {
     y: -76,
-  },
-  exit: {
-    y: 50,
-    opacity: 0,
-    transition: { duration: 200 }
   }
 });
 
@@ -148,7 +143,7 @@ class WhatsApp extends React.Component {
       <>
         <ClickHandlerWrapper data-cy="ws-click-handler" isVisible={whatsappVisible} onClick={this.handleOnClose} />
         <WWrapper
-          pose={ (!shown) ? 'exit' : wWPosition }
+          pose={ wWPosition }
           className="outerWhatsApp slide-in"
           id="wrapper"
         >

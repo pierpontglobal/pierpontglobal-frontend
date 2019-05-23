@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import {
   IntlProvider, FormattedMessage, addLocaleData, injectIntl,
 } from 'react-intl';
+import MediaQuery from 'react-responsive';
+import CollectionMuiIcon from '@material-ui/icons/CollectionsBookmark';
 import SavedCarsDrawer from './components/SavedCars/SavedCarsDrawer';
 import locale_en from 'react-intl/locale-data/en';
 import locale_es from 'react-intl/locale-data/es';
@@ -87,15 +89,17 @@ const PageHolder = styled.div`
   }
 `;
 
-const SavedCarsIconWrapper = styled.div`
+const SavedCarsIconWrapper = styled(CollectionMuiIcon)`
   position: fixed;
-  top: 45%;
-  right: 0px;
-  width: 30px;
-  height: 30px;
-  background-color: black;
+  top: 16px;
+  right: 16px;
+  z-index: 5000;
+  color: #32619a;
+  cursor: pointer;
+  &:hover {
+    color: #3e78c0;
+  }
 `;
-
 class App extends React.Component {
   constructor(props) {
     clearTimeout(window.fallbackReload);
@@ -152,6 +156,8 @@ class App extends React.Component {
       });
 
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
+
+    this.marketplaceRef = React.createRef();
   }
 
   getBrowserLocale = () => {
@@ -258,12 +264,21 @@ class App extends React.Component {
   }
 
   showHideWhatsapp = () => {
-    console.log('try to hide ws');
-    if (this.state.showSavedCarsPanel) {
-      this.setState({ showWhastapp: false });
-    } else {
-      this.setState({ showWhastapp: true });
-    }
+    // if (this.state.showSavedCarsPanel) {
+    //   this.setState({ showWhastapp: false });
+    // } else {
+    //   this.setState({ showWhastapp: true });
+    // }
+  }
+
+  removedBookmarkedCar = (carVin) => {
+    this.marketplaceRef.current.toggleBookmarkedCar(carVin);
+  }
+  
+  showSavedCars = () => {
+    this.setState({
+      showSavedCarsPanel: true,
+    });
   }
 
   render() {
@@ -282,12 +297,14 @@ class App extends React.Component {
                 flexDirection: 'column',
               }}
               >
-                <AppNav languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                <AppNav showSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
                 {
                   !(this.verifyUserLoggedIn()) ? null : (
                     <>
-                      <SavedCarsIconWrapper onClick={() => this.toggleSavedCarsPanel()} />
-                      <SavedCarsDrawer open={this.state.showSavedCarsPanel} handleClose={() => this.toggleSavedCarsPanel()} />
+                      <MediaQuery minDeviceWidth={768}>
+                        <SavedCarsIconWrapper onClick={() => this.toggleSavedCarsPanel()} />
+                      </MediaQuery>
+                      <SavedCarsDrawer removedBookmarkedCar={this.removedBookmarkedCar} open={this.state.showSavedCarsPanel} handleClose={() => this.toggleSavedCarsPanel()} />
                     </>
                   )
                 }
@@ -295,7 +312,7 @@ class App extends React.Component {
                   <Switch>
                     <Route exact path={ApplicationRoutes.oauthPage} render={() => <OauthPage />} />
                     <Route exact path={ApplicationRoutes.home} render={() => (<LandingPage cookies={cookies} />)} />
-                    <Route exact path={ApplicationRoutes.marketplace} render={() => (<MarketPlacePage cookies={cookies} />)} />
+                    <Route exact path={ApplicationRoutes.marketplace} render={() => (<MarketPlacePage ref={this.marketplaceRef} cookies={cookies} />)} />
                     <Route exact path={ApplicationRoutes.carPage} render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                     <Route exact path={ApplicationRoutes.registrationPage} render={() => (<RegistrationPage cookies={cookies} />)} />

@@ -23,6 +23,7 @@ const CarDisplayWrapper = styled.div`
   animation: 0.55s slide-in ease-in-out ${props => props.delay ? props.delay : '0s'};
   animation-fill-mode: forwards;
   margin-bottom: 16px;
+  cursor: pointer;
   @keyframes slide-in {
     0% {
       opacity: 0;
@@ -86,9 +87,9 @@ class CarDisplay extends Component {
     }
   }
 
-  removeSavedCar = (carId) => {
-    axios.delete(`${ApiServer}/api/v1/car/delete?car_id=${carId}`).then(data => {
-      this.props.updateCarList(carId);
+  removeSavedCar = (carVin) => {
+    axios.delete(`${ApiServer}/api/v1/car/delete?vin=${carVin}`).then(data => {
+      this.props.updateCarList(carVin);
     });
   }
 
@@ -96,15 +97,15 @@ class CarDisplay extends Component {
     const { delay, car, } = this.props;
     return(
       <CarDisplayWrapper delay={delay} onClick={(node) => this.goToCarDetail(node, car.vin)}>
-        <CloseIconWrapper id="close-button" onClick={() => this.removeSavedCar(car.id)}>
+        <CloseIconWrapper id="close-button" onClick={() => this.removeSavedCar(car.vin)}>
           <CloseIcon />
         </CloseIconWrapper>
         <CarImage>
-          <img src={car.photo} alt={`Pierpont global | ${car.model.name} ${car.model.maker.name} ${car.year} ${car.engine}`} />
+          <img src={car.photo} alt={`Pierpont global | ${car.car_model} ${car.car_maker} ${car.year} ${car.engine}`} />
         </CarImage>
         <CarInfo>
           <CarTitle>
-            <span>{ car.model.maker.name } - <span>{ car.model.name }</span></span>
+            <span>{ car.car_maker } - <span>{ car.car_model }</span></span>
           </CarTitle>
           <div style={{ paddingLeft: '8px' }}>
             <div>

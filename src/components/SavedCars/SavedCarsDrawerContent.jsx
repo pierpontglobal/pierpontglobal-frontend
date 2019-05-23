@@ -10,10 +10,10 @@ import { ApiServer } from '../../Defaults';
 const Wrapper = styled.div`
   max-width: 400px;
   min-width: 400px;
-  height: 100vh;
+  height: 100%;
   background-color: #303030;
   position: relative;
-  z-index: 2000;
+  z-index: 4000;
 `;
 
 const Title = styled.div`
@@ -38,11 +38,23 @@ const ArrowIcon = styled(ArrowMuiIcon)`
 
 const CarList = styled.div`
   width: 100%;
-  margin-top: 62px;
+  max-height: calc(100vh - 320px);
+  margin-top: 32px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  overflow: scroll;
+  padding-top: 42px;
+  @media only screen and (max-width: 768px) and (min-width: 500px) {
+    max-height: calc(100vh - 220px);
+  }
+  @media only screen and (max-width: 500px) and (min-width: 300px) {
+    max-height: calc(100vh - 120px);
+  }
+  @media only screen and (max-width: 300px) {
+    max-height: calc(100vh - 80px);
+  }
 `;
 
 const EmptyListMessage = styled.div`
@@ -89,7 +101,7 @@ class SavedCarsDrawerContent extends Component {
       let withPhoto = data.data.cars.map(car => {
         return {
           ...car,
-          photo: 'https://photos.smugmug.com/Sample-Galleries/Auto-Advertorial-Lifestyle/i-fvB2gGh/4/a319f256/L/2016%20Avis%20-%20BMW%20328i%20Lifestyle%20073A%20-%20Deremer%20Studios%20LLC-L.jpg'
+          photo: car.car_images.filter(img => img.f5 === 'FRONTLEFT')[0].f3,
         }
       })
 
@@ -100,18 +112,18 @@ class SavedCarsDrawerContent extends Component {
     });
   }
 
-  updateCarList = (carId) => {
-    console.log('will updte with');
-    let cars = this.state.cars.filter(x => x.id !== carId);
-    console.log(cars);
+  updateCarList = (carVin) => {
+    let cars = this.state.cars.filter(x => x.vin !== carVin);
     this.setState({
       cars: cars
+    }, () => {
+      // Propage removed car to marketplace
+      this.props.removedBookmarkedCar(carVin);
     });
   }
 
   render() {
     const { cars, loading } = this.state;
-    console.log(cars);
     return(
       <>
         <Wrapper>
@@ -127,7 +139,7 @@ class SavedCarsDrawerContent extends Component {
                 <CarList>
                   {
                     cars.map((car, index) => (
-                      <CarDisplay car={car} delay={`${index * 0.2}s`} handleClose={this.props.handleClose} updateCarList={this.updateCarList} />
+                      <CarDisplay car={car} delay={`${index * 0.17}s`} handleClose={this.props.handleClose} updateCarList={this.updateCarList} />
                     ))
                   }
                 </CarList>

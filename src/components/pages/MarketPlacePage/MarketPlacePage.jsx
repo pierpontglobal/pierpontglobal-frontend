@@ -85,6 +85,44 @@ class MarketPlacePage extends React.Component {
     this.getCars();
   }
 
+  handleBookmark = (carVin, bookmarked) => {
+    if (bookmarked) {
+      axios.delete(`${ApiServer}/api/v1/car/delete?vin=${carVin}`).then(data => {
+        this.toggleBookmarkedCar(carVin);
+      });
+    } else {
+      axios.post(`${ApiServer}/api/v1/car/save`, { vin: carVin }).then(data => {
+        this.toggleBookmarkedCar(carVin);
+      });
+    }
+  }
+
+  toggleBookmarkedCar = (carVin) => {
+    const { cars } = this.state;
+    const carElements = [];
+    for (let j = 0; j < cars.length; j += 1) {
+      let car = cars[j].props.car;
+      if (car.vin === carVin) {
+        car.bookmarked ? car.bookmarked = false : car.bookmarked = true;
+      }
+      carElements.push(<CarCard handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
+    }
+    this.setState({ cars: carElements });
+  }
+
+  isCarAlreadySaved = (car, bookmarkedCars) => {
+    let result = false;
+    if (!!bookmarkedCars) {
+      bookmarkedCars.forEach(bookmarkedCar => {
+        if (car.car_information.vin === bookmarkedCar.vin) {
+          result = true;
+          return;
+        };
+      });
+    }
+    return result;
+  }
+
   async getCars() {
     let str = '';
     this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
@@ -104,7 +142,10 @@ class MarketPlacePage extends React.Component {
 
     window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
     const response = await axios.get(`${ApiServer}/api/v1/car/query?${str}&limit=${page * 20}&offset=0`);
+    const bookmarkedCars = await axios.get(`${ApiServer}/api/v1/user/saved_cars`);
+
     const carsArray = response.data.cars;
+    const bookmarkedArray = bookmarkedCars.data.cars;
     const carsGroup = [];
 
     for (let i = 0; i < carsArray.length; i += 1) {
@@ -120,6 +161,9 @@ class MarketPlacePage extends React.Component {
           images[imagesObjs[j].f4] = `${url}?width=400&height=400&position=${imagesObjs[j].f4}`;
         }
       }
+
+      // Determine if the cars is already saved for the current user
+      const bookmarked = this.isCarAlreadySaved(carsArray[i], bookmarkedArray);
 
       const carObject = {
         wholePrice: car.sale_information.whole_price,
@@ -142,12 +186,13 @@ class MarketPlacePage extends React.Component {
         vehicleType: car.car_information.car_type_code ? car.car_information.car_type_code : 'Not available',
         price: car,
         saleDate: Date.parse(car.sale_information.auction_start_date),
+        bookmarked: bookmarked,
         images,
         title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
       };
 
       carsGroup.push(
-        <CarCard caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
+        <CarCard handleBookmark={this.handleBookmark} caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
       );
     }
 
@@ -204,7 +249,7 @@ class MarketPlacePage extends React.Component {
       if (car.vin === response.vin) {
         car.wholePrice = response.mmr;
       }
-      carElements.push(<CarCard key={car.vin} car={car} requestFunction={requestPrice} />);
+      carElements.push(<CarCard handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
     }
     this.setState({ cars: carElements, loaded: true });
   }

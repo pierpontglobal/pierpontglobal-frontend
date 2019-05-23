@@ -3,10 +3,15 @@ import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
+import MediaQuery from 'react-responsive';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
+import axios from 'axios';
+import { ApiServer } from '../../Defaults';
+import BookmarkBorderMui from '@material-ui/icons/BookmarkBorder';
+import BookmarkMui from '@material-ui/icons/Bookmark';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -28,31 +33,37 @@ const CarContainer = styled.div`
   display: grid;
   grid-template-columns: 25% 35% 40%;
   background-color: #fff;
-
+  position: relative;
   /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
   @media only screen and (max-width: 600px) {
     grid-template-rows: 50% 100%;
     grid-template-columns: 100%;
+    position: static;
   }
   @media only screen and (max-width: 600px) and (min-width: 500px) {
     grid-template-rows: 260px;
     grid-template-columns: 100%;
+    position: static;
   }
   @media only screen and (max-width: 500px) and (min-width: 400px) {
     grid-template-rows: 235px;
     grid-template-columns: 100%;
+    position: static;
   }
   @media only screen and (max-width: 400px) and (min-width: 300px) {
     grid-template-rows: 210px;
     grid-template-columns: 100%;
+    position: static;
   }
   @media only screen and (max-width: 300px) and (min-width: 200px) {
     grid-template-rows: 180px;
     grid-template-columns: 100%;
+    position: static;
   }
   @media only screen and (max-width: 200px) {
     grid-template-rows: 160px;
     grid-template-columns: 100%;
+    position: static;
   }
 `;
 
@@ -104,7 +115,7 @@ const DetailsContainer = styled(Container)`
 const DetailedCR = styled(Container)`
   display: flex;
   flex-direction: column;
-  min-width: 200px;
+  min-width: 160px;
   @media only screen and (max-width: 600px) {
     width: 50%;
     margin-top: 0px;
@@ -157,6 +168,7 @@ const PriceContainer = styled.div`
   align-items: center;
   text-align: center;
   flex-direction: column;
+  width: 80%;
   @media only screen and (max-width: 600px) {
     width: 50%;
     margin-top: 0%;
@@ -261,6 +273,30 @@ const CRPriceContainer = styled.div`
     }
 `;
 
+const BookmarkIcon = styled(BookmarkMui)`
+
+`;
+
+const BookmarBorderIcon = styled(BookmarkBorderMui)`
+
+`;
+
+const BookmarkArea = styled.div`
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  z-index: 800;
+  & > svg {
+    height: 1.15em;
+    cursor: pointer;
+  }
+  @media only screen and (max-width: 768px) {
+    position: static;
+    top: none;
+    right: none;
+  }
+`;
+
 function gotToCarDetail(vin, event, history, position, caller, cookies) {
   if (!!event && !!event.target) {
     if (event.target.tagName === 'LI' || event.target.tagName === 'SPAN' || event.target.tagName === 'DIV') {
@@ -276,11 +312,12 @@ function gotToCarDetail(vin, event, history, position, caller, cookies) {
 }
 
 function CarCard({
-  key, car, requestFunction, history, intl, position, caller, cookies,
+  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark
 }) {
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
   const [autocheckSource, changeAutocheckSource] = useState('');
+  // const [carBookmarked, changeBookmark] = useState(car.bookmarked);
 
   const {
     vin,
@@ -331,7 +368,16 @@ function CarCard({
             <div>
               <span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
             </div>
-            <DropDownIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+            <div style={{ display: ' flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 60 }}>
+              <DropDownIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
+              <MediaQuery maxDeviceWidth={768}>
+                <BookmarkArea onClick={() => handleBookmark(vin, car.bookmarked)}>
+                  {
+                    !car.bookmarked ? <BookmarBorderIcon /> : <BookmarkIcon />
+                  }
+                </BookmarkArea>
+              </MediaQuery>
+            </div>
           </DetailTitle>
           <hr style={{ margin: '0 0 5px' }} />
           <input hidden name="VIN" value={vin} readOnly />
@@ -379,6 +425,13 @@ function CarCard({
               requestFunction={requestFunction}
             />
           </PriceContainer>
+          <MediaQuery minDeviceWidth={768}>
+            <BookmarkArea onClick={() => handleBookmark(vin, car.bookmarked)}>
+              {
+                !car.bookmarked ? <BookmarBorderIcon /> : <BookmarkIcon />
+              }
+            </BookmarkArea>
+          </MediaQuery>
         </CRPriceContainer>
       </CarContainer>
       <IframeModal open={openAutocheck} src={autocheckSource} width="90%" height="90%" handleClose={() => { changeAutocheckSource(''); setOpenAutocheck(false); }} />

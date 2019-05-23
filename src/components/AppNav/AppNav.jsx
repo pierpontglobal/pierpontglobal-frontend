@@ -220,6 +220,7 @@ class AppNav extends React.Component {
             onMaskClick={this.onTouchEnd}
             afterOptionclick={this.optionClick}
             showSignIn={() => { this.showSignIn(true); }}
+            showSavedCars={this.props.showSavedCars}
             onRequestOpen={this.openMenuSide}
             dealer={dealer}
           />

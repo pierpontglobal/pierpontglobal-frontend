@@ -4,6 +4,7 @@ import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Phone from '@material-ui/icons/Phone';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Input from '@material-ui/icons/Input';
+import CollectionMuiIcon from '@material-ui/icons/CollectionsBookmark';
 import styled from 'styled-components';
 import { withCookies } from 'react-cookie';
 import { FormattedMessage } from 'react-intl';
@@ -54,6 +55,14 @@ class MenuDrawer extends Component {
     this.props.showSignIn();
   }
 
+  showSavedCars = () => {
+    this.setState({
+      open: false,
+    }, () => {
+      this.props.showSavedCars()
+    });
+  }
+
   render() {
     const {
       onMaskClick, afterOptionclick, onRequestOpen, dealer,
@@ -65,6 +74,7 @@ class MenuDrawer extends Component {
       { label: labelMarket, icon: <DirectionsCar color="primary" />, urlMatch: '/marketplace' },
       { label: labelContact, icon: <Phone color="primary" />, urlMatch: '/contact-us' },
       { label: labelProfile, icon: <AccountCircle color="primary" />, urlMatch: '/user' },
+      { label: 'My saved cars', icon: <CollectionMuiIcon color="primary" />, handleClick: this.showSavedCars },
     ];
 
     if (!this.userIsLoggedIn()) {
