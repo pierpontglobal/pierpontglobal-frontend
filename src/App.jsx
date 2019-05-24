@@ -30,6 +30,7 @@ import { DefaultTheme, OneSignalKey, ApiServer } from './Defaults';
 import OauthPage from './components/pages/OauthPage/OauthPage';
 import WhatsApp from './components/Modal/WhatsApp/WhatsApp';
 import SupportPage from './components/pages/SupportPage/SupportPage.jsx';
+import SignInPage from './components/pages/sign-in-page/sign_in_page';
 import ApplicationRoutes from './constants/Routes';
 
 addLocaleData([...locale_en, ...locale_es]);
@@ -78,10 +79,10 @@ const car = {
 }; */
 
 const PageHolder = styled.div`
-  margin-top: 58px;
-  height: -moz-calc(100% - 58px);
-  height: -webkit-calc(100% - 58px);
-  height: calc(100% - 58px);
+  margin-top: ${props => props.isInSignInPage ? '0px' : '58px'};
+  height: ${props => props.isInSignInPage ? '100%' : '-moz-calc(100% - 58px)'};
+  height: ${props => props.isInSignInPage ? '100%' : '-webkit-calc(100% - 58px)'};
+  height: ${props => props.isInSignInPage ? '100%' : 'calc(100% - 58px)'};
 
   > div {
     height: 100%;
@@ -284,6 +285,15 @@ class App extends React.Component {
   render() {
     const { cookies } = this.props;
     const { dealer, languages, language } = this.state;
+
+    const hostname = window.location.host;
+    const currentLocation = window.location.href.substr(window.location.href.indexOf(hostname) + hostname.length);
+    const isInSignInPage = currentLocation === '/' || currentLocation === '' || currentLocation === '//' || false;
+
+    console.log(' >>>>> ');
+    console.log(currentLocation);
+    console.log(isInSignInPage);
+
     return (
       <IntlProvider locale={language || 'en'} messages={messages[language]}>
         <MuiThemeProvider theme={DefaultTheme}>
@@ -297,21 +307,27 @@ class App extends React.Component {
                 flexDirection: 'column',
               }}
               >
-                <AppNav showSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
                 {
-                  !(this.verifyUserLoggedIn()) ? null : (
+                  isInSignInPage ? null : (
                     <>
-                      <MediaQuery minDeviceWidth={768}>
-                        <SavedCarsIconWrapper onClick={() => this.toggleSavedCarsPanel()} />
-                      </MediaQuery>
-                      <SavedCarsDrawer removedBookmarkedCar={this.removedBookmarkedCar} open={this.state.showSavedCarsPanel} handleClose={() => this.toggleSavedCarsPanel()} />
+                      <AppNav showSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                      {
+                        !(this.verifyUserLoggedIn()) ? null : (
+                          <>
+                            <MediaQuery minDeviceWidth={768}>
+                              <SavedCarsIconWrapper onClick={() => this.toggleSavedCarsPanel()} />
+                            </MediaQuery>
+                            <SavedCarsDrawer removedBookmarkedCar={this.removedBookmarkedCar} open={this.state.showSavedCarsPanel} handleClose={() => this.toggleSavedCarsPanel()} />
+                          </>
+                        )
+                      }
                     </>
                   )
                 }
-                <PageHolder>
+                <PageHolder isInSignInPage={isInSignInPage}>
                   <Switch>
                     <Route exact path={ApplicationRoutes.oauthPage} render={() => <OauthPage />} />
-                    <Route exact path={ApplicationRoutes.home} render={() => (<LandingPage cookies={cookies} />)} />
+                    <Route exact path={ApplicationRoutes.home} render={() => ((this.verifyUserLoggedIn()) ? <Redirect to="/user" /> : <SignInPage />)} />
                     <Route exact path={ApplicationRoutes.marketplace} render={() => (<MarketPlacePage ref={this.marketplaceRef} cookies={cookies} />)} />
                     <Route exact path={ApplicationRoutes.carPage} render={() => (<CarPage cookies={cookies} car={car} />)} />
 
