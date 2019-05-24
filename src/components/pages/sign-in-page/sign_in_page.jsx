@@ -1,4 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
+import { ApiServer } from '../../../Defaults';
 import {
   BackgroundLeft,
   BackgroundRight,
@@ -37,6 +40,7 @@ class SignInPage extends React.Component {
     isPasswordFocused: false,
     loading: false,
     showSignUpForm: false,
+    loginError: false
   }
 
   focusElement = (e) => {
@@ -61,11 +65,31 @@ class SignInPage extends React.Component {
     this.setState({
       loading: true,
     }, () => {
-      setTimeout(() => {
+      const { cookies, history } = this.props;
+      const { username, password } = this.state;
+      const data = {
+        username: username,
+        password: password,
+        grant_type: 'password',
+      };
+      axios.post(`${ApiServer}/oauth/token`, data).then(data => {
+        cookies.set('token', data.data.access_token, { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) });
+        axios.post(`${ApiServer}/api/v1/user/notifier`, {
+          one_signal_uuid: cookies.get('one_signal_uuid'),
+        });
         this.setState({
           loading: false,
-        });
-      }, 3000);
+          loginError: false,
+        }, () => {
+          this.props.history.push('/user');
+        })
+      }, err => {
+        // Set invalid inputs states
+        this.setState({
+          loading: false,
+          loginError: true,
+        })
+      });
     })
   }
 
@@ -82,7 +106,7 @@ class SignInPage extends React.Component {
   }
 
   render() {
-    const { isUsernameFocused, isPasswordFocused, loading, showSignUpForm } = this.state;
+    const { isUsernameFocused, isPasswordFocused, loading, showSignUpForm, loginError } = this.state;
     return(
       <PageWrapper>
         <BackgroundLeft>
@@ -125,16 +149,25 @@ class SignInPage extends React.Component {
               (showSignUpForm) ? <SignUpForm /> : (
                 <FormWrapper>
                   <FormWrapperTitle>
-                    <span>Login to your account</span>
+                    <h1>Login to your account</h1>
+                    {
+                      loginError ? (
+                        <>
+                          <br />
+                          <span>Ups! Your username or password is wrong. Please, try again</span>
+                          <br />
+                        </>
+                      ) : null
+                    }
                   </FormWrapperTitle>
                   <InputsWrapper>
                     <Input>
-                      <PersonIcon isFocused={isUsernameFocused} />
-                      <UsernameInput id="username" isFocused={isUsernameFocused} placeholder="Your username" type="text" autoFocus onChange={this.handleChange} onFocus={this.focusElement} />
+                      <PersonIcon loginError={loginError} isFocused={isUsernameFocused} />
+                      <UsernameInput loginError={loginError} id="username" isFocused={isUsernameFocused} placeholder="Your username" type="text" autoFocus onChange={this.handleChange} onFocus={this.focusElement} />
                     </Input>
                     <Input>
-                      <LockIcon isFocused={isPasswordFocused} />
-                      <PasswordInput id="password" isFocused={isPasswordFocused} placeholder="Your password" type="password" onChange={this.handleChange} onFocus={this.focusElement} />
+                      <LockIcon loginError={loginError} isFocused={isPasswordFocused} />
+                      <PasswordInput loginError={loginError} id="password" isFocused={isPasswordFocused} placeholder="Your password" type="password" onChange={this.handleChange} onFocus={this.focusElement} />
                     </Input>
                     <SubmitButton onClick={this.handleSubmit}>
                       Login
@@ -159,4 +192,4 @@ class SignInPage extends React.Component {
   }
 }
 
-export default SignInPage;
+export default withRouter(SignInPage);

@@ -145,17 +145,6 @@ class App extends React.Component {
       return config;
     }, error => Promise.reject(error));
 
-    axios.interceptors.response.use(response => response,
-      (error) => {
-        if (error.response.request.responseURL.includes('oauth/token')) {
-          return error.response;
-        } if (error.response.status === 401) {
-          cookies.remove('token');
-          window.location.href = '/?signIn=true';
-        }
-        return Promise.reject(error);
-      });
-
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
 
     this.marketplaceRef = React.createRef();
@@ -209,7 +198,7 @@ class App extends React.Component {
 
   verifyUserLoggedIn() {
     const { cookies } = this.props;
-    if (cookies.get('token', { path: '/' })) {
+    if (!!cookies.get('token', { path: '/' })) {
       return true;
     }
     return false;
@@ -286,13 +275,7 @@ class App extends React.Component {
     const { cookies } = this.props;
     const { dealer, languages, language } = this.state;
 
-    const hostname = window.location.host;
-    const currentLocation = window.location.href.substr(window.location.href.indexOf(hostname) + hostname.length);
-    const isInSignInPage = currentLocation === '/' || currentLocation === '' || currentLocation === '//' || false;
-
-    console.log(' >>>>> ');
-    console.log(currentLocation);
-    console.log(isInSignInPage);
+    const userSignedIn = this.verifyUserLoggedIn();
 
     return (
       <IntlProvider locale={language || 'en'} messages={messages[language]}>
@@ -308,7 +291,7 @@ class App extends React.Component {
               }}
               >
                 {
-                  isInSignInPage ? null : (
+                  !userSignedIn ? null : (
                     <>
                       <AppNav showSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
                       {
@@ -324,15 +307,15 @@ class App extends React.Component {
                     </>
                   )
                 }
-                <PageHolder isInSignInPage={isInSignInPage}>
+                <PageHolder isInSignInPage={!userSignedIn}>
                   <Switch>
                     <Route exact path={ApplicationRoutes.oauthPage} render={() => <OauthPage />} />
-                    <Route exact path={ApplicationRoutes.home} render={() => ((this.verifyUserLoggedIn()) ? <Redirect to="/user" /> : <SignInPage />)} />
+                    <Route exact path={ApplicationRoutes.home} render={() => ((this.verifyUserLoggedIn()) ? <Redirect to="/user" /> : <SignInPage cookies={cookies} />)} />
                     <Route exact path={ApplicationRoutes.marketplace} render={() => (<MarketPlacePage ref={this.marketplaceRef} cookies={cookies} />)} />
                     <Route exact path={ApplicationRoutes.carPage} render={() => (<CarPage cookies={cookies} car={car} />)} />
 
                     <Route exact path={ApplicationRoutes.registrationPage} render={() => (<RegistrationPage cookies={cookies} />)} />
-                    <Route path={ApplicationRoutes.profilePage.default} render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/?signIn=true" />)} />
+                    <Route path={ApplicationRoutes.profilePage.default} render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
                     <Route exact path={ApplicationRoutes.notificationPage} render={() => ((this.verifyUserLoggedIn()) ? (<NotificationPage cookies={cookies} />) : <Redirect to="/" />)} />
 
                     <Route exact path={ApplicationRoutes.contactPage} render={() => (<ContactPage cookies={cookies} />)} />

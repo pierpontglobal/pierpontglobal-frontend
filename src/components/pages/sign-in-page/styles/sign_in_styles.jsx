@@ -269,9 +269,14 @@ export const FormWrapperTitle = styled.div`
   text-align: center;
   padding: 16px;
   margin-top: 32px;
-  & > span {
+  & > h1 {
     font-weight: 600;
-    font-size: 1.35em;
+    font-size: 1.15em;
+  }
+  & > span {
+    font-weight: 200;
+    font-size: 0.9em;
+    color: darkred;
   }
 `;
 
@@ -303,6 +308,7 @@ export const UsernameInput = styled.input`
   font-size: 1.05em;
   margin-bottom: 32px;
   text-indent: 34px;
+  border-bottom-color: ${props => props.loginError && 'darkred'};
   &:focus {
     box-shadow: none;
     outline: none;
@@ -328,6 +334,7 @@ export const PasswordInput = styled.input`
   font-size: 1.05em;
   margin-bottom: 16px;
   text-indent: 34px;
+  border-bottom-color: ${props => props.loginError && 'darkred'};
   &:focus {
     box-shadow: none;
     outline: none;
