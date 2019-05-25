@@ -15,6 +15,10 @@ const Wrapper = styled.div`
   background-color: #303030;
   position: relative;
   z-index: 4000;
+  @media only screen and (max-width: 480px) {
+    max-width: 100vw;
+    min-width: 100vw;
+  }
 `;
 
 const Title = styled.div`
