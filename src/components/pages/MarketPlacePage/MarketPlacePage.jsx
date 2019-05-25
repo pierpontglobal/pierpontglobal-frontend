@@ -283,26 +283,22 @@ class MarketPlacePage extends React.Component {
             onReceived={this.handleReceived}
           />
           <MarketPlaceContainer>
-            {
-              loaded ? (
-                <SidePanel>
-                  <MediaQuery minDeviceWidth={600}>
-                    <FilterPanel
-                      getCars={this.getCars}
-                      availableArguments={this.state.availableArguments}
-                      params={this.params}
-                      onSeeAll={this.seeAllOptions}
-                    />
-                  </MediaQuery>
-                </SidePanel>
-              ) : null
-            }
-            <CarSection ref={this.carsSection}>
-              {
-                loaded ? (
-                  <div style={{ overflow: 'hidden', position: 'relative' }}>
-                    <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
-                    <hr />
+          <SidePanel>
+            <MediaQuery minDeviceWidth={600}>
+              <FilterPanel
+                getCars={this.getCars}
+                availableArguments={this.state.availableArguments}
+                params={this.params}
+                onSeeAll={this.seeAllOptions}
+              />
+            </MediaQuery>
+          </SidePanel>
+            <CarSection style={{ width: '100%' }} ref={this.carsSection}>
+              <div style={{ overflow: 'hidden', position: 'relative' }}>
+                <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
+                <hr />
+                {
+                  loaded ? (
                     <InfiniteScroll
                       dataLength={cars.length}
                       next={this.getCars}
@@ -329,8 +325,7 @@ class MarketPlacePage extends React.Component {
                     >
                       {cars}
                     </InfiniteScroll>
-                  </div>
-                ) : (
+                  ) : (
                     <div style={{
                       width: '100%',
                       display: 'flex',
@@ -344,7 +339,8 @@ class MarketPlacePage extends React.Component {
                       <CircularProgress />
                     </div>
                   )
-              }
+                }
+              </div>
             </CarSection>
             <PPGModal
               setOpen={openModalFilter}
