@@ -36,7 +36,7 @@ const UserMenuWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 4fr 1fr;
+  grid-template-rows: minmax(200px, 4fr) 1fr;
   grid-template-columns: auto;
 `;
 
@@ -52,6 +52,7 @@ const UserMenuBody = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  overflow-x: scroll;
 `;
 
 const UserMenuFooter = styled.div`
