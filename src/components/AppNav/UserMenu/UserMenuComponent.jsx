@@ -10,6 +10,8 @@ import { withRouter } from 'react-router-dom';
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
 import ApplicationRoutes from '../../../constants/Routes';
 
+const UserMenuLinkHeight = 64;
+
 const OutsideClickHandler = styled.div`
   width: 100vw;
   height: ${`calc(100vh - ${AppNavHeight}px)`};
@@ -61,11 +63,12 @@ const UserMenuFooter = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  box-shadow: 0px -4px 4px 0px rgb(0, 0, 0, 0.04);
 `;
 
 const UserMenuLink = styled.div`
   width: 100%;
-  height: 64px;
+  height: ${props => props.fullHeight ? `100%` : `${UserMenuLinkHeight}px`};
   display: grid;
   grid-template-columns: 1fr 4fr;
   grid-template-rows: auto;
@@ -99,7 +102,7 @@ const Submenu = styled.div`
 
 const SubmenuLink = styled.div`
   width: 100%;
-  height: 64px;
+  height: ${`${UserMenuLinkHeight}px`};
   display: grid;
   grid-template-columns: 1fr 1fr 4fr;
   grid-template-rows: auto;
@@ -127,7 +130,7 @@ const UserMenuLinkWithSubmenuWrapper = styled.div`
 
 const UserMenuLinkWithSubmenu = styled.div`
   width: 100%;
-  height: 64px;
+  height: ${`${UserMenuLinkHeight}px`};
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
   grid-template-rows: auto;
@@ -276,7 +279,7 @@ class UserMenuComponent extends React.Component {
               </UserMenuLink>
             </UserMenuBody>
             <UserMenuFooter>
-              <UserMenuLink onClick={handleSignOut}>
+              <UserMenuLink fullHeight onClick={handleSignOut}>
                 <MenuIconWrapper>
                   <ExitIcon>
                     <i className="fas fa-sign-out-alt"></i>
