@@ -139,7 +139,7 @@ const CollectionIcon = styled(CollectionsIconMui)`
 `;
 
 const LanguageIcon = styled(LanguageIconMui)`
-  color: #383838;
+  color: #383838;er 
 `;
 
 class UserMenuComponent extends React.Component {

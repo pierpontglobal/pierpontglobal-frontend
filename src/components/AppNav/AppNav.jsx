@@ -37,7 +37,7 @@ const AppNavWrapper = styled.div`
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: auto 950px auto;
+  grid-template-columns: 2fr 6fr 3fr;
   grid-template-rows: auto;
 
   @media only screen and (max-width: 768px) {
