@@ -85,6 +85,9 @@ const MenuIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  & > span {
+    font-weight: ${props => props.active ? '600' : '100'};
+  }
 `;
 
 const MenuTextWrapper = styled.div`
@@ -93,6 +96,9 @@ const MenuTextWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  & > span {
+    font-weight: ${props => props.active ? '600' : '100'};
+  }
 `;
 
 const Submenu = styled.div`
@@ -194,8 +200,21 @@ class UserMenuComponent extends React.Component {
     }));
   }
 
+  switchLanguage = (lang) => {
+    if (!!this.props.switchLanguage) {
+      this.props.switchLanguage(lang);
+    }
+  }
+
   render() {
-    const { handleToggle, handleSignOut, goToAction, handleOpenSavedCars } = this.props;
+    const {
+      handleToggle,
+      handleSignOut,
+      goToAction,
+      handleOpenSavedCars,
+      languages,
+    } = this.props;
+
     const { showLanguagesSubmenu } = this.state;
 
     return (
@@ -241,28 +260,21 @@ class UserMenuComponent extends React.Component {
                 {
                   !showLanguagesSubmenu ? null : (
                     <Submenu show={showLanguagesSubmenu}>
-                      <SubmenuLink>
-                        <div></div>
-                        <MenuIconWrapper>
-                          ES
-                        </MenuIconWrapper>
-                        <MenuTextWrapper>
-                          <span>
-                            Spanish
-                          </span>
-                        </MenuTextWrapper>
-                      </SubmenuLink>
-                      <SubmenuLink>
-                        <div></div>
-                        <MenuIconWrapper>
-                          EN
-                        </MenuIconWrapper>
-                        <MenuTextWrapper>
-                          <span>
-                            English
-                          </span>
-                        </MenuTextWrapper>
-                      </SubmenuLink>
+                      {
+                        languages.map(lang => (
+                          <SubmenuLink key={lang.abr} onClick={() => this.switchLanguage(lang)}>
+                            <div></div>
+                            <MenuIconWrapper active={ lang.active }>
+                              <span>{ lang.abr }</span>
+                            </MenuIconWrapper>
+                            <MenuTextWrapper active={ lang.active }>
+                              <span>
+                                <span>{ lang.name }</span>
+                              </span>
+                            </MenuTextWrapper>
+                          </SubmenuLink>
+                        ))
+                      }
                     </Submenu>
                   )
                 }

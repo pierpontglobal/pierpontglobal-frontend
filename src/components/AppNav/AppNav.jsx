@@ -327,18 +327,25 @@ class AppNav extends React.Component {
     });
   }
 
-  shortStringTo = (text) => {
-    if (text && text.length > 30) {
-      let cutted = text.substr(0, 25);
+  shortStringTo = (text, chars) => {
+    if (text && text.length > chars) {
+      let cutted = text.substr(0, chars);
       cutted = cutted + "..."
       return  cutted;
     }
     return text;
   }
 
+  switchLanguage = (lang) => {
+    if (!!this.props.setLang) {
+      this.toggelUserMenu();
+      this.props.setLang(lang);
+    }
+  }
+
   render() {
     const { openUserMenu, navbarLinks, openSidemenu } = this.state;
-    const { user } = this.props;
+    const { user, languages } = this.props;
 
     const username = user.name ? this.shortStringTo(user.name, 18) : 'Car dealership';
 
@@ -421,6 +428,8 @@ class AppNav extends React.Component {
                       handleToggle={this.toggelUserMenu}
                       handleSignOut={this.handleSignOut}
                       handleOpenSavedCars={this.handleOpenSavedCars}
+                      switchLanguage={this.switchLanguage}
+                      languages={languages}
                     />
                   )
                 }
