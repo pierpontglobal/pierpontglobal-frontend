@@ -7,7 +7,6 @@ import CircularProgressMui from '@material-ui/core/CircularProgress';
 
 export const FormWrapper = styled.div`
   width: 85%;
-  height: auto;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0px 0px 8px 0px rgb(0, 0, 0, 0.1);
@@ -17,10 +16,10 @@ export const FormWrapper = styled.div`
     0% {
       opacity: 0;
       transform: translateX(200px) rotateY(62deg);
-      box-shadow: -320px 120px 42px 16px rgb(0,0,0,0.1);
+      box-shadow: -320px 120px 42px 16px rgb(0, 0, 0, 0.1);
     }
     50% {
-      box-shadow: 0px 80px 42px 16px rgb(0,0,0,0.1);
+      box-shadow: 0px 80px 42px 16px rgb(0, 0, 0, 0.1);
     }
     100% {
       opacity: 1;
@@ -31,7 +30,6 @@ export const FormWrapper = styled.div`
 `;
 
 export const FormWrapperTitle = styled.div`
-  height: 7%;
   text-align: center;
   padding: 16px;
   margin-top: 32px;
@@ -41,9 +39,7 @@ export const FormWrapperTitle = styled.div`
   }
 `;
 
-
 export const InputsWrapper = styled.div`
-  height: auto;
   padding: 32px;
   display: flex;
   flex-direction: column;
@@ -52,14 +48,15 @@ export const InputsWrapper = styled.div`
 `;
 
 export const Input = styled.div`
-  width: 90%;
+  width: 100%;
   position: relative;
 `;
 
 export const UsernameInput = styled.input`
   padding: 8px;
   border-top: none;
-  border-left: none; border-right: none;
+  border-left: none;
+  border-right: none;
   width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -77,14 +74,15 @@ export const UsernameInput = styled.input`
   }
   &::placeholder {
     font-style: italic;
-    font-size: 1.0em;
+    font-size: 1em;
   }
 `;
 
 export const PasswordInput = styled.input`
   padding: 8px;
   border-top: none;
-  border-left: none; border-right: none;
+  border-left: none;
+  border-right: none;
   width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -102,26 +100,26 @@ export const PasswordInput = styled.input`
   }
   &::placeholder {
     font-style: italic;
-    font-size: 1.0em;
+    font-size: 1em;
   }
 `;
 
 export const PersonIcon = styled(PersonIconMui)`
-  color: ${props => props.isFocused ? '#223944' : '#999999'};
+  color: ${props => (props.isFocused ? '#223944' : '#999999')};
   position: absolute;
   top: 8px;
   left: 7px;
 `;
 
 export const LockIcon = styled(LockIconMui)`
-  color: ${props => props.isFocused ? '#223944' : '#999999'};
+  color: ${props => (props.isFocused ? '#223944' : '#999999')};
   position: absolute;
   top: 8px;
   left: 7px;
 `;
 
 export const EmailIcon = styled(EmailIconMui)`
-  color: ${props => props.isFocused ? '#223944' : '#999999'};
+  color: ${props => (props.isFocused ? '#223944' : '#999999')};
   position: absolute;
   top: 8px;
   left: 7px;
@@ -133,7 +131,7 @@ export const SubmitButton = styled.button`
   background-color: #00b33c;
   border: none;
   border-radius: 4px;
-  box-shadow: 0px 0px 4px 0px rgb(0, 0, 0, .1);
+  box-shadow: 0px 0px 4px 0px rgb(0, 0, 0, 0.1);
   font-size: 1.05em;
   cursor: pointer;
   transition: 0.65s;
@@ -150,7 +148,6 @@ export const SubmitButton = styled.button`
 
 export const TermsOfUse = styled.div`
   width: 90%;
-  height: auto;
   padding: 16px;
   margin-top: 16px;
   text-align: center;
@@ -166,6 +163,7 @@ export const SubmitArrow = styled(BackIcon)`
   position: absolute;
   top: 18%;
   right: 8px;
+  top: calc(50% - 12px);
 `;
 
 export const CircularProgress = styled(CircularProgressMui)`
@@ -175,4 +173,5 @@ export const CircularProgress = styled(CircularProgressMui)`
   color: white !important;
   width: 16px !important;
   height: 16px !important;
+  top: calc(50% - 12px);
 `;
