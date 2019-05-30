@@ -84,7 +84,7 @@ const PageHolder = styled.div`
   height: ${props => props.isInSignInPage ? '100%' : '-webkit-calc(100% - 58px)'};
   height: ${props => props.isInSignInPage ? '100%' : 'calc(100% - 58px)'};
 
-  > div {
+  & > div {
     height: 100%;
     overflow: auto;
   }
@@ -293,13 +293,10 @@ class App extends React.Component {
                 {
                   !userSignedIn ? null : (
                     <>
-                      <AppNav showSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} openModal={this.openModal} dealer={dealer} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                      <AppNav handleOpenSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} verifyUserLoggedIn={this.verifyUserLoggedIn} />
                       {
                         !(this.verifyUserLoggedIn()) ? null : (
                           <>
-                            <MediaQuery minDeviceWidth={768}>
-                              <SavedCarsIconWrapper onClick={() => this.toggleSavedCarsPanel()} />
-                            </MediaQuery>
                             <SavedCarsDrawer removedBookmarkedCar={this.removedBookmarkedCar} open={this.state.showSavedCarsPanel} handleClose={() => this.toggleSavedCarsPanel()} />
                           </>
                         )
@@ -311,8 +308,8 @@ class App extends React.Component {
                   <Switch>
                     <Route exact path={ApplicationRoutes.oauthPage} render={() => <OauthPage />} />
                     <Route exact path={ApplicationRoutes.home} render={() => ((this.verifyUserLoggedIn()) ? <Redirect to="/user" /> : <SignInPage cookies={cookies} />)} />
-                    <Route exact path={ApplicationRoutes.marketplace} render={() => (<MarketPlacePage ref={this.marketplaceRef} cookies={cookies} />)} />
-                    <Route exact path={ApplicationRoutes.carPage} render={() => (<CarPage cookies={cookies} car={car} />)} />
+                    <Route exact path={ApplicationRoutes.marketplace} render={() => ((this.verifyUserLoggedIn()) ? (<MarketPlacePage ref={this.marketplaceRef} cookies={cookies} />) : <Redirect to="/" />)} />
+                    <Route exact path={ApplicationRoutes.carPage}  render={() => ((this.verifyUserLoggedIn()) ? (<CarPage cookies={cookies} car={car} />) : <Redirect to="/" />)} />
 
                     <Route exact path={ApplicationRoutes.registrationPage} render={() => (<RegistrationPage cookies={cookies} />)} />
                     <Route path={ApplicationRoutes.profilePage.default} render={() => ((this.verifyUserLoggedIn()) ? <ProfilePage setDealer={this.setDealer} cookies={cookies} /> : <Redirect to="/" />)} />
