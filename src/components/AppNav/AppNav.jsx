@@ -127,6 +127,11 @@ const UserImageWrapper = styled.div`
 
 const UserNameWrapper = styled.div`
   margin-left: 16px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
   & > span {
     color: darkgray;
   }
@@ -311,6 +316,7 @@ class AppNav extends React.Component {
 
   handleOpenSavedCars = () => {
     if (!!this.props.handleOpenSavedCars) {
+      this.toggelUserMenu();
       this.props.handleOpenSavedCars();
     }
   }
@@ -413,7 +419,7 @@ class AppNav extends React.Component {
                     <span>1</span>
                   </CustomBagde> */}
                 </UserImageWrapper>
-                <UserNameWrapper>
+                <UserNameWrapper onClick={this.toggelUserMenu}>
                   <span>
                     { username }
                   </span>
