@@ -43,14 +43,13 @@ const ArrowIcon = styled(ArrowMuiIcon)`
 
 const CarList = styled.div`
   width: 100%;
-  max-height: calc(100vh - 320px);
-  margin-top: 32px;
+  max-height: calc(100vh - 300px);
+  margin-top: 54px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   overflow: scroll;
-  padding-top: 42px;
   @media only screen and (max-width: 768px) and (min-width: 500px) {
     max-height: calc(100vh - 220px);
   }
