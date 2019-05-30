@@ -327,8 +327,21 @@ class AppNav extends React.Component {
     });
   }
 
+  shortStringTo = (text) => {
+    if (text && text.length > 30) {
+      let cutted = text.substr(0, 25);
+      cutted = cutted + "..."
+      return  cutted;
+    }
+    return text;
+  }
+
   render() {
     const { openUserMenu, navbarLinks, openSidemenu } = this.state;
+    const { user } = this.props;
+
+    const username = user.name ? this.shortStringTo(user.name, 18) : 'Car dealership';
+
     return (
       <>
         <MenuDrawer
@@ -388,14 +401,14 @@ class AppNav extends React.Component {
               </NotificatinBadgeWrapper>
               <ProfileIconWrapper>
                 <UserImageWrapper>
-                  <img alt="Jhon Doe | Pierpont Global" src="/images/no-user-photo.png" />
+                  <img alt={`${username} | Pierpont Global`} src="/images/no-user-photo.png" />
                   {/* <CustomBagde>
                     <span>1</span>
                   </CustomBagde> */}
                 </UserImageWrapper>
                 <UserNameWrapper>
                   <span>
-                    Jhon Doe
+                    { username }
                   </span>
                 </UserNameWrapper>
                 <ArrowWrapper isOpen={openUserMenu} onClick={this.toggelUserMenu}r>

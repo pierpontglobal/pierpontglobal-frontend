@@ -136,6 +136,7 @@ class App extends React.Component {
         // },
       ],
       language: this.getBrowserLocale(),
+      user: {},
     };
 
     axios.interceptors.request.use((config) => {
@@ -163,7 +164,11 @@ class App extends React.Component {
   componentDidMount() {
     const { cookies } = this.props;
 
-    this.verifyUserLoggedIn();
+    const isLoggedIn = this.verifyUserLoggedIn();
+
+    if(isLoggedIn) {
+      this.getUser();
+    }
 
     this.setDefaultLanguage();
 
@@ -193,6 +198,18 @@ class App extends React.Component {
           }
         });
       });
+    });
+  }
+
+  getUser = async() => {
+    const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
+    this.setState({
+      user: {
+        name: `${responseUser.first_name} ${responseUser.last_name}`,
+        address: `${responseUser.address.primary_address} ${responseUser.address.secondary_address}, ${responseUser.address.zip_code}, ${responseUser.address.city} ${responseUser.address.country}`,
+        email: `${responseUser.email}`,
+        phone: `${responseUser.phone_number}`,
+      },
     });
   }
 
@@ -273,7 +290,7 @@ class App extends React.Component {
 
   render() {
     const { cookies } = this.props;
-    const { dealer, languages, language } = this.state;
+    const { dealer, languages, language, user } = this.state;
 
     const userSignedIn = this.verifyUserLoggedIn();
 
@@ -293,7 +310,14 @@ class App extends React.Component {
                 {
                   !userSignedIn ? null : (
                     <>
-                      <AppNav handleOpenSavedCars={this.showSavedCars} languages={languages} setLang={this.setLanguage} cookies={cookies} verifyUserLoggedIn={this.verifyUserLoggedIn} />
+                      <AppNav
+                        handleOpenSavedCars={this.showSavedCars}
+                        languages={languages}
+                        setLang={this.setLanguage}
+                        cookies={cookies}
+                        verifyUserLoggedIn={this.verifyUserLoggedIn}
+                        user={user}
+                      />
                       {
                         !(this.verifyUserLoggedIn()) ? null : (
                           <>
