@@ -26,7 +26,6 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 3,
   },
 });
 
@@ -37,11 +36,11 @@ const CustomPopper = styled(Popper)`
   top: 60px !important;
   @media only screen and (min-width: 748px) {
     width: 24% !important;
-    right: 16% !important;
+    right: 5% !important;
     left: auto !important;
     height: 65% !important;
   }
-`;
+`; 
 
 class NotificationBadge extends Component {
   constructor(props) {

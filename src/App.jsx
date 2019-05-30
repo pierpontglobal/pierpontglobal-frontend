@@ -92,7 +92,7 @@ const PageHolder = styled.div`
     props.isInSignInPage ? "100%" : "-webkit-calc(100% - 58px)"};
   height: ${props => (props.isInSignInPage ? "100%" : "calc(100% - 58px)")};
 
-  > div {
+  & > div {
     height: 100%;
     overflow: auto;
   }
@@ -143,7 +143,8 @@ class App extends React.Component {
         //   active: false
         // },
       ],
-      language: this.getBrowserLocale()
+      language: this.getBrowserLocale(),
+      user: {}
     };
 
     axios.interceptors.request.use(
@@ -172,7 +173,11 @@ class App extends React.Component {
   componentDidMount() {
     const { cookies } = this.props;
 
-    this.verifyUserLoggedIn();
+    const isLoggedIn = this.verifyUserLoggedIn();
+
+    if (isLoggedIn) {
+      this.getUser();
+    }
 
     this.setDefaultLanguage();
 
@@ -210,6 +215,22 @@ class App extends React.Component {
       });
     });
   }
+
+  getUser = async () => {
+    const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
+    this.setState({
+      user: {
+        name: `${responseUser.first_name} ${responseUser.last_name}`,
+        address: `${responseUser.address.primary_address} ${
+          responseUser.address.secondary_address
+        }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
+          responseUser.address.country
+        }`,
+        email: `${responseUser.email}`,
+        phone: `${responseUser.phone_number}`
+      }
+    });
+  };
 
   verifyUserLoggedIn() {
     const { cookies } = this.props;
@@ -291,7 +312,7 @@ class App extends React.Component {
 
   render() {
     const { cookies } = this.props;
-    const { dealer, languages, language } = this.state;
+    const { dealer, languages, language, user } = this.state;
 
     const userSignedIn = this.verifyUserLoggedIn();
 
@@ -312,21 +333,15 @@ class App extends React.Component {
                 {!userSignedIn ? null : (
                   <>
                     <AppNav
-                      showSavedCars={this.showSavedCars}
+                      handleOpenSavedCars={this.showSavedCars}
                       languages={languages}
                       setLang={this.setLanguage}
                       cookies={cookies}
-                      openModal={this.openModal}
-                      dealer={dealer}
                       verifyUserLoggedIn={this.verifyUserLoggedIn}
+                      user={user}
                     />
                     {!this.verifyUserLoggedIn() ? null : (
                       <>
-                        <MediaQuery minDeviceWidth={768}>
-                          <SavedCarsIconWrapper
-                            onClick={() => this.toggleSavedCarsPanel()}
-                          />
-                        </MediaQuery>
                         <SavedCarsDrawer
                           removedBookmarkedCar={this.removedBookmarkedCar}
                           open={this.state.showSavedCarsPanel}
@@ -357,17 +372,27 @@ class App extends React.Component {
                     <Route
                       exact
                       path={ApplicationRoutes.marketplace}
-                      render={() => (
-                        <MarketPlacePage
-                          ref={this.marketplaceRef}
-                          cookies={cookies}
-                        />
-                      )}
+                      render={() =>
+                        this.verifyUserLoggedIn() ? (
+                          <MarketPlacePage
+                            ref={this.marketplaceRef}
+                            cookies={cookies}
+                          />
+                        ) : (
+                          <Redirect to="/" />
+                        )
+                      }
                     />
                     <Route
                       exact
                       path={ApplicationRoutes.carPage}
-                      render={() => <CarPage cookies={cookies} car={car} />}
+                      render={() =>
+                        this.verifyUserLoggedIn() ? (
+                          <CarPage cookies={cookies} car={car} />
+                        ) : (
+                          <Redirect to="/" />
+                        )
+                      }
                     />
 
                     <Route

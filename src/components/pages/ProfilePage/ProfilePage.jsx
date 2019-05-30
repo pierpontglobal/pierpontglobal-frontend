@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { injectIntl } from 'react-intl';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { CircularProgress } from '@material-ui/core';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
@@ -46,7 +46,11 @@ const RouterWrapper = styled.div`
 
 const LoadingWrapper = styled.div`
   width: 100%;
-  height: 12px;
+  height: auto;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -168,8 +172,8 @@ class ProfilePage extends React.Component {
     return (
       loading ? 
         <LoadingWrapper>
-            <LinearProgress />
-        </LoadingWrapper> 
+            <CircularProgress />
+        </LoadingWrapper>
         : (
         <Wrapper>
           <DealerCreator show={!dealer || !subscription} hasDealer={!dealer} />

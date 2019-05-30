@@ -8,6 +8,7 @@ import CollectionMuiIcon from '@material-ui/icons/CollectionsBookmark';
 import styled from 'styled-components';
 import { withCookies } from 'react-cookie';
 import { FormattedMessage } from 'react-intl';
+import HelpIconMui from '@material-ui/icons/Help';
 import SliderOptions from '../../Slider/slider-options/SliderOptions';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import Slider from '../../Slider/Slider';
@@ -70,19 +71,18 @@ class MenuDrawer extends Component {
     const { open } = this.state;
 
     let menuOptions = [
-      { label: labelHome, icon: <Home color="primary" />, urlMatch: '/' },
       { label: labelMarket, icon: <DirectionsCar color="primary" />, urlMatch: '/marketplace' },
       { label: labelContact, icon: <Phone color="primary" />, urlMatch: '/contact-us' },
       { label: labelProfile, icon: <AccountCircle color="primary" />, urlMatch: '/user' },
+      { label: 'Help & support', icon: <HelpIconMui color="primary" />, urlMatch: '/support' },
       { label: 'My saved cars', icon: <CollectionMuiIcon color="primary" />, handleClick: this.showSavedCars },
     ];
 
     if (!this.userIsLoggedIn()) {
       menuOptions = [
-        { label: labelHome, icon: <Home color="primary" />, urlMatch: '/' },
-        { label: labelMarket, icon: <DirectionsCar color="primary" />, urlMatch: '/marketplace' },
+        { label: 'Help & support', icon: <HelpIconMui color="primary" />, urlMatch: '/support' },
         { label: labelContact, icon: <Phone color="primary" />, urlMatch: '/contact-us' },
-        { label: labelSignin, icon: <Input color="primary" />, handleClick: this.showLoginModal },
+        { label: labelSignin, icon: <Input color="primary" />, urlMatch: '/' },
       ];
     }
 

@@ -1,281 +1,452 @@
+/**
+ * @desc Rewrite Application Navbar - Wednesday, May 29 - 2019
+ * @author Daniel Peña
+ * 
+ */
+
 import React from 'react';
-import Img from 'react-image';
-import './styles.css';
-import HelpOutline from '@material-ui/icons/HelpOutline';
-import { withRouter } from 'react-router-dom';
-import BurgerIcon from '@material-ui/icons/Menu';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import { FormattedMessage } from 'react-intl';
-import SignInModal from '../support/SignInModal/SignInModal';
-import AccountManager from '../support/AccountManager';
+import { withRouter } from 'react-router-dom';
+import Img from 'react-image';
+import ArrowIconMui from '@material-ui/icons/KeyboardArrowDown';
+import BurgerIconMui from '@material-ui/icons/Menu';
+import AccountIconMui from '@material-ui/icons/AccountCircle';
+import { withCookies } from 'react-cookie';
+import UserMenuComponent from './UserMenu/UserMenuComponent';
+import SignInModal from '../support/SignInModal/SignInModal'; // Remove, it's jsut here to provide neccesary styles for the canvas element
+import { AppNavHeight } from '../../constants/ApplicationSettings';
+import ApplicationRoutes from '../../constants/Routes';
+import NotificatinBadge from './notification-badge/NotificatinBadge';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
-import LanguageSwitch from './language-switch/LanguageSwitch';
 
-
-const styles = () => ({
-  iconButton: {
-    '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0);',
-    },
-  },
-});
-
-const qs = require('query-string');
-
-const LinkBtn = styled.div`
-  font-weight: 600;
-  opacity: 0.54;
-  color: #000000;
-  line-height: 1.31;
-  text-decoration: 'none';
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const Help = styled.div`
-  width: 48px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  justify-items: center;
-  align-items: center;
-  cursor: pointer;
-  :hover::after {
-    content: 'Visit the tutorial page';
-    padding: 4px;
-    border-radius: 4px;
-    width: 100px;
-    font-size: 12px;
-    color: white;
-    background-color: rgb(59, 68, 75);
-    position: absolute;
-    top: 48px;
-    text-align: center;
-    font-weight: 200;
-    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
-    transition: 1s;
-  }
-  :hover::before {
-    content: '';
-    position: absolute;
-    top: 40px;
-    text-align: center;
-    font-weight: 200;
-    width: 0; 
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    position: absolute;
-    color: white;
-    border-bottom: 20px solid rgb(59, 68, 75);
-    transition: 1s;
-  }
-`;
-
-const AppNavWrapper = styled.div`
-  background-color: #fafafa;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.09);
-  border: solid 0.5px rgba(0, 0, 0, 0.12);
+const Wrapper = styled.div`
+  width: 100%;
+  height: ${`${AppNavHeight}px`};
   position: fixed;
-  height: 58px;
   top: 0;
-  overflow: show;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.16);
   z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
 `;
 
-const NavItems = styled.div`
-  display: flex;
-  justify-content: space-between;
+const AppNavWrapper = styled.div`
+  height: 100%;
   width: 100%;
-  align-items: center;
-  justify-items: center;
-  @media only screen and (min-width: 768px) {
-    max-width: 950px;
+  display: grid;
+  grid-template-columns: 2fr 6fr 3fr;
+  grid-template-rows: auto;
+
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
   }
 `;
 
-const BurgerBtn = styled.i`
-  color: #212529;
-  font-size: 1.7em;
-  opacity: 0.85;
-  margin: 4px 16px;
+const AppLogo = styled.div`
+  background: transparent;
+  align-items: center;
+  max-width: 160px;
+  border: none;
+  cursor: pointer;
+`;
+
+const LogoWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media only screen and (max-width: 768px) {
+    justify-content: flex-start;
+    margin-left: 12px;
+  }
+`;
+
+const MobileIcons = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
   @media only screen and (min-width: 768px) {
     display: none;
   }
 `;
 
-const LogoWrapper = styled.button`
-  background: transparent;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  justify-items: center;
-  overflow: visible;
-  width: 100%;
-  max-width: 170px;
-  left: 0px;
-  margin: auto;
-  border: none;
-  position: relative;
-  @media only screen and (min-width: 768px) {
-    position: relative;
-    margin: 0;
-  }
-`;
-
-const MenuLogoWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const ButtonsWrapper = styled.div`
+const BurgerWrapper = styled.div`
+  height: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const BurgerIcon = styled(BurgerIconMui)`
+  color: #000;
+  margin-right: 12px;
+`;
+
+const NavbarItems = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ProfileIconWrapper = styled.div`
+  height: 100%;
+  width: 220px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+`;
+
+const UserImageWrapper = styled.div`
+  position: relative;
+  & > img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 4px 0px rgb(0, 0, 0, 0.1);
+  }
+`;
+
+const UserNameWrapper = styled.div`
+  margin-left: 16px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  & > span {
+    color: darkgray;
+  }
+`;
+
+const ArrowWrapper = styled.div`
+  margin-left: 12px;
+  transition: all 0.2s;
+  transform: ${props => props.isOpen ? 'rotate(-180deg)' : 'none'};
+`;
+
+const ArrowIcon = styled(ArrowIconMui)`
+  color: darkgray;
+  cursor: pointer;
+`;
+
+const NavbarLinks = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const NavbarLink = styled.div`
+  width: auto;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 12px;
+  margin: 0px 12px;
+  cursor: pointer;
+  & > span {
+    font-size: ${props => props.active ? '1.05rem' : '1.0rem'};
+    font-weight: ${props => props.active ? '400' : '100'};
+    transition: all 0.2s;
+  }
+  &:hover {
+    & > span {
+      font-weight: 400;
+    }
+  }
+`;
+
+const BottomIndicator = styled.div`
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-color: ${props => props.active ? '#32619a' : 'white'};
+`;
+
+const CustomBagde = styled.div`
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: darkred;
+  position: absolute;
+  top: -4px;
+  right: -12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    color: white;
+    font-size: 0.65rem;
+  }
+`;
+
+const NotificatinBadgeWrapper = styled.div`
+  height: 100%;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
 `;
 
 class AppNav extends React.Component {
+
   constructor(props) {
     super(props);
-
     this.state = {
-      menuOpen: false,
-      showModal: false,
+      openSidemenu: false,
+      openUserMenu: false,
+      navbarLinks: [],
     };
-
-    this.openMenuSide = this.openMenuSide.bind(this);
-    this.onTouchEnd = this.onTouchEnd.bind(this);
-    this.optionClick = this.optionClick.bind(this);
-    this.showSignIn = this.showSignIn.bind(this);
   }
 
-  componentDidMount = () => {
-    setTimeout(() => {
-      this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-      console.log(this.params);
-      this.setState({
-        showModal: this.params.signIn || false,
-      });
-    }, 0);
+  componentWillMount = () => {
+    this.createNavbarLinks();
   }
 
-  onTouchEnd() {
-    this.setState({
-      menuOpen: false,
-    });
-  }
-
-  goTo = (path) => {
-    this.props.history.push(`/${path}`);
-  }
-
-  optionClick(url) {
-    if (url) {
-      this.props.history.push(url);
+  componentWillReceiveProps = (newProps) => {
+    if (!!newProps && !!newProps.location && !!newProps.location.pathname) {
+      this.selectActiveNavbarLink(newProps.location.pathname);
     }
+  }
+
+  selectActiveNavbarLink = (pathname) => {
+    let navbarLinks = [...this.state.navbarLinks];
+
+    navbarLinks.forEach(link => {
+      link.active = false;
+    });
+
+    if (window.location.href.includes(pathname)) {
+      let navbarLink = navbarLinks.filter(x => x.url === pathname)[0];
+      
+      if (!!navbarLink) {
+        const idx = navbarLinks.indexOf(navbarLink);
+        console.log('DEBUG >>>>');
+        console.log(navbarLinks, navbarLink, idx, pathname);
+        navbarLinks[idx].active = true;
+
+        this.setState({
+          navbarLinks
+        });
+      }
+    }
+  }
+
+  createNavbarLinks = () => {
+    let navbarLinks = [
+      {
+        label: 'Marketplace',
+        url: ApplicationRoutes.marketplace,
+        active: false,
+      },
+      {
+        label: 'Contact us',
+        url: ApplicationRoutes.contactPage,
+        active: false,
+      }
+    ];
     this.setState({
-      menuOpen: false,
+      navbarLinks
     });
   }
 
-  openMenuSide() {
+  toggelUserMenu = () => {
+    this.setState( (prevState) => ({
+      openUserMenu: !prevState.openUserMenu,
+    }))
+  }
+
+  handleSignOut = () => {
+    const { history } = this.props;
+    // remove cookies
+    this.removeCookies();
+    history.push(ApplicationRoutes.home);
+  }
+
+  removeCookies = () => {
+    const { cookies } = this.props;
+    cookies.remove('token', {path: '/'});
+    cookies.remove('one_signal_uuid', {path: '/'});
+  }
+
+  goToAction = (url) => {
+    const { openUserMenu, openSidemenu } = this.state;
+    if (openUserMenu) {
+      this.toggelUserMenu();
+    }
+
+    if (openSidemenu) {
+      this.onTouchEnd();
+    }
+
+    if (url.charAt(0) === '/') {
+      this.props.history.push(url);
+    } else {
+      this.props.history.push(`/${url}`);
+    }
+  }
+
+  handleOpenSavedCars = () => {
+    if (!!this.props.handleOpenSavedCars) {
+      this.toggelUserMenu();
+      this.props.handleOpenSavedCars();
+    }
+  }
+
+  handleDrawerOpen = () => {
     this.setState({
-      menuOpen: true,
+      openSidemenu: true,
     });
   }
 
-  showSignIn(status) {
+  onTouchEnd = () => {
     this.setState({
-      showModal: status,
+      openSidemenu: false,
     });
+  }
+
+  shortStringTo = (text, chars) => {
+    if (text && text.length > chars) {
+      let cutted = text.substr(0, chars);
+      cutted = cutted + "..."
+      return  cutted;
+    }
+    return text;
+  }
+
+  switchLanguage = (lang) => {
+    if (!!this.props.setLang) {
+      this.toggelUserMenu();
+      this.props.setLang(lang);
+    }
   }
 
   render() {
-    const { showModal, menuOpen } = this.state;
-    const {
-      dealer,
-      languages,
-      setLang,
-      history,
-    } = this.props;
+    const { openUserMenu, navbarLinks, openSidemenu } = this.state;
+    const { user, languages } = this.props;
 
-    window.historyManager = history;
-    const userIsLoggedIn = this.props.verifyUserLoggedIn();
+    const username = user.name ? this.shortStringTo(user.name, 18) : 'Car dealership';
 
     return (
-      <AppNavWrapper>
-        <SignInModal notifyClosed={() => { this.showSignIn(false); }} show={showModal} />
-        <NavItems userIsLoggedIn={userIsLoggedIn}>
-          <MenuDrawer
-            open={menuOpen}
-            onMaskClick={this.onTouchEnd}
-            afterOptionclick={this.optionClick}
-            showSignIn={() => { this.showSignIn(true); }}
-            showSavedCars={this.props.showSavedCars}
-            onRequestOpen={this.openMenuSide}
-            dealer={dealer}
-          />
-          <MenuLogoWrapper>
-            <BurgerBtn onClick={this.openMenuSide}>
-              <BurgerIcon />
-            </BurgerBtn>
-            <LogoWrapper onClick={() => this.goTo('')}>
-              <Img
-                style={{
-                  width: '100%',
-                  maxWidth: '170px',
-                  cursor: 'pointer',
-                }}
-                alt="PierpontGlobal"
-                className="logo"
-                src={[
-                  '/logos/sm_logo.webp',
-                  '/logos/sm_logo.jp2',
-                  '/logos/sm_logo.jxr',
-                  '/logos/sm_logo.png',
-                ]}
-                loader={
-                  <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
-                }
-              />
+      <>
+        <MenuDrawer
+          open={openSidemenu}
+          onMaskClick={this.onTouchEnd}
+          afterOptionclick={this.goToAction}
+          showSignIn={() => { this.showSignIn(true); }}
+          showSavedCars={this.handleOpenSavedCars}
+          onRequestOpen={this.handleDrawerOpen}
+        />
+        <Wrapper>
+          <AppNavWrapper>
+            <LogoWrapper>
+              <AppLogo>
+                <Img
+                  style={{
+                    width: '100%',
+                    cursor: 'pointer',
+                  }}
+                  alt="Pierpont Global, Inc"
+                  className="logo"
+                  src={[
+                    '/logos/sm_logo.webp',
+                    '/logos/sm_logo.jp2',
+                    '/logos/sm_logo.jxr',
+                    '/logos/sm_logo.png',
+                  ]}
+                  loader={
+                    <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
+                  }
+                />
+              </AppLogo>
             </LogoWrapper>
-          </MenuLogoWrapper>
-
-          <div className="menu-sider" id="nav-bar-sub-menu">
-            <LinkBtn data-cy="navbar-home" onClick={() => this.goTo('')}>
-              <FormattedMessage id="navbar.home" />
-            </LinkBtn>
-            <LinkBtn data-cy="navbar-marketplace" onClick={() => this.goTo('marketplace')}>
-              <FormattedMessage id="navbar.market" />
-            </LinkBtn>
-            <LinkBtn data-cy="navbar-contact" onClick={() => this.goTo('contact-us')}>
-              <FormattedMessage id="navbar.contact-us" />
-            </LinkBtn>
-          </div>
-
-          <ButtonsWrapper>
-            <AccountManager
-              history={this.props.history}
-              showSignIn={() => { this.showSignIn(true); }}
-            />
-            <LanguageSwitch setLang={setLang} languages={languages} />
-            <Help onClick={() => this.goTo('support/1')}>
-              <HelpOutline color="primary" />
-            </Help>
-          </ButtonsWrapper>
-        </NavItems>
-      </AppNavWrapper>
+            <MobileIcons>
+              <NotificatinBadgeWrapper>
+                <NotificatinBadge />
+              </NotificatinBadgeWrapper>
+              <BurgerWrapper onClick={this.handleDrawerOpen}>
+                <BurgerIcon />
+              </BurgerWrapper>
+            </MobileIcons>
+            <NavbarLinks>
+              {
+                navbarLinks.map((link, index) => (
+                  <NavbarLink key={index} active={link.active} onClick={() => this.goToAction(link.url)}>
+                    <span>
+                      {link.label}
+                    </span>
+                    <BottomIndicator active={link.active} />
+                  </NavbarLink>
+                ))
+              }
+            </NavbarLinks>
+            <NavbarItems>
+              <NotificatinBadgeWrapper>
+                <NotificatinBadge />
+              </NotificatinBadgeWrapper>
+              <ProfileIconWrapper>
+                <UserImageWrapper>
+                  <img alt={`${username} | Pierpont Global`} src="/images/no-user-photo.png" />
+                  {/* <CustomBagde>
+                    <span>1</span>
+                  </CustomBagde> */}
+                </UserImageWrapper>
+                <UserNameWrapper onClick={this.toggelUserMenu}>
+                  <span>
+                    { username }
+                  </span>
+                </UserNameWrapper>
+                <ArrowWrapper isOpen={openUserMenu} onClick={this.toggelUserMenu}r>
+                  <ArrowIcon />
+                </ArrowWrapper>
+                {
+                  !openUserMenu ? null : (
+                    <UserMenuComponent
+                      goToAction={this.goToAction}
+                      handleToggle={this.toggelUserMenu}
+                      handleSignOut={this.handleSignOut}
+                      handleOpenSavedCars={this.handleOpenSavedCars}
+                      switchLanguage={this.switchLanguage}
+                      languages={languages}
+                    />
+                  )
+                }
+              </ProfileIconWrapper>
+            </NavbarItems>
+          </AppNavWrapper>
+        </Wrapper>
+      </>
     );
   }
+
 }
 
-export default withStyles(styles)(withRouter(AppNav));
+export default withRouter(withCookies(AppNav));
