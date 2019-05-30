@@ -92,9 +92,7 @@ const SignInPage = props => {
           >
             Log In
           </AccentButton>
-          <BottomSection>
-            <a href="/support">Help?</a>
-          </BottomSection>
+          {/* <BottomSection><a href="/support">Help?</a></BottomSection> */}
         </WhiteLayer>
       </SignInBox>
     </SignInWrapper>

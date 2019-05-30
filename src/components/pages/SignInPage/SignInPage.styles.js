@@ -51,6 +51,9 @@ export const SignInForm = styled.div`
   border-radius: 15px;
   box-shadow: rgba(47, 64, 163, 0.3) 0px 0px 50px -10px !important;
   padding: 10px;
+  @media only screen and (max-width: 768px) {
+    margin: 100px auto 0;
+  }
 `;
 
 export const SignInBox = styled.div`
