@@ -91,6 +91,39 @@ const MenuTextWrapper = styled.div`
   align-items: center;
 `;
 
+const Submenu = styled.div`
+  width: 100%;
+  height: auto;
+`;
+
+const SubmenuLink = styled.div`
+  width: 100%;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 4fr;
+  grid-template-rows: auto;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #e6e6e6;
+  }
+`;
+
+const UserMenuLinkWithSubmenuWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #f4f4f4;
+  }
+`;
+
 const UserMenuLinkWithSubmenu = styled.div`
   width: 100%;
   height: 64px;
@@ -99,7 +132,6 @@ const UserMenuLinkWithSubmenu = styled.div`
   grid-template-rows: auto;
   cursor: pointer;
   transition: all 0.3s;
-
   &:hover {
     background-color: #f4f4f4;
   }
@@ -111,6 +143,8 @@ const ShowSubmenuWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.2s;
+  transform: ${props => props.show ? 'rotate(-180deg)' : 'none'};
 `;
 
 const ArrowIconSubmenu = styled(ArrowIconMui)`
@@ -139,17 +173,27 @@ const CollectionIcon = styled(CollectionsIconMui)`
 `;
 
 const LanguageIcon = styled(LanguageIconMui)`
-  color: #383838;er 
+  color: #383838;
 `;
 
 class UserMenuComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showLanguagesSubmenu: false,
+    }
+  }
 
+  toggleLanguagesSubmenu = () => {
+    this.setState((prevState) => ({
+      showLanguagesSubmenu: !prevState.showLanguagesSubmenu,
+    }));
   }
 
   render() {
     const { handleToggle, handleSignOut, goToAction, handleOpenSavedCars } = this.props;
+    const { showLanguagesSubmenu } = this.state;
+
     return (
       <>
         <OutsideClickHandler onClick={handleToggle} />
@@ -176,19 +220,49 @@ class UserMenuComponent extends React.Component {
                   </span>
                 </MenuTextWrapper>
               </UserMenuLink>
-              <UserMenuLinkWithSubmenu>
-                <MenuIconWrapper>
-                  <LanguageIcon />
-                </MenuIconWrapper>
-                <MenuTextWrapper>
-                  <span>
-                    Language
-                  </span>
-                </MenuTextWrapper>
-                <ShowSubmenuWrapper>
-                  <ArrowIconSubmenu />
-                </ShowSubmenuWrapper>
-              </UserMenuLinkWithSubmenu>
+              <UserMenuLinkWithSubmenuWrapper>
+                <UserMenuLinkWithSubmenu>
+                  <MenuIconWrapper>
+                    <LanguageIcon />
+                  </MenuIconWrapper>
+                  <MenuTextWrapper>
+                    <span>
+                      Language
+                    </span>
+                  </MenuTextWrapper>
+                  <ShowSubmenuWrapper show={showLanguagesSubmenu} onClick={this.toggleLanguagesSubmenu}>
+                    <ArrowIconSubmenu />
+                  </ShowSubmenuWrapper>
+                </UserMenuLinkWithSubmenu>
+                {
+                  !showLanguagesSubmenu ? null : (
+                    <Submenu show={showLanguagesSubmenu}>
+                      <SubmenuLink>
+                        <div></div>
+                        <MenuIconWrapper>
+                          ES
+                        </MenuIconWrapper>
+                        <MenuTextWrapper>
+                          <span>
+                            Spanish
+                          </span>
+                        </MenuTextWrapper>
+                      </SubmenuLink>
+                      <SubmenuLink>
+                        <div></div>
+                        <MenuIconWrapper>
+                          EN
+                        </MenuIconWrapper>
+                        <MenuTextWrapper>
+                          <span>
+                            English
+                          </span>
+                        </MenuTextWrapper>
+                      </SubmenuLink>
+                    </Submenu>
+                  )
+                }
+              </UserMenuLinkWithSubmenuWrapper>
               <UserMenuLink onClick={() => goToAction(ApplicationRoutes.supportPage)}>
                 <MenuIconWrapper>
                   <HelpIcon />

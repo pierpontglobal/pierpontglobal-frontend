@@ -15,5 +15,7 @@
         "camelcase",
         "Completionist",
         "conatiner"
-    ]
+    ],
+    "editor.fontSize": 18,
+    "editor.fontFamily": "Consolas, Menlo, Monaco, 'Courier New', monospace"
 }
