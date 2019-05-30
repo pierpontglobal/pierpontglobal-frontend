@@ -8,12 +8,12 @@ import {
   PasswordInput,
   PersonIcon,
   LockIcon,
-  SubmitButton,
   SubmitArrow,
   CircularProgress,
   EmailIcon,
   TermsOfUse,
 } from './styles/sign_up_styles';
+import { AccentButton } from '../../../../Defaults';
 
 class SignUpForm extends React.Component {
   state = {
@@ -26,35 +26,35 @@ class SignUpForm extends React.Component {
     isFullnameFocused: true,
     isEmailFocused: false,
     loading: false,
-  }
+  };
 
   focusElement = (e) => {
     let usrFocus = false;
     let pasFocus = false;
     let nameFocus = false;
     let emailFocus = false;
-    if (e.target.id === "username") {
+    if (e.target.id === 'username') {
       usrFocus = true;
       // document.getElementById('username').focus();
       document.getElementById('password').blur();
       document.getElementById('fullname').blur();
       document.getElementById('email').blur();
-    } else if (e.target.id === "password") {
+    } else if (e.target.id === 'password') {
       pasFocus = true;
       document.getElementById('password').focus();
-      //document.getElementById('username').blur();
+      // document.getElementById('username').blur();
       document.getElementById('fullname').blur();
       document.getElementById('email').blur();
-    } else if (e.target.id === "fullname") {
+    } else if (e.target.id === 'fullname') {
       nameFocus = true;
       document.getElementById('fullname').focus();
-      //document.getElementById('username').blur();
+      // document.getElementById('username').blur();
       document.getElementById('password').blur();
       document.getElementById('email').blur();
-    } else if (e.target.id === "email") {
+    } else if (e.target.id === 'email') {
       emailFocus = true;
       document.getElementById('email').focus();
-      //document.getElementById('username').blur();
+      // document.getElementById('username').blur();
       document.getElementById('password').blur();
       document.getElementById('fullname').blur();
     }
@@ -64,29 +64,38 @@ class SignUpForm extends React.Component {
       isFullnameFocused: nameFocus,
       isEmailFocused: emailFocus,
     });
-  }
+  };
 
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
     });
-  }
+  };
 
   handleSubmit = () => {
-    this.setState({
-      loading: true,
-    }, () => {
-      setTimeout(() => {
-        this.setState({
-          loading: false,
-        });
-      }, 3000);
-    })
-  }
+    this.setState(
+      {
+        loading: true,
+      },
+      () => {
+        setTimeout(() => {
+          this.setState({
+            loading: false,
+          });
+        }, 3000);
+      },
+    );
+  };
 
   render() {
-    const { isFullnameFocused, isUsernameFocused, isPasswordFocused, isEmailFocused, loading } = this.state;
-    return(
+    const {
+      isFullnameFocused,
+      isUsernameFocused,
+      isPasswordFocused,
+      isEmailFocused,
+      loading,
+    } = this.state;
+    return (
       <FormWrapper>
         <FormWrapperTitle>
           <span>Create an account</span>
@@ -94,7 +103,15 @@ class SignUpForm extends React.Component {
         <InputsWrapper>
           <Input>
             <PersonIcon isFocused={isFullnameFocused} />
-            <UsernameInput id="fullname" isFocused={isFullnameFocused} placeholder="Your full name" type="text" autoFocus onChange={this.handleChange} onFocus={this.focusElement} />
+            <UsernameInput
+              id="fullname"
+              isFocused={isFullnameFocused}
+              placeholder="Your full name"
+              type="text"
+              autoFocus
+              onChange={this.handleChange}
+              onFocus={this.focusElement}
+            />
           </Input>
           {/* <Input>
             <PersonIcon isFocused={isUsernameFocused} />
@@ -102,20 +119,35 @@ class SignUpForm extends React.Component {
           </Input> */}
           <Input>
             <EmailIcon isFocused={isEmailFocused} />
-            <UsernameInput id="email" isFocused={isEmailFocused} placeholder="Your email" type="email" onChange={this.handleChange} onFocus={this.focusElement} />
+            <UsernameInput
+              id="email"
+              isFocused={isEmailFocused}
+              placeholder="Your email"
+              type="email"
+              onChange={this.handleChange}
+              onFocus={this.focusElement}
+            />
           </Input>
           <Input>
             <LockIcon isFocused={isPasswordFocused} />
-            <PasswordInput id="password" isFocused={isPasswordFocused} placeholder="Your password" type="password" onChange={this.handleChange} onFocus={this.focusElement} />
+            <PasswordInput
+              id="password"
+              isFocused={isPasswordFocused}
+              placeholder="Your password"
+              type="password"
+              onChange={this.handleChange}
+              onFocus={this.focusElement}
+            />
           </Input>
-          <SubmitButton onClick={this.handleSubmit}>
+          <AccentButton style={{ width: '100%' }} onClick={this.handleSubmit}>
             Register
-            {
-              loading ? <CircularProgress /> : <SubmitArrow />
-            }
-          </SubmitButton>
+            {loading ? <CircularProgress /> : <SubmitArrow />}
+          </AccentButton>
           <TermsOfUse>
-            <span>By clicking "Register" you accept our terms and conditions.</span>
+            <span>
+              By clicking &quot;Register&quot; you accept our terms and
+              conditions.
+            </span>
           </TermsOfUse>
         </InputsWrapper>
       </FormWrapper>
