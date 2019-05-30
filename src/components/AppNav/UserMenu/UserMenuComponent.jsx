@@ -221,7 +221,7 @@ class UserMenuComponent extends React.Component {
                 </MenuTextWrapper>
               </UserMenuLink>
               <UserMenuLinkWithSubmenuWrapper>
-                <UserMenuLinkWithSubmenu>
+                <UserMenuLinkWithSubmenu onClick={this.toggleLanguagesSubmenu}>
                   <MenuIconWrapper>
                     <LanguageIcon />
                   </MenuIconWrapper>
@@ -230,7 +230,7 @@ class UserMenuComponent extends React.Component {
                       Language
                     </span>
                   </MenuTextWrapper>
-                  <ShowSubmenuWrapper show={showLanguagesSubmenu} onClick={this.toggleLanguagesSubmenu}>
+                  <ShowSubmenuWrapper show={showLanguagesSubmenu}>
                     <ArrowIconSubmenu />
                   </ShowSubmenuWrapper>
                 </UserMenuLinkWithSubmenu>
