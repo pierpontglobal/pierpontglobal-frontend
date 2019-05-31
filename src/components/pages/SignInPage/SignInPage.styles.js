@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TextField, CircularProgress } from "@material-ui/core";
+import { TextField, CircularProgress, Button } from "@material-ui/core";
 
 export const SignInWrapper = styled.div`
   width: 100%;
@@ -58,15 +58,16 @@ export const SignInForm = styled.div`
 
 export const SignInBox = styled.div`
   overflow: hidden;
-  width: 450px;
+  width: ${props => (props.big ? "748px" : "450px")};
   height: 70vh;
   position: absolute;
   background: rgba(255, 255, 255, 1);
-  margin-left: 15vw;
+  margin-left: ${props => (props.big ? "calc(50vw - 374px)" : "15vw")};
   margin-top: 15vh;
   border-radius: 15px;
   z-index: 2;
   box-shadow: rgba(47, 64, 163, 0.3) 0px 0px 50px -10px !important;
+  transition: 1s;
   @media only screen and (max-width: 768px) {
     width: 90vw;
     height: 70vh;
@@ -84,14 +85,17 @@ export const BlobLeft = styled.img`
   bottom: -160px;
   z-index: 1;
   transform: rotateZ(173deg);
+  transition: 1s;
 `;
 
 export const GlassBlobLeft = styled(BlobLeft)`
   position: absolute;
   filter: blur(5px);
   bottom: calc(-160px - 15vh);
-  left: calc(-300px - 15vw);
+  left: ${props =>
+    props.big ? "calc(-300px - (50vw - 374px))" : "calc(-300px - 15vw)"};
   z-index: 3;
+  transition: 1s;
   @media only screen and (max-width: 768px) {
     bottom: calc(-160px -15vh);
     left: calc(-300px - 5vw);
@@ -107,14 +111,19 @@ export const BlobRight = styled.img`
   top: -500px;
   z-index: 1;
   transform: rotateZ(190deg);
+  transition: 1s;
 `;
 
 export const GlassBlobRight = styled(BlobRight)`
   position: absolute;
   filter: blur(5px);
   top: calc(-500px - 15vh);
-  right: calc(-400px - (100vw - 15vw - 450px));
+  right: ${props =>
+    props.big
+      ? "calc(-400px - (100vw - (50vw - 374px) - 748px))"
+      : "calc(-400px - (100vw - 15vw - 450px))"};
   z-index: 3;
+  transition: 1s;
   @media only screen and (max-width: 768px) {
     top: calc(-500px - 15vh);
     right: calc(-400px - 5vw);
@@ -222,4 +231,11 @@ export const StatusMessage = styled.div`
   text-align: center;
   margin-top: 20px;
   display: ${props => (props.status ? "none" : "block")};
+`;
+
+export const SubscribeButton = styled(Button)`
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
+  color: #44539e !important;
 `;

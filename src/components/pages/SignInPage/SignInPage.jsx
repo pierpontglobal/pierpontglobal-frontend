@@ -20,7 +20,8 @@ import {
   BottomSection,
   Loader,
   LoaderWrapper,
-  StatusMessage
+  StatusMessage,
+  SubscribeButton
 } from "./SignInPage.styles";
 import { AccentButton, ApiServer } from "../../../Defaults";
 
@@ -54,72 +55,148 @@ function submit(
   );
 }
 
+const RegisterView = props => {
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    cookies,
+    setCookies,
+    loading,
+    setLoading,
+    status,
+    setStatus,
+    registerView,
+    setRegisterView
+  } = props;
+  return <>Registration</>;
+};
+
+const LoginView = props => {
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    cookies,
+    setCookies,
+    loading,
+    setLoading,
+    status,
+    setStatus,
+    registerView,
+    setRegisterView
+  } = props;
+  return (
+    <>
+      <Logo src="/images/signinpage/ppg_logo.svg" />
+      <Title>Welcome to PierpontGlobal</Title>
+      <Subtitle>Customer Login</Subtitle>
+      <SignInForm>
+        <Fields>
+          <LightInput full={username.length > 0}>
+            <input
+              type="text"
+              onChange={node => setUsername(node.target.value)}
+            />
+            <span>Username</span>
+          </LightInput>
+          <LightInput full={password.length > 0}>
+            <input
+              type="password"
+              onChange={node => setPassword(node.target.value)}
+            />
+            <span>Password</span>
+          </LightInput>
+        </Fields>
+      </SignInForm>
+      <StatusMessage status={status}>
+        Something went wrong, verify your credentials
+      </StatusMessage>
+      <AccentButton
+        style={{
+          width: "90%",
+          margin: "20px 5% 0",
+          borderRadius: "15px",
+          left: 0,
+          right: 0
+        }}
+        onClick={() => {
+          submit(
+            username,
+            password,
+            setCookies,
+            cookies,
+            setLoading,
+            setStatus
+          );
+        }}
+      >
+        Log In
+      </AccentButton>
+      <LoaderWrapper loading={loading}>
+        <Loader />
+      </LoaderWrapper>
+      {/* <BottomSection><a href="/support">Help?</a></BottomSection> */}
+    </>
+  );
+};
+
 const SignInPage = props => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(true);
+  const [registerView, setRegisterView] = useState(false);
 
   return (
     <SignInWrapper>
       <BlobLeft src="/images/signinpage/blob.svg" />
       <BlobRight src="/images/signinpage/blob.svg" />
       {/* <MainImage src="/images/signinpage/Dealer.svg" /> */}
-      <SignInBox>
-        <GlassBlobLeft src="/images/signinpage/blob.svg" />
-        <GlassBlobRight src="/images/signinpage/blob.svg" />
+      <SignInBox big={registerView}>
+        <GlassBlobLeft big={registerView} src="/images/signinpage/blob.svg" />
+        <GlassBlobRight big={registerView} src="/images/signinpage/blob.svg" />
         {/* <GlassMainImage src="/images/signinpage/Dealer.svg" /> */}
         <WhiteLayer>
-          <Logo src="/images/signinpage/ppg_logo.svg" />
-          <Title>Welcome to PierpontGlobal</Title>
-          <Subtitle>Customer Login</Subtitle>
-          <SignInForm>
-            <Fields>
-              <LightInput full={username.length > 0}>
-                <input
-                  type="text"
-                  onChange={node => setUsername(node.target.value)}
-                />
-                <span>Username</span>
-              </LightInput>
-              <LightInput full={password.length > 0}>
-                <input
-                  type="password"
-                  onChange={node => setPassword(node.target.value)}
-                />
-                <span>Password</span>
-              </LightInput>
-            </Fields>
-          </SignInForm>
-          <StatusMessage status={status}>
-            Something went wrong, verify your credentials
-          </StatusMessage>
-          <AccentButton
-            style={{
-              width: "90%",
-              margin: "20px 5% 0",
-              borderRadius: "15px",
-              left: 0,
-              right: 0
-            }}
+          <SubscribeButton
             onClick={() => {
-              submit(
-                username,
-                password,
-                setCookies,
-                cookies,
-                setLoading,
-                setStatus
-              );
+              setRegisterView(!registerView);
             }}
           >
-            Log In
-          </AccentButton>
-          <LoaderWrapper loading={loading}>
-            <Loader />
-          </LoaderWrapper>
-          {/* <BottomSection><a href="/support">Help?</a></BottomSection> */}
+            {registerView ? (
+              <>
+                <i className="material-icons">arrow_back</i>
+                Login to the platform{" "}
+              </>
+            ) : (
+              <>
+                Subscribe to the platform{" "}
+                <i className="material-icons">arrow_forward</i>
+              </>
+            )}
+          </SubscribeButton>
+
+          {registerView ? (
+            <RegisterView />
+          ) : (
+            <LoginView
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+              cookies={cookies}
+              setCookies={setCookies}
+              loading={loading}
+              setLoading={setLoading}
+              status={status}
+              setStatus={setStatus}
+              registerView={registerView}
+              setRegisterView={setRegisterView}
+            />
+          )}
         </WhiteLayer>
       </SignInBox>
     </SignInWrapper>
