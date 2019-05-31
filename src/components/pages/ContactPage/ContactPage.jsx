@@ -80,6 +80,10 @@ const HeaderContent = styled.div`
   position: absolute;
   background: transparent;
   top: 25%;
+
+  @media only screen and (max-width: 768px) {
+    top: 2%;
+  }
 `;
 
 const PageTitle = styled.div`
@@ -93,6 +97,12 @@ const PageTitle = styled.div`
     color: white;
     font-weight: 400;
   }
+
+  @media only screen and (max-width: 768px) {
+    & > span {
+    font-size: 2.0rem;
+    }
+  }
 `;
 
 const PageDescripcion = styled.div`
@@ -101,10 +111,17 @@ const PageDescripcion = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   & > span {
     font-size: 1.45rem;
     color: #fefefe;
     font-weight: 100;
+  }
+
+  @media only screen and (max-width: 768px) {
+    & > span {
+    font-size: 1.15rem;
+    }
   }
 `;
 
@@ -136,7 +153,7 @@ const FormRightWrapper = styled.div`
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 
-  @media only screen and (max0width: 768px) {
+  @media only screen and (max-width: 768px) {
     display: none;
   }
 `;
