@@ -17,11 +17,22 @@ import {
   SignInForm,
   LightInput,
   Fields,
-  BottomSection
+  BottomSection,
+  Loader,
+  LoaderWrapper,
+  StatusMessage
 } from "./SignInPage.styles";
 import { AccentButton, ApiServer } from "../../../Defaults";
 
-function submit(username, password, setCookies, getCookies) {
+function submit(
+  username,
+  password,
+  setCookies,
+  getCookies,
+  setLoading,
+  setStatus
+) {
+  setLoading(true);
   const data = {
     username,
     password,
@@ -36,7 +47,10 @@ function submit(username, password, setCookies, getCookies) {
         one_signal_uuid: getCookies["one_signal_uuid"]
       });
     },
-    err => {}
+    err => {
+      setLoading(false);
+      setStatus(false);
+    }
   );
 }
 
@@ -44,8 +58,8 @@ const SignInPage = props => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cookies, setCookies] = useCookies();
-
-  console.log(cookies);
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(true);
 
   return (
     <SignInWrapper>
@@ -78,6 +92,9 @@ const SignInPage = props => {
               </LightInput>
             </Fields>
           </SignInForm>
+          <StatusMessage status={status}>
+            Something went wrong, verify your credentials
+          </StatusMessage>
           <AccentButton
             style={{
               width: "90%",
@@ -87,11 +104,21 @@ const SignInPage = props => {
               right: 0
             }}
             onClick={() => {
-              submit(username, password, setCookies, cookies);
+              submit(
+                username,
+                password,
+                setCookies,
+                cookies,
+                setLoading,
+                setStatus
+              );
             }}
           >
             Log In
           </AccentButton>
+          <LoaderWrapper loading={loading}>
+            <Loader />
+          </LoaderWrapper>
           {/* <BottomSection><a href="/support">Help?</a></BottomSection> */}
         </WhiteLayer>
       </SignInBox>

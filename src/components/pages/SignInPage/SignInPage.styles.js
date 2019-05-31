@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TextField } from "@material-ui/core";
+import { TextField, CircularProgress } from "@material-ui/core";
 
 export const SignInWrapper = styled.div`
   width: 100%;
@@ -68,11 +68,10 @@ export const SignInBox = styled.div`
   z-index: 2;
   box-shadow: rgba(47, 64, 163, 0.3) 0px 0px 50px -10px !important;
   @media only screen and (max-width: 768px) {
-    width: 100vw;
-    height: 100vh;
-    margin-left: 0vw;
-    margin-top: 0vh;
-    border-radius: 0;
+    width: 90vw;
+    height: 70vh;
+    margin-left: 5vw;
+    margin-top: 15vh;
   }
 `;
 
@@ -94,8 +93,8 @@ export const GlassBlobLeft = styled(BlobLeft)`
   left: calc(-300px - 15vw);
   z-index: 3;
   @media only screen and (max-width: 768px) {
-    bottom: calc(-14vh);
-    left: calc(-20vw);
+    bottom: calc(-160px -15vh);
+    left: calc(-300px - 5vw);
   }
 `;
 
@@ -117,8 +116,8 @@ export const GlassBlobRight = styled(BlobRight)`
   right: calc(-400px - (100vw - 15vw - 450px));
   z-index: 3;
   @media only screen and (max-width: 768px) {
-    bottom: calc(-50vh);
-    left: calc(40vw);
+    top: calc(-500px - 15vh);
+    right: calc(-400px - 5vw);
   }
 `;
 
@@ -201,4 +200,26 @@ export const BottomSection = styled.div`
   > span {
     color: gray;
   }
+`;
+
+export const LoaderWrapper = styled.div`
+  display: ${props => (props.loading ? "flex" : "none")};
+  padding: 20px;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+`;
+
+export const Loader = styled(CircularProgress)`
+  > svg {
+    color: #fe6b8b !important;
+  }
+`;
+
+export const StatusMessage = styled.div`
+  color: darkred;
+  text-align: center;
+  margin-top: 20px;
+  display: ${props => (props.status ? "none" : "block")};
 `;
