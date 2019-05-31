@@ -3,9 +3,75 @@
  * @author Daniel Peña
  */
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+import ArrowIconMui from '@material-ui/icons/KeyboardArrowLeft';
+import FullscreenIconMui from '@material-ui/icons/Fullscreen';
 
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
+import MemberCard from './MemberCard/MemberCard';
+
+const exitForm = keyframes`
+  to {
+    opacity: 0;
+    transform: translateY(400px);
+  }
+`;
+
+const enterForm = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(400px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+`;
+
+const fullTopBackground = keyframes`
+  to {
+    height: 100%;
+    position: static;
+    background: transparent;
+  }
+`;
+
+const fullBottomBackground = keyframes`
+  99% {
+    height: 0%;
+  }
+  100% {
+    display: none;
+  }
+`;
+
+const normalBottomBackground = keyframes`
+  99% {
+    height: 40%;
+  }
+  100% {
+    display: block;
+  }
+`;
+
+const normalTopBackground = keyframes`
+  to {
+    height: 60%;
+    position: relative;
+  }
+`;
+
+const fullMapWrapper = keyframes`
+  to {
+    opacity: 1;
+  }
+`;
+
+const normalMapWrapper = keyframes`
+  to {
+    opacity: 0.3;
+  }
+`;
 
 
 const Wrapper = styled.div`
@@ -21,6 +87,9 @@ const TopBackground = styled.div`
   height: 60%;
   background-color: black;
   position: relative;
+
+  animation: ${props => props.isFullscreen ? css`${fullTopBackground} 0.3s ease-in-out` : css`${normalTopBackground} 0.3s ease-in-out`};
+  animation-fill-mode: forwards;
 `;
 
 const BottomBackground = styled.div`
@@ -33,10 +102,17 @@ const BottomBackground = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  animation: ${props => props.isFullscreen ? css`${fullBottomBackground} 0.3s ease-in-out` : css`${normalBottomBackground} 0.3s ease-in-out`};
+  animation-fill-mode: forwards;
+
   & > svg {
     position: absolute;
     top: -50%;
     left: 0;
+    z-index: 500;
+    & > path {
+      fill: rgb(0, 0, 0, 0.02);
+    }
   }
 `;
 
@@ -48,7 +124,9 @@ const FromWrapper = styled.div`
   height: 120%;
   width: 55%;
   position: absolute;
-  z-index: 300;
+  z-index: 800;
+  animation: ${props => props.isFullscreen ? css`${exitForm} 0.3s ease-in-out` : css`${enterForm} 0.3s ease-in-out`};
+  animation-fill-mode: forwards;
 
   @media only screen and (max-width: 768px) {
     width: 95%;
@@ -131,6 +209,7 @@ const FormLeftWrapper = styled.div`
   display: grid;
   grid-template-rows: 1fr 3fr;
   grid-template-columns: auto;
+  position: relative;
 `;
 
 const FormTitle = styled.div`
@@ -149,9 +228,14 @@ const FormTitle = styled.div`
 const FormRightWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: lightgray;
+  background-color: #f9f9f9;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 
   @media only screen and (max-width: 768px) {
     display: none;
@@ -179,6 +263,8 @@ const MapWrapper = styled.div`
     border: none;
     z-index: 100;
     opacity: 0.3;
+    animation: ${props => props.isFullscreen ? css`${fullMapWrapper} 0.3s ease-in-out 0.3s` : css`${normalMapWrapper} 0.3s ease-in-out 0.3s`};
+    animation-fill-mode: forwards;
   }
 `;
 
@@ -186,8 +272,45 @@ const ContactForm = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  padding: 16px;
   justify-content: center;
   align-items: center;
+`;
+
+const ShowHideWrapper = styled.div`
+  position: absolute;
+  right: -12px;
+  top: calc(50% - 8px);
+  border-radius: 50%;
+  background-color: black;
+  cursor: pointer;
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ShowHideIcon = styled(ArrowIconMui)`
+  color: white;
+`;
+
+const FullscreenIcon = styled(FullscreenIconMui)`
+  color: #fefefe;
+  font-size: 1.6rem;
+  transition: all 0.3s;
+`;
+
+const FullscreenIconWrapper = styled.div`
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 800;
+  transition: all 0.3s;
+  &:hover ${FullscreenIcon} {
+    font-size: 2.0rem;
+  }
 `;
 
 class ContactPage extends React.Component {
@@ -197,34 +320,43 @@ class ContactPage extends React.Component {
       fullname: '',
       email: '',
       message: '',
+      isFullscreen: false,
     }
   }
 
+  toggleFullscreen = () => {
+    this.setState((prevState) => ({
+      isFullscreen: !prevState.isFullscreen,
+    }));
+  }
+
   render() {
+    const { isFullscreen } = this.state;
     return(
       <Wrapper>
-        <TopBackground>
+        <TopBackground isFullscreen={isFullscreen}>
           <MapWrapper>
             <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" frameBorder="0" allowFullScreen />
           </MapWrapper>
           <HeaderContent>
             <PageTitle>
-              <span>Get in touch</span>
+              <span>Hi Daniel, </span>
             </PageTitle>
             <PageDescripcion>
-              <span>Some awsome description for the page here.</span>
+              <span>
+                Here are differents ways to get in touch with us.
+              </span>
             </PageDescripcion>
           </HeaderContent>
+          <FullscreenIconWrapper onClick={this.toggleFullscreen}>
+            <FullscreenIcon />
+          </FullscreenIconWrapper>
         </TopBackground>
-        <BottomBackground>
-          {/* <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" fill="url(#fill-gradient);">
-            <linearGradient id="fill-gradient" >
-              <stop offset="50%" stop-color="white" />
-              <stop offset="57%" stop-color="white" />
-            </linearGradient>
-            <path d="M0 50 C 21 10, 65 6, 50 50 S 79 94, 100 50 S" stroke="black" strokeWidth="0px" fill="url(#fill-gradient);" />
+        <BottomBackground isFullscreen={isFullscreen}>
+          {/* <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 50 C 21 10, 65 6, 50 50 S 79 94, 100 50" stroke="black" strokeWidth="0px" />
           </svg> */}
-          <FromWrapper>
+          <FromWrapper isFullscreen={isFullscreen}>
             <FormContentWrapper>
               <FormLeftWrapper>
                 <FormTitle>
@@ -235,9 +367,13 @@ class ContactPage extends React.Component {
                 <ContactForm>
                   Contact form here...
                 </ContactForm>
+                <ShowHideWrapper>
+                  <ShowHideIcon />
+                </ShowHideWrapper>
               </FormLeftWrapper>
               <FormRightWrapper>
-                some awsome desing here...
+                <MemberCard />
+                <MemberCard />
               </FormRightWrapper>
             </FormContentWrapper>
           </FromWrapper>
