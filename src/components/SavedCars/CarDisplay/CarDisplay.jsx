@@ -16,22 +16,21 @@ const CarDisplayWrapper = styled.div`
   background-color: rgb(140, 140, 140, 0.7);
   display: grid;
   grid-template-columns: 30% 70%;
-  position: relative;
   opacity: 0;
-  bottom: 80px;
   box-shadow: 0px 0px 2px 0px rgb(0, 0, 0, 0.1);
   animation: 0.55s slide-in ease-in-out ${props => props.delay ? props.delay : '0s'};
   animation-fill-mode: forwards;
   margin-bottom: 16px;
   cursor: pointer;
+  
   @keyframes slide-in {
     0% {
       opacity: 0;
-      bottom: 80px;
+      transform: translateX(80px);
     }
     100% {
       opacity: 1;
-      position: inline-block;
+      transform: translateX(0px);
     }
   }
 `;
@@ -51,6 +50,7 @@ const CarInfo = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const CarTitle = styled.div`
@@ -97,13 +97,13 @@ class CarDisplay extends Component {
     const { delay, car, } = this.props;
     return(
       <CarDisplayWrapper delay={delay} onClick={(node) => this.goToCarDetail(node, car.vin)}>
-        <CloseIconWrapper id="close-button" onClick={() => this.removeSavedCar(car.vin)}>
-          <CloseIcon />
-        </CloseIconWrapper>
         <CarImage>
           <img src={car.photo} alt={`Pierpont global | ${car.car_model} ${car.car_maker} ${car.year} ${car.engine}`} />
         </CarImage>
         <CarInfo>
+          <CloseIconWrapper id="close-button" onClick={() => this.removeSavedCar(car.vin)}>
+            <CloseIcon />
+          </CloseIconWrapper>
           <CarTitle>
             <span>{ car.car_maker } - <span>{ car.car_model }</span></span>
           </CarTitle>
