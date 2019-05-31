@@ -173,10 +173,12 @@ const NavbarLink = styled.div`
     font-size: ${props => props.active ? '1.05rem' : '1.0rem'};
     font-weight: ${props => props.active ? '400' : '100'};
     transition: all 0.2s;
+    font-weight: 400;
+    color: rgb(0, 0, 0, 0.6);
   }
   &:hover {
     & > span {
-      font-weight: 400;
+      color: rgb(0, 0, 0, 1);
     }
   }
 `;
