@@ -15,15 +15,30 @@ import {
   Title,
   Subtitle,
   SignInForm,
-  LightInput,
   Fields,
   BottomSection,
   Loader,
   LoaderWrapper,
   StatusMessage,
-  SubscribeButton
+  SubscribeButton,
+  RegistrationWrapper,
+  Stepper
 } from "./SignInPage.styles";
 import { AccentButton, ApiServer } from "../../../Defaults";
+import SimpleInput from "./SimpleInput/SimpleInput";
+import styled from "styled-components";
+
+import { Steps, Icon } from "antd";
+import "antd/dist/antd.css";
+import "antd/lib/steps/style";
+import "./SignInPage.styles.less";
+const { Step } = Steps;
+
+const LargeSteps = styled(Steps)`
+  height: 80% !important;
+  display: flex !important;
+  flex-direction: column !important;
+`;
 
 function submit(
   username,
@@ -56,38 +71,46 @@ function submit(
 }
 
 const RegisterView = props => {
-  const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    cookies,
-    setCookies,
-    loading,
-    setLoading,
-    status,
-    setStatus,
-    registerView,
-    setRegisterView
-  } = props;
-  return <>Registration</>;
+  const [current, setCurrent] = useState(0);
+
+  return (
+    <RegistrationWrapper>
+      <Stepper>
+        <LargeSteps direction="vertical" current={current}>
+          <Step
+            title="User information"
+            description="Provide your basic user information"
+            icon={<Icon type="user" />}
+          />
+          <Step
+            title="Verify your account"
+            description="Verify that you are you, check your email!"
+            icon={<Icon type="check" />}
+          />
+          <Step
+            title="Dealer information"
+            description="Tell us about your dealer"
+            icon={<Icon type="environment" />}
+          />
+          <Step
+            title="Subscription"
+            description="Process the payment of your subscription"
+            icon={<Icon type="credit-card" />}
+          />
+        </LargeSteps>
+      </Stepper>
+      <div />
+    </RegistrationWrapper>
+  );
 };
 
 const LoginView = props => {
-  const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    cookies,
-    setCookies,
-    loading,
-    setLoading,
-    status,
-    setStatus,
-    registerView,
-    setRegisterView
-  } = props;
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [cookies, setCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(true);
+
   return (
     <>
       <Logo src="/images/signinpage/ppg_logo.svg" />
@@ -95,20 +118,18 @@ const LoginView = props => {
       <Subtitle>Customer Login</Subtitle>
       <SignInForm>
         <Fields>
-          <LightInput full={username.length > 0}>
-            <input
-              type="text"
-              onChange={node => setUsername(node.target.value)}
-            />
-            <span>Username</span>
-          </LightInput>
-          <LightInput full={password.length > 0}>
-            <input
-              type="password"
-              onChange={node => setPassword(node.target.value)}
-            />
-            <span>Password</span>
-          </LightInput>
+          <SimpleInput
+            value={username}
+            label="Username"
+            type="text"
+            onChange={node => setUsername(node.target.value)}
+          />
+          <SimpleInput
+            value={password}
+            label="Password"
+            type="password"
+            onChange={node => setPassword(node.target.value)}
+          />
         </Fields>
       </SignInForm>
       <StatusMessage status={status}>
@@ -144,11 +165,6 @@ const LoginView = props => {
 };
 
 const SignInPage = props => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [cookies, setCookies] = useCookies();
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(true);
   const [registerView, setRegisterView] = useState(false);
 
   return (
@@ -179,24 +195,7 @@ const SignInPage = props => {
             )}
           </SubscribeButton>
 
-          {registerView ? (
-            <RegisterView />
-          ) : (
-            <LoginView
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-              cookies={cookies}
-              setCookies={setCookies}
-              loading={loading}
-              setLoading={setLoading}
-              status={status}
-              setStatus={setStatus}
-              registerView={registerView}
-              setRegisterView={setRegisterView}
-            />
-          )}
+          {registerView ? <RegisterView /> : <LoginView />}
         </WhiteLayer>
       </SignInBox>
     </SignInWrapper>

@@ -33,14 +33,14 @@ export const Title = styled.div`
   font-weight: 900;
   font-size: 24px;
   margin-top: 20px;
-  color: #44539e;
+  color: #3b444b;
 `;
 
 export const Subtitle = styled.div`
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 20px;
-  color: #44539e;
+  color: #3b444b;
 `;
 
 export const SignInForm = styled.div`
@@ -86,6 +86,7 @@ export const BlobLeft = styled.img`
   z-index: 1;
   transform: rotateZ(173deg);
   transition: 1s;
+  opacity: 0.3;
 `;
 
 export const GlassBlobLeft = styled(BlobLeft)`
@@ -112,6 +113,7 @@ export const BlobRight = styled.img`
   z-index: 1;
   transform: rotateZ(190deg);
   transition: 1s;
+  opacity: 0.3;
 `;
 
 export const GlassBlobRight = styled(BlobRight)`
@@ -161,42 +163,6 @@ export const Fields = styled.div`
   grid-template-rows: 50% 50%;
 `;
 
-export const LightInput = styled.div`
-  position: relative;
-  > span {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    height: 28px;
-    cursor: text;
-    left: 20px;
-    color: gray;
-    font-size: 20px;
-    font-weight: 200;
-    z-index: ${props => (props.full === true ? "60" : "20")};
-    transition: all 0.5s;
-    transform: ${props =>
-      props.full === true
-        ? "translateY(-23px) translateX(-30px) scale(0.8)"
-        : ""};
-  }
-  > input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    z-index: 40;
-    font-size: 24px;
-    position: absolute;
-    border: none;
-    outline: none;
-    :focus + span {
-      transform: translateY(-23px) translateX(-30px) scale(0.8);
-      z-index: 60;
-    }
-  }
-`;
-
 export const BottomSection = styled.div`
   display: flex;
   justify-content: space-between;
@@ -237,5 +203,39 @@ export const SubscribeButton = styled(Button)`
   position: absolute !important;
   top: 10px;
   right: 10px;
-  color: #44539e !important;
+  color: #3b444b !important;
+  z-index: 40;
+`;
+
+export const RegistrationWrapper = styled.div`
+  display: grid;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  top: 0;
+  left: 0;
+  grid-template-rows: 100%;
+  grid-template-columns: 35% 65%;
+  z-index: 30;
+  @media only screen and (max-width: 768px) {
+    grid-template-rows: 20% 80%;
+    grid-template-columns: 100%;
+  }
+`;
+
+export const Stepper = styled.div`
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(330deg, rgb(115, 88, 255), rgb(123, 223, 242));
+  transition: 1s;
+  padding: 10%;
+  @media only screen and (max-width: 768px) {
+    background: linear-gradient(150deg, rgb(115, 88, 255), rgb(123, 223, 242));
+  }
 `;
