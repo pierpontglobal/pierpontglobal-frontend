@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { TextField, CircularProgress, Button } from "@material-ui/core";
+import { Steps } from "antd";
 
 export const SignInWrapper = styled.div`
   width: 100%;
@@ -232,10 +233,35 @@ export const Stepper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  background: linear-gradient(330deg, rgb(115, 88, 255), rgb(123, 223, 242));
+  background: linear-gradient(
+    330deg,
+    rgba(115, 88, 255, 0.3),
+    rgba(123, 223, 242, 0.3)
+  );
   transition: 1s;
   padding: 10%;
   @media only screen and (max-width: 768px) {
-    background: linear-gradient(150deg, rgb(115, 88, 255), rgb(123, 223, 242));
+    background: linear-gradient(
+      150deg,
+      rgba(115, 88, 255, 0.3),
+      rgba(123, 223, 242, 0.3)
+    );
+    padding: 0 40px;
+
+    justify-content: center;
+    justify-items: center;
+    align-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column !important;
+  }
+`;
+
+export const LargeSteps = styled(Steps)`
+  height: 80% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  @media only screen and (max-width: 768px) {
+    height: auto !important;
+    flex-direction: row !important;
   }
 `;

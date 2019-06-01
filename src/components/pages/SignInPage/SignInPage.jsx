@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import MediaQuery from "react-responsive";
 import {
   SignInWrapper,
   SignInBox,
@@ -22,7 +23,8 @@ import {
   StatusMessage,
   SubscribeButton,
   RegistrationWrapper,
-  Stepper
+  Stepper,
+  LargeSteps
 } from "./SignInPage.styles";
 import { AccentButton, ApiServer } from "../../../Defaults";
 import SimpleInput from "./SimpleInput/SimpleInput";
@@ -32,13 +34,8 @@ import { Steps, Icon } from "antd";
 import "antd/dist/antd.css";
 import "antd/lib/steps/style";
 import "./SignInPage.styles.less";
+import { LightButton } from "../sign-in-page/styles/sign_in_styles";
 const { Step } = Steps;
-
-const LargeSteps = styled(Steps)`
-  height: 80% !important;
-  display: flex !important;
-  flex-direction: column !important;
-`;
 
 function submit(
   username,
@@ -76,30 +73,89 @@ const RegisterView = props => {
   return (
     <RegistrationWrapper>
       <Stepper>
-        <LargeSteps direction="vertical" current={current}>
-          <Step
-            title="User information"
-            description="Provide your basic user information"
-            icon={<Icon type="user" />}
-          />
-          <Step
-            title="Verify your account"
-            description="Verify that you are you, check your email!"
-            icon={<Icon type="check" />}
-          />
-          <Step
-            title="Dealer information"
-            description="Tell us about your dealer"
-            icon={<Icon type="environment" />}
-          />
-          <Step
-            title="Subscription"
-            description="Process the payment of your subscription"
-            icon={<Icon type="credit-card" />}
-          />
-        </LargeSteps>
+        <MediaQuery minDeviceWidth={769}>
+          <LargeSteps direction="vertical" current={current}>
+            <Step
+              title="User information"
+              description="Provide your basic user information"
+              icon={<Icon type="user" />}
+            />
+            <Step
+              title="Verify your account"
+              description="Verify that you are you, check your email!"
+              icon={<Icon type="solution" />}
+            />
+            <Step
+              title="Dealer information"
+              description="Tell us about your dealer"
+              icon={<Icon type="environment" />}
+            />
+            <Step
+              title="Subscription"
+              description="Process the payment of your subscription"
+              icon={<Icon type="credit-card" />}
+            />
+          </LargeSteps>
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={768}>
+          {() => {
+            switch (current) {
+              case 1:
+                return (
+                  <>
+                    <Title>Verify your account</Title>
+                    <Subtitle>
+                      Verify that you are you, check your email!
+                    </Subtitle>
+                  </>
+                );
+              case 2:
+                return (
+                  <>
+                    <Title>Dealer information</Title>
+                    <Subtitle>Tell us about your dealer</Subtitle>
+                  </>
+                );
+              case 3:
+                return (
+                  <>
+                    <Title>Subscription</Title>
+                    <Subtitle>
+                      Process the payment of your subscription
+                    </Subtitle>
+                  </>
+                );
+              default:
+                return (
+                  <>
+                    <Title>User information</Title>
+                    <Subtitle>Provide your basic user information</Subtitle>
+                  </>
+                );
+            }
+          }}
+        </MediaQuery>
       </Stepper>
-      <div />
+      <div>
+        <LightButton
+          onClick={() => {
+            if (current - 1 > -1) {
+              setCurrent(current - 1);
+            }
+          }}
+        >
+          Back Step
+        </LightButton>
+        <LightButton
+          onClick={() => {
+            if (current + 1 < 4) {
+              setCurrent(current + 1);
+            }
+          }}
+        >
+          Next Step
+        </LightButton>
+      </div>
     </RegistrationWrapper>
   );
 };
