@@ -70,6 +70,38 @@ function submit(
 const RegisterView = props => {
   const [current, setCurrent] = useState(0);
 
+  let phoneView = <></>;
+  switch (current) {
+    case 1:
+      phoneView = (
+        <>
+          <Title>Verify your account</Title>
+          <Subtitle>Verify that you are you, check your email!</Subtitle>
+        </>
+      );
+    case 2:
+      phoneView = (
+        <>
+          <Title>Dealer information</Title>
+          <Subtitle>Tell us about your dealer</Subtitle>
+        </>
+      );
+    case 3:
+      phoneView = (
+        <>
+          <Title>Subscription</Title>
+          <Subtitle>Process the payment of your subscription</Subtitle>
+        </>
+      );
+    default:
+      phoneView = (
+        <>
+          <Title>User information</Title>
+          <Subtitle>Provide your basic user information</Subtitle>
+        </>
+      );
+  }
+
   return (
     <RegistrationWrapper>
       <Stepper>
@@ -97,44 +129,7 @@ const RegisterView = props => {
             />
           </LargeSteps>
         </MediaQuery>
-        <MediaQuery maxDeviceWidth={768}>
-          {() => {
-            switch (current) {
-              case 1:
-                return (
-                  <>
-                    <Title>Verify your account</Title>
-                    <Subtitle>
-                      Verify that you are you, check your email!
-                    </Subtitle>
-                  </>
-                );
-              case 2:
-                return (
-                  <>
-                    <Title>Dealer information</Title>
-                    <Subtitle>Tell us about your dealer</Subtitle>
-                  </>
-                );
-              case 3:
-                return (
-                  <>
-                    <Title>Subscription</Title>
-                    <Subtitle>
-                      Process the payment of your subscription
-                    </Subtitle>
-                  </>
-                );
-              default:
-                return (
-                  <>
-                    <Title>User information</Title>
-                    <Subtitle>Provide your basic user information</Subtitle>
-                  </>
-                );
-            }
-          }}
-        </MediaQuery>
+        <MediaQuery maxDeviceWidth={768}>{phoneView}</MediaQuery>
       </Stepper>
       <div>
         <LightButton
