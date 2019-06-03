@@ -5,6 +5,7 @@ import { CircularProgress } from '@material-ui/core';
 import styled from 'styled-components';
 import CheckIconMui from '@material-ui/icons/Check';
 import axios from 'axios';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import { ApiServer } from '../../../../Defaults';
 
@@ -257,7 +258,7 @@ class ContactForm extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
     const { username, email, message, isLoading, messageSent } = this.state;
 
     return (
@@ -266,17 +267,13 @@ class ContactForm extends React.Component {
           isLoading ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : messageSent ? 
             <SuccessWrapper>
               <SuccessTitle>
-                <span>
-                  Message has been sent succesfully!
-                </span>
+                <FormattedMessage id="contact-page.form.success-title" />
               </SuccessTitle>
               <SuccessMessage>
-                <span>
-                  In less than 24 hours a member of our team will be contacting you.
-                </span>
+                <FormattedMessage id="contact-page.form.success-message" />
               </SuccessMessage>
               <div style={{ marginTop: '16px' }}>
-                <SendOtherLink onClick={this.sendOther}>Send other</SendOtherLink>
+                <SendOtherLink onClick={this.sendOther}><FormattedMessage id="contact-page.form.send-other" /></SendOtherLink>
               </div>
             </SuccessWrapper> : (
             <>
@@ -284,7 +281,7 @@ class ContactForm extends React.Component {
                 <TextField
                   id="username"
                   error={username.error}
-                  label="Full name"
+                  label={intl.formatMessage({ id: 'contact-page.form.name' })}
                   value={username.value}
                   margin="normal"
                   className={classes.textField}
@@ -297,7 +294,7 @@ class ContactForm extends React.Component {
                   required
                   id="email"
                   error={email.error}
-                  label="Email"
+                  label={intl.formatMessage({ id: 'contact-page.form.email' })}
                   value={email.value}
                   onChange={this.handleChange}
                   margin="normal"
@@ -309,7 +306,7 @@ class ContactForm extends React.Component {
                 <TextField
                   id="message"
                   error={message.error}
-                  label="Message..."
+                  label={intl.formatMessage({ id: 'contact-page.form.message' })}
                   multiline
                   rowsMax="6"
                   rows="6"
@@ -322,9 +319,7 @@ class ContactForm extends React.Component {
               </MessageInput>
               <SubmitButtonWrapper>
                 <SubmitButton onClick={this.validateMessage}>
-                  <span>
-                    Send
-                  </span>
+                  <FormattedMessage id="contact-page.form.send" />
                 </SubmitButton>
               </SubmitButtonWrapper>
             </>
@@ -335,4 +330,4 @@ class ContactForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(ContactForm);
+export default withStyles(styles)(injectIntl(ContactForm));

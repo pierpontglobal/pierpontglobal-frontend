@@ -7,6 +7,7 @@ import styled, { keyframes, css } from 'styled-components';
 import ArrowIconMui from '@material-ui/icons/KeyboardArrowLeft';
 import FullscreenIconMui from '@material-ui/icons/Fullscreen';
 import FullscreenExitIconMui from '@material-ui/icons/FullscreenExit';
+import { FormattedMessage } from 'react-intl';
 
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
 import MemberCard from './MemberCard/MemberCard';
@@ -329,7 +330,7 @@ const steve = {
   phone: '(999) 999-9999',
   email: 'steve@pierpontglobal.com',
   photo: '/images/whatsapp/steve/steve.png',
-  role: 'Sale support',
+  role: 'Sales support',
 }
 
 const hector = {
@@ -376,12 +377,10 @@ class ContactPage extends React.Component {
           </MapWrapper>
           <HeaderContent>
             <PageTitle>
-              <span>Hi { (!!user.name) ? this.getFirstWord(user.name) : 'there!'}, </span>
+              <FormattedMessage id="contact-page.title" values={{ subject: (!!user.name) ? this.getFirstWord(user.name) : 'there!' }} />
             </PageTitle>
             <PageDescripcion>
-              <span>
-                Here are differents ways to get in touch with us.
-              </span>
+              <FormattedMessage id="contact-page.description" />
             </PageDescripcion>
           </HeaderContent>
           <FullscreenIconWrapper isFullscreen={isFullscreen} onClick={this.toggleFullscreen}>
@@ -391,16 +390,11 @@ class ContactPage extends React.Component {
           </FullscreenIconWrapper>
         </TopBackground>
         <BottomBackground isFullscreen={isFullscreen}>
-          {/* <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0 50 C 21 10, 65 6, 50 50 S 79 94, 100 50" stroke="black" strokeWidth="0px" />
-          </svg> */}
           <FromWrapper isFullscreen={isFullscreen}>
             <FormContentWrapper>
               <FormLeftWrapper>
                 <FormTitle>
-                  <span>
-                    Write your message
-                  </span>
+                  <FormattedMessage id="contact-page.write-your-message" />
                 </FormTitle>
                 <ContactFormWrapper>
                   <ContactForm user={user} />
