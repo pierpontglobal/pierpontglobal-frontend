@@ -7,7 +7,7 @@ import styled, { keyframes, css } from 'styled-components';
 import ArrowIconMui from '@material-ui/icons/KeyboardArrowLeft';
 import FullscreenIconMui from '@material-ui/icons/Fullscreen';
 import FullscreenExitIconMui from '@material-ui/icons/FullscreenExit';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
 import MemberCard from './MemberCard/MemberCard';
@@ -310,18 +310,20 @@ const FullscreenExitIcon = styled(FullscreenExitIconMui)`
 
 const FullscreenIconWrapper = styled.div`
   position: absolute;
-  bottom: ${props => props.isFullscreen ? 'none' : '4px'};
-  right: ${props => props.isFullscreen ? '12px' : '8px'};
-  top: ${props => props.isFullscreen ? '64px' : 'none'};
-  z-index: ${props => props.isFullscreen ? '300' : '0'};
+  right: 12px;
+  top: 16px;
+  z-index: 800;
   background-color: black;
   border-radius: 50%;
   cursor: pointer;
   padding: 8px;
-  z-index: 800;
   transition: all 0.3s;
   &:hover ${FullscreenIcon} {
     font-size: 2.0rem;
+  }
+  @media only screen and (max-width: 768px) {
+    top: 16px;
+    right: 8px;
   }
 `;
 
@@ -368,7 +370,7 @@ class ContactPage extends React.Component {
 
   render() {
     const { isFullscreen } = this.state;
-    const { user } = this.props;
+    const { user, intl } = this.props;
     return(
       <Wrapper>
         <TopBackground isFullscreen={isFullscreen}>
@@ -377,7 +379,7 @@ class ContactPage extends React.Component {
           </MapWrapper>
           <HeaderContent>
             <PageTitle>
-              <FormattedMessage id="contact-page.title" values={{ subject: (!!user.name) ? this.getFirstWord(user.name) : 'there!' }} />
+              <FormattedMessage id="contact-page.title" values={{ subject: (!!user.name) ? this.getFirstWord(user.name) : intl.formatMessage({id: 'contact-page.title.there'}) }} />
             </PageTitle>
             <PageDescripcion>
               <FormattedMessage id="contact-page.description" />
@@ -397,7 +399,7 @@ class ContactPage extends React.Component {
                   <FormattedMessage id="contact-page.write-your-message" />
                 </FormTitle>
                 <ContactFormWrapper>
-                  <ContactForm user={user} />
+                  <ContactForm intl={intl} user={user} />
                 </ContactFormWrapper>
                 <ShowHideWrapper>
                   <ShowHideIcon />
@@ -418,4 +420,4 @@ class ContactPage extends React.Component {
   }
 }
 
-export default ContactPage;
+export default injectIntl(ContactPage);

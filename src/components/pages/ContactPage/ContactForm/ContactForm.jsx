@@ -5,7 +5,7 @@ import { CircularProgress } from '@material-ui/core';
 import styled from 'styled-components';
 import CheckIconMui from '@material-ui/icons/Check';
 import axios from 'axios';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { ApiServer } from '../../../../Defaults';
 
@@ -330,4 +330,4 @@ class ContactForm extends React.Component {
   }
 }
 
-export default withStyles(styles)(injectIntl(ContactForm));
+export default withStyles(styles)(ContactForm);
