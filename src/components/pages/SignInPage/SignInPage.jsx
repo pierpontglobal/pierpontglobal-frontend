@@ -43,7 +43,8 @@ function submit(
   setCookies,
   getCookies,
   setLoading,
-  setStatus
+  setStatus,
+  handleSignIn,
 ) {
   setLoading(true);
   const data = {
@@ -59,6 +60,7 @@ function submit(
       axios.post(`${ApiServer}/api/v1/user/notifier`, {
         one_signal_uuid: getCookies["one_signal_uuid"]
       });
+      handleSignIn();
     },
     err => {
       setLoading(false);
@@ -201,7 +203,8 @@ const LoginView = props => {
             setCookies,
             cookies,
             setLoading,
-            setStatus
+            setStatus,
+            props.handleSignIn
           );
         }}
       >
@@ -246,7 +249,7 @@ const SignInPage = props => {
             )}
           </SubscribeButton>
 
-          {registerView ? <RegisterView /> : <LoginView />}
+          {registerView ? <RegisterView /> : <LoginView handleSignIn={props.handleSignIn} />}
         </WhiteLayer>
       </SignInBox>
     </SignInWrapper>
