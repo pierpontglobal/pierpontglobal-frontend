@@ -329,7 +329,7 @@ const steve = {
   phone: '(999) 999-9999',
   email: 'steve@pierpontglobal.com',
   photo: '/images/whatsapp/steve/steve.png',
-  role: 'Customer support',
+  role: 'Sale support',
 }
 
 const hector = {
@@ -376,7 +376,7 @@ class ContactPage extends React.Component {
           </MapWrapper>
           <HeaderContent>
             <PageTitle>
-              <span>Hi { (!!user.name) ? this.getFirstWord(user.name) : '!'}, </span>
+              <span>Hi { (!!user.name) ? this.getFirstWord(user.name) : 'there!'}, </span>
             </PageTitle>
             <PageDescripcion>
               <span>

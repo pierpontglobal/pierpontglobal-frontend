@@ -4,6 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 import styled from 'styled-components';
 import CheckIconMui from '@material-ui/icons/Check';
+import axios from 'axios';
+
+import { ApiServer } from '../../../../Defaults';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -131,30 +134,28 @@ const styles = theme => ({
 
 class ContactForm extends React.Component {
   state = {
-    username: this.props.user.name,
-    email: this.props.user.email,
-    message: '',
+    username: {
+      error: false,
+      value: this.props.user.name || '',
+    },
+    email: {
+      error: false,
+      value: this.props.user.email || '',
+    },
+    message: {
+      error: false,
+      value: ''
+    },
     isLoading: false,
     messageSent: false,
   }
 
   handleChange = (e) => {
     this.setState({
-      [e.target.id]: e.target.value,
-    })
-  }
-
-  handleSubmit = () => {
-    const { username, email, message } = this.state;
-    this.setState({
-      isLoading: true,
-    }, () => {
-      setTimeout(() => {
-        this.setState({
-          isLoading: false,
-          messageSent: true,
-        })
-      }, 3000);
+      [e.target.id]: {
+        error: false,
+        value: e.target.value,
+      },
     })
   }
 
@@ -162,11 +163,97 @@ class ContactForm extends React.Component {
     const { user } = this.props;
     this.setState({
       message: '',
-      username: user.name,
-      email: user.email,
+      username: user.name || '',
+      email: user.email || '',
       isLoading: false,
       messageSent: false,
     })
+  }
+
+  validateMessage = () => {
+    const {
+      username, email, message,
+    } = this.state;
+    let validEmail = false;
+    if (this.validateEmail(email.value)) {
+      validEmail = true;
+    }
+
+    if (validEmail && message.value.length >= 10 && username.value.length > 0) {
+      this.sendMessage({
+        message: {
+          name: username.value,
+          email: email.value,
+          message: message.value,
+        },
+      });
+    } else {
+      const errors = [];
+      if (!validEmail) {
+        errors.push({
+          error: true,
+          value: email.value,
+          name: 'email',
+        });
+      }
+      if (!!message.value && message.value.length < 10) {
+        errors.push({
+          error: true,
+          value: message.value,
+          name: 'message',
+        });
+      }
+      if (!!username.value && username.value.length <= 0) {
+        errors.push({
+          error: true,
+          value: username.value,
+          name: 'name',
+        });
+      }
+
+      const newState = {};
+      errors.forEach((e) => {
+        newState[e.name] = e;
+      });
+      this.setState({
+        ...newState,
+      });
+    }
+  }
+
+  validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+
+  sendMessage = () => {
+    this.setState({
+      isLoading: true,
+    }, () => {
+      const {
+        username, email, message,
+      } = this.state;
+
+      axios.post(`${ApiServer}/api/v1/user/send-contact-form`, {
+        name: username.value,
+        email: email.value,
+        message: message.value,
+      }).then(() => {
+        this.setState({
+          isLoading: false,
+          messageSent: true,
+          username: { error: false, value: '' },
+          email: { error: false, value: '' },
+          message: { error: false, value: '' },
+        });
+      }, () => {
+        this.setState({
+          isLoading: false,
+          messageSent: false,
+        });
+      });
+    });
   }
 
   render() {
@@ -195,21 +282,23 @@ class ContactForm extends React.Component {
             <>
               <UsernameInput>
                 <TextField
-                  required
                   id="username"
+                  error={username.error}
                   label="Full name"
-                  value={username}
+                  value={username.value}
                   margin="normal"
                   className={classes.textField}
                   variant="outlined"
+                  onChange={this.handleChange}
                 />
               </UsernameInput>
               <EmailInput>
                 <TextField
                   required
                   id="email"
+                  error={email.error}
                   label="Email"
-                  value={email}
+                  value={email.value}
                   onChange={this.handleChange}
                   margin="normal"
                   className={classes.textField}
@@ -219,11 +308,12 @@ class ContactForm extends React.Component {
               <MessageInput>
                 <TextField
                   id="message"
+                  error={message.error}
                   label="Message..."
                   multiline
                   rowsMax="6"
                   rows="6"
-                  value={message}
+                  value={message.value}
                   onChange={this.handleChange}
                   className={classes.messageField}
                   margin="normal"
@@ -231,7 +321,7 @@ class ContactForm extends React.Component {
                 />
               </MessageInput>
               <SubmitButtonWrapper>
-                <SubmitButton onClick={this.handleSubmit}>
+                <SubmitButton onClick={this.validateMessage}>
                   <span>
                     Send
                   </span>
