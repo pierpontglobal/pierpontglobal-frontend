@@ -311,18 +311,18 @@ const FullscreenExitIcon = styled(FullscreenExitIconMui)`
 const FullscreenIconWrapper = styled.div`
   position: absolute;
   right: 12px;
-  top: 16px;
+  top: ${props => props.isFullscreen ? '64px' : '16px'};
   z-index: 800;
   background-color: black;
   border-radius: 50%;
   cursor: pointer;
   padding: 8px;
-  transition: all 0.3s;
+  transition:a ll 0.3s;
   &:hover ${FullscreenIcon} {
     font-size: 2.0rem;
   }
   @media only screen and (max-width: 768px) {
-    top: 16px;
+    top: ${props => props.isFullscreen ? '64px' : '16px'};
     right: 8px;
   }
 `;
