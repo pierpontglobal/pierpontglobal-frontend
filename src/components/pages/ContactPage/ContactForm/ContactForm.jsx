@@ -19,6 +19,13 @@ const Wrapper = styled.div`
     "username username email email"
     "message message message message"
     ". . . submit";
+
+  @media only screen and (max-width: 480px) {
+    grid-template-areas: 
+    "username username email email"
+    "message message message message"
+    "submit . . .";
+  }
 `;
 
 const LoadingWrapper = styled.div`
