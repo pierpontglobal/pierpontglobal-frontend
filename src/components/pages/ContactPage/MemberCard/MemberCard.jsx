@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TeamMemberCard = styled.div`
-  width: 100%;
+  width: auto;
   height: auto;
   display: flex;
   justify-content: center;
@@ -64,9 +64,11 @@ const PhoneNumber = styled.div`
 const Email = styled.div`
   width: 100%;
   text-align: center;
-  & > span {
+  & > a {
     font-weight: 200;
     font-size: 0.95rem;
+    color: blue;
+    cursor: pointer;
   }
 `;
 
@@ -93,9 +95,9 @@ const MemberCard = ({user}) => {
           </span>
         </PhoneNumber>
         <Email>
-          <span>
+          <a href={`mailto:${user.email}`}>
             {user.email}
-          </span>
+          </a>
         </Email>
       </CarBody>
     </TeamMemberCard>

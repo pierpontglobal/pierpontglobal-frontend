@@ -77,6 +77,41 @@ const normalMapWrapper = keyframes`
   }
 `;
 
+const showLeftFormContent = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+`;
+
+const hideLeftFormContent = keyframes`
+  99% {
+    width: 5%;
+    opacity: 0.2;
+  }
+  100% {
+    width: 0%;
+    opacity: 0;
+    display: none;
+  }
+`;
+
+const hideRightFormContent = keyframes`
+  to {
+    display: none;
+  }
+`;
+
+const normalRightFormContent = keyframes`
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+`;
+
 
 const Wrapper = styled.div`
   width: 100%;
@@ -92,7 +127,7 @@ const TopBackground = styled.div`
   background-color: black;
   position: relative;
 
-  animation: ${props => props.isFullscreen ? css`${fullTopBackground} 0.3s ease-in-out` : css`${normalTopBackground} 0.3s ease-in-out`};
+  animation: ${props => props.isFullscreen ? css`${fullTopBackground} 0.3s ease-in-out 0s` : css`${normalTopBackground} 0.3s ease-in-out 0s`};
   animation-fill-mode: forwards;
 `;
 
@@ -106,7 +141,7 @@ const BottomBackground = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  animation: ${props => props.isFullscreen ? css`${fullBottomBackground} 0.3s ease-in-out` : css`${normalBottomBackground} 0.3s ease-in-out`};
+  animation: ${props => props.isFullscreen ? css`${fullBottomBackground} 0.3s ease-in-out 0s` : css`${normalBottomBackground} 0.3s ease-in-out 0s`};
   animation-fill-mode: forwards;
 
   & > svg {
@@ -128,7 +163,8 @@ const FromWrapper = styled.div`
   width: 55%;
   position: absolute;
   z-index: 800;
-  animation: ${props => props.isFullscreen ? css`${exitForm} 0.3s ease-in-out` : css`${enterForm} 0.3s ease-in-out`};
+
+  animation: ${props => props.isFullscreen ? css`${exitForm} 0.3s ease-in-out 0s` : css`${enterForm} 0.3s ease-in-out 0s`};
   animation-fill-mode: forwards;
 
   @media only screen and (max-width: 768px) {
@@ -141,7 +177,7 @@ const FormContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: ${props => props.showAllMembers ? 'auto' : '3fr 1fr'};
   grid-template-rows: auto;
 
   @media only screen and (max-width: 768px) {
@@ -210,10 +246,13 @@ const PageDescripcion = styled.div`
 const FormLeftWrapper = styled.div`
   width: 100%;
   height: 100%;
-  display: grid;
+  display: ${props => props.showAllMembers ? 'none' : 'grid'};
   grid-template-rows: 1fr 3fr;
   grid-template-columns: auto;
   position: relative;
+
+  animation: ${props => props.showAllMembers ? css`${hideLeftFormContent} 0.3s ease-in-out 0s` : css`${showLeftFormContent} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
 `;
 
 const FormTitle = styled.div`
@@ -239,7 +278,14 @@ const FormRightWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: column;
+  flex-direction: ${props => props.showAllMembers ? 'row' : 'column'};
+  flex-wrap: wrap;
+  padding: ${props => props.showAllMembers ? '42px' : '0px'};
+  max-width: ${props => props.showAllMembers ? '100%' : ''};
+  position: relative;
+
+  animation: ${props => props.showAllMembers ? css`${showLeftFormContent} 0.3s ease-in-out 0s` : css`${normalRightFormContent} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
 
   @media only screen and (max-width: 768px) {
     display: none;
@@ -282,11 +328,13 @@ const ContactFormWrapper = styled.div`
 
 const ShowHideWrapper = styled.div`
   position: absolute;
-  right: -12px;
+  left: -12px;
   top: calc(50% - 8px);
   border-radius: 50%;
   background-color: black;
   cursor: pointer;
+  transition: all 0.4s;
+  transform: ${props => props.showAllMembers ? 'rotate(-180deg)' : 'none'};
 
   @media only screen and (max-width: 768px) {
     display: none;
@@ -333,7 +381,7 @@ const steve = {
   phone: '(999) 999-9999',
   email: 'steve@pierpontglobal.com',
   photo: '/images/whatsapp/steve/steve.png',
-  role: 'Sales support',
+  role: 'CEO / Sales support',
 }
 
 const hector = {
@@ -341,7 +389,36 @@ const hector = {
   phone: '(999) 999-9999',
   email: 'hector@pierpontglobal.com',
   photo: '/images/whatsapp/hector/hector.png',
-  role: 'Technical support',
+  role: 'CTO / Software engineer',
+}
+
+const daniel = {
+  name: 'Daniel Peña',
+  phone: '(999) 999-9999',
+  email: 'daniel@pierpontglobal.com',
+  role: 'Software Engineer',
+  photo: '/images/whatsapp/daniel/daniel.png'
+}
+
+const juan = {
+  name: 'Juan Villagrana',
+  phone: '(999) 999-9999',
+  email: 'juan@pierpontglobal.com',
+  role: 'CEO / Customer service',
+}
+
+const emily = {
+  name: 'Emily Rubens',
+  phone: '(999) 999-9999',
+  email: 'emily@pierpontglobal.com',
+  role: 'Operations manager',
+}
+
+const luca = {
+  name: 'Luca Toledo',
+  phone: '(999) 999-9999',
+  email: 'luca@pierpontglobal.com',
+  role: 'Sale representative',
 }
 
 class ContactPage extends React.Component {
@@ -352,6 +429,7 @@ class ContactPage extends React.Component {
       email: '',
       message: '',
       isFullscreen: false,
+      showAllMembers: false,
     }
   }
 
@@ -369,8 +447,14 @@ class ContactPage extends React.Component {
     return text;
   }
 
+  showAllMembersInForm = () => {
+    this.setState((prevState) => ({
+      showAllMembers: !prevState.showAllMembers,
+    }));
+  }
+
   render() {
-    const { isFullscreen } = this.state;
+    const { isFullscreen, showAllMembers } = this.state;
     const { user, intl } = this.props;
     return(
       <Wrapper>
@@ -394,21 +478,31 @@ class ContactPage extends React.Component {
         </TopBackground>
         <BottomBackground isFullscreen={isFullscreen}>
           <FromWrapper isFullscreen={isFullscreen}>
-            <FormContentWrapper>
-              <FormLeftWrapper>
+            <FormContentWrapper showAllMembers={showAllMembers}>
+              <FormLeftWrapper showAllMembers={showAllMembers}>
                 <FormTitle>
                   <FormattedMessage id="contact-page.write-your-message" />
                 </FormTitle>
                 <ContactFormWrapper>
                   <ContactForm intl={intl} user={user} />
                 </ContactFormWrapper>
-                <ShowHideWrapper>
+              </FormLeftWrapper>
+              <FormRightWrapper showAllMembers={showAllMembers}>
+                <ShowHideWrapper showAllMembers={showAllMembers} onClick={this.showAllMembersInForm}>
                   <ShowHideIcon />
                 </ShowHideWrapper>
-              </FormLeftWrapper>
-              <FormRightWrapper>
-                <MemberCard user={steve} />
                 <MemberCard user={hector} />
+                <MemberCard user={steve} />
+                {
+                  showAllMembers ? 
+                  <>
+                    <MemberCard user={juan} />
+                    <MemberCard user={daniel} />
+                    <MemberCard user={emily} />
+                    <MemberCard user={luca} />
+                  </>
+                  : null
+                }
               </FormRightWrapper>
             </FormContentWrapper>
           </FromWrapper>
