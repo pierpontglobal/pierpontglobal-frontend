@@ -124,7 +124,7 @@ const FromWrapper = styled.div`
   background-color: white;
   border-radius: 8px;
   box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.15);
-  top: -192px;
+  top: -70%;
   width: 55%;
   position: absolute;
   z-index: 800;
@@ -133,6 +133,7 @@ const FromWrapper = styled.div`
 
   @media only screen and (max-width: 768px) {
     width: 95%;
+    top: -70%;
   }
 `;
 
