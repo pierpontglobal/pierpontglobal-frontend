@@ -428,7 +428,7 @@ class App extends React.Component {
                     <Route
                       exact
                       path={ApplicationRoutes.contactPage}
-                      render={() => <ContactPage cookies={cookies} />}
+                      render={() => <ContactPage user={user}  cookies={cookies} />}
                     />
                     <Route
                       exact

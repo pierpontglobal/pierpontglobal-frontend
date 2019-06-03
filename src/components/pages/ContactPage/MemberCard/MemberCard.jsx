@@ -15,14 +15,24 @@ const CardHeader = styled.div`
   height: auto;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 16px;
+  padding: 16px 8px;
 `;
 
 const HeaderPhoto = styled.img`
   border-radius: 50%;
   width: 42px;
   height: 42px;
+`;
+
+const UserRole = styled.div`
+  width: 100%;
+  text-align: center;
+  & > span {
+    font-weight: 100;
+    font-size: 0.8rem;
+  }
 `;
 
 const CarBody = styled.div`
@@ -60,26 +70,31 @@ const Email = styled.div`
   }
 `;
 
-const MemberCard = (props) => {
+const MemberCard = ({user}) => {
   return (
     <TeamMemberCard>
       <CardHeader>
-        <HeaderPhoto alt="" src="/images/no-user-photo.png" />
+        <HeaderPhoto alt={`${user.name} | Pierpont Global, Inc`} src={user.photo ? user.photo : '/images/no-user-photo.png'} />
+        <UserRole>
+          <span>
+            {user.role}
+          </span>
+        </UserRole>
       </CardHeader>
       <CarBody>
         <Name>
           <span>
-            Jhon Doe
+            {user.name}
           </span>
         </Name>
         <PhoneNumber>
           <span>
-            (829) - 999-9999
+            {user.phone}
           </span>
         </PhoneNumber>
         <Email>
           <span>
-            sample@pierpontglobal.com
+            {user.email}
           </span>
         </Email>
       </CarBody>

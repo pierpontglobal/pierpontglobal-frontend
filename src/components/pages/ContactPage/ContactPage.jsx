@@ -6,9 +6,11 @@ import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import ArrowIconMui from '@material-ui/icons/KeyboardArrowLeft';
 import FullscreenIconMui from '@material-ui/icons/Fullscreen';
+import FullscreenExitIconMui from '@material-ui/icons/FullscreenExit';
 
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
 import MemberCard from './MemberCard/MemberCard';
+import ContactForm from './ContactForm/ContactForm';
 
 const exitForm = keyframes`
   to {
@@ -32,13 +34,14 @@ const fullTopBackground = keyframes`
   to {
     height: 100%;
     position: static;
-    background: transparent;
+    background-color: black;
   }
 `;
 
 const fullBottomBackground = keyframes`
   99% {
-    height: 0%;
+    height: 0px;
+    width: 0px;
   }
   100% {
     display: none;
@@ -121,7 +124,6 @@ const FromWrapper = styled.div`
   border-radius: 8px;
   box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.15);
   top: -192px;
-  height: 120%;
   width: 55%;
   position: absolute;
   z-index: 800;
@@ -233,7 +235,7 @@ const FormRightWrapper = styled.div`
   border-bottom-right-radius: 8px;
 
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
 
@@ -261,14 +263,13 @@ const MapWrapper = styled.div`
     width: 100%;
     height: 100%;
     border: none;
-    z-index: 100;
-    opacity: 0.3;
+    z-index: 200;
     animation: ${props => props.isFullscreen ? css`${fullMapWrapper} 0.3s ease-in-out 0.3s` : css`${normalMapWrapper} 0.3s ease-in-out 0.3s`};
     animation-fill-mode: forwards;
   }
 `;
 
-const ContactForm = styled.div`
+const ContactFormWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -300,10 +301,20 @@ const FullscreenIcon = styled(FullscreenIconMui)`
   transition: all 0.3s;
 `;
 
+const FullscreenExitIcon = styled(FullscreenExitIconMui)`
+  color: #fefefe;
+  font-size: 1.6rem;
+  transition: all 0.3s;
+`;
+
 const FullscreenIconWrapper = styled.div`
   position: absolute;
-  bottom: 4px;
-  right: 8px;
+  bottom: ${props => props.isFullscreen ? 'none' : '4px'};
+  right: ${props => props.isFullscreen ? '12px' : '8px'};
+  top: ${props => props.isFullscreen ? '64px' : 'none'};
+  z-index: ${props => props.isFullscreen ? '300' : '0'};
+  background-color: black;
+  border-radius: 50%;
   cursor: pointer;
   padding: 8px;
   z-index: 800;
@@ -312,6 +323,22 @@ const FullscreenIconWrapper = styled.div`
     font-size: 2.0rem;
   }
 `;
+
+const steve = {
+  name: 'Steve Solomon',
+  phone: '(999) 999-9999',
+  email: 'steve@pierpontglobal.com',
+  photo: '/images/whatsapp/steve/steve.png',
+  role: 'Customer support',
+}
+
+const hector = {
+  name: 'Hector Acosta',
+  phone: '(999) 999-9999',
+  email: 'hector@pierpontglobal.com',
+  photo: '/images/whatsapp/hector/hector.png',
+  role: 'Technical support',
+}
 
 class ContactPage extends React.Component {
   constructor(props) {
@@ -330,17 +357,26 @@ class ContactPage extends React.Component {
     }));
   }
 
+  getFirstWord = (text) => {
+    if(!!text) {
+      let firstWord = text.split(' ')[0];
+      return firstWord;
+    }
+    return text;
+  }
+
   render() {
     const { isFullscreen } = this.state;
+    const { user } = this.props;
     return(
       <Wrapper>
         <TopBackground isFullscreen={isFullscreen}>
-          <MapWrapper>
+          <MapWrapper isFullscreen={isFullscreen}>
             <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" frameBorder="0" allowFullScreen />
           </MapWrapper>
           <HeaderContent>
             <PageTitle>
-              <span>Hi Daniel, </span>
+              <span>Hi { (!!user.name) ? this.getFirstWord(user.name) : '!'}, </span>
             </PageTitle>
             <PageDescripcion>
               <span>
@@ -348,8 +384,10 @@ class ContactPage extends React.Component {
               </span>
             </PageDescripcion>
           </HeaderContent>
-          <FullscreenIconWrapper onClick={this.toggleFullscreen}>
-            <FullscreenIcon />
+          <FullscreenIconWrapper isFullscreen={isFullscreen} onClick={this.toggleFullscreen}>
+            {
+              isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />
+            }
           </FullscreenIconWrapper>
         </TopBackground>
         <BottomBackground isFullscreen={isFullscreen}>
@@ -364,16 +402,16 @@ class ContactPage extends React.Component {
                     Write your message
                   </span>
                 </FormTitle>
-                <ContactForm>
-                  Contact form here...
-                </ContactForm>
+                <ContactFormWrapper>
+                  <ContactForm user={user} />
+                </ContactFormWrapper>
                 <ShowHideWrapper>
                   <ShowHideIcon />
                 </ShowHideWrapper>
               </FormLeftWrapper>
               <FormRightWrapper>
-                <MemberCard />
-                <MemberCard />
+                <MemberCard user={steve} />
+                <MemberCard user={hector} />
               </FormRightWrapper>
             </FormContentWrapper>
           </FromWrapper>
