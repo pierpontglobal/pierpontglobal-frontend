@@ -397,7 +397,7 @@ const daniel = {
   phone: '(999) 999-9999',
   email: 'daniel@pierpontglobal.com',
   role: 'Software Engineer',
-  photo: '/images/whatsapp/daniel/daniel.png'
+  photo: '/images/whatsapp/daniel/daniel.png',
 }
 
 const juan = {
@@ -405,6 +405,7 @@ const juan = {
   phone: '(999) 999-9999',
   email: 'juan@pierpontglobal.com',
   role: 'CEO / Customer service',
+  photo: '/images/whatsapp/juan/juan.png',
 }
 
 const emily = {

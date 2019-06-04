@@ -267,14 +267,6 @@ class MarketPlacePage extends React.Component {
     const { cookies } = this.props;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
 
-    if (loaded && cars.length === 0) {
-      // no cars found
-      return (
-        <NotFoundWrapper>
-          <FormattedMessage id="marketplace.not-found" />
-        </NotFoundWrapper>
-      );
-    }
     return (
       <div>
         <ActionCableProvider cable={this.cable}>
@@ -298,7 +290,11 @@ class MarketPlacePage extends React.Component {
                 <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
                 <hr />
                 {
-                  loaded ? (
+                  loaded ? cars.length <= 0 ? (
+                      <NotFoundWrapper>
+                        <FormattedMessage id="marketplace.not-found" />
+                      </NotFoundWrapper>
+                    ) : (
                     <InfiniteScroll
                       dataLength={cars.length}
                       next={this.getCars}
