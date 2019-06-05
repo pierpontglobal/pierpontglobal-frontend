@@ -66,7 +66,8 @@ function submit(
   setCookies,
   getCookies,
   setLoading,
-  setStatus
+  setStatus,
+  handleSignIn,
 ) {
   setLoading(true);
   const data = {
@@ -82,6 +83,7 @@ function submit(
       axios.post(`${ApiServer}/api/v1/user/notifier`, {
         one_signal_uuid: getCookies["one_signal_uuid"]
       });
+      handleSignIn();
     },
     err => {
       setLoading(false);
@@ -809,7 +811,8 @@ const LoginView = props => {
             setCookies,
             cookies,
             setLoading,
-            setStatus
+            setStatus,
+            props.handleSignIn
           );
         }}
       >
@@ -847,6 +850,7 @@ const SignInPage = props => {
         <GlassBlobRight big={registerView} src="/images/signinpage/blob.svg" />
         {/* <GlassMainImage src="/images/signinpage/Dealer.svg" /> */}
         <WhiteLayer>
+<<<<<<< HEAD
           {registerView ? (
             <RegisterView />
           ) : (
@@ -855,6 +859,27 @@ const SignInPage = props => {
               setRegisterView={setRegisterView}
             />
           )}
+=======
+          <SubscribeButton
+            onClick={() => {
+              setRegisterView(!registerView);
+            }}
+          >
+            {registerView ? (
+              <>
+                <i className="material-icons">arrow_back</i>
+                Login to the platform{" "}
+              </>
+            ) : (
+              <>
+                Subscribe to the platform{" "}
+                <i className="material-icons">arrow_forward</i>
+              </>
+            )}
+          </SubscribeButton>
+
+          {registerView ? <RegisterView /> : <LoginView handleSignIn={props.handleSignIn} />}
+>>>>>>> 57add50f351582ca1e65ea4d95a7159ecc56e21c
         </WhiteLayer>
       </SignInBox>
     </SignInWrapper>

@@ -8,10 +8,9 @@
 }
 
 .chat-box {
-  width: 100%;
+  width: 300px;
   margin-bottom: 10px;
   overflow: hidden;
-  /*border: 3px solid green;*/
 }
 
 .card-radius {
@@ -143,25 +142,27 @@
   width: 80%;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (max-width: 768px) {
   .chat-box {
-      width: 350px;
-  }
-
-  .outerWhatsApp {
-      width: auto;
-      min-width: 300px;
+    width: 100%;
   }
 }
 
-@media only screen and (min-width: 768px) {}
+@media only screen and (min-width: 768px) {
+  .chat-box {
+    width: 300px;
+}
+
+  .outerWhatsApp {
+      width: 56px;
+  }
+}
 
 .slide-in {
   position: fixed;
   right: 20px;
   bottom: 20px;
   z-index: 1500;
-  min-width: 300px;
   animation: slide-in 1s ease-in-out;
 }
 

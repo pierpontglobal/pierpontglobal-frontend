@@ -60,6 +60,7 @@ const WMessageStyleWrapper = styled(WMessage)`
   padding: 7px;
   border-radius: 5px;
   background-color: #ffffff;
+  min-width: 180px;
   @media screen and (max-width: 480px) {
     display: none;
   }
@@ -278,7 +279,7 @@ class WhatsApp extends React.Component {
           </WMessageStyleWrapper>
           <div
             style={{
-              zIndex: 200, position: 'absolute', right: 0, bottom: 0, width: '100%', display: 'flex', justifyContent: 'flex-end',
+              zIndex: 200, position: 'absolute', right: 0, bottom: 0, width: 'auto', display: 'flex', justifyContent: 'flex-end',
             }}
             onClick={e => this.handleButtonClick(e)}
           >
