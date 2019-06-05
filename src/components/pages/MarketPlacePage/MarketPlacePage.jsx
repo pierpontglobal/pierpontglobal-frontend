@@ -7,42 +7,90 @@ import styled from 'styled-components';
 import MediaQuery from 'react-responsive';
 import { CircularProgress } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import { IconButton } from '@material-ui/core';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
 import './styles.css';
 import PPGModal from '../../ppg-modal/PPGModal';
+import { AppNavHeight } from '../../../constants/ApplicationSettings';
 
 const qs = require('query-string');
+const SearchBarHeight = 120;
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 5fr;
+  grid-template-rows: minmax(40px, 1fr) 5fr;
+  grid-template-areas:
+    "sidebar searchbar"
+    "sidebar cars";
+
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: auto;
+    grid-template-rows: minmax(40px, 1fr) 5fr;
+    grid-template-areas:
+      "searchbar"
+      "cars";
+  }
+`;
 
 const SidePanel = styled.div`
-  max-width: 220px;
+  grid-area: sidebar;
+  max-width: 300px;
   width: 100%;
   display: flex;
   overflow: auto;
-  @media only screen and (max-width: 600px) {
+  height: 100%;
+  @media only screen and (max-width: 480px) {
     display: none;
   }
 `;
 
 const CarSection = styled.div`
-  height: calc(100%);
-  padding-left: 10px;
-  padding-right: 10px;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
+  grid-area: cars;
+  height: ${`calc(100vh - ${SearchBarHeight}px)`};
+  width: 100%;
 `;
 
-const MarketPlaceContainer = styled.div`
-  display: flex;
-  align-items: stretch;
+const CarsWrapper = styled.div`
+  width: 100%;
   height: 100%;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  overflow: hidden;
+`;
+
+const SearchBarWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+
+  @media only screen and (max-width: 768px) {
+    justify-content: space-between;
+  }
+`;
+
+const SearchBarBox = styled.div`
+  width: 50%;
+  @media only screen and (max-width: 768px) {
+    width: 70%;
+  }
+`;
+
+const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 `;
 
 const NotFoundWrapper = styled.div`
@@ -50,6 +98,14 @@ const NotFoundWrapper = styled.div`
   padding: 24px;
   display: flex;
   justify-content: center;
+`;
+
+const FilterIcon = styled.div`
+  display: none;
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    justify-content: flex-end;
+  }
 `;
 
 async function requestPrice(vin) {
@@ -268,27 +324,38 @@ class MarketPlacePage extends React.Component {
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
 
     return (
-      <div>
+      <>
         <ActionCableProvider cable={this.cable}>
           <ActionCableConsumer
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <MarketPlaceContainer>
-          <SidePanel>
-            <MediaQuery minDeviceWidth={600}>
-              <FilterPanel
-                getCars={this.getCars}
-                availableArguments={this.state.availableArguments}
-                params={this.params}
-                onSeeAll={this.seeAllOptions}
-              />
-            </MediaQuery>
-          </SidePanel>
-            <CarSection style={{ width: '100%' }} ref={this.carsSection}>
-              <div style={{ overflow: 'hidden', position: 'relative' }}>
-                <SortBar header={this.params.q} filterPanelToggle={this.showFilterPanel} />
-                <hr />
+          <Wrapper>
+            <SidePanel>
+              <MediaQuery minDeviceWidth={600}>
+                <FilterPanel
+                  getCars={this.getCars}
+                  availableArguments={this.state.availableArguments}
+                  params={this.params}
+                  onSeeAll={this.seeAllOptions}
+                />
+              </MediaQuery>
+            </SidePanel>
+            <MainContent>
+              <SearchBarWrapper>
+                <SearchBarBox>
+                  <SortBar header={this.params.q} />
+                </SearchBarBox>
+                <FilterIcon>
+                  <IconButton color="primary" onClick={this.showFilterPanel}>
+                    <FilterListIcon />
+                    <span style={{ fontSize: '0.75em' }}>
+                      <FormattedMessage id="label.filters" />
+                    </span>
+                  </IconButton>
+                </FilterIcon>
+              </SearchBarWrapper>
+              <CarSection ref={this.carsSection}>
                 {
                   loaded ? cars.length <= 0 ? (
                       <NotFoundWrapper>
@@ -312,14 +379,16 @@ class MarketPlacePage extends React.Component {
                           <CircularProgress />
                         </div>
                       )}
-                      height={carsSectionHeight - 80}
+                      height={`calc(100vh - ${SearchBarHeight + 16}px)`}
                       endMessage={(
                         <p style={{ textAlign: 'center' }}>
                           <b><FormattedMessage id="marketplace.end-message" /></b>
                         </p>
                       )}
                     >
-                      {cars}
+                      <CarsWrapper>
+                        {cars}
+                      </CarsWrapper>
                     </InfiniteScroll>
                   ) : (
                     <div style={{
@@ -336,8 +405,8 @@ class MarketPlacePage extends React.Component {
                     </div>
                   )
                 }
-              </div>
-            </CarSection>
+              </CarSection>
+            </MainContent>
             <PPGModal
               setOpen={openModalFilter}
               handleClose={() => this.onCloseModal('openModalFilter')}
@@ -373,9 +442,9 @@ class MarketPlacePage extends React.Component {
                   </div>
                 )}
             </PPGModal>
-          </MarketPlaceContainer>
+          </Wrapper>
         </ActionCableProvider>
-      </div>
+      </>
     );
   }
 }
