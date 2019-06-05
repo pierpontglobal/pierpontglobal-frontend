@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
-import TextField from '@material-ui/core/TextField';
-import { MenuItem } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { CountriesList } from '../../../../Defaults';
+import React, { Component } from "react";
+import { Form } from "semantic-ui-react";
+import TextField from "@material-ui/core/TextField";
+import { MenuItem } from "@material-ui/core";
+import { Button } from "@material-ui/core";
+import { CountriesList } from "../../../../Defaults";
 
 class AddressDetails extends Component {
   constructor(props) {
     super(props);
 
-    const {
-      values,
-    } = this.props;
+    const { values } = this.props;
 
     this.state = {
-      values,
+      values
     };
 
     this.saveAndContinue = this.saveAndContinue.bind(this);
@@ -26,7 +24,7 @@ class AddressDetails extends Component {
     const { values } = this.state;
     if (newValues !== values) {
       this.setState({
-        values: newValues,
+        values: newValues
       });
     }
   }
@@ -42,9 +40,7 @@ class AddressDetails extends Component {
   }
 
   render() {
-    const {
-      values,
-    } = this.state;
+    const { values } = this.state;
 
     console.log(values);
 
@@ -55,18 +51,20 @@ class AddressDetails extends Component {
           <TextField
             id="standard-select-currency"
             style={{
-              width: '100%',
+              width: "100%"
             }}
             required
-            ref={(node) => { this.country = node; }}
+            ref={node => {
+              this.country = node;
+            }}
             select
             label="Country"
             value={values.country}
-            onChange={node => this.props.handleChange('country', node)}
+            onChange={node => this.props.handleChange("country", node)}
             SelectProps={{
-              name: 'country',
-              autocomplete: 'country',
-              MenuProps: {},
+              name: "country",
+              autocomplete: "country",
+              MenuProps: {}
             }}
             helperText="Please select your currency"
             margin="normal"
@@ -81,11 +79,11 @@ class AddressDetails extends Component {
         <Form.Field>
           <TextField
             style={{
-              marginTop: '5px',
-              width: '100%',
+              marginTop: "5px",
+              width: "100%"
             }}
             required
-            onChange={node => this.props.handleChange('city', node)}
+            onChange={node => this.props.handleChange("city", node)}
             label="City"
             name="city"
             autocomplete="address-level2"
@@ -95,10 +93,10 @@ class AddressDetails extends Component {
         <Form.Field>
           <TextField
             style={{
-              marginTop: '5px',
-              width: '100%',
+              marginTop: "5px",
+              width: "100%"
             }}
-            onChange={node => this.props.handleChange('zipcode', node)}
+            onChange={node => this.props.handleChange("zipcode", node)}
             name="zip"
             autocomplete="postal-code"
             label="Zip code"
@@ -108,11 +106,11 @@ class AddressDetails extends Component {
         <Form.Field>
           <TextField
             style={{
-              marginTop: '5px',
-              width: '100%',
+              marginTop: "5px",
+              width: "100%"
             }}
             required
-            onChange={node => this.props.handleChange('address1', node)}
+            onChange={node => this.props.handleChange("address1", node)}
             name="address"
             autocomplete="address-line1"
             label="Primary address"
@@ -122,20 +120,27 @@ class AddressDetails extends Component {
         <Form.Field>
           <TextField
             style={{
-              marginTop: '5px',
-              width: '100%',
+              marginTop: "5px",
+              width: "100%"
             }}
             margin="normal"
-            onChange={node => this.props.handleChange('address2', node)}
+            onChange={node => this.props.handleChange("address2", node)}
             name="address"
             autocomplete="address-line2"
             label="Secondary Address (Optional)"
             value={values.address2}
           />
         </Form.Field>
-        <Button variant="contained" color="secondary" onClick={this.back}>Back</Button>
-        {' '}
-        <Button variant="contained" color="primary" onClick={this.saveAndContinue}>Save and continue </Button>
+        <Button variant="contained" color="secondary" onClick={this.back}>
+          Back
+        </Button>{" "}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.saveAndContinue}
+        >
+          Save and continue{" "}
+        </Button>
       </Form>
     );
   }

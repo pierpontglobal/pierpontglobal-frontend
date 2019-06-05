@@ -1,35 +1,37 @@
-import React from 'react';
-import MainForm from './Form/MainForm';
-import './styles.css';
-import { FormattedMessage } from 'react-intl';
+import React from "react";
+import MainForm from "./Form/MainForm";
+import "./styles.css";
+import { FormattedMessage } from "react-intl";
+import Axios from "axios";
+import { ApiServer } from "../../../Defaults";
+const qs = require("query-string");
 
 class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { status: "loading" };
+  }
+
+  async verifyEmail() {
+    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+    console.log(this.params);
+    await Axios.post(
+      `${ApiServer}/api/v1/user/verify?token=${this.params["token"]}`
+    ).then(response => {
+      this.setState({ status: `${response.data.verified}` }, () => {
+        setTimeout(() => {
+          window.close();
+        }, 5000);
+      });
+    });
+  }
+
+  componentDidMount() {
+    this.verifyEmail();
   }
 
   render() {
-    return (
-      <div>
-
-        <div className="registration-bg">
-          <div className="container-2">
-            <div className="item-5">
-              <img alt="Pierpont logo" className="big-logo" src="/logos/logo4white_cs.png" />
-              <p style={{ textAlign: 'center' }}>
-                <FormattedMessage id="registration.message" />
-              </p>
-            </div>
-            <div className="item-5">
-              <div className="shadow registration-form">
-                <MainForm location={window.location} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <div>{this.state.status}</div>;
   }
 }
 
