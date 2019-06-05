@@ -63,7 +63,7 @@ const CarsWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: ${props => props.useNew ? 'row' : 'column'};
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
 `;
@@ -140,9 +140,12 @@ class MarketPlacePage extends React.Component {
     this.carsSection = React.createRef();
   }
 
+  componentWillMount = () => {
+    this.shouldUseNewDesing(); // IMPORTANT!
+  }
+
   componentDidMount() {
     this.getCars();
-    this.shouldUseNewDesing(); // IMPORTANT!
   }
 
   shouldUseNewDesing = () => {

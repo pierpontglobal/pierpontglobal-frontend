@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
 import MediaQuery from 'react-responsive';
@@ -264,6 +264,31 @@ const BookmarBorderIcon = styled(BookmarkBorderMui)`
 
 `;
 
+const onHeartClickAnimMobile = keyframes`
+  0% {
+    font-size: 0.9rem;
+  }
+  50% {
+    font-size: 1.1rem;
+  }
+  100% {
+    font-size: 1.0rem;
+  }
+`;
+
+const onHeartClickAnimDesktop = keyframes`
+  0% {
+    font-size: 1.75rem;
+  }
+  50% {
+    font-size: 2.05rem;
+  }
+  100% {
+    font-size: 2.0rem;
+  }
+`;
+
+
 const BookmarkArea = styled.div`
   position: absolute;
   top: 4px;
@@ -273,12 +298,17 @@ const BookmarkArea = styled.div`
   background-color: transparent;
   transition: all 0.2s;
   & > i {
-    color: ${props => props.active ? 'red' : '#e4e4e4'};
+    color: ${props => props.active ? '#ba0707' : '#e4e4e4'};
     font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
+    animation: ${props => props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : ''};
+
+    @media only screen and (max-width: 768px) {
+      animation: ${props => props.heartCliked ? css`${onHeartClickAnimMobile} 0.3s ease-in 0s` : ''};
+    }
   }
   &:hover {
     & > i {
-      color: red;
+      color: #cc0606;
     }
   }
 `;
@@ -333,7 +363,7 @@ function CarCard({
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
   const [autocheckSource, changeAutocheckSource] = useState('');
-  // const [carBookmarked, changeBookmark] = useState(car.bookmarked);
+  const [heartClickAnim, handleHeartClick] = useState(false);
 
   const {
     vin,
@@ -365,8 +395,8 @@ function CarCard({
         on
         useNew={useNewDesign}
       >
-        <BookmarkArea useNew={useNewDesign} active={car.bookmarked} data-cy="bookmark-area" onClick={() => handleBookmark(vin, car.bookmarked)}>
-          <Heart />
+        <BookmarkArea heartCliked={heartClickAnim} useNew={useNewDesign} active={car.bookmarked} data-cy="bookmark-area" onClick={() => handleBookmark(vin, car.bookmarked)}>
+          <Heart onClick={() => handleHeartClick(!heartClickAnim)} />
         </BookmarkArea>
         <CarouselWrapper
           showIndicators={false}
