@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import AccountIconMui from '@material-ui/icons/AccountCircle';
 import HelpIconMui from '@material-ui/icons/Help';
+import SettingsIconMui from '@material-ui/icons/Settings';
 import ExitIconMui from '@material-ui/icons/ExitToApp';
 import CollectionsIconMui from '@material-ui/icons/CollectionsBookmark';
 import LanguageIconMui from '@material-ui/icons/Language';
@@ -9,8 +10,8 @@ import ArrowIconMui from '@material-ui/icons/KeyboardArrowDown';
 import { withRouter } from 'react-router-dom';
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
 import ApplicationRoutes from '../../../constants/Routes';
-
-const UserMenuLinkHeight = 64;
+import { UserMenuLinkHeight } from '../../../constants/ApplicationSettings';
+import OptionMenu from './OptionMenu/OptionMenu';
 
 const OutsideClickHandler = styled.div`
   width: 100vw;
@@ -54,7 +55,7 @@ const UserMenuBody = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  overflow-x: scroll;
+  overflow-y: scroll;
 `;
 
 const UserMenuFooter = styled.div`
@@ -71,7 +72,7 @@ const UserMenuLink = styled.div`
   height: ${props => props.fullHeight ? `100%` : `${UserMenuLinkHeight}px`};
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: auto;
+  
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
@@ -170,6 +171,10 @@ const HelpIcon = styled(HelpIconMui)`
   color: #383838;
 `;
 
+const SettingsIcon = styled(SettingsIconMui)`
+  color: #383838;
+`;
+
 const ExitIcon = styled.div`
   & > i { 
     color: #383838;
@@ -191,6 +196,7 @@ class UserMenuComponent extends React.Component {
     super(props);
     this.state = {
       showLanguagesSubmenu: false,
+      showOptionMenu: false,
     }
   }
 
@@ -206,6 +212,12 @@ class UserMenuComponent extends React.Component {
     }
   }
 
+  toggleOptionMenu = () => {
+    this.setState((prevState) => ({
+      showOptionMenu: !prevState.showOptionMenu,
+    }));
+  }
+
   render() {
     const {
       handleToggle,
@@ -213,99 +225,114 @@ class UserMenuComponent extends React.Component {
       goToAction,
       handleOpenSavedCars,
       languages,
+      openUserMenu,
     } = this.props;
 
-    const { showLanguagesSubmenu } = this.state;
+    const { showLanguagesSubmenu, showOptionMenu } = this.state;
 
     return (
       <>
         <OutsideClickHandler onClick={handleToggle} />
-        <UserMenu>
-          <UserMenuWrapper>
-            <UserMenuBody>
-              <UserMenuLink onClick={() => goToAction(ApplicationRoutes.profilePage.default)}>
-                <MenuIconWrapper>
-                  <AccountIcon />
-                </MenuIconWrapper>
-                <MenuTextWrapper>
-                  <span>
-                    My profile
-                  </span>
-                </MenuTextWrapper>
-              </UserMenuLink>
-              <UserMenuLink onClick={handleOpenSavedCars}>
-                <MenuIconWrapper>
-                  <CollectionIcon />
-                </MenuIconWrapper>
-                <MenuTextWrapper>
-                  <span>
-                    My saved cars
-                  </span>
-                </MenuTextWrapper>
-              </UserMenuLink>
-              <UserMenuLinkWithSubmenuWrapper>
-                <UserMenuLinkWithSubmenu onClick={this.toggleLanguagesSubmenu}>
-                  <MenuIconWrapper>
-                    <LanguageIcon />
-                  </MenuIconWrapper>
-                  <MenuTextWrapper>
-                    <span>
-                      Language
-                    </span>
-                  </MenuTextWrapper>
-                  <ShowSubmenuWrapper show={showLanguagesSubmenu}>
-                    <ArrowIconSubmenu />
-                  </ShowSubmenuWrapper>
-                </UserMenuLinkWithSubmenu>
-                {
-                  !showLanguagesSubmenu ? null : (
-                    <Submenu show={showLanguagesSubmenu}>
-                      {
-                        languages.map(lang => (
-                          <SubmenuLink key={lang.abr} onClick={() => this.switchLanguage(lang)}>
-                            <div></div>
-                            <MenuIconWrapper active={ lang.active }>
-                              <span>{ lang.abr }</span>
-                            </MenuIconWrapper>
-                            <MenuTextWrapper active={ lang.active }>
-                              <span>
-                                <span>{ lang.name }</span>
-                              </span>
-                            </MenuTextWrapper>
-                          </SubmenuLink>
-                        ))
-                      }
-                    </Submenu>
-                  )
-                }
-              </UserMenuLinkWithSubmenuWrapper>
-              <UserMenuLink onClick={() => goToAction(ApplicationRoutes.supportPage)}>
-                <MenuIconWrapper>
-                  <HelpIcon />
-                </MenuIconWrapper>
-                <MenuTextWrapper>
-                  <span>
-                    Help & support
-                  </span>
-                </MenuTextWrapper>
-              </UserMenuLink>
-            </UserMenuBody>
-            <UserMenuFooter>
-              <UserMenuLink fullHeight onClick={handleSignOut}>
-                <MenuIconWrapper>
-                  <ExitIcon>
-                    <i className="fas fa-sign-out-alt"></i>
-                  </ExitIcon>
-                </MenuIconWrapper>
-                <MenuTextWrapper>
-                  <span>
-                    Sign out
-                  </span>
-                </MenuTextWrapper>
-              </UserMenuLink>
-            </UserMenuFooter>
-          </UserMenuWrapper>
-        </UserMenu>
+        {
+          showOptionMenu ? (<OptionMenu toggleOptionMenu={this.toggleOptionMenu} />) : (
+            <UserMenu>
+              <UserMenuWrapper>
+                <UserMenuBody>
+                  <UserMenuLink onClick={() => goToAction(ApplicationRoutes.profilePage.default)}>
+                    <MenuIconWrapper>
+                      <AccountIcon />
+                    </MenuIconWrapper>
+                    <MenuTextWrapper>
+                      <span>
+                        My profile
+                      </span>
+                    </MenuTextWrapper>
+                  </UserMenuLink>
+                  <UserMenuLink onClick={handleOpenSavedCars}>
+                    <MenuIconWrapper>
+                      <CollectionIcon />
+                    </MenuIconWrapper>
+                    <MenuTextWrapper>
+                      <span>
+                        My saved cars
+                      </span>
+                    </MenuTextWrapper>
+                  </UserMenuLink>
+                  <UserMenuLinkWithSubmenuWrapper>
+                    <UserMenuLinkWithSubmenu onClick={this.toggleLanguagesSubmenu}>
+                      <MenuIconWrapper>
+                        <LanguageIcon />
+                      </MenuIconWrapper>
+                      <MenuTextWrapper>
+                        <span>
+                          Language
+                        </span>
+                      </MenuTextWrapper>
+                      <ShowSubmenuWrapper show={showLanguagesSubmenu}>
+                        <ArrowIconSubmenu />
+                      </ShowSubmenuWrapper>
+                    </UserMenuLinkWithSubmenu>
+                    {
+                      !showLanguagesSubmenu ? null : (
+                        <Submenu show={showLanguagesSubmenu}>
+                          {
+                            languages.map(lang => (
+                              <SubmenuLink key={lang.abr} onClick={() => this.switchLanguage(lang)}>
+                                <div></div>
+                                <MenuIconWrapper active={ lang.active }>
+                                  <span>{ lang.abr }</span>
+                                </MenuIconWrapper>
+                                <MenuTextWrapper active={ lang.active }>
+                                  <span>
+                                    <span>{ lang.name }</span>
+                                  </span>
+                                </MenuTextWrapper>
+                              </SubmenuLink>
+                            ))
+                          }
+                        </Submenu>
+                      )
+                    }
+                  </UserMenuLinkWithSubmenuWrapper>
+                  <UserMenuLink onClick={() => this.toggleOptionMenu()}>
+                    <MenuIconWrapper>
+                      <SettingsIcon />
+                    </MenuIconWrapper>
+                    <MenuTextWrapper>
+                      <span>
+                        Settings
+                      </span>
+                    </MenuTextWrapper>
+                  </UserMenuLink>
+                  <UserMenuLink onClick={() => goToAction(ApplicationRoutes.supportPage)}>
+                    <MenuIconWrapper>
+                      <HelpIcon />
+                    </MenuIconWrapper>
+                    <MenuTextWrapper>
+                      <span>
+                        Help & support
+                      </span>
+                    </MenuTextWrapper>
+                  </UserMenuLink>
+                </UserMenuBody>
+                <UserMenuFooter>
+                  <UserMenuLink fullHeight onClick={handleSignOut}>
+                    <MenuIconWrapper>
+                      <ExitIcon>
+                        <i className="fas fa-sign-out-alt"></i>
+                      </ExitIcon>
+                    </MenuIconWrapper>
+                    <MenuTextWrapper>
+                      <span>
+                        Sign out
+                      </span>
+                    </MenuTextWrapper>
+                  </UserMenuLink>
+                </UserMenuFooter>
+              </UserMenuWrapper>
+            </UserMenu>
+          )
+        }
       </>
     );
   }
