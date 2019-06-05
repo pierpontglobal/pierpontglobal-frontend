@@ -438,6 +438,7 @@ class AppNav extends React.Component {
                       handleOpenSavedCars={this.handleOpenSavedCars}
                       switchLanguage={this.switchLanguage}
                       languages={languages}
+                      openUserMenu={openUserMenu}
                     />
                   )
                 }

@@ -860,6 +860,7 @@ const SignInPage = props => {
             <LoginView
               registerView={registerView}
               setRegisterView={setRegisterView}
+              handleSignIn={props.handleSignIn}
             />
           )}
         </WhiteLayer>
