@@ -457,7 +457,7 @@ async function registerCard(props) {
   });
 }
 
-const setToken = withCookies(async props => {
+async function setToken(props) {
   const data = {
     username: props.username,
     password: props.password,
@@ -465,17 +465,21 @@ const setToken = withCookies(async props => {
   };
 
   await axios.post(`${ApiServer}/oauth/token`, data).then(data => {
-    props.cookies.set("token", data.data.access_token, {
+    props.setCookies("token", data.data.access_token, {
       expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
     });
     axios.post(`${ApiServer}/api/v1/user/notifier`, {
-      one_signal_uuid: props.cookies.get("one_signal_uuid")
+      one_signal_uuid: props.cookies["one_signal_uuid"]
     });
   });
-});
+}
 
 const SubscriptionSection = injectStripe(props => {
   const [showPassword, setShowPassword] = useState(false);
+  const [cookies, setCookies] = useCookies();
+  props.cookies = cookies;
+  props.setCookies = setCookies;
+
   const {
     completeName,
     current,
