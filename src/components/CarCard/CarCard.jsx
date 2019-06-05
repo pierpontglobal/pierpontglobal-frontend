@@ -29,20 +29,21 @@ const Heart = (props) => {
 }
 
 const CarContainer = styled.div`
-  width: 380px;
+  width: ${props => props.useNew ? '380px' : '98%'};
   height: auto;
-  margin: 12px;
+  margin: ${props => props.useNew ? '12px' : '4px'};
   border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.06);
+  box-shadow: ${props => props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.16)'};
   display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 2fr 1fr minmax(100px, 120px);
+  grid-template-columns: ${props => props.useNew ? 'auto' : '1fr 2fr 2fr'};
+  grid-template-rows: ${props => props.useNew ? '2fr 1fr minmax(100px, 120px)' : 'auto'};
   background-color: #fff;
   cursor: pointer;
   position: relative;
   transition: all 0.3s;
+  border: ${props => props.useNew ? '' : '1px solid rgba(0,0,0,0.16)'};
   @media only screen and (max-width: 768px) {
     grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 60px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
     grid-template-columns: auto;
@@ -58,8 +59,8 @@ const Container = styled.div`
 
 const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
-  width: 380px;
-  height: 280px;
+  width: ${props => props.useNew ? '380px' : '236px'};
+  height: ${props => props.useNew ? '280px' : '120px'};
 `;
 
 const DropDown = posed.i({
@@ -178,8 +179,9 @@ const DetailGroup = styled.div`
   width: 100%;
   height: auto;
   display: flex;
+  flex-direction: ${props => props.useNew ? 'row' : 'column'};
+  align-items: ${props => props.useNew ? 'center' : 'flex-start'};
   justify-content: space-between;
-  align-items: center;
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
@@ -272,6 +274,7 @@ const BookmarkArea = styled.div`
   transition: all 0.2s;
   & > i {
     color: ${props => props.active ? 'red' : '#e4e4e4'};
+    font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
   }
   &:hover {
     & > i {
@@ -283,13 +286,13 @@ const BookmarkArea = styled.div`
 const CarTitle = styled.div`
   width: 100%;
   height: auto;
-  padding: 8px;
+  padding: ${props => props.useNew ? '8px' : '4px'};
   display: flex;
-  justify-content: center;
+  justify-content: ${props => props.useNew ? 'center' : 'flex-start'};;
   align-items: center;
   & > span {
-    font-weight: 400;
-    font-size: 1.35rem;
+    font-weight: ${props => props.useNew ? '400' : '600'};
+    font-size: ${props => props.useNew ? '1.35rem' : '1.08rem'};
   }
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
@@ -325,7 +328,7 @@ function gotToCarDetail(vin, event, history, position, caller, cookies) {
 }
 
 function CarCard({
-  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark
+  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark, useNewDesign
 }) {
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
@@ -360,8 +363,9 @@ function CarCard({
         onClick={e => gotToCarDetail(vin, e, history, position, caller, cookies)}
         showDetail={openDetails}
         on
+        useNew={useNewDesign}
       >
-        <BookmarkArea active={car.bookmarked} data-cy="bookmark-area" onClick={() => handleBookmark(vin, car.bookmarked)}>
+        <BookmarkArea useNew={useNewDesign} active={car.bookmarked} data-cy="bookmark-area" onClick={() => handleBookmark(vin, car.bookmarked)}>
           <Heart />
         </BookmarkArea>
         <CarouselWrapper
@@ -369,6 +373,7 @@ function CarCard({
           showStatus={false}
           showThumbs={false}
           data-cy="car-carousel"
+          useNew={useNewDesign}
         >
           {images.map((image, i) => (
             <ImageWrapper
@@ -378,12 +383,13 @@ function CarCard({
               src={image}
               threshold={1000}
               delayTime={1000}
+              useNew={useNewDesign}
             />
           ))}
         </CarouselWrapper>
-        <DetailsContainer>
+        <DetailsContainer useNew={useNewDesign}>
           <DetailTitle>
-            <CarTitle>
+            <CarTitle useNew={useNewDesign}>
               <span>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
             </CarTitle>
             <ExpandDetails>
@@ -391,8 +397,8 @@ function CarCard({
             </ExpandDetails>
           </DetailTitle>
           <input hidden name="VIN" value={vin} readOnly />
-          <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
-            <DetailGroup>
+          <DetailContent useNew={useNewDesign} pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
+            <DetailGroup useNew={useNewDesign}>
               <Detail>
                 <DetailLabel>
                   <FormattedMessage id="car.vin" />

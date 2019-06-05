@@ -94,11 +94,25 @@ const SwitchWrapper = styled.div`
 
 class OptionMenu extends React.Component {
 
+  state = {
+    switchMarket: false,
+  }
+
+  componentWillMount = () => {
+    const marketSetting = this.props.cookies.get('switch_marketplace', { path: '/' });
+    if (!!marketSetting && marketSetting === 'on') {
+      this.setState({
+        switchMarket: true,
+      });
+    }
+  }
+
   toggleMarketplaceDesign = (checked) => {
-    this.props.cookies.set('switch_marketplace', checked, { path: '/' });
+    this.props.cookies.set('switch_marketplace', checked ? 'on' : 'off', { path: '/' });
   }
 
   render() {
+    const { switchMarket } = this.state;
     return (
       <Wrapper>
         <OptionMenuWrapper>
@@ -118,7 +132,7 @@ class OptionMenu extends React.Component {
                 Marketplace new design
               </SwitchDescription>
               <SwitchWrapper>
-                <Switch onChange={this.toggleMarketplaceDesign} />
+                <Switch defaultChecked={switchMarket} onChange={this.toggleMarketplaceDesign} />
               </SwitchWrapper>
             </ContentWithSwitch>
           </OptionMenuBody>

@@ -21,7 +21,8 @@ const qs = require('query-string');
 const SearchBarHeight = 120;
 
 const Wrapper = styled.div`
-  width: 100vw;
+  width: ${props => props.useNew ? '100vw' : ''};
+  max-width: ${props => props.useNew ? '' : '1200px'};
   height: 100%;
   display: grid;
   grid-template-columns: minmax(300px, 1fr) 5fr;
@@ -29,6 +30,7 @@ const Wrapper = styled.div`
   grid-template-areas:
     "sidebar searchbar"
     "sidebar cars";
+  margin: ${props => props.useNew ? '' : '0 auto'};
 
   @media only screen and (max-width: 768px) {
     grid-template-columns: auto;
@@ -61,6 +63,7 @@ const CarsWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: ${props => props.useNew ? 'row' : 'column'};
   flex-wrap: wrap;
   justify-content: center;
 `;
@@ -80,7 +83,7 @@ const SearchBarWrapper = styled.div`
 `;
 
 const SearchBarBox = styled.div`
-  width: 50%;
+  width: ${props => props.useNew ? '50%' : '90%'};
   @media only screen and (max-width: 768px) {
     width: 70%;
   }
@@ -139,6 +142,17 @@ class MarketPlacePage extends React.Component {
 
   componentDidMount() {
     this.getCars();
+    this.shouldUseNewDesing(); // IMPORTANT!
+  }
+
+  shouldUseNewDesing = () => {
+    const { cookies } = this.props;
+    const itShould = cookies.get('switch_marketplace', { path: '/' });
+    if (!!itShould && itShould === "on") {
+      this.useNewDesign = true;
+    } else {
+      this.useNewDesign = false;
+    }
   }
 
   handleBookmark = (carVin, bookmarked) => {
@@ -161,7 +175,7 @@ class MarketPlacePage extends React.Component {
       if (car.vin === carVin) {
         car.bookmarked ? car.bookmarked = false : car.bookmarked = true;
       }
-      carElements.push(<CarCard handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
+      carElements.push(<CarCard useNewDesign={this.useNewDesign} handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
     }
     this.setState({ cars: carElements });
   }
@@ -248,7 +262,7 @@ class MarketPlacePage extends React.Component {
       };
 
       carsGroup.push(
-        <CarCard handleBookmark={this.handleBookmark} caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
+        <CarCard useNewDesign={this.useNewDesign} handleBookmark={this.handleBookmark} caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
       );
     }
 
@@ -305,7 +319,7 @@ class MarketPlacePage extends React.Component {
       if (car.vin === response.vin) {
         car.wholePrice = response.mmr;
       }
-      carElements.push(<CarCard handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
+      carElements.push(<CarCard useNewDesign={this.useNewDesign} handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
     }
     this.setState({ cars: carElements, loaded: true });
   }
@@ -330,7 +344,7 @@ class MarketPlacePage extends React.Component {
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <Wrapper>
+          <Wrapper useNew={this.useNewDesign}>
             <SidePanel>
               <MediaQuery minDeviceWidth={600}>
                 <FilterPanel
@@ -341,9 +355,9 @@ class MarketPlacePage extends React.Component {
                 />
               </MediaQuery>
             </SidePanel>
-            <MainContent>
+            <MainContent useNew={this.useNewDesign}>
               <SearchBarWrapper>
-                <SearchBarBox>
+                <SearchBarBox useNew={this.useNewDesign}>
                   <SortBar header={this.params.q} />
                 </SearchBarBox>
                 <FilterIcon>
@@ -355,7 +369,7 @@ class MarketPlacePage extends React.Component {
                   </IconButton>
                 </FilterIcon>
               </SearchBarWrapper>
-              <CarSection ref={this.carsSection}>
+              <CarSection useNew={this.useNewDesign} ref={this.carsSection}>
                 {
                   loaded ? cars.length <= 0 ? (
                       <NotFoundWrapper>
@@ -386,7 +400,7 @@ class MarketPlacePage extends React.Component {
                         </p>
                       )}
                     >
-                      <CarsWrapper>
+                      <CarsWrapper useNew={this.useNewDesign}>
                         {cars}
                       </CarsWrapper>
                     </InfiniteScroll>
