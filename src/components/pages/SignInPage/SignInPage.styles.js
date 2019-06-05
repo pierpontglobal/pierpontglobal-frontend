@@ -27,7 +27,8 @@ export const WhiteLayer = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 50px;
+  width: 50px !important;
+  align-self: flex-start;
 `;
 
 export const Title = styled.div`
@@ -53,7 +54,7 @@ export const SignInForm = styled.div`
   box-shadow: rgba(47, 64, 163, 0.3) 0px 0px 50px -10px !important;
   padding: 10px;
   @media only screen and (max-width: 768px) {
-    margin: 100px auto 0;
+    margin: 40px auto 0;
   }
 `;
 
@@ -166,11 +167,12 @@ export const Fields = styled.div`
 
 export const BottomSection = styled.div`
   display: flex;
-  justify-content: space-between;
-  justify-items: space-between;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
   padding-top: 40px;
-  > a {
-    color: #159dd6;
+  a {
+    color: #159dd6 !important;
     text-decoration: none;
   }
   > span {
@@ -220,8 +222,62 @@ export const RegistrationWrapper = styled.div`
   grid-template-columns: 35% 65%;
   z-index: 30;
   @media only screen and (max-width: 768px) {
-    grid-template-rows: 20% 80%;
+    overflow: hidden;
+    grid-template-rows: 100px calc(100% - 170px) 70px;
     grid-template-columns: 100%;
+  }
+`;
+
+export const ButtonHolders = styled.div`
+  background-color: #fafafa;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  justify-items: space-between;
+  padding: 10px;
+  @media only screen and (min-width: 768px) {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+`;
+
+export const VerifyWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center !important;
+`;
+
+export const RegistartionWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`;
+
+export const RegistrationForm = styled.form`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  justify-items: flex-start;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  > * {
+    width: 100%;
+  }
+  @media only screen and (min-width: 768px) {
+    padding-bottom: 100px;
   }
 `;
 
