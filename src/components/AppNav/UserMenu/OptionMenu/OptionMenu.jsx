@@ -109,11 +109,9 @@ class OptionMenu extends React.Component {
 
   toggleMarketplaceDesign = (checked) => {
     this.props.cookies.set('switch_marketplace', checked ? 'on' : 'off', { path: '/' });
-    setTimeout(() => {
-      if (!!this.props.forceUpdate) {
-        this.props.forceUpdate();
-      }
-    }, 3000);
+    if (!!this.props.forceUpdate) {
+      this.props.forceUpdate();
+    }
   }
 
   render() {

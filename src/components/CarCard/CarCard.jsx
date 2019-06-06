@@ -54,7 +54,7 @@ const CarContainer = styled.div`
   }
 
   @media only screen and (max-width: 480px) {
-    grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 80px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
+    grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 40px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
     grid-template-columns: auto;
     width: 100%;
     margin: 0px 6px;
@@ -70,6 +70,10 @@ const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
   width: ${props => props.useNew ? '300px' : '236px'};
   height: ${props => props.useNew ? '220px' : '120px'};
+
+  @media only screen and (max-width: 480px) {
+    height: 200px;
+  }
 `;
 
 const DropDown = posed.i({
@@ -330,6 +334,14 @@ const CarTitle = styled.div`
   }
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
+  }
+
+  @media only screen and (max-width: 488px) {
+    justify-content: space-between;
+    & > span {
+      font-weight: 600;
+      font-size: 1.08rem;
+    }
   }
 `;
 

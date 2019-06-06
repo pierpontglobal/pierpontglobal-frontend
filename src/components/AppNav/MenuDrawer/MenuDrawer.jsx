@@ -3,6 +3,7 @@ import Home from '@material-ui/icons/Home';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Phone from '@material-ui/icons/Phone';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SettingsIconMui from '@material-ui/icons/Settings';
 import Input from '@material-ui/icons/Input';
 import CollectionMuiIcon from '@material-ui/icons/CollectionsBookmark';
 import styled from 'styled-components';
@@ -64,6 +65,14 @@ class MenuDrawer extends Component {
     });
   }
 
+  showSettings = () => {
+    this.setState({
+      open: false,
+    }, () => {
+      this.props.showSettings()
+    });
+  }
+
   render() {
     const {
       onMaskClick, afterOptionclick, onRequestOpen, dealer,
@@ -74,8 +83,9 @@ class MenuDrawer extends Component {
       { label: labelMarket, icon: <DirectionsCar color="primary" />, urlMatch: '/marketplace' },
       { label: labelContact, icon: <Phone color="primary" />, urlMatch: '/contact-us' },
       { label: labelProfile, icon: <AccountCircle color="primary" />, urlMatch: '/user' },
-      { label: 'Help & support', icon: <HelpIconMui color="primary" />, urlMatch: '/support' },
       { label: 'My saved cars', icon: <CollectionMuiIcon color="primary" />, handleClick: this.showSavedCars },
+      { label: 'Help & support', icon: <HelpIconMui color="primary" />, urlMatch: '/support' },
+      { label: 'Settings', icon: <SettingsIconMui color="primary" />, handleClick: this.showSettings },
     ];
 
     if (!this.userIsLoggedIn()) {
