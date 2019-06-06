@@ -29,7 +29,8 @@ const Heart = (props) => {
 }
 
 const CarContainer = styled.div`
-  width: ${props => props.useNew ? '380px' : '98%'};
+  width: ${props => props.useNew ? '23%' : '98%'};
+  min-width: 300px; 
   height: auto;
   margin: ${props => props.useNew ? '12px' : '4px'};
   border-radius: 4px;
@@ -44,8 +45,16 @@ const CarContainer = styled.div`
   position: relative;
   transition: all 0.3s;
   border: ${props => props.useNew ? '' : '1px solid rgba(0,0,0,0.16)'};
-  @media only screen and (max-width: 768px) {
-    grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 60px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
+
+  @media only screen and (max-width: 768px) and (min-width: 480px) {
+    grid-template-rows: 2fr 160px minmax(100px, 120px);
+    grid-template-columns: auto;
+    width: 90%;
+    margin: 0px 6px;
+  }
+
+  @media only screen and (max-width: 480px) {
+    grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 80px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
     grid-template-columns: auto;
     width: 100%;
     margin: 0px 6px;
@@ -59,8 +68,8 @@ const Container = styled.div`
 
 const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
-  width: ${props => props.useNew ? '380px' : '236px'};
-  height: ${props => props.useNew ? '280px' : '120px'};
+  width: ${props => props.useNew ? '300px' : '236px'};
+  height: ${props => props.useNew ? '220px' : '120px'};
 `;
 
 const DropDown = posed.i({
@@ -179,14 +188,9 @@ const DetailGroup = styled.div`
   width: 100%;
   height: auto;
   display: flex;
-  flex-direction: ${props => props.useNew ? 'row' : 'column'};
-  align-items: ${props => props.useNew ? 'center' : 'flex-start'};
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
-
-  @media only screen and (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 `;
 
 const DetailLabel = styled.span`
@@ -205,7 +209,7 @@ const DropDownIcon = styled(DropDown)`
   position: relative;
   top: -5px;
   left: 0;
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 480px) {
     display: none;
   }
 `;

@@ -32,7 +32,15 @@ const Wrapper = styled.div`
     "sidebar cars";
   margin: ${props => props.useNew ? '' : '0 auto'};
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 1024px) and (min-width: 768px) {
+    grid-template-columns: minmax(200px, 1fr) 5fr;
+  }
+
+  @media only screen and (max-width: 768px) and (min-width: 0px) {
+    grid-template-columns: minmax(165px, 1fr) 5fr;
+  }
+
+  @media only screen and (max-width: 480px) {
     grid-template-columns: auto;
     grid-template-rows: minmax(40px, 1fr) 5fr;
     grid-template-areas:
@@ -127,7 +135,7 @@ class MarketPlacePage extends React.Component {
       availableArguments: [],
       loaded: false,
       page: 1,
-      carsSectionHeight: 0,
+      carsSectionHeight: window.innerHeight,
       size: 0,
       openModalFilter: false,
       showOtherOptionsInModalFilter: false,
@@ -372,7 +380,7 @@ class MarketPlacePage extends React.Component {
                   </IconButton>
                 </FilterIcon>
               </SearchBarWrapper>
-              <CarSection useNew={this.useNewDesign} ref={this.carsSection}>
+              <CarSection ref={this.carsSection} useNew={this.useNewDesign}>
                 {
                   loaded ? cars.length <= 0 ? (
                       <NotFoundWrapper>
@@ -396,7 +404,7 @@ class MarketPlacePage extends React.Component {
                           <CircularProgress />
                         </div>
                       )}
-                      height={`calc(100vh - ${SearchBarHeight + 16}px)`}
+                      height={`${window.innerHeight + carsSectionHeight}px`}
                       endMessage={(
                         <p style={{ textAlign: 'center' }}>
                           <b><FormattedMessage id="marketplace.end-message" /></b>
