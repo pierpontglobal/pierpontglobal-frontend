@@ -31,6 +31,7 @@ const Wrapper = styled.div`
     "sidebar searchbar"
     "sidebar cars";
   margin: ${props => props.useNew ? '' : '0 auto'};
+  overflow: hidden;
 
   @media only screen and (max-width: 1024px) and (min-width: 768px) {
     grid-template-columns: minmax(200px, 1fr) 5fr;
@@ -51,7 +52,6 @@ const Wrapper = styled.div`
 
 const SidePanel = styled.div`
   grid-area: sidebar;
-  max-width: 300px;
   width: 100%;
   display: flex;
   overflow: auto;
@@ -90,6 +90,8 @@ const SearchBarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 2px -2px rgb(0, 0, 0, 0.16);
+  z-index: 300;y 
 
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
@@ -107,7 +109,7 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 16px);
+  height: calc(100% - 24px);
 `;
 
 const NotFoundWrapper = styled.div`
