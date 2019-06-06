@@ -39,7 +39,7 @@ const CarContainer = styled.div`
   box-shadow: ${props => props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.16)'};
   display: grid;
   grid-template-columns: ${props => props.useNew ? 'auto' : '1fr 2fr 2fr'};
-  grid-template-rows: ${props => props.useNew ? '2fr 1fr minmax(100px, 120px)' : 'auto'};
+  grid-template-rows: ${props => props.useNew ? '2fr minmax(140px, 160px) minmax(100px, 120px)' : 'auto'};
   background-color: #fff;
   cursor: pointer;
   position: relative;
