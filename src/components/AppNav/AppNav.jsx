@@ -18,6 +18,8 @@ import { AppNavHeight } from '../../constants/ApplicationSettings';
 import ApplicationRoutes from '../../constants/Routes';
 import NotificatinBadge from './notification-badge/NotificatinBadge';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
+import SettingsModalContent from './SettingsModalContent/SettingsModalContent';
+import PPGModal from '../ppg-modal/PPGModal';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -226,6 +228,7 @@ class AppNav extends React.Component {
       openSidemenu: false,
       openUserMenu: false,
       navbarLinks: [],
+      showSettingsModal: false,
     };
   }
 
@@ -323,6 +326,12 @@ class AppNav extends React.Component {
     }
   }
 
+  toggleSettingsModal = () => {
+    this.setState((prevState) => ({
+      showSettingsModal: !prevState.showSettingsModal,
+    }));
+  }
+
   handleDrawerOpen = () => {
     this.setState({
       openSidemenu: true,
@@ -352,7 +361,7 @@ class AppNav extends React.Component {
   }
 
   render() {
-    const { openUserMenu, navbarLinks, openSidemenu } = this.state;
+    const { openUserMenu, navbarLinks, openSidemenu, showSettingsModal } = this.state;
     const { user, languages } = this.props;
 
     const username = user.name ? this.shortStringTo(user.name, 18) : 'Car dealership';
@@ -365,8 +374,17 @@ class AppNav extends React.Component {
           afterOptionclick={this.goToAction}
           showSignIn={() => { this.showSignIn(true); }}
           showSavedCars={this.handleOpenSavedCars}
+          showSettings={this.toggleSettingsModal}
           onRequestOpen={this.handleDrawerOpen}
         />
+        <PPGModal
+          setOpen={showSettingsModal}
+          handleClose={this.toggleSettingsModal}
+          setPadding={false}
+          onlyChildren
+        >
+          <SettingsModalContent toggleSettingsModal={this.toggleSettingsModal} />
+        </PPGModal>
         <Wrapper>
           <AppNavWrapper>
             <LogoWrapper>
@@ -439,6 +457,7 @@ class AppNav extends React.Component {
                       switchLanguage={this.switchLanguage}
                       languages={languages}
                       openUserMenu={openUserMenu}
+                      forceUpdate={this.props.forceUpdate}
                     />
                   )
                 }

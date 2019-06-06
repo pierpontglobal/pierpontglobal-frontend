@@ -1,20 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
-import FilterList from '@material-ui/icons/FilterList';
 import styled from 'styled-components';
 import SearchInput from '../AppNav/SearchInput/SearchInput';
 import { FormattedMessage } from 'react-intl';
 
-const FilterIcon = styled.div`
-  display: none;
-  @media only screen and (max-width: 600px) {
-    display: flex;
-    justify-content: flex-end;
-  }
-`;
-
-function SortBar({ header, className, filterPanelToggle }) {
+function SortBar({ header, className }) {
   const query = header.length > 0 ? header : '';
   return (
     <div
@@ -31,14 +21,6 @@ function SortBar({ header, className, filterPanelToggle }) {
       }}
     >
       <SearchInput defaultValue={query} />
-      <FilterIcon>
-        <IconButton color="primary" onClick={filterPanelToggle}>
-          <FilterList />
-          <span style={{ fontSize: '0.75em' }}>
-            <FormattedMessage id="label.filters" />
-          </span>
-        </IconButton>
-      </FilterIcon>
     </div>
   );
 }
