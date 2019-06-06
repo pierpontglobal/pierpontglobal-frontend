@@ -234,7 +234,7 @@ class UserMenuComponent extends React.Component {
       <>
         <OutsideClickHandler onClick={handleToggle} />
         {
-          showOptionMenu ? (<OptionMenu toggleOptionMenu={this.toggleOptionMenu} />) : (
+          showOptionMenu ? (<OptionMenu forceUpdate={this.props.forceUpdate} toggleOptionMenu={this.toggleOptionMenu} />) : (
             <UserMenu>
               <UserMenuWrapper>
                 <UserMenuBody>

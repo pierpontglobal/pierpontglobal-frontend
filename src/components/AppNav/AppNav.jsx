@@ -439,6 +439,7 @@ class AppNav extends React.Component {
                       switchLanguage={this.switchLanguage}
                       languages={languages}
                       openUserMenu={openUserMenu}
+                      forceUpdate={this.props.forceUpdate}
                     />
                   )
                 }

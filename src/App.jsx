@@ -314,6 +314,12 @@ class App extends React.Component {
     await this.getUser();
   }
 
+  forceRerenderMarketplace = () => {
+    if (!!this.marketplaceRef && !!this.marketplaceRef.current) {
+      this.marketplaceRef.current.forceRerender()
+    }
+  }
+
   render() {
     const { cookies } = this.props;
     const { dealer, languages, language, user } = this.state;
@@ -343,6 +349,7 @@ class App extends React.Component {
                       cookies={cookies}
                       verifyUserLoggedIn={this.verifyUserLoggedIn}
                       user={user}
+                      forceUpdate={() => this.forceRerenderMarketplace()}
                     />
                     {!this.verifyUserLoggedIn() ? null : (
                       <>
