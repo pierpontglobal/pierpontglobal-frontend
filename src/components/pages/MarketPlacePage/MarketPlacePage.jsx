@@ -63,8 +63,15 @@ const SidePanel = styled.div`
 
 const CarSection = styled.div`
   grid-area: cars;
-  height: ${`calc(100vh - ${SearchBarHeight}px)`};
+  height: ${`calc(100vh - ${SearchBarHeight + 16}px)`};
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: ${`calc(100vh - ${SearchBarHeight + 16}px)`};
+  max-height: ${`calc(100vh - ${SearchBarHeight + 16}px)`};
+  overflow-y: auto;
 `;
 
 const CarsWrapper = styled.div`
@@ -391,6 +398,7 @@ class MarketPlacePage extends React.Component {
                       dataLength={cars.length}
                       next={this.getCars}
                       hasMore
+                      
                       loader={(
                         <div style={{
                           width: '100%',
@@ -404,7 +412,7 @@ class MarketPlacePage extends React.Component {
                           <CircularProgress />
                         </div>
                       )}
-                      height={`${window.innerHeight + carsSectionHeight}px`}
+                      height={`calc(100vh - 16px)px`}
                       endMessage={(
                         <p style={{ textAlign: 'center' }}>
                           <b><FormattedMessage id="marketplace.end-message" /></b>
