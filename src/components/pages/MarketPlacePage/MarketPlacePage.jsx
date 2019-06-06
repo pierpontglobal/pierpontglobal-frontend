@@ -90,7 +90,6 @@ const SearchBarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
 
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
@@ -108,7 +107,7 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 16px);
 `;
 
 const NotFoundWrapper = styled.div`
@@ -434,7 +433,7 @@ class MarketPlacePage extends React.Component {
                       paddingTop: '24px',
                       height: '80px',
                       alignContent: 'center',
-                      marginTop: '8px',
+                      marginTop: '2px',
                     }}
                     >
                       <CircularProgress />

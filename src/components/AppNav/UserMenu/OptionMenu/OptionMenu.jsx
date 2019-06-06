@@ -134,7 +134,7 @@ class OptionMenu extends React.Component {
           <OptionMenuBody>
             <ContentWithSwitch>
               <SwitchDescription>
-                Marketplace new design
+                Cards layout -  marketplace
               </SwitchDescription>
               <SwitchWrapper>
                 <Switch defaultChecked={switchMarket} onChange={this.toggleMarketplaceDesign} />
