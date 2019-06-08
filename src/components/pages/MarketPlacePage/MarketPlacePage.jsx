@@ -94,8 +94,8 @@ const SearchBarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 2px -2px rgb(0, 0, 0, 0.16);
-  z-index: 300;y 
+  box-shadow: 0 4px 2px -2px rgb(0, 0, 0, 0.08);
+  z-index: 300;
 
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
@@ -240,7 +240,7 @@ class MarketPlacePage extends React.Component {
     //window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
     const response = await fetch(ApiServer, str, page, 20);
 
-    const carsArray = response.cars;
+    const carsArray = response.cars || [];
     const carsGroup = [];
 
     for (let i = 0; i < carsArray.length; i += 1) {
