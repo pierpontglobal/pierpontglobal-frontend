@@ -9,6 +9,10 @@ import { CircularProgress } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { IconButton } from '@material-ui/core';
+import { connect } from 'react-redux';
+
+import USER_ACTIONS from '../../../modules/user/action';
+import MARKET_ACTIONS from '../../../modules/market/actions';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
@@ -161,7 +165,12 @@ class MarketPlacePage extends React.Component {
   }
 
   componentDidMount() {
+    this.props.onRef(this);
     this.getCars();
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
   }
 
   shouldUseNewDesing = () => {
@@ -175,28 +184,30 @@ class MarketPlacePage extends React.Component {
   }
 
   handleBookmark = (carVin, bookmarked) => {
+    const { addSavedCar, removeSavedCar } = this.props;
     if (bookmarked) {
-      axios.delete(`${ApiServer}/api/v1/car/delete?vin=${carVin}`).then(data => {
+      removeSavedCar(carVin).then(data => {
         this.toggleBookmarkedCar(carVin);
       });
     } else {
-      axios.post(`${ApiServer}/api/v1/car/save`, { vin: carVin }).then(data => {
+      addSavedCar(carVin).then(data => {
         this.toggleBookmarkedCar(carVin);
       });
     }
   }
 
   toggleBookmarkedCar = (carVin) => {
-    const { cars } = this.state;
-    const carElements = [];
-    for (let j = 0; j < cars.length; j += 1) {
-      let car = cars[j].props.car;
-      if (car.vin === carVin) {
-        car.bookmarked ? car.bookmarked = false : car.bookmarked = true;
+    this.getCars();
+    let cars = [...this.state.cars];
+    console.log(cars, carVin);
+    cars.forEach(car => {
+      if (car.props.car.vin === carVin) {
+        car.props.car.bookmarked = !car.props.car.bookmarked
       }
-      carElements.push(<CarCard useNewDesign={this.useNewDesign} handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
-    }
-    this.setState({ cars: carElements });
+    });
+    this.setState({
+      cars
+    });
   }
 
   isCarAlreadySaved = (car, bookmarkedCars) => {
@@ -213,10 +224,11 @@ class MarketPlacePage extends React.Component {
   }
 
   async getCars() {
+    const { fetch, fetchBookmarked, savedCars } = this.props;
+    const { page, size } = this.state;
+
     let str = '';
     this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-
-    const { page, size } = this.state;
 
     Object.keys(this.params).forEach((key) => {
       if ((this.params[key] !== '' && this.params[key] !== null) && key !== '') {
@@ -225,12 +237,10 @@ class MarketPlacePage extends React.Component {
     });
     str = str.substr(1, str.length);
 
-    window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
-    const response = await axios.get(`${ApiServer}/api/v1/car/query?${str}&limit=${page * 20}&offset=0`);
-    const bookmarkedCars = await axios.get(`${ApiServer}/api/v1/user/saved_cars`);
+    //window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
+    const response = await fetch(ApiServer, str, page, 20);
 
-    const carsArray = response.data.cars;
-    const bookmarkedArray = bookmarkedCars.data.cars;
+    const carsArray = response.cars;
     const carsGroup = [];
 
     for (let i = 0; i < carsArray.length; i += 1) {
@@ -248,7 +258,7 @@ class MarketPlacePage extends React.Component {
       }
 
       // Determine if the cars is already saved for the current user
-      const bookmarked = this.isCarAlreadySaved(carsArray[i], bookmarkedArray);
+      const bookmarked = this.isCarAlreadySaved(carsArray[i], savedCars);
 
       const carObject = {
         wholePrice: car.sale_information.whole_price,
@@ -281,14 +291,14 @@ class MarketPlacePage extends React.Component {
       );
     }
 
-    this.setState({
+    this.setState((prevState) => ({
       cars: carsGroup,
       page: page + 1,
-      availableArguments: response.data.available_arguments,
+      availableArguments: response.available_arguments,
       loaded: true,
       carsSectionHeight: this.carsSection.current.offsetHeight,
-      size: response.data.size,
-    }, () => {
+      size: response.size,
+    }), () => {
       if (this.state.size !== size) {
         this.carsSection.current.scrollTop = 0;
       }
@@ -340,7 +350,6 @@ class MarketPlacePage extends React.Component {
   }
 
   forceRerender = () => {
-    console.log('Will force re render - marketplace');
     this.shouldUseNewDesing();
     this.forceUpdate();
     this.getCars();
@@ -486,4 +495,22 @@ class MarketPlacePage extends React.Component {
   }
 }
 
-export default MarketPlacePage;
+// Redux Config
+const mapStateToProps = state => ({
+  cars: state.marketReducer.cars,
+  savedCars: state.userReducer.savedCars
+});
+const mapDispatchToProps = dispatch => ({
+  fetch: (ApiServer, str, page, pageSize) => dispatch(MARKET_ACTIONS.fetchCars(ApiServer, str, page, pageSize)),
+  fetchBookmarked: ApiServer => dispatch(MARKET_ACTIONS.fetchBookmarked(ApiServer)),
+  add: car => dispatch(MARKET_ACTIONS.addCar(car)),
+  remove: vin => dispatch(MARKET_ACTIONS.removeCar(vin)),
+  update: car => dispatch(MARKET_ACTIONS.modifyCar(car)),
+  addSavedCar: vin => dispatch(USER_ACTIONS.addSavedCar(vin)),
+  removeSavedCar: vin => dispatch(USER_ACTIONS.removeSavedCar(vin)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MarketPlacePage);

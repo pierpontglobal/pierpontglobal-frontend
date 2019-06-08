@@ -19,6 +19,10 @@ import MediaQuery from "react-responsive";
 import CollectionMuiIcon from "@material-ui/icons/CollectionsBookmark";
 import locale_en from "react-intl/locale-data/en";
 import locale_es from "react-intl/locale-data/es";
+import { connect } from 'react-redux';
+
+import USER_ACTIONS from './modules/user/action';
+import SETTINGS_ACTIONS from './modules/settings/actions';
 import SavedCarsDrawer from "./components/SavedCars/SavedCarsDrawer";
 import messages_es from "./translations/es.json";
 import messages_en from "./translations/en.json";
@@ -177,6 +181,7 @@ class App extends React.Component {
 
     if (isLoggedIn) {
       this.getUser();
+      this.getSavedCars();
     }
 
     this.setDefaultLanguage();
@@ -216,19 +221,29 @@ class App extends React.Component {
     });
   }
 
+  getSavedCars = async () => {
+    const { fetchSavedCars } = this.props;
+    await fetchSavedCars();
+  }
+
   getUser = async () => {
+    const { createUser } = this.props;
     const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
+
+    let user = {
+      name: `${responseUser.first_name} ${responseUser.last_name}`,
+      address: `${responseUser.address.primary_address} ${
+        responseUser.address.secondary_address
+      }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
+        responseUser.address.country
+      }`,
+      email: `${responseUser.email}`,
+      phone: `${responseUser.phone_number}`
+    }
+
+    createUser(user);
     this.setState({
-      user: {
-        name: `${responseUser.first_name} ${responseUser.last_name}`,
-        address: `${responseUser.address.primary_address} ${
-          responseUser.address.secondary_address
-        }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
-          responseUser.address.country
-        }`,
-        email: `${responseUser.email}`,
-        phone: `${responseUser.phone_number}`
-      }
+      user
     });
   };
 
@@ -242,6 +257,7 @@ class App extends React.Component {
 
   setLanguage = lang => {
     const { languages } = this.state;
+    const { setLanguage, setLanguages  } = this.props;
     const langs = [...languages];
 
     const { cookies } = this.props;
@@ -254,6 +270,9 @@ class App extends React.Component {
         lg.active = false;
       }
     });
+
+    setLanguage(lang.abr);
+    setLanguages(langs);
     this.setState({
       languages: langs,
       language: lang.abr
@@ -263,7 +282,7 @@ class App extends React.Component {
   setDefaultLanguage = () => {
     const { languages } = this.state;
     const langs = [...languages];
-    const { cookies } = this.props;
+    const { cookies, setLanguage, setLanguages } = this.props;
 
     // Set default to Spanish
     const defaultLang = cookies.get("language") || "en";
@@ -275,6 +294,9 @@ class App extends React.Component {
       }
     });
 
+    setLanguages(langs);
+    setLanguage(defaultLang);
+    
     this.setState({
       languages: langs,
       language: defaultLang
@@ -285,23 +307,13 @@ class App extends React.Component {
     this.setState(
       (prevState, props) => ({
         showSavedCarsPanel: !prevState.showSavedCarsPanel
-      }),
-      () => {
-        // this.showHideWhatsapp();
-      }
-    );
+      }));
   };
 
-  showHideWhatsapp = () => {
-    // if (this.state.showSavedCarsPanel) {
-    //   this.setState({ showWhastapp: false });
-    // } else {
-    //   this.setState({ showWhastapp: true });
-    // }
-  };
-
-  removedBookmarkedCar = carVin => {
-    this.marketplaceRef.current.toggleBookmarkedCar(carVin);
+  updateCarsList = (vin) => {
+    if (!!this.marketplaceRef) {
+      this.marketplaceRef.toggleBookmarkedCar(vin);
+    }
   };
 
   showSavedCars = () => {
@@ -315,8 +327,8 @@ class App extends React.Component {
   }
 
   forceRerenderMarketplace = () => {
-    if (!!this.marketplaceRef && !!this.marketplaceRef.current) {
-      this.marketplaceRef.current.forceRerender()
+    if (!!this.marketplaceRef) {
+      this.marketplaceRef.forceRerender();
     }
   }
 
@@ -354,7 +366,7 @@ class App extends React.Component {
                     {!this.verifyUserLoggedIn() ? null : (
                       <>
                         <SavedCarsDrawer
-                          removedBookmarkedCar={this.removedBookmarkedCar}
+                          updateCarsList={this.updateCarsList}
                           open={this.state.showSavedCarsPanel}
                           handleClose={() => this.toggleSavedCarsPanel()}
                         />
@@ -386,7 +398,7 @@ class App extends React.Component {
                       render={() =>
                         this.verifyUserLoggedIn() ? (
                           <MarketPlacePage
-                            ref={this.marketplaceRef}
+                            onRef={ref => (this.marketplaceRef = ref)}
                             cookies={cookies}
                           />
                         ) : (
@@ -465,4 +477,26 @@ class App extends React.Component {
   }
 }
 
-export default injectIntl(withCookies(App));
+
+// Redux connection
+const mapStateToProps = state => ({
+  user: state.userReducer.user,
+  settings: state.userReducer.settings,
+  savedCars: state.userReducer.savedCars
+});
+
+const mapDispatchToProps = dispatch => ({
+  createUser: user => dispatch(USER_ACTIONS.createUser(user)),
+  modifyUser: user => dispatch(USER_ACTIONS.modifyUser(user)),
+  removeUser: () => dispatch(USER_ACTIONS.removeUser()),
+  setLanguage: lang => dispatch(SETTINGS_ACTIONS.setLanguage(lang)),
+  setLanguages: languages => dispatch(SETTINGS_ACTIONS.setLanguages(languages)),
+  setMarketLayout: useNew => dispatch(SETTINGS_ACTIONS.modifyMarketLayout(useNew)),
+  receivePushNotifications: receive => dispatch(SETTINGS_ACTIONS.modifyPushNotifications(receive)),
+  fetchSavedCars: () => dispatch(USER_ACTIONS.fetchSavedCars()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(withCookies(App)));

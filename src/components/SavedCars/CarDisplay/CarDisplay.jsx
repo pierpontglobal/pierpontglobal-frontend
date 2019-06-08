@@ -5,8 +5,10 @@ import { withRouter } from 'react-router-dom';
 import { IconButton } from '@material-ui/core';
 import CloseMuiIcon from '@material-ui/icons/Close';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import ApplicationRoutes from '../../../constants/Routes';
 import { ApiServer } from '../../../Defaults';
+import USER_ACTIONS from '../../../modules/user/action';
 
 const CarDisplayWrapper = styled.div`
   width: 100%;
@@ -88,7 +90,8 @@ class CarDisplay extends Component {
   }
 
   removeSavedCar = (carVin) => {
-    axios.delete(`${ApiServer}/api/v1/car/delete?vin=${carVin}`).then(data => {
+    const { removeSavedCar } = this.props;
+    removeSavedCar(carVin).then(data => {
       this.props.updateCarList(carVin);
     });
   }
@@ -121,4 +124,14 @@ class CarDisplay extends Component {
   }
 }
 
-export default withRouter(CarDisplay);
+
+// Redux configuration
+const mapDispatchToProps = dispatch => ({
+  removeSavedCar: (vin) => dispatch(USER_ACTIONS.removeSavedCar(vin)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(CarDisplay));
+
