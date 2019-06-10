@@ -18,11 +18,11 @@ const ArrowWrapper = styled.div`
 `;
 
 const FilterPanelWrapper = styled.div`
-  background-color: #FAFAFA;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+  background-color: #FFF;
   height: 100%;
   overflow: auto;
-  @media only screen and (max-width: 600px) {
+  width: 100%;
+  @media only screen and (max-width: 768px) {
     height: 100%,
   };
 `;
@@ -233,7 +233,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <ExpandableDiv style={{ overflow: 'hidden' }} pose={yearTogle ? 'expanded' : 'retracted'} className="border-bottom">
+        <ExpandableDiv style={{ overflow: 'hidden', minHeight: '72px' }} pose={yearTogle ? 'expanded' : 'retracted'} className="border-bottom">
           <div
             className="d-flex mb-0 p-3 justify-content-between"
             onClick={() => { this.setState({ yearTogle: !yearTogle }); }}

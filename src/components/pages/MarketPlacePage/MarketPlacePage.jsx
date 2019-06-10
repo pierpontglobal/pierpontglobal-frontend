@@ -30,6 +30,7 @@ const Wrapper = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: minmax(300px, 1fr) 5fr;
+  grid-column-gap: 24px;
   grid-template-rows: minmax(40px, 1fr) 5fr;
   grid-template-areas:
     "sidebar searchbar"
@@ -94,7 +95,6 @@ const SearchBarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 4px 2px -2px rgb(0, 0, 0, 0.08);
   z-index: 300;
 
   @media only screen and (max-width: 768px) {
