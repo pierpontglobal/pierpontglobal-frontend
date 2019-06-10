@@ -16,8 +16,13 @@ const rootReducer = combineReducers({
   marketReducer
 });
 
+const composeEnhancers = composeWithDevTools({
+  trace: true, 
+  traceLimit: 25 
+}); 
+
 const configureStore = (initialState) => {
-  const store = createStore(rootReducer, initialState, composeWithDevTools(
+  const store = createStore(rootReducer, initialState, composeEnhancers(
     applyMiddleware(
       thunkMiddleware,
       loggerMiddleware

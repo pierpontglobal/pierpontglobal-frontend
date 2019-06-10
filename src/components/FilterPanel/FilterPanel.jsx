@@ -64,14 +64,16 @@ class FilterPanel extends React.Component {
 
   componentWillMount() {
     const { intl } = this.props;
-    this.text = {
-      maker: intl.formatMessage({ id: 'marketplace.maker' }),
-      model: intl.formatMessage({ id: 'marketplace.model' }),
-      trim: intl.formatMessage({ id: 'marketplace.trim' }),
-      year: intl.formatMessage({ id: 'marketplace.year' }),
-      color: intl.formatMessage({ id: 'marketplace.color' }),
-      engine: intl.formatMessage({ id: 'marketplace.engine' }),
-    };
+    this.setState({
+      text: {
+        maker: intl.formatMessage({ id: 'marketplace.maker' }),
+        model: intl.formatMessage({ id: 'marketplace.model' }),
+        trim: intl.formatMessage({ id: 'marketplace.trim' }),
+        year: intl.formatMessage({ id: 'marketplace.year' }),
+        color: intl.formatMessage({ id: 'marketplace.color' }),
+        engine: intl.formatMessage({ id: 'marketplace.engine' }),
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -165,7 +167,7 @@ class FilterPanel extends React.Component {
 
   render() {
     const {
-      availableArguments, maker, model, trim, year, color, engine, yearTogle,
+      availableArguments, maker, model, trim, year, color, engine, yearTogle, text,
     } = this.state;
     const { onSeeAll } = this.props;
     let makersArray = [];
@@ -193,7 +195,7 @@ class FilterPanel extends React.Component {
 
     return (
       <FilterPanelWrapper>
-        <Item name={this.text.maker}>
+        <Item name={text.maker}>
           <OptionBtn
             selected={maker}
             values={makersArray}
@@ -202,7 +204,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name={this.text.model}>
+        <Item name={text.model}>
           <OptionBtn
             selected={model}
             values={modelsArray}
@@ -211,7 +213,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name={this.text.trim}>
+        <Item name={text.trim}>
           <OptionBtn
             selected={trim}
             values={trimArray}
@@ -235,7 +237,7 @@ class FilterPanel extends React.Component {
                 fontWeight: '600',
               }}
             >
-              <span>{this.text.year}</span>
+              <span>{text.year}</span>
             </div>
             <RotatableIcon pose={yearTogle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down" />
           </div>
@@ -247,7 +249,7 @@ class FilterPanel extends React.Component {
             />
           </div>
         </ExpandableDiv>
-        <Item name={this.text.color}>
+        <Item name={text.color}>
           <OptionBtn
             selected={color}
             values={colorArray}
@@ -256,7 +258,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name={this.text.engine}>
+        <Item name={text.engine}>
           <OptionBtn
             selected={engine}
             values={engineArray}

@@ -12,20 +12,15 @@ import styled from "styled-components";
 import {
   IntlProvider,
   FormattedMessage,
-  addLocaleData,
   injectIntl
 } from "react-intl";
 import MediaQuery from "react-responsive";
 import CollectionMuiIcon from "@material-ui/icons/CollectionsBookmark";
-import locale_en from "react-intl/locale-data/en";
-import locale_es from "react-intl/locale-data/es";
 import { connect } from 'react-redux';
 
 import USER_ACTIONS from './modules/user/action';
 import SETTINGS_ACTIONS from './modules/settings/actions';
 import SavedCarsDrawer from "./components/SavedCars/SavedCarsDrawer";
-import messages_es from "./translations/es.json";
-import messages_en from "./translations/en.json";
 import MarketPlacePage from "./components/pages/MarketPlacePage/MarketPlacePage";
 import LandingPage from "./components/pages/LandingPage/LandingPage";
 import NotfoundPage from "./components/pages/NotFoundPage/NotFoundPage";
@@ -42,13 +37,6 @@ import WhatsApp from "./components/Modal/WhatsApp/WhatsApp";
 import SupportPage from "./components/pages/SupportPage/SupportPage.jsx";
 import SignInPage from "./components/pages/SignInPage/SignInPage";
 import ApplicationRoutes from "./constants/Routes";
-
-addLocaleData([...locale_en, ...locale_es]);
-
-const messages = {
-  es: messages_es,
-  en: messages_en
-};
 
 const car = {
   year: "2017",
@@ -130,24 +118,6 @@ class App extends React.Component {
         email: null,
         number: null
       },
-      languages: [
-        {
-          abr: "es",
-          name: <FormattedMessage id="lang.spanish" />,
-          active: false
-        },
-        {
-          abr: "en",
-          name: <FormattedMessage id="lang.english" />,
-          active: true
-        }
-        // {
-        //   abr: "fr",
-        //   name: <FormattedMessage id="lang.french" />,
-        //   active: false
-        // },
-      ],
-      language: this.getBrowserLocale(),
       user: {}
     };
 
@@ -166,13 +136,15 @@ class App extends React.Component {
     this.marketplaceRef = React.createRef();
   }
 
-  getBrowserLocale = () => navigator.language.split(/[-_]/)[0];
-
   setDealer = dealer => {
     this.setState({
       dealer
     });
   };
+
+  componentWillMount = () => {
+    this.setLanguageData();
+  }
 
   componentDidMount() {
     const { cookies } = this.props;
@@ -183,8 +155,6 @@ class App extends React.Component {
       this.getUser();
       this.getSavedCars();
     }
-
-    this.setDefaultLanguage();
 
     this.OneSignal = window.OneSignal || [];
 
@@ -221,6 +191,33 @@ class App extends React.Component {
     });
   }
 
+  setLanguageData = () => {
+    const { language, languages, setLanguage, setLanguages } = this.props;
+    setLanguages(languages);
+    setLanguage(language);
+  }
+
+  setLanguage = lang => {
+    const { setLanguage, setLanguages, languages  } = this.props;
+    const langs = [...languages];
+  
+    const { cookies } = this.props;
+    cookies.set("language", lang.abr, { path: "/" });
+  
+    langs.forEach(lg => {
+      if (lg.abr === lang.abr) {
+        lg.active = true;
+      } else {
+        lg.active = false;
+      }
+    });
+  
+    setLanguage(lang.abr);
+    setLanguages(langs);
+
+    this.props.changeLanguage(lang);
+  };
+
   getSavedCars = async () => {
     const { fetchSavedCars } = this.props;
     await fetchSavedCars();
@@ -242,9 +239,6 @@ class App extends React.Component {
     }
 
     createUser(user);
-    this.setState({
-      user
-    });
   };
 
   verifyUserLoggedIn() {
@@ -254,54 +248,6 @@ class App extends React.Component {
     }
     return false;
   }
-
-  setLanguage = lang => {
-    const { languages } = this.state;
-    const { setLanguage, setLanguages  } = this.props;
-    const langs = [...languages];
-
-    const { cookies } = this.props;
-    cookies.set("language", lang.abr, { path: "/" });
-
-    langs.forEach(lg => {
-      if (lg.abr === lang.abr) {
-        lg.active = true;
-      } else {
-        lg.active = false;
-      }
-    });
-
-    setLanguage(lang.abr);
-    setLanguages(langs);
-    this.setState({
-      languages: langs,
-      language: lang.abr
-    });
-  };
-
-  setDefaultLanguage = () => {
-    const { languages } = this.state;
-    const langs = [...languages];
-    const { cookies, setLanguage, setLanguages } = this.props;
-
-    // Set default to Spanish
-    const defaultLang = cookies.get("language") || "en";
-    langs.forEach(lg => {
-      if (lg.abr.toLowerCase() === defaultLang.toLowerCase()) {
-        lg.active = true;
-      } else {
-        lg.active = false;
-      }
-    });
-
-    setLanguages(langs);
-    setLanguage(defaultLang);
-    
-    this.setState({
-      languages: langs,
-      language: defaultLang
-    });
-  };
 
   toggleSavedCarsPanel = () => {
     this.setState(
@@ -333,146 +279,142 @@ class App extends React.Component {
   }
 
   render() {
-    const { cookies } = this.props;
-    const { dealer, languages, language, user } = this.state;
-
+    const { cookies, user, settings, savedCars } = this.props;
     const userSignedIn = this.verifyUserLoggedIn();
 
     return (
-      <IntlProvider locale={language || "en"} messages={messages[language]}>
-        <MuiThemeProvider theme={DefaultTheme}>
-          <div>
-            <Router>
-              <div
-                style={{
-                  position: "fixed",
-                  height: "100%",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column"
-                }}
-              >
-                {!userSignedIn ? null : (
-                  <>
-                    <AppNav
-                      handleOpenSavedCars={this.showSavedCars}
-                      languages={languages}
-                      setLang={this.setLanguage}
-                      cookies={cookies}
-                      verifyUserLoggedIn={this.verifyUserLoggedIn}
-                      user={user}
-                      forceUpdate={() => this.forceRerenderMarketplace()}
-                    />
-                    {!this.verifyUserLoggedIn() ? null : (
-                      <>
-                        <SavedCarsDrawer
-                          updateCarsList={this.updateCarsList}
-                          open={this.state.showSavedCarsPanel}
-                          handleClose={() => this.toggleSavedCarsPanel()}
+      <MuiThemeProvider theme={DefaultTheme}>
+        <div>
+          <Router>
+            <div
+              style={{
+                position: "fixed",
+                height: "100%",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
+              {!userSignedIn ? null : (
+                <>
+                  <AppNav
+                    handleOpenSavedCars={this.showSavedCars}
+                    languages={settings.languages}
+                    setLang={this.setLanguage}
+                    cookies={cookies}
+                    verifyUserLoggedIn={this.verifyUserLoggedIn}
+                    user={user}
+                    forceUpdate={() => this.forceRerenderMarketplace()}
+                  />
+                  {!this.verifyUserLoggedIn() ? null : (
+                    <>
+                      <SavedCarsDrawer
+                        updateCarsList={this.updateCarsList}
+                        open={this.state.showSavedCarsPanel}
+                        handleClose={() => this.toggleSavedCarsPanel()}
+                      />
+                    </>
+                  )}
+                </>
+              )}
+              <PageHolder isInSignInPage={!userSignedIn}>
+                <Switch>
+                  <Route
+                    exact
+                    path={ApplicationRoutes.oauthPage}
+                    render={() => <OauthPage />}
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.home}
+                    render={() =>
+                      this.verifyUserLoggedIn() ? (
+                        <Redirect to="/user" />
+                      ) : (
+                        <SignInPage handleSignIn={this.handleSignIn} cookies={cookies} />
+                      )
+                    }
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.marketplace}
+                    render={() =>
+                      this.verifyUserLoggedIn() ? (
+                        <MarketPlacePage
+                          onRef={ref => (this.marketplaceRef = ref)}
+                          cookies={cookies}
                         />
-                      </>
-                    )}
-                  </>
-                )}
-                <PageHolder isInSignInPage={!userSignedIn}>
-                  <Switch>
-                    <Route
-                      exact
-                      path={ApplicationRoutes.oauthPage}
-                      render={() => <OauthPage />}
-                    />
-                    <Route
-                      exact
-                      path={ApplicationRoutes.home}
-                      render={() =>
-                        this.verifyUserLoggedIn() ? (
-                          <Redirect to="/user" />
-                        ) : (
-                          <SignInPage handleSignIn={this.handleSignIn} cookies={cookies} />
-                        )
-                      }
-                    />
-                    <Route
-                      exact
-                      path={ApplicationRoutes.marketplace}
-                      render={() =>
-                        this.verifyUserLoggedIn() ? (
-                          <MarketPlacePage
-                            onRef={ref => (this.marketplaceRef = ref)}
-                            cookies={cookies}
-                          />
-                        ) : (
-                          <Redirect to="/" />
-                        )
-                      }
-                    />
-                    <Route
-                      exact
-                      path={ApplicationRoutes.carPage}
-                      render={() =>
-                        this.verifyUserLoggedIn() ? (
-                          <CarPage cookies={cookies} car={car} />
-                        ) : (
-                          <Redirect to="/" />
-                        )
-                      }
-                    />
+                      ) : (
+                        <Redirect to="/" />
+                      )
+                    }
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.carPage}
+                    render={() =>
+                      this.verifyUserLoggedIn() ? (
+                        <CarPage cookies={cookies} car={car} />
+                      ) : (
+                        <Redirect to="/" />
+                      )
+                    }
+                  />
 
-                    <Route
-                      exact
-                      path={ApplicationRoutes.registrationPage}
-                      render={() => <RegistrationPage cookies={cookies} />}
-                    />
-                    <Route
-                      path={ApplicationRoutes.profilePage.default}
-                      render={() =>
-                        this.verifyUserLoggedIn() ? (
-                          <ProfilePage
-                            setDealer={this.setDealer}
-                            cookies={cookies}
-                          />
-                        ) : (
-                          <Redirect to="/" />
-                        )
-                      }
-                    />
-                    <Route
-                      exact
-                      path={ApplicationRoutes.notificationPage}
-                      render={() =>
-                        this.verifyUserLoggedIn() ? (
-                          <NotificationPage cookies={cookies} />
-                        ) : (
-                          <Redirect to="/" />
-                        )
-                      }
-                    />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.registrationPage}
+                    render={() => <RegistrationPage cookies={cookies} />}
+                  />
+                  <Route
+                    path={ApplicationRoutes.profilePage.default}
+                    render={() =>
+                      this.verifyUserLoggedIn() ? (
+                        <ProfilePage
+                          setDealer={this.setDealer}
+                          cookies={cookies}
+                        />
+                      ) : (
+                        <Redirect to="/" />
+                      )
+                    }
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.notificationPage}
+                    render={() =>
+                      this.verifyUserLoggedIn() ? (
+                        <NotificationPage cookies={cookies} />
+                      ) : (
+                        <Redirect to="/" />
+                      )
+                    }
+                  />
 
-                    <Route
-                      exact
-                      path={ApplicationRoutes.contactPage}
-                      render={() => <ContactPage user={user}  cookies={cookies} />}
-                    />
-                    <Route
-                      exact
-                      path={ApplicationRoutes.supportPage}
-                      render={() => <SupportPage />}
-                    />
-                    <Route
-                      exact
-                      path={ApplicationRoutes.supportPageTutorial}
-                      render={() => <SupportPage />}
-                    />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.contactPage}
+                    render={() => <ContactPage user={user}  cookies={cookies} />}
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.supportPage}
+                    render={() => <SupportPage />}
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.supportPageTutorial}
+                    render={() => <SupportPage />}
+                  />
 
-                    <Route render={() => <NotfoundPage cookies={cookies} />} />
-                  </Switch>
-                </PageHolder>
-              </div>
-            </Router>
-          </div>
-          <WhatsApp shown={this.state.showWhastapp} />
-        </MuiThemeProvider>
-      </IntlProvider>
+                  <Route render={() => <NotfoundPage cookies={cookies} />} />
+                </Switch>
+              </PageHolder>
+            </div>
+          </Router>
+        </div>
+        <WhatsApp shown={this.state.showWhastapp} />
+      </MuiThemeProvider>
     );
   }
 }
@@ -481,7 +423,7 @@ class App extends React.Component {
 // Redux connection
 const mapStateToProps = state => ({
   user: state.userReducer.user,
-  settings: state.userReducer.settings,
+  settings: state.settingsReducer,
   savedCars: state.userReducer.savedCars
 });
 

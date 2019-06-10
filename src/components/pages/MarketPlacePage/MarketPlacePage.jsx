@@ -240,7 +240,7 @@ class MarketPlacePage extends React.Component {
     //window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
     const response = await fetch(ApiServer, str, page, 20);
 
-    const carsArray = response.cars || [];
+    const carsArray = !!response ? response.cars : [];
     const carsGroup = [];
 
     for (let i = 0; i < carsArray.length; i += 1) {
@@ -294,10 +294,10 @@ class MarketPlacePage extends React.Component {
     this.setState((prevState) => ({
       cars: carsGroup,
       page: page + 1,
-      availableArguments: response.available_arguments,
+      availableArguments: !!response ? response.available_arguments : [],
       loaded: true,
       carsSectionHeight: this.carsSection.current.offsetHeight,
-      size: response.size,
+      size: !!response ? response.size : 0,
     }), () => {
       if (this.state.size !== size) {
         this.carsSection.current.scrollTop = 0;
