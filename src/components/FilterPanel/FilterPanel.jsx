@@ -5,6 +5,17 @@ import { injectIntl } from 'react-intl';
 import Item from './Item/Item';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
+import ArrowIcon from '@material-ui/icons/KeyboardArrowDown';
+
+const ArrowWrapper = styled.div`
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  transform: ${ props => props.toggle ? 'rotate(180deg)' : 'rotate(0deg)' };
+  & > svg {
+    font-size: 1.5rem;
+  }
+`;
 
 const FilterPanelWrapper = styled.div`
   background-color: #FAFAFA;
@@ -239,7 +250,7 @@ class FilterPanel extends React.Component {
             >
               <span>{text.year}</span>
             </div>
-            <RotatableIcon pose={yearTogle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down" />
+            <ArrowWrapper toggle={yearTogle} style={{ color: 'rgb(58, 62, 67)' }}><ArrowIcon /></ArrowWrapper>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
             <RangeSelector

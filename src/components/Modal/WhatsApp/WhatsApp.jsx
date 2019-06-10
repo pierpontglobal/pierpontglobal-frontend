@@ -138,7 +138,6 @@ class WhatsApp extends React.Component {
 
   render() {
     const { whatsappVisible, wWPosition } = this.state;
-    const { shown } = this.props;
 
     return (
       <>

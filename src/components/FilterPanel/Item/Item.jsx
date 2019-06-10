@@ -2,16 +2,19 @@ import React from 'react';
 import { Collapse } from 'reactstrap';
 import posed from 'react-pose';
 import PropTypes from 'prop-types';
+import ArrowIcon from '@material-ui/icons/KeyboardArrowDown';
 import Container from '../../styles/Container/Container';
+import styled from 'styled-components';
 
-const RotatableIcon = posed.i({
-  retracted: {
-    rotate: 0,
-  },
-  expanded: {
-    rotate: 180,
-  },
-});
+const ArrowWrapper = styled.div`
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  transform: ${ props => props.toggle ? 'rotate(180deg)' : 'rotate(0deg)' };
+  & > svg {
+    font-size: 1.5rem;
+  }
+`;
 
 export default class Item extends React.Component {
   constructor(props) {
@@ -29,7 +32,7 @@ export default class Item extends React.Component {
   render() {
     const { name, children } = this.props;
     const { toggle } = this.state;
-    const arrow = <RotatableIcon pose={toggle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down" />;
+    const arrow = <ArrowWrapper toggle={toggle} style={{ color: 'rgb(58, 62, 67)' }}><ArrowIcon /></ArrowWrapper>;
 
     return (
       <Container
@@ -47,12 +50,12 @@ export default class Item extends React.Component {
               fontSize: '16px',
               alignContent: 'center',
               alignItems: 'center',
-              fontWeight: '600',
+              fontWeight: '400',
             }}
           >
             <span>{name}</span>
           </div>
-          {toggle ? arrow : arrow}
+          { arrow }
         </div>
         <Collapse isOpen={toggle}>
           {children}

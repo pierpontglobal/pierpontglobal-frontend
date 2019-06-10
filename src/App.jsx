@@ -109,7 +109,6 @@ class App extends React.Component {
 
     this.state = {
       showSavedCarsPanel: false,
-      showWhastapp: true,
       userSignedIn: false,
       dealer: {
         image: null,
@@ -264,7 +263,7 @@ class App extends React.Component {
 
   showSavedCars = () => {
     this.setState({
-      showSavedCarsPanel: true
+      showSavedCarsPanel: true,
     });
   };
 
@@ -360,7 +359,6 @@ class App extends React.Component {
                       )
                     }
                   />
-
                   <Route
                     exact
                     path={ApplicationRoutes.registrationPage}
@@ -413,7 +411,7 @@ class App extends React.Component {
             </div>
           </Router>
         </div>
-        <WhatsApp shown={this.state.showWhastapp} />
+        <WhatsApp />
       </MuiThemeProvider>
     );
   }
