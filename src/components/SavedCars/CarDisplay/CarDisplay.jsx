@@ -15,11 +15,11 @@ const CarDisplayWrapper = styled.div`
   min-height: 80px;
   max-height: 80px;
   overflow: hidden;
-  background-color: rgb(140, 140, 140, 0.7);
+  background-color: white;
   display: grid;
   grid-template-columns: 30% 70%;
   opacity: 0;
-  box-shadow: 0px 0px 2px 0px rgb(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 3px 2px rgb(0, 0, 0, 0.05);
   animation: 0.55s slide-in ease-in-out ${props => props.delay ? props.delay : '0s'};
   animation-fill-mode: forwards;
   margin-bottom: 16px;
@@ -61,7 +61,7 @@ const CarTitle = styled.div`
   padding-left: 8px;
   & > span {
     font-weight: 600;
-    color: white;
+    color: #303030;
     & > span {
       font-weight: 200;
     }
@@ -69,7 +69,7 @@ const CarTitle = styled.div`
 `;
 
 const CloseIcon = styled(CloseMuiIcon)`
-  color: #fff;
+  color: #303030;
 `;
 
 const CloseIconWrapper = styled.div`
@@ -112,10 +112,10 @@ class CarDisplay extends Component {
           </CarTitle>
           <div style={{ paddingLeft: '8px' }}>
             <div>
-              <span style={{ color: '#fff' }}>{ car.year } | { car.engine }</span>
+              <span style={{ color: '#303030' }}>{ car.year } | { car.engine }</span>
             </div>
             <div>
-              <span style={{ fontSize: '0.75rem', color: '#e2e2e2' }}><b>VIN: </b>{ car.vin }</span>
+              <span style={{ fontSize: '0.75rem', color: '#000000' }}><b>VIN: </b>{ car.vin }</span>
             </div>
           </div>
         </CarInfo>

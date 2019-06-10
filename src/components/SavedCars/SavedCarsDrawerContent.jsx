@@ -13,7 +13,8 @@ const Wrapper = styled.div`
   max-width: 400px;
   min-width: 400px;
   height: 100%;
-  background-color: #303030;
+  background: rgb(236,236,236);
+  background: linear-gradient(346deg, rgba(236,236,236,1) 0%, rgba(255,255,255,1) 100%);
   position: relative;
   z-index: 4000;
   @media only screen and (max-width: 480px) {
@@ -27,8 +28,9 @@ const Title = styled.div`
   margin-bottom: 16px;
   text-align: center;
   & > span {
-    color: white;
-    font-size: 1.25rem;
+    color: #303030;
+    font-size: 1.35rem;
+    font-weight: 400;
   }
 `;
 
@@ -39,7 +41,7 @@ const HideButton = styled(IconButton)`
 `;
 
 const ArrowIcon = styled(ArrowMuiIcon)`
-  color: white;
+  color: #303030;
 `;
 
 const CarList = styled.div`
@@ -68,7 +70,7 @@ const EmptyListMessage = styled.div`
   text-align: center;
   position: relative;
   & > span {
-    color: white;
+    color: #303030;
     opacity: 0;
     position: absolute;
     left: -20px;
