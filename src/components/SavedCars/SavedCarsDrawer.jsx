@@ -22,7 +22,7 @@ class SavedCarsDrawer extends Component {
           open={this.props.open} 
           onClose={this.handleClose}
         >
-          <SavedCarsDrawerContent removedBookmarkedCar={this.props.removedBookmarkedCar} handleClose={() => this.handleClose()} />
+          <SavedCarsDrawerContent updateCarsList={this.props.updateCarsList} handleClose={() => this.handleClose()} />
         </Drawer>
       </>
     );

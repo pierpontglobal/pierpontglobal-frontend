@@ -36,7 +36,7 @@ const CarContainer = styled.div`
   border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: ${props => props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.16)'};
+  box-shadow: ${props => props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.08)'};
   display: grid;
   grid-template-columns: ${props => props.useNew ? 'auto' : '1fr 1.2fr 2fr'};
   grid-template-rows: ${props => props.useNew ? '2fr minmax(140px, 160px) minmax(100px, 120px)' : 'auto'};
@@ -57,7 +57,7 @@ const CarContainer = styled.div`
     grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 40px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
     grid-template-columns: auto;
     width: 100%;
-    margin: 0px 6px;
+    margin: 8px 6px;
   }
 `;
 
@@ -68,11 +68,11 @@ const Container = styled.div`
 
 const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
-  width: ${props => props.useNew ? '300px' : '236px'};
-  height: ${props => props.useNew ? '220px' : '120px'};
+  width: ${props => props.useNew ? '300px' : '226px'};
+  height: ${props => props.useNew ? '220px' : '116px'};
 
   @media only screen and (max-width: 480px) {
-    height: 200px;
+    height: 195px;
   }
 `;
 
@@ -87,10 +87,9 @@ const DropDown = posed.i({
 
 const DetailsContainer = styled(Container)`
   flex-direction: column;
-  justify-content: space-evenly;
-  @media only screen and (max-width: 768px) {
-    
-  }
+  justify-content: space-around;
+  padding: 0px;
+  margin-top: ${props => props.openDetails === 'closed' ? '' : '16px'};
 `;
 
 const DetailedCR = styled(Container)`
@@ -161,7 +160,7 @@ const Detail = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  @media only screen and (max-width: 68px) {
+  @media only screen and (max-width: 680px) {
     padding: 4px 8px;
   }
 `;
@@ -171,6 +170,9 @@ const DetailTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media only screen and (max-width: 480px) {
+    padding-left: 8px;
+  }
 `;
 
 const DetailsView = posed.div({
@@ -301,8 +303,8 @@ const BookmarkArea = styled.div`
   position: absolute;
   top: 4px;
   right: 6px;
-  z-index: 200;
-  padding: 8px;
+  z-index: 600;
+  padding: 16px;
   background-color: transparent;
   transition: all 0.2s;
   & > i {
@@ -317,7 +319,7 @@ const BookmarkArea = styled.div`
   &:hover {
     & > i {
       color: #cc0606;
-    }
+    } 
   }
 `;
 
@@ -350,6 +352,11 @@ const ExpandDetails = styled.div`
   justify-content: space-between;
   align-items: center;
   min-width: 60;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-left: 24px;
+  padding-bottom: 8px;
+  cursor: pointer;
   @media only screen and (min-width: 768px) {
     display: none;
   }
@@ -433,7 +440,7 @@ function CarCard({
             />
           ))}
         </CarouselWrapper>
-        <DetailsContainer useNew={useNewDesign}>
+        <DetailsContainer useNew={useNewDesign} openDetails={openDetails}>
           <DetailTitle>
             <CarTitle useNew={useNewDesign}>
               <span>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
