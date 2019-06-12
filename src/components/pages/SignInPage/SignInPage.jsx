@@ -450,14 +450,14 @@ async function createUser(props) {
 }
 
 // TODO: Manage erros
-async function registerCard(props) {
+async function registerCard(token, coupon) {
   await axios.post(`${ApiServer}/api/v1/user/cards`, {
-    card_token: props.cardToken,
-    coupon: props.coupon ? props.coupon : null
+    card_token: token,
+    coupon: coupon ? coupon : null
   });
 }
 
-async function setToken(props) {
+async function setToken(props, cookies, setCookies) {
   const data = {
     username: props.username,
     password: props.password,
@@ -465,11 +465,11 @@ async function setToken(props) {
   };
 
   await axios.post(`${ApiServer}/oauth/token`, data).then(data => {
-    props.setCookies("token", data.data.access_token, {
+    setCookies("token", data.data.access_token, {
       expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
     });
     axios.post(`${ApiServer}/api/v1/user/notifier`, {
-      one_signal_uuid: props.cookies["one_signal_uuid"]
+      one_signal_uuid: cookies["one_signal_uuid"]
     });
   });
 }
@@ -477,8 +477,6 @@ async function setToken(props) {
 const SubscriptionSection = injectStripe(props => {
   const [showPassword, setShowPassword] = useState(false);
   const [cookies, setCookies] = useCookies();
-  props.cookies = cookies;
-  props.setCookies = setCookies;
 
   const {
     completeName,
@@ -601,8 +599,8 @@ const SubscriptionSection = injectStripe(props => {
               });
               await setCardToken(token);
               await createUser({ ...props });
-              await setToken({ ...props });
-              await registerCard({ ...props });
+              await setToken({ ...props }, cookies, setCookies);
+              await registerCard(token, coupon);
             }}
           >
             Pay $ 495.00 USD and sign in
