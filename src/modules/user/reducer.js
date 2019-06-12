@@ -61,8 +61,8 @@ const userReducer = (state = userInitialState, action) => {
       return newState;
 
     case ACTIONS.USER_IMAGE_CHANGE_ERROR:
-    newState.user.isSavingInfo = false;
-    return newState;
+      newState.user.isSavingInfo = false;
+      return newState;
 
     case ACTIONS.USER_IMAGE_CHANGE:
       newState.user.isSavingInfo = true;
