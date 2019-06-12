@@ -171,6 +171,7 @@ class DealerTab extends React.Component {
   render() {
     const { dealer, user } = this.props;
     const { logoUrl } = this.state;
+
     return (
       <>
         <Wrapper>

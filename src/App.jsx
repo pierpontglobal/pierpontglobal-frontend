@@ -225,15 +225,15 @@ class App extends React.Component {
       }`,
       email: responseUser.email,
       phone: responseUser.phone_number,
-      photo: `${ApiServer}/${responseUser.photo_url}`,
-      dealer: {
+      photo: !!responseUser.photo_url ?  `${ApiServer}/${responseUser.photo_url}` : undefined,
+      dealer: !!responseUser.dealer ? {
         name: responseUser.dealer.name,
         latitude: responseUser.dealer.latitude,
         longitude: responseUser.dealer.longitude,
-        logo: `${ApiServer}/${responseUser.dealer.logo_url}`,
+        logo: !!responseUser.dealer.logo_url ? `${ApiServer}/${responseUser.dealer.logo_url}` : undefined,
         phone: responseUser.dealer.phone_number,
         changingPhoto: false,
-      }
+      } : {}
     }
 
     console.log('RETREIVED USER >>>>> ');

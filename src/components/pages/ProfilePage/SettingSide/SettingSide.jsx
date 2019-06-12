@@ -589,7 +589,7 @@ class SettingSide extends React.Component {
           <ProfilePhotoWrapper>
             <Upload disabled={!editable} customRequest={this.handleImage} multiple={false} showUploadList={false} accept="png,jpg" >
               <ImageWrapper>
-                <ProfileImage id="user-photo" src={profilePhotoUrl} />
+                <ProfileImage id="user-photo" src={!!profilePhotoUrl ? profilePhotoUrl : '/images/no-user-photo.png'} />
                 <EditImageWrapper editable={editable}>
                   <AddPhotoIcon type="upload" />
                 </EditImageWrapper>
