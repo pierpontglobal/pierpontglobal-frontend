@@ -226,7 +226,6 @@ class App extends React.Component {
       email: responseUser.email,
       phone: responseUser.phone_number,
       photo: `${ApiServer}/${responseUser.photo_url}`,
-      changingPhoto: false,
       dealer: {
         name: responseUser.dealer.name,
         latitude: responseUser.dealer.latitude,
