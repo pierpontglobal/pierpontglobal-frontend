@@ -71,7 +71,7 @@ class AccountPanel extends React.Component {
         boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.18)"
       >
         <div>
-          <DealerTab dealer={dealer} />
+          <DealerTab openNotification={this.props.openNotification} dealer={dealer} />
           {inner
             ? (
               <div>

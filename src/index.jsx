@@ -14,7 +14,6 @@ import messages_en from "./translations/en.json";
 import locale_en from "react-intl/locale-data/en";
 import locale_es from "react-intl/locale-data/es";
 import { addLocaleData } from 'react-intl';
-import ConnectedIntlProvider from './hocs/ConnectedIntlProvider';
 
 const PPGStore = configureStore(AppInitialState);
 

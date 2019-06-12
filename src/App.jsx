@@ -37,6 +37,7 @@ import WhatsApp from "./components/Modal/WhatsApp/WhatsApp";
 import SupportPage from "./components/pages/SupportPage/SupportPage.jsx";
 import SignInPage from "./components/pages/SignInPage/SignInPage";
 import ApplicationRoutes from "./constants/Routes";
+import withAPI from './hocs/withAPI';
 
 const car = {
   year: "2017",
@@ -105,7 +106,6 @@ class App extends React.Component {
   constructor(props) {
     clearTimeout(window.fallbackReload);
     super(props);
-    const { cookies } = this.props;
 
     this.state = {
       showSavedCarsPanel: false,
@@ -119,16 +119,6 @@ class App extends React.Component {
       },
       user: {}
     };
-
-    axios.interceptors.request.use(
-      config => {
-        config.headers = { Authorization: `Bearer ${cookies.get("token")}` };
-        config.params = { lang: this.state.language };
-
-        return config;
-      },
-      error => Promise.reject(error)
-    );
 
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
 
@@ -233,9 +223,22 @@ class App extends React.Component {
       }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
         responseUser.address.country
       }`,
-      email: `${responseUser.email}`,
-      phone: `${responseUser.phone_number}`
+      email: responseUser.email,
+      phone: responseUser.phone_number,
+      photo: `${ApiServer}/${responseUser.photo_url}`,
+      changingPhoto: false,
+      dealer: {
+        name: responseUser.dealer.name,
+        latitude: responseUser.dealer.latitude,
+        longitude: responseUser.dealer.longitude,
+        logo: `${ApiServer}/${responseUser.dealer.logo_url}`,
+        phone: responseUser.dealer.phone_number,
+        changingPhoto: false,
+      }
     }
+
+    console.log('RETREIVED USER >>>>> ');
+    console.log(responseUser);
 
     createUser(user);
   };
@@ -278,7 +281,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { cookies, user, settings, savedCars } = this.props;
+    const { cookies, user, settings, savedCars, axios } = this.props;
     const userSignedIn = this.verifyUserLoggedIn();
 
     return (
@@ -371,6 +374,7 @@ class App extends React.Component {
                         <ProfilePage
                           setDealer={this.setDealer}
                           cookies={cookies}
+                          user={user}
                         />
                       ) : (
                         <Redirect to="/" />
@@ -439,4 +443,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(withCookies(App)));
+)(injectIntl(withCookies(withAPI(App))));
