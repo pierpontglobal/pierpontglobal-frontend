@@ -366,7 +366,7 @@ class MarketPlacePage extends React.Component {
     } = this.state;
 
     const { cookies } = this.props;
-    this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
+    this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
 
     return (
       <>
@@ -403,53 +403,53 @@ class MarketPlacePage extends React.Component {
               <CarSection ref={this.carsSection} useNew={this.useNewDesign}>
                 {
                   loaded ? cars.length <= 0 ? (
-                      <NotFoundWrapper>
-                        <FormattedMessage id="marketplace.not-found" />
-                      </NotFoundWrapper>
-                    ) : (
-                    <InfiniteScroll
-                      dataLength={cars.length}
-                      next={this.getCars}
-                      hasMore
-                      
-                      loader={(
-                        <div style={{
-                          width: '100%',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          paddingTop: '10px',
-                          height: '80px',
-                          alignContent: 'center',
-                        }}
-                        >
-                          <CircularProgress />
-                        </div>
-                      )}
-                      height={`calc(100vh - 16px)px`}
-                      endMessage={(
-                        <p style={{ textAlign: 'center' }}>
-                          <b><FormattedMessage id="marketplace.end-message" /></b>
-                        </p>
-                      )}
-                    >
-                      <CarsWrapper useNew={this.useNewDesign}>
-                        {cars}
-                      </CarsWrapper>
-                    </InfiniteScroll>
+                    <NotFoundWrapper>
+                      <FormattedMessage id="marketplace.not-found" />
+                    </NotFoundWrapper>
                   ) : (
-                    <div style={{
-                      width: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      paddingTop: '24px',
-                      height: '80px',
-                      alignContent: 'center',
-                      marginTop: '2px',
-                    }}
-                    >
-                      <CircularProgress />
-                    </div>
-                  )
+                      <InfiniteScroll
+                        dataLength={cars.length}
+                        next={this.getCars}
+                        hasMore
+
+                        loader={(
+                          <div style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            paddingTop: '10px',
+                            height: '80px',
+                            alignContent: 'center',
+                          }}
+                          >
+                            <CircularProgress />
+                          </div>
+                        )}
+                        height={`calc(100vh - 16px)px`}
+                        endMessage={(
+                          <p style={{ textAlign: 'center' }}>
+                            <b><FormattedMessage id="marketplace.end-message" /></b>
+                          </p>
+                        )}
+                      >
+                        <CarsWrapper useNew={this.useNewDesign}>
+                          {cars}
+                        </CarsWrapper>
+                      </InfiniteScroll>
+                    ) : (
+                      <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingTop: '24px',
+                        height: '80px',
+                        alignContent: 'center',
+                        marginTop: '2px',
+                      }}
+                      >
+                        <CircularProgress />
+                      </div>
+                    )
                 }
               </CarSection>
             </MainContent>

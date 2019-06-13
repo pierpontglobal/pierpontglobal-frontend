@@ -40,7 +40,7 @@ const CustomPopper = styled(Popper)`
     left: auto !important;
     height: 65% !important;
   }
-`; 
+`;
 
 class NotificationBadge extends Component {
   constructor(props) {
@@ -56,16 +56,16 @@ class NotificationBadge extends Component {
   componentWillMount = () => {
     this.userToken = this.props.cookies.get('token', { path: '/' });
 
-    this.cable = ActionCable.createConsumer(`${WSConnection}?token=${this.userToken}`);
+    this.cable = ActionCable.createConsumer(`${WSConnection}`);
 
     this.subscription = this.cable.subscriptions.create({
       channel: 'AdminNotificationChannel',
     },
-    {
-      received: (data) => {
-        this.handleReceived(data);
-      },
-    });
+      {
+        received: (data) => {
+          this.handleReceived(data);
+        },
+      });
   }
 
   handleReceived = (data) => {

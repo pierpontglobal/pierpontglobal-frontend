@@ -12,7 +12,7 @@
 // -- This is a parent command --
 Cypress.Commands.add("login", (username, password) => { 
   cy.request({
-    url: Cypress.env('apiUrl') + '/oauth/token',
+    url: Cypress.env('apiUrl') + '/api/v2/users/login',
     method: 'POST',
     body: {
       username: username,

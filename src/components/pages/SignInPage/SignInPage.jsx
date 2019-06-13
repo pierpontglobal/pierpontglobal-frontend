@@ -71,13 +71,14 @@ function submit(
 ) {
   setLoading(true);
   const data = {
-    username,
-    password,
-    grant_type: "password"
+    user: {
+      email: username,
+      password
+    }
   };
-  axios.post(`${ApiServer}/oauth/token`, data).then(
-    data => {
-      setCookies("token", data.data.access_token, {
+  axios.post(`${ApiServer}/api/v2/users/login`, data).then(
+    response => {
+      setCookies("token", response.headers['authorization'], {
         expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
       });
       axios.post(`${ApiServer}/api/v1/user/notifier`, {
@@ -459,12 +460,14 @@ async function registerCard(token, coupon) {
 
 async function setToken(props, cookies, setCookies) {
   const data = {
-    username: props.username,
-    password: props.password,
-    grant_type: "password"
+    user: {
+      email: props.username,
+      password: props.password,
+      grant_type: "password"
+    }
   };
 
-  await axios.post(`${ApiServer}/oauth/token`, data).then(data => {
+  await axios.post(`${ApiServer}/api/v2/users/login`, data).then(data => {
     setCookies("token", data.data.access_token, {
       expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
     });
@@ -549,8 +552,8 @@ const SubscriptionSection = injectStripe(props => {
                   {showPassword ? (
                     <Icon type="eye" />
                   ) : (
-                    <Icon type="eye-invisible" />
-                  )}
+                      <Icon type="eye-invisible" />
+                    )}
                 </IconButton>
               </InputAdornment>
             )
@@ -745,8 +748,8 @@ const RegisterView = props => {
               Previews Step
             </LightButton>
           ) : (
-            ""
-          )}
+              ""
+            )}
           {current < 3 ? (
             <LightButton
               disabled={!verified && current === 1}
@@ -759,8 +762,8 @@ const RegisterView = props => {
               Next Step
             </LightButton>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </ButtonHolders>
       </MediaQuery>
     </RegistrationWrapper>
@@ -855,12 +858,12 @@ const SignInPage = props => {
           {registerView ? (
             <RegisterView />
           ) : (
-            <LoginView
-              registerView={registerView}
-              setRegisterView={setRegisterView}
-              handleSignIn={props.handleSignIn}
-            />
-          )}
+              <LoginView
+                registerView={registerView}
+                setRegisterView={setRegisterView}
+                handleSignIn={props.handleSignIn}
+              />
+            )}
         </WhiteLayer>
       </SignInBox>
     </SignInWrapper>

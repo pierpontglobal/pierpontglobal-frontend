@@ -120,11 +120,18 @@ class App extends React.Component {
       user: {}
     };
 
+    axios.defaults.xsrfCookieName = "CSRF-TOKEN";
+    axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+    axios.defaults.withCredentials = true;
+
     axios.interceptors.request.use(
       config => {
-        config.headers = { Authorization: `Bearer ${cookies.get("token")}` };
+        let token = cookies.get("token")
+        config.headers = {}
+        if (token) {
+          config.headers['Authorization'] = token;
+        }
         config.params = { lang: this.state.language };
-
         return config;
       },
       error => Promise.reject(error)
@@ -197,12 +204,12 @@ class App extends React.Component {
   }
 
   setLanguage = lang => {
-    const { setLanguage, setLanguages, languages  } = this.props;
+    const { setLanguage, setLanguages, languages } = this.props;
     const langs = [...languages];
-  
+
     const { cookies } = this.props;
     cookies.set("language", lang.abr, { path: "/" });
-  
+
     langs.forEach(lg => {
       if (lg.abr === lang.abr) {
         lg.active = true;
@@ -210,7 +217,7 @@ class App extends React.Component {
         lg.active = false;
       }
     });
-  
+
     setLanguage(lang.abr);
     setLanguages(langs);
 
@@ -230,9 +237,9 @@ class App extends React.Component {
       name: `${responseUser.first_name} ${responseUser.last_name}`,
       address: `${responseUser.address.primary_address} ${
         responseUser.address.secondary_address
-      }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
+        }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
         responseUser.address.country
-      }`,
+        }`,
       email: `${responseUser.email}`,
       phone: `${responseUser.phone_number}`
     }
@@ -330,8 +337,8 @@ class App extends React.Component {
                       this.verifyUserLoggedIn() ? (
                         <Redirect to="/user" />
                       ) : (
-                        <SignInPage handleSignIn={this.handleSignIn} cookies={cookies} />
-                      )
+                          <SignInPage handleSignIn={this.handleSignIn} cookies={cookies} />
+                        )
                     }
                   />
                   <Route
@@ -344,8 +351,8 @@ class App extends React.Component {
                           cookies={cookies}
                         />
                       ) : (
-                        <Redirect to="/" />
-                      )
+                          <Redirect to="/" />
+                        )
                     }
                   />
                   <Route
@@ -355,8 +362,8 @@ class App extends React.Component {
                       this.verifyUserLoggedIn() ? (
                         <CarPage cookies={cookies} car={car} />
                       ) : (
-                        <Redirect to="/" />
-                      )
+                          <Redirect to="/" />
+                        )
                     }
                   />
                   <Route
@@ -373,8 +380,8 @@ class App extends React.Component {
                           cookies={cookies}
                         />
                       ) : (
-                        <Redirect to="/" />
-                      )
+                          <Redirect to="/" />
+                        )
                     }
                   />
                   <Route
@@ -384,15 +391,15 @@ class App extends React.Component {
                       this.verifyUserLoggedIn() ? (
                         <NotificationPage cookies={cookies} />
                       ) : (
-                        <Redirect to="/" />
-                      )
+                          <Redirect to="/" />
+                        )
                     }
                   />
 
                   <Route
                     exact
                     path={ApplicationRoutes.contactPage}
-                    render={() => <ContactPage user={user}  cookies={cookies} />}
+                    render={() => <ContactPage user={user} cookies={cookies} />}
                   />
                   <Route
                     exact

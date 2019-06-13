@@ -76,7 +76,7 @@ class SignInPage extends React.Component {
           password,
           grant_type: 'password',
         };
-        axios.post(`${ApiServer}/oauth/token`, data).then(
+        axios.post(`${ApiServer}/api/v2/users/login`, data).then(
           (data) => {
             cookies.set('token', data.data.access_token, {
               expires: new Date(
