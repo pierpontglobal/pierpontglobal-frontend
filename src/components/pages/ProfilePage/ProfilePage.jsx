@@ -17,6 +17,7 @@ import NotificationTypes from '../../../constants/NotificationTypes';
 import IssueTypes from '../../../constants/IssueTypes';
 import ApplicationRoutes from '../../../constants/Routes';
 import './styles.css';
+import withClientNotifier from '../../../hocs/withClientNotifier';
 
 const Wrapper = styled.div`
   background-color: #dedede;
@@ -164,10 +165,12 @@ class ProfilePage extends React.Component {
   render() {
     const {
       dealer,
-      user, cards, loading,
+      cards,
+      loading,
       subscription,
     } = this.state;
-    const { cookies } = this.props;
+
+    const { cookies, user, openNotification } = this.props;
 
     return (
       loading ? 
@@ -178,11 +181,11 @@ class ProfilePage extends React.Component {
         <Wrapper>
           <DealerCreator show={!dealer || !subscription} hasDealer={!dealer} />
           <AccountPanelWrapper>
-            <AccountPanel dealer={dealer} />
+            <AccountPanel openNotification={openNotification} dealer={dealer} />
           </AccountPanelWrapper>
           <RouterWrapper>
               <Switch>
-                <Route exact path={ApplicationRoutes.profilePage.default} render={() => (<SettingSide cookies={cookies} />)} />
+                <Route exact path={ApplicationRoutes.profilePage.default} render={() => (<SettingSide openNotification={openNotification} user={user} cookies={cookies} />)} />
                 <Route path={ApplicationRoutes.profilePage.purchase} render={() => (<PurchaseSide cookies={cookies} />)} />
                 <Route path={ApplicationRoutes.profilePage.pending} render={() => (<PendingSide cookies={cookies} />)} />
                 <Route path={ApplicationRoutes.profilePage.financial} render={() => (<FinancialSide cookies={cookies} />)} />
@@ -206,4 +209,4 @@ ProfilePage.defaultProps = {
   cookies: {},
 };
 
-export default withRouter(injectIntl(ProfilePage));
+export default withRouter(injectIntl( withClientNotifier(ProfilePage) ));

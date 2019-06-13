@@ -220,6 +220,13 @@ const NotificatinBadgeWrapper = styled.div`
   margin-right: 12px;
 `;
 
+const PossibleLongTextFormatter = (text, maxLength) => {
+  if (text.length > maxLength) {
+    return `${text.substr(0, maxLength)}...`;
+  }
+  return text;
+};
+
 class AppNav extends React.Component {
 
   constructor(props) {
@@ -434,14 +441,14 @@ class AppNav extends React.Component {
               </NotificatinBadgeWrapper>
               <ProfileIconWrapper>
                 <UserImageWrapper>
-                  <img alt={`${username} | Pierpont Global`} src="/images/no-user-photo.png" />
+                  <img alt={`${username} | Pierpont Global`} src={ !!user.photo ? user.photo : '/images/no-user-photo.png' } />
                   {/* <CustomBagde>
                     <span>1</span>
                   </CustomBagde> */}
                 </UserImageWrapper>
                 <UserNameWrapper onClick={this.toggelUserMenu}>
                   <span>
-                    { username }
+                    { PossibleLongTextFormatter(username, 12) }
                   </span>
                 </UserNameWrapper>
                 <ArrowWrapper isOpen={openUserMenu} onClick={this.toggelUserMenu}r>

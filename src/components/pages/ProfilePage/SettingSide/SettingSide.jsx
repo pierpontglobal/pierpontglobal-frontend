@@ -13,7 +13,10 @@ import styled from 'styled-components';
 import CheckIcon from '@material-ui/icons/CheckCircleOutlined';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { Button } from '@material-ui/core';
+import { Upload } from 'antd';
+import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import USER_ACTIONS from '../../../../modules/user/action';
 import AddDeposit from './Components/Modals/AddDeposit';
 import { ApiServer, StripeKey } from '../../../../Defaults';
 import CreateCard from './Components/Modals/CreateCard';
@@ -21,6 +24,8 @@ import ProfileForm from '../../../ProfileForm/ProfileForm';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import UnderLine from '../../../Underline/Underline';
 import SubscribeButton from './Components/SubscribeButton';
+import PersonalInfo from './Components/PersonalInfo/PersonalInfo';
+import AddPhotoIconMui from '@material-ui/icons/AddAPhoto';
 
 const HeadingStyle = styled.div`
   font-size: 1em;
@@ -101,6 +106,43 @@ const CardActionButtons = styled.div`
   }
 `;
 
+const ProfilePhotoWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ImageWrapper = styled.div`
+  position: relative;
+`;
+
+const AddPhotoIcon = styled(AddPhotoIconMui)`
+  color: rgb(0, 0, 0, 0.75);
+  transition: all 0.1s;
+`;
+
+const EditImageWrapper = styled.div`
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  cursor: pointer;
+  display: ${props => props.editable ? 'block' : 'none'};
+  &:hover {
+    & > ${AddPhotoIcon} {
+      color: rgb(0, 0, 0, 1);
+    }
+  }
+`;
+
+const ProfileImage = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+`;
+
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
@@ -109,7 +151,6 @@ async function removeCard(cardToken) {
   await axios.delete(`${ApiServer}/api/v1/user/cards?card_id=${cardToken}`);
   window.location.reload();
 }
-
 class SettingSide extends React.Component {
   constructor(props) {
     super(props);
@@ -123,45 +164,42 @@ class SettingSide extends React.Component {
       loading: false,
       name: '',
       funds: 0,
+      profilePhotoUrl: "/images/no-user-photo.png"
     };
-    this.paymentMethods = this.paymentMethods.bind(this);
-    this.getDefaultPaymentMethod = this.getDefaultPaymentMethod.bind(this);
-    this.handleCardChange = this.handleCardChange.bind(this);
-    this.getUser = this.getUser.bind(this);
-    this.getFunds = this.getFunds.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.paymentMethods();
     this.getUser();
     this.getFunds();
   }
 
-  onEditableClick() {
+  onEditableClick = () => {
     this.setState(prev => ({ editable: !prev.editable }));
   }
 
-  async getDefaultPaymentMethod() {
+  getDefaultPaymentMethod = async () => {
     const response = await axios.get(`${ApiServer}/api/v1/user/cards/default`);
     this.setState({
       card: response.data,
     });
   }
 
-  async getFunds() {
+  getFunds = async () => {
     const responseFunds = (await axios.get(`${ApiServer}/api/v1/user/funds`)).data;
     this.setState({
       funds: responseFunds,
     }, this.generateGraph);
   }
 
-  async getUser() {
-    const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
+  getUser = () => {
+    const { user } = this.props;
     this.setState({
-      name: `${responseUser.first_name} ${responseUser.last_name}`,
-      address: `${responseUser.address.primary_address} ${responseUser.address.secondary_address}, ${responseUser.address.zip_code}, ${responseUser.address.city} ${responseUser.address.country}`,
-      email: `${responseUser.email}`,
-      phone: `${responseUser.phone_number}`,
+      name: user.name,
+      address: user.address,
+      email: user.email,
+      phone: user.phone,
+      profilePhotoUrl: user.photo,
     });
   }
 
@@ -187,6 +225,7 @@ class SettingSide extends React.Component {
 
   onCancelEditProfile = () => {
     const { unEditedInfo } = this.state;
+    this.cleanImage();
     this.setState({
       editable: false,
       unEditedInfo: {},
@@ -197,30 +236,66 @@ class SettingSide extends React.Component {
     });
   }
 
+  cleanImage = () => {
+    if (!!this.currentPhotoUrl) {
+      this.setState({
+        profilePhotoUrl: this.currentPhotoUrl,
+      });
+    }
+  }
+
   onSaveEditProfile = () => {
-    // Validate info
-    // Make API CALL to save new info
-    // url:  PATCH: ${ApiServer}/api/v1/user
     const {
       name,
       address,
       email,
       phone,
+      profilePhotoObj,
     } = this.state;
+    const { modifyUserImage } = this.props;
 
-    const names = name.split(' ');
-    const user = {
-      first_name: names[0],
-      last_name: names.slice(1, names.length).join(' '),
-      email,
-      phone_number: phone,
-      address,
-    };
+    this.setState({
+      editable: false,
+    },() => {
+      const names = name.split(' ');
+      const user = {
+        first_name: names[0],
+        last_name: names.slice(1, names.length).join(' '),
+        email,
+        name: `${names[0]} ${names.slice(1, names.length).join(' ')}`,
+        phone: phone,
+        address,
+      };
+
+      if (!!profilePhotoObj) {
+        modifyUserImage(profilePhotoObj).then(data => {
+          this.updateUser(user, false);
+          this.props.openNotification({
+            title: 'User info and photo changed',
+            description: 'You have succesfully changed your user photo and info.',
+            success: true,
+          });
+          this.setState({
+            profilePhotoObj: undefined,
+          });
+        });
+      } else {
+        this.updateUser(user, true);
+      }
+    });
+  }
+
+  updateUser = (user, displayNotification) => {
     axios.patch(`${ApiServer}/api/v1/user`, { user }).then(() => {
-      this.setState({
-        editable: false,
-      });
-    }, () => {
+      this.props.modifyUser(user);
+      this.currentPhotoUrl = undefined;
+      if (displayNotification) {
+        this.props.openNotification({
+          title: 'User info was changed',
+          description: 'You have modified your personal information succesfully.',
+          success: true
+        });
+      }
     });
   }
 
@@ -230,7 +305,7 @@ class SettingSide extends React.Component {
     });
   }
 
-  generateGraph() {
+  generateGraph = () => {
     const options = {
       tooltips: {
         callbacks: {
@@ -277,7 +352,7 @@ class SettingSide extends React.Component {
     });
   }
 
-  async paymentMethods() {
+  paymentMethods = async () => {
     const methods = [];
     const cardsNumbers = [];
 
@@ -382,7 +457,7 @@ class SettingSide extends React.Component {
     this.getDefaultPaymentMethod();
   }
 
-  async handleCardChange(e) {
+  handleCardChange = async (e) => {
     this.setState({
       card: e.target.value,
       loading: true,
@@ -390,6 +465,34 @@ class SettingSide extends React.Component {
 
     axios.patch(`${ApiServer}/api/v1/user/cards/default`, { card_id: e.target.value });
     window.location.reload();
+  }
+
+  previewPhoto = (e) => {
+    if (!!e && !!e.file) {
+      var reader = new FileReader();
+    
+      reader.onload = (e) => {
+        const { profilePhotoUrl } = this.state;
+
+        if (!this.currentPhotoUrl) {
+          this.currentPhotoUrl = profilePhotoUrl;
+        }
+
+        this.setState({
+          profilePhotoUrl: e.target.result,
+        });
+
+      }
+      this.setState({
+        profilePhotoObj: e.file,
+      }, () => {
+        reader.readAsDataURL(e.file);
+      })
+    }
+  }
+
+  handleImage = (e) => {
+    this.previewPhoto(e);
   }
 
   render() {
@@ -402,7 +505,10 @@ class SettingSide extends React.Component {
       card,
       loading,
       funds,
+      profilePhotoUrl,
     } = this.state;
+
+    const { isSavingInfo } = this.props;
 
     return (
       <HeadingStyle>
@@ -427,6 +533,7 @@ class SettingSide extends React.Component {
           </div>
         </div>
 
+        {/* TODO: MOVE THIS TO SETTINGS IN MAIN MENU */}
         <div className="card content-holder-box">
           <UnderLine>
             <h4 className="mb-0">
@@ -440,7 +547,7 @@ class SettingSide extends React.Component {
             <SubscribeButton />
           </div>
         </div>
-
+        
         <div className="card content-holder-box">
           <UnderLine className="justify-content-between">
             <h4 className="mb-0">
@@ -455,7 +562,7 @@ class SettingSide extends React.Component {
                       <CheckIcon color="accent" onClick={this.onSaveEditProfile} />
                     </>
                   )
-                  : (
+                  : isSavingInfo ? 'Loading....' : (
                     <button
                       type="button"
                       style={{
@@ -479,6 +586,16 @@ class SettingSide extends React.Component {
               }
             </div>
           </UnderLine>
+          <ProfilePhotoWrapper>
+            <Upload disabled={!editable} customRequest={this.handleImage} multiple={false} showUploadList={false} accept="png,jpg" >
+              <ImageWrapper>
+                <ProfileImage id="user-photo" src={!!profilePhotoUrl ? profilePhotoUrl : '/images/no-user-photo.png'} />
+                <EditImageWrapper editable={editable}>
+                  <AddPhotoIcon type="upload" />
+                </EditImageWrapper>
+              </ImageWrapper>
+            </Upload>
+          </ProfilePhotoWrapper>
           <ProfileForm
             editable={editable}
             name={name}
@@ -492,6 +609,7 @@ class SettingSide extends React.Component {
           />
         </div>
 
+        {/* <PersonalInfo /> */}
 
         <div className="card content-holder-box">
           <UnderLine className="justify-content-between">
@@ -542,5 +660,17 @@ class SettingSide extends React.Component {
   }
 }
 
+// Redux configuration
+const mapStateToProps = (state) => ({
+  user: state.userReducer.user,
+  isSavingInfo: state.userReducer.user.isSavingInfo
+});
+const mapDispatchToProps = (dispatch) => ({
+  modifyUser: (user) => dispatch(USER_ACTIONS.modifyUser(user)),
+  modifyUserImage: photo => dispatch(USER_ACTIONS.modifyUserImage(photo)),
+});
 
-export default injectIntl(SettingSide);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(SettingSide));

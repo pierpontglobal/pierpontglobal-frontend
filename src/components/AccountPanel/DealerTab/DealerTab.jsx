@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import Container from '../../styles/Container/Container';
 import Text from '../../styles/Text/Text';
 import Building from './building.svg';
+import AddPhotoIconMui from '@material-ui/icons/AddAPhoto';
+import { Upload } from 'antd';
+import USER_ACTIONS from '../../../modules/user/action';
 
 const TabBottom = styled.div`
   content: '';
@@ -15,71 +19,205 @@ const TabBottom = styled.div`
   margin-bottom: 16px;
 `;
 
-function DealerTab({ dealer }) {
-  return (
-    <>
-      <Container
-        className="d-flex flex-row pl-3 pt-3"
-        backgroundColor="#eeeeee"
-        backdropFilter="blur(29.8px)"
-        webkitBackdropFilter="blur(29.8px)"
-        style={{
-          paddingBottom: '15px',
-          paddingTop: '10px',
-          justifyContent: 'space-around',
-          alignContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <img
-          className="border-0"
-          height="70px"
-          width="70px"
-          src={(dealer && dealer.image) ? dealer.image || Building : Building}
-          alt="pierpont"
-        />
-        <div style={{
-          maxWidth: '160px',
-        }}
-        >
-          <Text
-            className="mb-0"
-            opacity={0.87}
-            fontWeight={600}
-            lineHeight={1.25}
-          >
-            { (dealer && dealer.name) ? dealer.name : ''}
-          </Text>
-          <Text
-            opacity={0.54}
-            fontSize="0.75em"
-            lineHeight={1.33}
-          >
-            { (dealer && dealer.address) ? dealer.address : ''}
-          </Text>
-          <Text
-            className="mb-0"
-            fontSize="0.875em"
-            lineHeight={1.43}
-            fontColor="#3a7abf"
-            style={{
-              cursor: 'pointer',
-            }}
-            onClick={() => { window.location.href = `mailto:${dealer.email}`; }}
-          >
-            { (dealer && dealer.email) ? dealer.email : ''}
-          </Text>
-          <Text
-            fontSize="0.875em"
-            lineHeight={1.43}
-          >
-            { (dealer && dealer.number) ? dealer.number : ''}
-          </Text>
-        </div>
-      </Container>
-      <TabBottom />
-    </>
-  );
+const Wrapper = styled.div`
+  width: 100%;
+  height: auto;
+  padding: 8px;
+  display: grid;
+  background-color: #eeeeee;
+  margin-top: 16px;
+  grid-template-rows: 3fr 1fr 1fr 1fr;
+  grid-template-columns: auto;
+  grid-template: 
+    "header"
+    "title"
+    "email"
+    "phone";
+`;
+
+const HeaderWrapper = styled.div`
+  grid-area: header;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TitleWrapper = styled.div`
+  grid-area: title;
+  width: 100%;
+  height: auto;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    font-weight: 400;
+    font-size: 1.1rem;
+  }
+`;
+
+const EmailWrapper = styled.div`
+  grid-area: email;
+  width: 100%;
+  height: auto;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    font-weight: 200;
+    font-size: 0.90rem;
+    color: blue;
+  }
+`;
+
+const PhoneWrapper = styled.div`
+  grid-area: phone;
+  width: 100%;
+  height: auto;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    font-weight: 200;
+    font-size: 0.90rem;
+  }
+`;
+
+const PhotoWrapper = styled.div`
+  padding: 4px;
+  position: relative;
+`;
+
+const AddPhotoIcon = styled(AddPhotoIconMui)`
+  color: #6c757d;
+  transition: all 0.1s;
+`;
+
+const EditPhoto = styled.div`
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  cursor: pointer;
+  &:hover {
+    & > ${AddPhotoIcon} {
+      color: rgb(0, 0, 0, 0.2);
+    }
+  }
+`;
+
+const Logo = styled.img`
+  width: 70px;
+  height: 70px;
+  filter: drop-shadow(0 0 8px rgb(0, 0, 0, 0.1));
+`;
+
+class DealerTab extends React.Component {
+
+  componentWillMount = () => {
+    this.setState({
+      logoUrl: this.props.dealer.logo || Building
+    });
+  }
+
+  previewPhoto = (e) => {
+    if (!!e && !!e.file) {
+      var reader = new FileReader();
+    
+      reader.onload = (e) => {
+        const { logoUrl } = this.state;
+        if (!this.currentLogoUrl) {
+          this.currentLogoUrl = logoUrl;
+        }
+        this.setState({
+          logoUrl: e.target.result,
+        });
+      }
+      
+      reader.readAsDataURL(e.file);
+    }
+  }
+  
+  handleImage = (e) => {
+    // Preview photo
+    this.previewPhoto(e);
+    this.changeLogo(e.file);
+    console.log(e);
+  }
+
+  changeLogo = (logo) => {
+    const { updateDealerLogo } = this.props;
+    updateDealerLogo(logo).then((newLogoUrl) => {
+      console.log('After changing logo >>>>>>');
+      console.log(newLogoUrl);
+      this.cleanLogo();
+      this.props.openNotification({
+        title: 'Delaer logo was changed',
+        description: 'You have succesfully changed your dealer logo',
+        success: true
+      });
+    })
+  }
+
+  cleanLogo = () => {
+    if (!!this.currentLogoUrl) {
+      this.currentLogoUrl = undefined;
+    }
+  }
+  
+  render() {
+    const { dealer, user } = this.props;
+    const { logoUrl } = this.state;
+
+    return (
+      <>
+        <Wrapper>
+          <HeaderWrapper>
+            <Upload customRequest={this.handleImage} multiple={false} showUploadList={false} accept="png,jpg" >
+              <PhotoWrapper>
+                <Logo src={logoUrl} alt={dealer.name ? dealer.name : 'Pierpont Global | client'} />
+                <EditPhoto>
+                  <AddPhotoIcon type="upload" />
+                </EditPhoto>
+              </PhotoWrapper>
+            </Upload>
+          </HeaderWrapper>
+          <TitleWrapper>
+            <span>
+              { dealer.name ? dealer.name : '' }
+            </span>
+          </TitleWrapper>
+          <EmailWrapper>
+            <span>
+              { user.email ? user.email : '' }
+            </span>
+          </EmailWrapper>
+          <PhoneWrapper>
+            <span>
+              { dealer.phone ? dealer.phone : '' }
+            </span>
+          </PhoneWrapper>
+        </Wrapper>
+        <TabBottom />
+      </>
+    );
+  }
 }
 
-export default DealerTab;
+// Redux configuration
+const mapStateToProps = (state) => ({
+  user: state.userReducer.user,
+  dealer: state.userReducer.user.dealer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateDealerLogo: (logo) => dispatch(USER_ACTIONS.updateDealerLogo(logo)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DealerTab);

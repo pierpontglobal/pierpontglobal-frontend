@@ -10,7 +10,10 @@ const userReducer = (state = userInitialState, action) => {
     case ACTIONS.CREATE_USER:
     case ACTIONS.MODIFY_USER:
       let user = action.payload;
-      newState.user = user;
+      newState.user = {
+        ...newState.user,
+        ...user // Override previous matched info
+      };
       return newState;
 
     case ACTIONS.REMOVE_USER:
@@ -42,6 +45,32 @@ const userReducer = (state = userInitialState, action) => {
     case ACTIONS.ADD_SAVED_CAR_RECEIVED:
       newState.fetchingSavedCars = false;
       newState.savedCars = [...newState.savedCars, action.payload];
+      return newState;
+
+    case ACTIONS.DEALER_LOGO_CHANGE_ERROR:
+      newState.user.dealer.changingPhoto = false;
+      return newState;
+
+    case ACTIONS.DEALER_LOGO_CHANGE:
+      newState.user.dealer.changingPhoto = true;
+      return newState;
+
+    case ACTIONS.DEALER_LOGO_CHANGE_SUCCESS:
+      newState.user.dealer.changingPhoto = false;
+      newState.user.dealer.logo = action.payload;
+      return newState;
+
+    case ACTIONS.USER_IMAGE_CHANGE_ERROR:
+      newState.user.isSavingInfo = false;
+      return newState;
+
+    case ACTIONS.USER_IMAGE_CHANGE:
+      newState.user.isSavingInfo = true;
+      return newState;
+
+    case ACTIONS.USER_IMAGE_CHANGE_SUCCESS:
+      newState.user.isSavingInfo = false;
+      newState.user.photo = action.payload;
       return newState;
 
     default:

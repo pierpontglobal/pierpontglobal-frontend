@@ -88,11 +88,78 @@ const fetchSavedCars = () => {
   }
 }
 
+const modifyUserImage = (photo) => {
+  return function(dispatch) {
+    dispatch({
+      type: ActionTypes.USER_IMAGE_CHANGE,
+      payload: {}
+    });
+
+    let imageData = new FormData();
+    imageData.append("photo", photo, photo.name);
+
+    console.log('BEFORE REQUEST >>>>>>>> >>> Form data >>>');
+    console.log(imageData, photo);
+
+    return axios.post(`${ApiServer}/api/v1/user/photo`, imageData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Content-Disposition': 'form-data'
+      }
+    }).then(data => {
+      dispatch({
+        type: ActionTypes.USER_IMAGE_CHANGE_SUCCESS,
+        payload: `${ApiServer}/${data.data.photo_url}`,
+      });
+      return `${ApiServer}/${data.data.photo_url}`;
+    }, err => {
+      dispatch({
+        type: ActionTypes.USER_IMAGE_CHANGE_ERROR,
+        payload: photo
+      });
+      return photo;
+    })
+  }
+}
+
+const updateDealerLogo = (logo) => {
+  return function(dispatch) {
+    dispatch({
+      type: ActionTypes.DEALER_LOGO_CHANGE,
+      payload: {}
+    });
+
+    let imageData = new FormData();
+    imageData.append("logo", logo, logo.name);
+
+    return axios.post(`${ApiServer}/api/v1/user/dealers/logo`, imageData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Content-Disposition': 'form-data'
+      }
+    }).then(data => {
+      dispatch({
+        type: ActionTypes.DEALER_LOGO_CHANGE_SUCCESS,
+        payload: `${ApiServer}/${data.data.logo_url}`
+      });
+      return `${ApiServer}/${data.data.logo_url}`;
+    }, err => {
+      dispatch({
+        type: ActionTypes.DEALER_LOGO_CHANGE_ERROR,
+        payload: logo
+      });
+      return logo;
+    })
+  }
+}
+
 export default {
   createUser,
   modifyUser,
   removeUser,
   fetchSavedCars,
   removeSavedCar,
-  addSavedCar
+  addSavedCar,
+  updateDealerLogo,
+  modifyUserImage
 };
