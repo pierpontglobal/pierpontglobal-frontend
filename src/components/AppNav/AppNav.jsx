@@ -20,6 +20,8 @@ import NotificatinBadge from './notification-badge/NotificatinBadge';
 import MenuDrawer from './MenuDrawer/MenuDrawer';
 import SettingsModalContent from './SettingsModalContent/SettingsModalContent';
 import PPGModal from '../ppg-modal/PPGModal';
+import Axios from 'axios';
+import { ApiServer } from '../../Defaults';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -307,6 +309,7 @@ class AppNav extends React.Component {
     const { cookies } = this.props;
     cookies.remove('token', {path: '/'});
     cookies.remove('one_signal_uuid', {path: '/'});
+    Axios.delete(`${ApiServer}/api/v2/users/logout`);
   }
 
   goToAction = (url) => {

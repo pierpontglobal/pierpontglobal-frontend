@@ -126,7 +126,7 @@ class App extends React.Component {
 
     axios.interceptors.request.use(
       config => {
-        let token = cookies.get("token")
+        let token = props.cookies.get("token")
         config.headers = {}
         if (token) {
           config.headers['Authorization'] = token;

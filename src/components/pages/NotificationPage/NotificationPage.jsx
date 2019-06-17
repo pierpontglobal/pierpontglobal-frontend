@@ -33,10 +33,9 @@ class NotificationPage extends Component {
     this.cable = ActionCable.createConsumer(WSConnection);
     this.userId = this.props.cookies.get('user_id', { path: '/' });
 
-
     this.subscription = this.cable.subscriptions.create(
       {
-        channel: 'AdminNotificationChannel',
+        channel: 'NotificationChannel',
         user_id: this.userId,
       },
       {

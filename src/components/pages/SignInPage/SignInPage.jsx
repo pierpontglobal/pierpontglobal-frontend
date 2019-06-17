@@ -33,7 +33,6 @@ import {
   Loader,
   LoaderWrapper,
   StatusMessage,
-  SubscribeButton,
   RegistrationForm,
   RegistrationWrapper,
   Stepper,
@@ -56,7 +55,8 @@ import "./SignInPage.styles.less";
 import { LightButton } from "../sign-in-page/styles/sign_in_styles";
 import { TextField, InputAdornment, MenuItem } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import SubscriptionCard from "../ProfilePage/SubscriptionSide/Components/SubscriptionCard";
+
+const NumberFormat = require('react-number-format');
 
 const { Step } = Steps;
 
@@ -218,7 +218,7 @@ const UserSection = props => {
 };
 
 async function sendSubscription(completeName, email, phoneNumber) {
-  await axios.post(`${ApiServer}/api/v1/user/subscription`, {
+  await axios.post(`${ApiServer}/api/v2/users/subscription`, {
     first_name: completeName,
     last_name: "",
     email: email,
@@ -274,7 +274,7 @@ const VerifySection = props => {
               }
             }}
           >
-            Previews Step
+            Previous Step
           </LightButton>
           <LightButton
             disabled={!verified}
@@ -396,7 +396,7 @@ const DealerSection = props => {
               }
             }}
           >
-            Previews Step
+            Previous Step
           </LightButton>
           <LightButton
             onClick={() => {
@@ -413,72 +413,12 @@ const DealerSection = props => {
   );
 };
 
-// TODO: Manage errors
-async function createUser(props) {
-  console.log(props);
-
-  const {
-    email,
-    password,
-    username,
-    phoneNumber,
-    completeName,
-    country,
-    city,
-    address
-  } = props;
-
-  const data = {
-    email,
-    password,
-    username,
-    phone_number: phoneNumber,
-    first_name: completeName,
-    address: {
-      country,
-      city,
-      primary_address: address
-    }
-  };
-  try {
-    const response = await axios.post(`${ApiServer}/api/v1/users`, data);
-    if (response.status === 200) {
-      console.log(response.data);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-// TODO: Manage erros
-async function registerCard(token, coupon) {
-  await axios.post(`${ApiServer}/api/v1/user/cards`, {
-    card_token: token,
-    coupon: coupon ? coupon : null
-  });
-}
-
-async function setToken(props, cookies, setCookies) {
-  const data = {
-    user: {
-      email: props.username,
-      password: props.password,
-      grant_type: "password"
-    }
-  };
-
-  await axios.post(`${ApiServer}/api/v2/users/login`, data).then(data => {
-    setCookies("token", data.data.access_token, {
-      expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-    });
-    axios.post(`${ApiServer}/api/v1/user/notifier`, {
-      one_signal_uuid: cookies["one_signal_uuid"]
-    });
-  });
-}
-
 const SubscriptionSection = injectStripe(props => {
   const [showPassword, setShowPassword] = useState(false);
+  const [fieldsCorrect, setFieldsCorrect] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [couponVerified, setCouponVerified] = useState(undefined);
+  const [basePrice, setBasePrice] = useState(495);
   const [cookies, setCookies] = useCookies();
 
   const {
@@ -508,26 +448,6 @@ const SubscriptionSection = injectStripe(props => {
   return (
     <>
       <RegistrationForm>
-        <SubscriptionCard
-          planName="PierpontGlobal USA Access"
-          endDate={subscriptionEndDate.toDateString()}
-        />
-        <TextField
-          id="standard-usename"
-          label="Username"
-          autoComplete="username"
-          margin="normal"
-          required
-          defaultValue={username}
-          onChange={node => setUsername(node.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Icon type="user" />
-              </InputAdornment>
-            )
-          }}
-        />
         <TextField
           id="standard-password"
           label="Password"
@@ -581,14 +501,28 @@ const SubscriptionSection = injectStripe(props => {
               <InputAdornment position="end">
                 <LightButton
                   aria-label="Apply coupon"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => {
+                    setCouponVerified(null);
+                    axios.get(`${ApiServer}/api/v1/user/cards/coupon?coupon=${coupon}`).then((response) => {
+                      console.log(response);
+                      setBasePrice(495 - (response.data.amount_off / 100))
+                      setCouponVerified(true);
+                    }).catch((error) => {
+                      setBasePrice(495)
+                      setCouponVerified(false);
+                    })
+                  }}
                 >
                   APPLY
                 </LightButton>
+                {couponVerified !== undefined ? couponVerified === null ? <Icon type="loading" /> : <Icon type={couponVerified ? "check-circle" : "close-circle"} /> : <></>}
               </InputAdornment>
             )
           }}
         />
+        <StatusMessage status={fieldsCorrect}>
+          {errorMessage !== '' ? errorMessage : 'Something went wrong please review payment information'}
+        </StatusMessage>
         <div>
           <AccentButton
             style={{
@@ -600,13 +534,52 @@ const SubscriptionSection = injectStripe(props => {
               let { token } = await props.stripe.createToken({
                 name: completeName
               });
-              await setCardToken(token);
-              await createUser({ ...props });
-              await setToken({ ...props }, cookies, setCookies);
-              await registerCard(token, coupon);
+              console.log(props.password);
+              if (token !== undefined) {
+                let payload = {
+                  coupon: props.coupon,
+                  user: {
+                    first_name: props.completeName,
+                    email: props.email,
+                    source: token,
+                    phone_number: props.phoneNumber,
+                    password: props.password,
+                  },
+                  dealer: {
+                    name: props.dealerName,
+                    country: props.country,
+                    city: props.city,
+                    address1: props.address,
+                  }
+                }
+                axios.post(`${ApiServer}/api/v2/users/signup`, payload).then((response) => {
+                  const data = {
+                    user: {
+                      email: props.email,
+                      password: props.password
+                    }
+                  };
+                  axios.post(`${ApiServer}/api/v2/users/login`, data).then(
+                    response => {
+                      setCookies("token", response.headers['authorization'], {
+                        expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+                      });
+                      axios.post(`${ApiServer}/api/v1/user/notifier`, {
+                        one_signal_uuid: cookies["one_signal_uuid"]
+                      });
+                    }
+                  );
+                }).catch((error) => {
+                  setFieldsCorrect(false);
+                });
+              } else {
+                setFieldsCorrect(false);
+              }
             }}
           >
-            Pay $ 495.00 USD and sign in
+            <span style={{ fontWeight: 900 }}>
+              Pay $ {basePrice.toFixed(2)} USD and sign in
+            </span>
           </AccentButton>
         </div>
       </RegistrationForm>
@@ -620,7 +593,7 @@ const SubscriptionSection = injectStripe(props => {
               }
             }}
           >
-            Previews Step
+            Previous Step
           </LightButton>
         </ButtonHolders>
       </MediaQuery>
@@ -745,7 +718,7 @@ const RegisterView = props => {
                 }
               }}
             >
-              Previews Step
+              Previous Step
             </LightButton>
           ) : (
               ""
@@ -786,8 +759,8 @@ const LoginView = props => {
         <Fields>
           <SimpleInput
             value={username}
-            label="Username"
-            type="text"
+            label="Email"
+            type="email"
             onChange={node => setUsername(node.target.value)}
           />
           <SimpleInput
@@ -849,11 +822,11 @@ const SignInPage = props => {
     <SignInWrapper>
       <BlobLeft src="/images/signinpage/blob.svg" />
       <BlobRight src="/images/signinpage/blob.svg" />
-      {/* <MainImage src="/images/signinpage/Dealer.svg" /> */}
+      <MainImage src="/images/signinpage/Dealer.svg" />
       <SignInBox big={registerView}>
         <GlassBlobLeft big={registerView} src="/images/signinpage/blob.svg" />
         <GlassBlobRight big={registerView} src="/images/signinpage/blob.svg" />
-        {/* <GlassMainImage src="/images/signinpage/Dealer.svg" /> */}
+        <GlassMainImage src="/images/signinpage/Dealer.svg" />
         <WhiteLayer>
           {registerView ? (
             <RegisterView />

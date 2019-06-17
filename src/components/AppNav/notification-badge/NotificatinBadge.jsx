@@ -59,7 +59,7 @@ class NotificationBadge extends Component {
     this.cable = ActionCable.createConsumer(`${WSConnection}`);
 
     this.subscription = this.cable.subscriptions.create({
-      channel: 'AdminNotificationChannel',
+      channel: 'NotificationChannel',
     },
       {
         received: (data) => {
