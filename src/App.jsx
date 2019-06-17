@@ -126,7 +126,7 @@ class App extends React.Component {
 
     axios.interceptors.request.use(
       config => {
-        let token = props.cookies.get("token")
+        let token = this.props.cookies.get("token")
         config.headers = {}
         if (token) {
           config.headers['Authorization'] = token;
@@ -239,10 +239,10 @@ class App extends React.Component {
         responseUser.address.secondary_address
         }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
         responseUser.address.country
-      }`,
+        }`,
       email: responseUser.email,
       phone: responseUser.phone_number,
-      photo: !!responseUser.photo_url ?  `${ApiServer}/${responseUser.photo_url}` : undefined,
+      photo: !!responseUser.photo_url ? `${ApiServer}/${responseUser.photo_url}` : undefined,
       dealer: !!responseUser.dealer ? {
         name: responseUser.dealer.name,
         latitude: responseUser.dealer.latitude,
