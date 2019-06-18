@@ -11,6 +11,7 @@
     "actioncable": "^5.2.2",
     "antd": "^3.19.1",
     "axios": "^0.18.0",
+    "babel-plugin-import": "^1.12.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.3",
@@ -21,6 +22,7 @@
     "country-data": "^0.0.31",
     "cra-append-sw": "^2.6.1",
     "css-loader": "^2.1.1",
+    "customize-cra": "^0.2.13",
     "email-validator": "^2.0.4",
     "emotion": "^10.0.9",
     "eslint": "5.6.0",
@@ -45,6 +47,7 @@
     "rc-drawer": "^1.7.6",
     "react": "^16.8",
     "react-actioncable-provider": "^2.0.0",
+    "react-app-rewired": "^2.1.3",
     "react-autocomplete": "^1.8.1",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-carousel": "^3.3.0",
@@ -103,10 +106,10 @@
     "yarn": "^1.13.0"
   },
   "scripts": {
-    "start": "PORT=4000 react-scripts start --env=production",
-    "build": "react-scripts build",
+    "start": "PORT=4000 react-app-rewired start --env=production",
+    "build": "react-app-rewired build",
     "test": "yarn start & cypress run",
-    "eject": "react-scripts eject",
+    "eject": "react-app-rewired eject",
     "e2e": "cypress run",
     "cy:run": "cypress run",
     "cy:run:record": "cypress run --record",
@@ -116,12 +119,10 @@
     "generate_mochawesome_report": "marge mochawesome-report/output.json",
     "e2e_mochawesome": "yarn run cleanup; cypress run; yarn run merge_reports; yarn run generate_mochawesome_report"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
+  "browserslist": {
+    "production": [],
+    "development": []
+  },
   "devDependencies": {
     "babel-eslint": "9.0.0",
     "cypress": "^3.2.0",

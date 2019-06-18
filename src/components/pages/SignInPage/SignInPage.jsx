@@ -49,7 +49,6 @@ import {
 } from "../../../Defaults";
 import SimpleInput from "./SimpleInput/SimpleInput";
 import { Steps, Icon } from "antd";
-import "antd/dist/antd.css";
 import "antd/lib/steps/style";
 import "./SignInPage.styles.less";
 import { LightButton } from "../sign-in-page/styles/sign_in_styles";
