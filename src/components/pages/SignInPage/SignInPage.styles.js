@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CircularProgress, Button } from "@material-ui/core";
+import { CircularProgress, Button, MobileStepper } from "@material-ui/core";
 import { Steps } from "antd";
 
 export const SignInWrapper = styled.div`
@@ -226,7 +226,7 @@ export const RegistrationWrapper = styled.div`
   z-index: 30;
   @media only screen and (max-width: 768px) {
     overflow: hidden;
-    grid-template-rows: 100px calc(100% - 170px) 70px;
+    grid-template-rows: calc(100% - 70px) 70px;
     grid-template-columns: 100%;
   }
 `;
@@ -284,13 +284,26 @@ export const RegistrationForm = styled.form`
   }
 `;
 
-export const Stepper = styled.div`
+export const MobileStepperCustom = styled(MobileStepper)`
+align-content: center !important;
+align-items: center !important;
+justify-content: center !important;
+justify-items: center !important;
+margin: 0 auto;
+position: absolute;
+left: 0;
+right: 0;
+display: flex;
+`;
+
+export const StepperWrapper = styled.div`
   display: flex;
   justify-content: center;
   justify-items: center;
   align-content: center;
   align-items: center;
   width: 100%;
+  overflow: auto;
   height: 100%;
   background: linear-gradient(
     330deg,
@@ -313,14 +326,7 @@ export const Stepper = styled.div`
     align-items: flex-start;
     flex-direction: column !important;
   }
-`;
-
-export const LargeSteps = styled(Steps)`
-  height: 80% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  @media only screen and (max-width: 768px) {
-    height: auto !important;
-    flex-direction: row !important;
+  > * {
+    background: transparent !important;
   }
 `;
