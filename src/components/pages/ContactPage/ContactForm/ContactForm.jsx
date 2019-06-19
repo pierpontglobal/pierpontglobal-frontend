@@ -3,7 +3,6 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress } from '@material-ui/core';
 import styled from 'styled-components';
-import CheckIconMui from '@material-ui/icons/Check';
 import axios from 'axios';
 import { FormattedMessage } from 'react-intl';
 
@@ -102,10 +101,6 @@ const SubmitButton = styled.button`
     background: -webkit-linear-gradient(to right, #2e90d1, #2981bc);
     background: linear-gradient(to right, #2e90d1, #2981bc);
   }
-`;
-
-const CheckIcon = styled(CheckIconMui)`
-  color: #000;
 `;
 
 const SuccessTitle = styled.div`
@@ -271,7 +266,7 @@ class ContactForm extends React.Component {
     return (
       <Wrapper>
         {
-          isLoading ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : messageSent ? 
+          isLoading ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : messageSent ?
             <SuccessWrapper>
               <SuccessTitle>
                 <FormattedMessage id="contact-page.form.success-title" />
@@ -283,54 +278,54 @@ class ContactForm extends React.Component {
                 <SendOtherLink onClick={this.sendOther}><FormattedMessage id="contact-page.form.send-other" /></SendOtherLink>
               </div>
             </SuccessWrapper> : (
-            <>
-              <UsernameInput>
-                <TextField
-                  id="username"
-                  error={username.error}
-                  label={intl.formatMessage({ id: 'contact-page.form.name' })}
-                  value={username.value}
-                  margin="normal"
-                  className={classes.textField}
-                  variant="outlined"
-                  onChange={this.handleChange}
-                />
-              </UsernameInput>
-              <EmailInput>
-                <TextField
-                  required
-                  id="email"
-                  error={email.error}
-                  label={intl.formatMessage({ id: 'contact-page.form.email' })}
-                  value={email.value}
-                  onChange={this.handleChange}
-                  margin="normal"
-                  className={classes.textField}
-                  variant="outlined"
-                />
-              </EmailInput>
-              <MessageInput>
-                <TextField
-                  id="message"
-                  error={message.error}
-                  label={intl.formatMessage({ id: 'contact-page.form.message' })}
-                  multiline
-                  rowsMax="6"
-                  rows="6"
-                  value={message.value}
-                  onChange={this.handleChange}
-                  className={classes.messageField}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </MessageInput>
-              <SubmitButtonWrapper>
-                <SubmitButton onClick={this.validateMessage}>
-                  <FormattedMessage id="contact-page.form.send" />
-                </SubmitButton>
-              </SubmitButtonWrapper>
-            </>
-          )
+              <>
+                <UsernameInput>
+                  <TextField
+                    id="username"
+                    error={username.error}
+                    label={intl.formatMessage({ id: 'contact-page.form.name' })}
+                    value={username.value}
+                    margin="normal"
+                    className={classes.textField}
+                    variant="outlined"
+                    onChange={this.handleChange}
+                  />
+                </UsernameInput>
+                <EmailInput>
+                  <TextField
+                    required
+                    id="email"
+                    error={email.error}
+                    label={intl.formatMessage({ id: 'contact-page.form.email' })}
+                    value={email.value}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    className={classes.textField}
+                    variant="outlined"
+                  />
+                </EmailInput>
+                <MessageInput>
+                  <TextField
+                    id="message"
+                    error={message.error}
+                    label={intl.formatMessage({ id: 'contact-page.form.message' })}
+                    multiline
+                    rowsMax="6"
+                    rows="6"
+                    value={message.value}
+                    onChange={this.handleChange}
+                    className={classes.messageField}
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </MessageInput>
+                <SubmitButtonWrapper>
+                  <SubmitButton onClick={this.validateMessage}>
+                    <FormattedMessage id="contact-page.form.send" />
+                  </SubmitButton>
+                </SubmitButtonWrapper>
+              </>
+            )
         }
       </Wrapper>
     );

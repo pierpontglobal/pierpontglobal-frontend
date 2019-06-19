@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TextField, CircularProgress, Button } from "@material-ui/core";
+import { CircularProgress, Button } from "@material-ui/core";
 import { Steps } from "antd";
 
 export const SignInWrapper = styled.div`
@@ -137,22 +137,25 @@ export const GlassBlobRight = styled(BlobRight)`
 export const MainImage = styled.img`
   position: absolute;
   z-index: 2;
+  width: 40vw;
+  max-width: 1440px;
+  min-width: 800px;
   right: 100px;
   top: 300px;
-  width: 44vw;
-  max-width: 640px;
-  min-width: 450px;
 `;
 
 export const GlassMainImage = styled(MainImage)`
   position: absolute;
   filter: blur(5px);
   top: calc(300px - 15vh);
-  right: calc(100px - (100vw - 15vw - 450px));
+  right: ${props =>
+    props.big
+      ? "calc(100px - (100vw - (50vw - 374px) - 748px))"
+      : "calc(100px - (100vw - 15vw - 450px))"};
   z-index: 3;
   @media only screen and (max-width: 768px) {
-    bottom: calc(20vh);
-    left: calc(50vw);
+    top: calc(300px - 15vh);
+    right: calc(100px - 5vw);
   }
 `;
 

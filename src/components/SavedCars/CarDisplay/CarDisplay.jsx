@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import posed from 'react-pose';
 import { withRouter } from 'react-router-dom';
-import { IconButton } from '@material-ui/core';
 import CloseMuiIcon from '@material-ui/icons/Close';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import ApplicationRoutes from '../../../constants/Routes';
-import { ApiServer } from '../../../Defaults';
 import USER_ACTIONS from '../../../modules/user/action';
 
 const CarDisplayWrapper = styled.div`
@@ -98,7 +94,7 @@ class CarDisplay extends Component {
 
   render() {
     const { delay, car, } = this.props;
-    return(
+    return (
       <CarDisplayWrapper delay={delay} onClick={(node) => this.goToCarDetail(node, car.vin)}>
         <CarImage>
           <img src={car.photo} alt={`Pierpont global | ${car.car_model} ${car.car_maker} ${car.year} ${car.engine}`} />
@@ -108,14 +104,14 @@ class CarDisplay extends Component {
             <CloseIcon />
           </CloseIconWrapper>
           <CarTitle>
-            <span>{ car.car_maker } - <span>{ car.car_model }</span></span>
+            <span>{car.car_maker} - <span>{car.car_model}</span></span>
           </CarTitle>
           <div style={{ paddingLeft: '8px' }}>
             <div>
-              <span style={{ color: '#303030' }}>{ car.year } | { car.engine }</span>
+              <span style={{ color: '#303030' }}>{car.year} | {car.engine}</span>
             </div>
             <div>
-              <span style={{ fontSize: '0.75rem', color: '#000000' }}><b>VIN: </b>{ car.vin }</span>
+              <span style={{ fontSize: '0.75rem', color: '#000000' }}><b>VIN: </b>{car.vin}</span>
             </div>
           </div>
         </CarInfo>

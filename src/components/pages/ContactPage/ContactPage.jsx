@@ -99,19 +99,12 @@ const hideLeftFormContent = keyframes`
   }
 `;
 
-const hideRightFormContent = keyframes`
-  to {
-    display: none;
-  }
-`;
-
 const normalRightFormContent = keyframes`
   to {
     width: 100%;
     opacity: 1;
   }
 `;
-
 
 const Wrapper = styled.div`
   width: 100%;
@@ -441,7 +434,7 @@ class ContactPage extends React.Component {
   }
 
   getFirstWord = (text) => {
-    if(!!text) {
+    if (!!text) {
       let firstWord = text.split(' ')[0];
       return firstWord;
     }
@@ -457,7 +450,7 @@ class ContactPage extends React.Component {
   render() {
     const { isFullscreen, showAllMembers } = this.state;
     const { user, intl } = this.props;
-    return(
+    return (
       <Wrapper>
         <TopBackground isFullscreen={isFullscreen}>
           <MapWrapper isFullscreen={isFullscreen}>
@@ -465,7 +458,7 @@ class ContactPage extends React.Component {
           </MapWrapper>
           <HeaderContent>
             <PageTitle>
-              <FormattedMessage id="contact-page.title" values={{ subject: (!!user.name) ? this.getFirstWord(user.name) : intl.formatMessage({id: 'contact-page.title.there'}) }} />
+              <FormattedMessage id="contact-page.title" values={{ subject: (!!user.name) ? this.getFirstWord(user.name) : intl.formatMessage({ id: 'contact-page.title.there' }) }} />
             </PageTitle>
             <PageDescripcion>
               <FormattedMessage id="contact-page.description" />
@@ -495,14 +488,14 @@ class ContactPage extends React.Component {
                 <MemberCard user={hector} />
                 <MemberCard user={steve} />
                 {
-                  showAllMembers ? 
-                  <>
-                    <MemberCard user={juan} />
-                    <MemberCard user={daniel} />
-                    <MemberCard user={emily} />
-                    <MemberCard user={luca} />
-                  </>
-                  : null
+                  showAllMembers ?
+                    <>
+                      <MemberCard user={juan} />
+                      <MemberCard user={daniel} />
+                      <MemberCard user={emily} />
+                      <MemberCard user={luca} />
+                    </>
+                    : null
                 }
               </FormRightWrapper>
             </FormContentWrapper>

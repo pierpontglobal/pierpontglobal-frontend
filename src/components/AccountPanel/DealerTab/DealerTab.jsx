@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import Container from '../../styles/Container/Container';
-import Text from '../../styles/Text/Text';
 import Building from './building.svg';
 import AddPhotoIconMui from '@material-ui/icons/AddAPhoto';
 import { Upload } from 'antd';
@@ -126,7 +124,7 @@ class DealerTab extends React.Component {
   previewPhoto = (e) => {
     if (!!e && !!e.file) {
       var reader = new FileReader();
-    
+
       reader.onload = (e) => {
         const { logoUrl } = this.state;
         if (!this.currentLogoUrl) {
@@ -136,11 +134,11 @@ class DealerTab extends React.Component {
           logoUrl: e.target.result,
         });
       }
-      
+
       reader.readAsDataURL(e.file);
     }
   }
-  
+
   handleImage = (e) => {
     // Preview photo
     this.previewPhoto(e);
@@ -167,7 +165,7 @@ class DealerTab extends React.Component {
       this.currentLogoUrl = undefined;
     }
   }
-  
+
   render() {
     const { dealer, user } = this.props;
     const { logoUrl } = this.state;
@@ -187,17 +185,17 @@ class DealerTab extends React.Component {
           </HeaderWrapper>
           <TitleWrapper>
             <span>
-              { dealer.name ? dealer.name : '' }
+              {dealer.name ? dealer.name : ''}
             </span>
           </TitleWrapper>
           <EmailWrapper>
             <span>
-              { user.email ? user.email : '' }
+              {user.email ? user.email : ''}
             </span>
           </EmailWrapper>
           <PhoneWrapper>
             <span>
-              { dealer.phone ? dealer.phone : '' }
+              {dealer.phone ? dealer.phone : ''}
             </span>
           </PhoneWrapper>
         </Wrapper>

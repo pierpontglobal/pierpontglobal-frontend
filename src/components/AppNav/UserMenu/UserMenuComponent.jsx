@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import AccountIconMui from '@material-ui/icons/AccountCircle';
 import HelpIconMui from '@material-ui/icons/Help';
 import SettingsIconMui from '@material-ui/icons/Settings';
-import ExitIconMui from '@material-ui/icons/ExitToApp';
 import CollectionsIconMui from '@material-ui/icons/CollectionsBookmark';
 import LanguageIconMui from '@material-ui/icons/Language';
 import ArrowIconMui from '@material-ui/icons/KeyboardArrowDown';
@@ -41,11 +40,6 @@ const UserMenuWrapper = styled.div`
   display: grid;
   grid-template-rows: minmax(200px, 4fr) 1fr;
   grid-template-columns: auto;
-`;
-
-const UserMenuHeader = styled.div`
-  width: 100%;
-  height: 100%;
 `;
 
 const UserMenuBody = styled.div`
@@ -225,7 +219,6 @@ class UserMenuComponent extends React.Component {
       goToAction,
       handleOpenSavedCars,
       languages,
-      openUserMenu,
     } = this.props;
 
     const { showLanguagesSubmenu, showOptionMenu } = this.state;
@@ -279,12 +272,12 @@ class UserMenuComponent extends React.Component {
                             languages.map(lang => (
                               <SubmenuLink key={lang.abr} onClick={() => this.switchLanguage(lang)}>
                                 <div></div>
-                                <MenuIconWrapper active={ lang.active }>
-                                  <span>{ lang.abr }</span>
+                                <MenuIconWrapper active={lang.active}>
+                                  <span>{lang.abr}</span>
                                 </MenuIconWrapper>
-                                <MenuTextWrapper active={ lang.active }>
+                                <MenuTextWrapper active={lang.active}>
                                   <span>
-                                    <span>{ lang.name }</span>
+                                    <span>{lang.name}</span>
                                   </span>
                                 </MenuTextWrapper>
                               </SubmenuLink>

@@ -3,15 +3,10 @@ import TimeAgo from 'react-timeago';
 import styled, { keyframes, css } from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
-import MediaQuery from 'react-responsive';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
-import axios from 'axios';
-import { ApiServer } from '../../Defaults';
-import BookmarkBorderMui from '@material-ui/icons/BookmarkBorder';
-import BookmarkMui from '@material-ui/icons/Bookmark';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -113,15 +108,15 @@ function pickHex(color1, color2, color3, weightRaw) {
     const w1 = weight / 2.5;
     const w2 = 1 - w1;
     const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
-      Math.round(color2[1] * w1 + color3[1] * w2),
-      Math.round(color2[2] * w1 + color3[2] * w2)];
+    Math.round(color2[1] * w1 + color3[1] * w2),
+    Math.round(color2[2] * w1 + color3[2] * w2)];
     return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
   }
   const w1 = (weight - 2.5) / 2.5;
   const w2 = 1 - w1;
   const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-    Math.round(color1[1] * w1 + color2[1] * w2),
-    Math.round(color1[2] * w1 + color2[2] * w2)];
+  Math.round(color1[1] * w1 + color2[1] * w2),
+  Math.round(color1[2] * w1 + color2[2] * w2)];
   return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
 }
 
@@ -264,14 +259,6 @@ const CRPriceContainer = styled.div`
       margin: 0px;
       justify-content: space-between;
     }
-`;
-
-const BookmarkIcon = styled(BookmarkMui)`
-
-`;
-
-const BookmarBorderIcon = styled(BookmarkBorderMui)`
-
 `;
 
 const onHeartClickAnimMobile = keyframes`

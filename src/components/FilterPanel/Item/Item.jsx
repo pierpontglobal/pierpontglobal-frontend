@@ -1,6 +1,5 @@
 import React from 'react';
 import { Collapse } from 'reactstrap';
-import posed from 'react-pose';
 import PropTypes from 'prop-types';
 import ArrowIcon from '@material-ui/icons/KeyboardArrowDown';
 import Container from '../../styles/Container/Container';
@@ -10,7 +9,7 @@ const ArrowWrapper = styled.div`
   padding: 8px;
   cursor: pointer;
   transition: all 0.15s;
-  transform: ${ props => props.toggle ? 'rotate(180deg)' : 'rotate(0deg)' };
+  transform: ${ props => props.toggle ? 'rotate(180deg)' : 'rotate(0deg)'};
   & > svg {
     font-size: 1.5rem;
   }
@@ -55,7 +54,7 @@ export default class Item extends React.Component {
           >
             <span>{name}</span>
           </div>
-          { arrow }
+          {arrow}
         </div>
         <Collapse isOpen={toggle}>
           {children}

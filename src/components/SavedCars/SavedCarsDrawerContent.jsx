@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
 import ArrowMuiIcon from '@material-ui/icons/NavigateNext';
-import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { connect } from 'react-redux';
 import CarDisplay from './CarDisplay/CarDisplay';
-import { ApiServer } from '../../Defaults';
 import ApplicationRoutes from '../../constants/Routes';
 
 const Wrapper = styled.div`
@@ -114,7 +112,7 @@ class SavedCarsDrawerContent extends Component {
       cars: cars
     }, () => {
       // Propage removed car to marketplace
-      if(window.location.href.includes(ApplicationRoutes.marketplace)) {
+      if (window.location.href.includes(ApplicationRoutes.marketplace)) {
         this.props.updateCarsList(carVin);
       }
     });
@@ -123,7 +121,7 @@ class SavedCarsDrawerContent extends Component {
   render() {
     const { loading } = this.state;
     const { savedCars } = this.props;
-    return(
+    return (
       <>
         <Wrapper>
           <HideButton onClick={this.props.handleClose}>
@@ -142,7 +140,7 @@ class SavedCarsDrawerContent extends Component {
                     ))
                   }
                 </CarList>
-            ))
+              ))
           }
         </Wrapper>
       </>

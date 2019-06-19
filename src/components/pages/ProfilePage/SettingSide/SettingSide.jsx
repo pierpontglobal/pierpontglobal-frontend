@@ -24,7 +24,6 @@ import ProfileForm from '../../../ProfileForm/ProfileForm';
 import DepositProgress from '../../../DepositProgress/DepositProgress';
 import UnderLine from '../../../Underline/Underline';
 import SubscribeButton from './Components/SubscribeButton';
-import PersonalInfo from './Components/PersonalInfo/PersonalInfo';
 import AddPhotoIconMui from '@material-ui/icons/AddAPhoto';
 
 const HeadingStyle = styled.div`

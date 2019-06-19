@@ -1,7 +1,5 @@
 import React from "react";
-import MainForm from "./Form/MainForm";
 import "./styles.css";
-import { FormattedMessage } from "react-intl";
 import Axios from "axios";
 import { ApiServer } from "../../../Defaults";
 const qs = require("query-string");

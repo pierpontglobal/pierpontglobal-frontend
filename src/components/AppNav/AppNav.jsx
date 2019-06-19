@@ -10,10 +10,8 @@ import { withRouter } from 'react-router-dom';
 import Img from 'react-image';
 import ArrowIconMui from '@material-ui/icons/KeyboardArrowDown';
 import BurgerIconMui from '@material-ui/icons/Menu';
-import AccountIconMui from '@material-ui/icons/AccountCircle';
 import { withCookies } from 'react-cookie';
 import UserMenuComponent from './UserMenu/UserMenuComponent';
-import SignInModal from '../support/SignInModal/SignInModal'; // Remove, it's jsut here to provide neccesary styles for the canvas element
 import { AppNavHeight } from '../../constants/ApplicationSettings';
 import ApplicationRoutes from '../../constants/Routes';
 import NotificatinBadge from './notification-badge/NotificatinBadge';
@@ -194,23 +192,6 @@ const BottomIndicator = styled.div`
   bottom: 0px;
   left: 0px;
   background-color: ${props => props.active ? '#32619a' : 'white'};
-`;
-
-const CustomBagde = styled.div`
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background-color: darkred;
-  position: absolute;
-  top: -4px;
-  right: -12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & > span {
-    color: white;
-    font-size: 0.65rem;
-  }
 `;
 
 const NotificatinBadgeWrapper = styled.div`
