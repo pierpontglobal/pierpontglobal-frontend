@@ -89,6 +89,7 @@ const DetailsContainer = styled(Container)`
   flex-direction: column;
   justify-content: space-around;
   padding: 0px;
+  margin-left: ${props => props.useNew ? '12px' : '0px'};
   margin-top: ${props => props.openDetails === 'closed' ? '' : '16px'};
 `;
 
