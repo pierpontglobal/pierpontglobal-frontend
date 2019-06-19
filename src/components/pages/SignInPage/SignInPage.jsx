@@ -434,7 +434,8 @@ const SubscriptionSection = injectStripe(props => {
     amountToPay,
     setAmountToPay,
     cardToken,
-    setCardToken
+    setCardToken,
+    handleSignIn,
   } = props;
 
   const subscriptionStartDate = new Date();
@@ -567,6 +568,7 @@ const SubscriptionSection = injectStripe(props => {
                       axios.post(`${ApiServer}/api/v1/user/notifier`, {
                         one_signal_uuid: cookies["one_signal_uuid"]
                       });
+                      handleSignIn();
                     }
                   );
                 }).catch((error) => {
@@ -700,6 +702,7 @@ const RegisterView = props => {
           setAmountToPay={setAmountToPay}
           cardToken={cardToken}
           setCardToken={setCardToken}
+          handleSignIn={props.handleSignIn}
         />
       </RegistartionWrapper>
       <MediaQuery maxDeviceWidth={769}>
@@ -829,7 +832,7 @@ const SignInPage = props => {
         <GlassMainImage src="/images/signinpage/Dealer.svg" />
         <WhiteLayer>
           {registerView ? (
-            <RegisterView />
+            <RegisterView handleSignIn={props.handleSignIn} />
           ) : (
               <LoginView
                 registerView={registerView}
