@@ -27,7 +27,7 @@ const SignInPage = props => {
         <GlassMainImage big={registerView} src="/images/signinpage/Dealer.svg" />
         <WhiteLayer>
           {registerView ? (
-            <RegisterView />
+            <RegisterView handleSignIn={props.handleSignIn} />
           ) : (
               <LoginView
                 registerView={registerView}
