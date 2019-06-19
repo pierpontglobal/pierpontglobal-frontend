@@ -9,6 +9,7 @@ import Text from '../styles/Text/Text';
 import { ApiServer } from '../../Defaults';
 import PriceTag from '../CarCard/PriceTag/PriceTag';
 import DepositModal from '../DepositModal/DepositModal';
+import numeral from 'numeral';
 
 let bidInput = null;
 
@@ -48,6 +49,7 @@ class BidPanel extends React.Component {
       vin,
       loading: false,
       bidPlacingFailed: false,
+      numberValue: ''
     };
 
     this.handleReceived = this.handleReceived.bind(this);
@@ -114,6 +116,22 @@ class BidPanel extends React.Component {
     });
   }
 
+  formatNumber = (e) => {
+    const number = e.target.value;
+    //const {numberValue} = this.state;
+    
+    if (!!number) {
+      console.log(number, parseFloat(number), numeral(number).format('0,0'));
+      this.setState({
+        numberValue: numeral(number).format('0,0')
+      }, () => {
+        const { numberValue } = this.state;
+        console.log('Numbervlaue >>> ', numberValue);
+        console.log( parseFloat(numeral(numberValue).value()) );
+      })
+    }
+  }
+
   render() {
     const {
       wholePrice,
@@ -123,6 +141,7 @@ class BidPanel extends React.Component {
       loading,
       intendedBid,
       bidPlacingFailed,
+      numberValue,
     } = this.state;
 
     return (
@@ -178,8 +197,11 @@ class BidPanel extends React.Component {
                 style={{
                   outline: 'none',
                   textAlign: 'center',
+                  fontSize: '1.45rem'
                 }}
-                type="number"
+                type="text"
+                onChange={this.formatNumber}
+                value={ numberValue}
                 fontColor="#ffffff"
                 placeholder={this.bidAmountPlaceholder}
                 placeholderColor="#ffffff"
@@ -196,7 +218,7 @@ class BidPanel extends React.Component {
                 }}
                 className="border-0 w-100"
                 hoverColor="#23d17a"
-                onClick={() => (this.sendBid(parseFloat(bidInput.value), carId))}
+                onClick={() => (this.sendBid(parseFloat(numeral(numberValue).value()), carId))}
                 type="button"
               >
                 <FormattedMessage id="label.bid" />
