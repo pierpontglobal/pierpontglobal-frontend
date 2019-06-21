@@ -21,6 +21,10 @@ import PPGModal from '../ppg-modal/PPGModal';
 import Axios from 'axios';
 import { ApiServer } from '../../Defaults';
 
+// DO NOT REMOVE UNLESS YOU PROVIDE THESE STYLES ON OTHER WAY:
+import SignInModal from '../support/SignInModal/SignInModal';
+// ----
+
 const Wrapper = styled.div`
   width: 100%;
   height: ${`${AppNavHeight}px`};

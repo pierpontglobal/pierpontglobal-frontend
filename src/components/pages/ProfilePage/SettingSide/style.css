@@ -105,3 +105,51 @@
 .green_button:hover {
     background-color: #0d864c !important;
 }
+
+
+
+/* CANVAS STYLES */
+
+.phone-only {
+  display: inherit;
+}
+
+.tablet-only {
+  display: inherit;
+}
+
+.desktop-only {
+  display: none;
+}
+
+.tablet-up {
+  display: none;
+}
+
+@media only screen and (min-width: 600px) {
+  .my-modal-main {
+    width: 352px;
+    height: 320px !important;
+    border-radius: 7px;
+    overflow: hidden;
+    min-height: auto;
+  }
+
+  .tablet-up {
+    display: inherit;
+  }
+
+  .phone-only {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .desktop-only {
+    display: inherit;
+  }
+
+  .tablet-only {
+    display: none;
+  }
+}
