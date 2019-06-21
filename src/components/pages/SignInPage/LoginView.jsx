@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Logo, Title, Subtitle, SignInForm, Fields, BottomSection, Loader, LoaderWrapper, StatusMessage } from "./SignInPage.styles";
 import { AccentButton, ApiServer } from "../../../Defaults";
@@ -44,6 +44,20 @@ export const LoginView = props => {
   const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(true);
+
+  useEffect(() => {
+    function test(event) {
+      if (event.keyCode === 13) {
+        submit(username, password, setCookies, cookies, setLoading, setStatus, props.handleSignIn);
+      }
+    }
+
+    document.addEventListener('keydown', test);
+    return function cleanup() {
+      document.removeEventListener('keydown', test);
+    }
+  })
+
   return (<>
     <Logo src="/images/signinpage/ppg_logo.svg" />
     <Title>Welcome to PierpontGlobal</Title>
@@ -57,15 +71,16 @@ export const LoginView = props => {
     <StatusMessage status={status}>
       Something went wrong, verify your credentials
       </StatusMessage>
-    <AccentButton style={{
-      width: "90%",
-      margin: "20px 5% 0",
-      borderRadius: "15px",
-      left: 0,
-      right: 0
-    }} onClick={() => {
-      submit(username, password, setCookies, cookies, setLoading, setStatus, props.handleSignIn);
-    }}>
+    <AccentButton
+      style={{
+        width: "90%",
+        margin: "20px 5% 0",
+        borderRadius: "15px",
+        left: 0,
+        right: 0
+      }} onClick={() => {
+        submit(username, password, setCookies, cookies, setLoading, setStatus, props.handleSignIn);
+      }}>
       Log In
       </AccentButton>
     <LoaderWrapper loading={loading}>
