@@ -17,7 +17,7 @@ function submit(
   setLoading(true);
   const data = {
     user: {
-      email: username,
+      login: username,
       password
     }
   };
