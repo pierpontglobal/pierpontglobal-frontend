@@ -91,6 +91,9 @@ const DetailsContainer = styled(Container)`
   padding: 0px;
   margin-left: ${props => props.useNew ? '12px' : '0px'};
   margin-top: ${props => props.openDetails === 'closed' ? '' : '16px'};
+  @media only screen and (max-width: 480px) {
+    margin-left: 0px;
+  }
 `;
 
 const DetailedCR = styled(Container)`
@@ -172,7 +175,7 @@ const DetailTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   @media only screen and (max-width: 480px) {
-    padding-left: 8px;
+    
   }
 `;
 
@@ -312,7 +315,7 @@ const BookmarkArea = styled.div`
     color: ${props => props.active ? '#ba0707' : '#e4e4e4'};
     font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
     animation: ${props => props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : ''};
-
+    filter: drop-shadow(0 0 0.18rem rgba(220, 20, 60, 0.12));
     @media only screen and (max-width: 768px) {
       animation: ${props => props.heartCliked ? css`${onHeartClickAnimMobile} 0.3s ease-in 0s` : ''};
     }
