@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import SearchInput from '../AppNav/SearchInput/SearchInput';
-import { FormattedMessage } from 'react-intl';
 
 function SortBar({ header, className }) {
   const query = header.length > 0 ? header : '';

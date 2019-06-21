@@ -10,19 +10,14 @@ import axios from "axios";
 import { MuiThemeProvider } from "@material-ui/core";
 import styled from "styled-components";
 import {
-  IntlProvider,
-  FormattedMessage,
   injectIntl
 } from "react-intl";
-import MediaQuery from "react-responsive";
-import CollectionMuiIcon from "@material-ui/icons/CollectionsBookmark";
 import { connect } from 'react-redux';
 
 import USER_ACTIONS from './modules/user/action';
 import SETTINGS_ACTIONS from './modules/settings/actions';
 import SavedCarsDrawer from "./components/SavedCars/SavedCarsDrawer";
 import MarketPlacePage from "./components/pages/MarketPlacePage/MarketPlacePage";
-import LandingPage from "./components/pages/LandingPage/LandingPage";
 import NotfoundPage from "./components/pages/NotFoundPage/NotFoundPage";
 import RegistrationPage from "./components/pages/RegistrationPage/RegistrationPage";
 import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
@@ -66,17 +61,6 @@ const car = {
   title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`
 };
 
-/* const invoice = {
-  unitCost: '$22 900',
-  taxes: '$7000',
-  shipping: '$600',
-  fee: '$695',
-  proccessing: '$1 245',
-  transport: '$1 155',
-  requiredDeposit: '$3 359',
-  estimatedTotal: '$33 595',
-}; */
-
 const PageHolder = styled.div`
   margin-top: ${props => (props.isInSignInPage ? "0px" : "58px")};
   height: ${props =>
@@ -91,17 +75,6 @@ const PageHolder = styled.div`
   }
 `;
 
-const SavedCarsIconWrapper = styled(CollectionMuiIcon)`
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 5000;
-  color: #32619a;
-  cursor: pointer;
-  &:hover {
-    color: #3e78c0;
-  }
-`;
 class App extends React.Component {
   constructor(props) {
     clearTimeout(window.fallbackReload);
@@ -297,7 +270,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { cookies, user, settings, savedCars, axios } = this.props;
+    const { cookies, user, settings } = this.props;
     const userSignedIn = this.verifyUserLoggedIn();
 
     return (

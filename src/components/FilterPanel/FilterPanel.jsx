@@ -36,15 +36,6 @@ const ExpandableDiv = posed.div({
   },
 });
 
-const RotatableIcon = posed.i({
-  retracted: {
-    rotate: 0,
-  },
-  expanded: {
-    rotate: 180,
-  },
-});
-
 class FilterPanel extends React.Component {
   constructor(props) {
     super(props);

@@ -19,7 +19,6 @@ import CarCard from '../../CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
 import './styles.css';
 import PPGModal from '../../ppg-modal/PPGModal';
-import { AppNavHeight } from '../../../constants/ApplicationSettings';
 
 const qs = require('query-string');
 const SearchBarHeight = 120;
@@ -224,7 +223,7 @@ class MarketPlacePage extends React.Component {
   }
 
   async getCars() {
-    const { fetch, fetchBookmarked, savedCars } = this.props;
+    const { fetch, savedCars } = this.props;
     const { page, size } = this.state;
 
     let str = '';
@@ -359,13 +358,11 @@ class MarketPlacePage extends React.Component {
     const {
       loaded,
       cars,
-      carsSectionHeight,
       openModalFilter,
       showOtherOptionsInModalFilter,
       otherFiltersOptions,
     } = this.state;
 
-    const { cookies } = this.props;
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
 
     return (

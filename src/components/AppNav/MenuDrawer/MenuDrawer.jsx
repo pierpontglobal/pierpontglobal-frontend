@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Home from '@material-ui/icons/Home';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Phone from '@material-ui/icons/Phone';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -16,7 +15,6 @@ import Slider from '../../Slider/Slider';
 
 
 // To avoid performance issues I've declared this variables up here
-const labelHome = <FormattedMessage id="label.home" />;
 const labelMarket = <FormattedMessage id="label.market" />;
 const labelContact = <FormattedMessage id="label.contact-us" />;
 const labelProfile = <FormattedMessage id="label.profile" />;

@@ -191,7 +191,6 @@ class CarBidPage extends React.Component {
   render() {
     const {
       userBid,
-      cookies,
       car,
       nextCar,
       prevCar,

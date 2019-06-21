@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TextField, CircularProgress, Button } from "@material-ui/core";
+import { CircularProgress, Button, MobileStepper } from "@material-ui/core";
 import { Steps } from "antd";
 
 export const SignInWrapper = styled.div`
@@ -137,22 +137,25 @@ export const GlassBlobRight = styled(BlobRight)`
 export const MainImage = styled.img`
   position: absolute;
   z-index: 2;
+  width: 40vw;
+  max-width: 1440px;
+  min-width: 800px;
   right: 100px;
   top: 300px;
-  width: 44vw;
-  max-width: 640px;
-  min-width: 450px;
 `;
 
 export const GlassMainImage = styled(MainImage)`
   position: absolute;
   filter: blur(5px);
   top: calc(300px - 15vh);
-  right: calc(100px - (100vw - 15vw - 450px));
+  right: ${props =>
+    props.big
+      ? "calc(100px - (100vw - (50vw - 374px) - 748px))"
+      : "calc(100px - (100vw - 15vw - 450px))"};
   z-index: 3;
   @media only screen and (max-width: 768px) {
-    bottom: calc(20vh);
-    left: calc(50vw);
+    top: calc(300px - 15vh);
+    right: calc(100px - 5vw);
   }
 `;
 
@@ -223,7 +226,7 @@ export const RegistrationWrapper = styled.div`
   z-index: 30;
   @media only screen and (max-width: 768px) {
     overflow: hidden;
-    grid-template-rows: 100px calc(100% - 170px) 70px;
+    grid-template-rows: calc(100% - 70px) 70px;
     grid-template-columns: 100%;
   }
 `;
@@ -281,13 +284,26 @@ export const RegistrationForm = styled.form`
   }
 `;
 
-export const Stepper = styled.div`
+export const MobileStepperCustom = styled(MobileStepper)`
+align-content: center !important;
+align-items: center !important;
+justify-content: center !important;
+justify-items: center !important;
+margin: 0 auto;
+position: absolute;
+left: 0;
+right: 0;
+display: flex;
+`;
+
+export const StepperWrapper = styled.div`
   display: flex;
   justify-content: center;
   justify-items: center;
   align-content: center;
   align-items: center;
   width: 100%;
+  overflow: auto;
   height: 100%;
   background: linear-gradient(
     330deg,
@@ -310,14 +326,7 @@ export const Stepper = styled.div`
     align-items: flex-start;
     flex-direction: column !important;
   }
-`;
-
-export const LargeSteps = styled(Steps)`
-  height: 80% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  @media only screen and (max-width: 768px) {
-    height: auto !important;
-    flex-direction: row !important;
+  > * {
+    background: transparent !important;
   }
 `;
