@@ -51,7 +51,6 @@ export const LoginView = props => {
         submit(username, password, setCookies, cookies, setLoading, setStatus, props.handleSignIn);
       }
     }
-
     document.addEventListener('keydown', test);
     return function cleanup() {
       document.removeEventListener('keydown', test);
@@ -64,8 +63,8 @@ export const LoginView = props => {
     <Subtitle>Customer Login</Subtitle>
     <SignInForm>
       <Fields>
-        <SimpleInput value={username} label="Email" type="email" onChange={node => setUsername(node.target.value)} />
-        <SimpleInput value={password} label="Password" type="password" onChange={node => setPassword(node.target.value)} />
+        <SimpleInput value={username} label="Username | Email" type="email" autocomplete="email" name="email" onChange={node => setUsername(node.target.value)} />
+        <SimpleInput value={password} label={<>Password<span style={{ opacity: 0 }}>.......................</span></>} type="password" autocomplete="password" name="password" onChange={node => setPassword(node.target.value)} />
       </Fields>
     </SignInForm>
     <StatusMessage status={status}>
@@ -96,6 +95,19 @@ export const LoginView = props => {
           props.setRegisterView(!props.registerView);
         }}>
           Subscribe!
+          </span>
+      </span>
+    </BottomSection>
+    <BottomSection>
+      <span>
+        Forgot your password?{" "}
+        <span style={{
+          color: 'darkblue',
+          cursor: 'pointer'
+        }} onClick={() => {
+          props.setRegisterView(!props.registerView);
+        }}>
+          Recover!
           </span>
       </span>
     </BottomSection>

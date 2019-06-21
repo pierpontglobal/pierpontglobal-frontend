@@ -9,16 +9,16 @@ export const LightInput = styled.div`
     margin: auto;
     height: 28px;
     cursor: text;
-    left: 20px;
+    left: 13px;
     color: gray;
     font-size: 20px;
     font-weight: 200;
     z-index: ${props => (props.full === true ? "60" : "20")};
     transition: all 0.5s;
     transform: ${props =>
-      props.full === true
-        ? "translateY(-23px) translateX(-30px) scale(0.8)"
-        : ""};
+    props.full === true
+      ? "translateY(-23px) translateX(-30px) scale(0.8)"
+      : ""};
   }
   > input {
     width: 100%;

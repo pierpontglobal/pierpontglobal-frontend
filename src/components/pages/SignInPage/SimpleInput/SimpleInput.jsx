@@ -3,7 +3,7 @@ import { LightInput } from "./SimpleInput.styles";
 
 const SimpleInput = props => (
   <LightInput full={props.value.length > 0}>
-    <input type={props.type} onChange={props.onChange} />
+    <input {...props} />
     <span>{props.label}</span>
   </LightInput>
 );
