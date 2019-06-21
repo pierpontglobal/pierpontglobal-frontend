@@ -124,8 +124,8 @@ export const GlassBlobRight = styled(BlobRight)`
   top: calc(-500px - 15vh);
   right: ${props =>
     props.big
-      ? "calc(-400px - (100vw - (50vw - 374px) - 748px))"
-      : "calc(-400px - (100vw - 15vw - 450px))"};
+      ? "calc(-400px - (100vw - (50vw - 374px) - 100%))"
+      : "calc(-400px - (100vw - 15vw - 100%))"};
   z-index: 3;
   transition: 1s;
   @media only screen and (max-width: 768px) {
@@ -148,11 +148,9 @@ export const GlassMainImage = styled(MainImage)`
   position: absolute;
   filter: blur(5px);
   top: calc(300px - 15vh);
-  right: ${props =>
-    props.big
-      ? "calc(100px - (100vw - (50vw - 374px) - 748px))"
-      : "calc(100px - (100vw - 15vw - 450px))"};
+  right: calc(100px - (100vw - ${props => props.rightSeparation}px));
   z-index: 3;
+  transition: 0s;
   @media only screen and (max-width: 768px) {
     top: calc(300px - 15vh);
     right: calc(100px - 5vw);
