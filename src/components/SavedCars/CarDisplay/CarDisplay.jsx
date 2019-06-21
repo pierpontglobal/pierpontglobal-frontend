@@ -1,37 +1,34 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import posed from 'react-pose';
 import { withRouter } from 'react-router-dom';
-import { IconButton } from '@material-ui/core';
 import CloseMuiIcon from '@material-ui/icons/Close';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import ApplicationRoutes from '../../../constants/Routes';
-import { ApiServer } from '../../../Defaults';
+import USER_ACTIONS from '../../../modules/user/action';
 
 const CarDisplayWrapper = styled.div`
   width: 100%;
   min-height: 80px;
   max-height: 80px;
   overflow: hidden;
-  background-color: rgb(140, 140, 140, 0.7);
+  background-color: white;
   display: grid;
   grid-template-columns: 30% 70%;
-  position: relative;
   opacity: 0;
-  bottom: 80px;
-  box-shadow: 0px 0px 2px 0px rgb(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 3px 2px rgb(0, 0, 0, 0.05);
   animation: 0.55s slide-in ease-in-out ${props => props.delay ? props.delay : '0s'};
   animation-fill-mode: forwards;
   margin-bottom: 16px;
   cursor: pointer;
+  
   @keyframes slide-in {
     0% {
       opacity: 0;
-      bottom: 80px;
+      transform: translateX(80px);
     }
     100% {
       opacity: 1;
-      position: inline-block;
+      transform: translateX(0px);
     }
   }
 `;
@@ -51,6 +48,7 @@ const CarInfo = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const CarTitle = styled.div`
@@ -59,7 +57,7 @@ const CarTitle = styled.div`
   padding-left: 8px;
   & > span {
     font-weight: 600;
-    color: white;
+    color: #303030;
     & > span {
       font-weight: 200;
     }
@@ -67,7 +65,7 @@ const CarTitle = styled.div`
 `;
 
 const CloseIcon = styled(CloseMuiIcon)`
-  color: #fff;
+  color: #303030;
 `;
 
 const CloseIconWrapper = styled.div`
@@ -88,31 +86,32 @@ class CarDisplay extends Component {
   }
 
   removeSavedCar = (carVin) => {
-    axios.delete(`${ApiServer}/api/v1/car/delete?vin=${carVin}`).then(data => {
+    const { removeSavedCar } = this.props;
+    removeSavedCar(carVin).then(data => {
       this.props.updateCarList(carVin);
     });
   }
 
   render() {
     const { delay, car, } = this.props;
-    return(
+    return (
       <CarDisplayWrapper delay={delay} onClick={(node) => this.goToCarDetail(node, car.vin)}>
-        <CloseIconWrapper id="close-button" onClick={() => this.removeSavedCar(car.vin)}>
-          <CloseIcon />
-        </CloseIconWrapper>
         <CarImage>
           <img src={car.photo} alt={`Pierpont global | ${car.car_model} ${car.car_maker} ${car.year} ${car.engine}`} />
         </CarImage>
         <CarInfo>
+          <CloseIconWrapper id="close-button" onClick={() => this.removeSavedCar(car.vin)}>
+            <CloseIcon />
+          </CloseIconWrapper>
           <CarTitle>
-            <span>{ car.car_maker } - <span>{ car.car_model }</span></span>
+            <span>{car.car_maker} - <span>{car.car_model}</span></span>
           </CarTitle>
           <div style={{ paddingLeft: '8px' }}>
             <div>
-              <span style={{ color: '#fff' }}>{ car.year } | { car.engine }</span>
+              <span style={{ color: '#303030' }}>{car.year} | {car.engine}</span>
             </div>
             <div>
-              <span style={{ fontSize: '0.75rem', color: '#e2e2e2' }}><b>VIN: </b>{ car.vin }</span>
+              <span style={{ fontSize: '0.75rem', color: '#000000' }}><b>VIN: </b>{car.vin}</span>
             </div>
           </div>
         </CarInfo>
@@ -121,4 +120,14 @@ class CarDisplay extends Component {
   }
 }
 
-export default withRouter(CarDisplay);
+
+// Redux configuration
+const mapDispatchToProps = dispatch => ({
+  removeSavedCar: (vin) => dispatch(USER_ACTIONS.removeSavedCar(vin)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(CarDisplay));
+

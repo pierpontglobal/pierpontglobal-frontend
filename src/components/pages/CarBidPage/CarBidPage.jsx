@@ -191,7 +191,6 @@ class CarBidPage extends React.Component {
   render() {
     const {
       userBid,
-      cookies,
       car,
       nextCar,
       prevCar,
@@ -201,7 +200,7 @@ class CarBidPage extends React.Component {
     const position = parameters.position;
 
     const { intl } = this.props;
-    this.cable = ActionCable.createConsumer(`${ApiServer}/cable?token=${cookies.get('token')}`);
+    this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
 
     const labels = {
       carBidPreview: intl.formatMessage({ id: 'car-bid.preview' }),

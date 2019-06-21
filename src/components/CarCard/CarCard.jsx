@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
 import posed from 'react-pose';
-import MediaQuery from 'react-responsive';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
-import axios from 'axios';
-import { ApiServer } from '../../Defaults';
-import BookmarkBorderMui from '@material-ui/icons/BookmarkBorder';
-import BookmarkMui from '@material-ui/icons/Bookmark';
 import ConditionBtn from '../ConditionBtn/ConditionBtn';
 import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -22,48 +17,42 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+const Heart = (props) => {
+  return (
+    <i class="fas fa-heart"></i>
+  );
+}
+
 const CarContainer = styled.div`
-  width: 100%;
+  width: ${props => props.useNew ? '23%' : '98%'};
+  min-width: 300px; 
   height: auto;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  margin: ${props => props.useNew ? '12px' : '4px'};
+  border-radius: 4px;
+  box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.16);
-  box-shadow: 3px 3px 6px rgba(0,0,0,0.16);
+  box-shadow: ${props => props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.08)'};
   display: grid;
-  grid-template-columns: 25% 35% 40%;
+  grid-template-columns: ${props => props.useNew ? 'auto' : '1fr 1.2fr 2fr'};
+  grid-template-rows: ${props => props.useNew ? '2fr minmax(140px, 160px) minmax(100px, 120px)' : 'auto'};
   background-color: #fff;
+  cursor: pointer;
   position: relative;
-  /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
-  @media only screen and (max-width: 600px) {
-    grid-template-rows: 50% 100%;
-    grid-template-columns: 100%;
-    position: static;
+  transition: all 0.3s;
+  border: ${props => props.useNew ? '' : '1px solid rgba(0,0,0,0.16)'};
+
+  @media only screen and (max-width: 768px) and (min-width: 480px) {
+    grid-template-rows: 2fr 160px minmax(100px, 120px);
+    grid-template-columns: auto;
+    width: 90%;
+    margin: 0px 6px;
   }
-  @media only screen and (max-width: 600px) and (min-width: 500px) {
-    grid-template-rows: 260px;
-    grid-template-columns: 100%;
-    position: static;
-  }
-  @media only screen and (max-width: 500px) and (min-width: 400px) {
-    grid-template-rows: 235px;
-    grid-template-columns: 100%;
-    position: static;
-  }
-  @media only screen and (max-width: 400px) and (min-width: 300px) {
-    grid-template-rows: 210px;
-    grid-template-columns: 100%;
-    position: static;
-  }
-  @media only screen and (max-width: 300px) and (min-width: 200px) {
-    grid-template-rows: 180px;
-    grid-template-columns: 100%;
-    position: static;
-  }
-  @media only screen and (max-width: 200px) {
-    grid-template-rows: 160px;
-    grid-template-columns: 100%;
-    position: static;
+
+  @media only screen and (max-width: 480px) {
+    grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 40px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
+    grid-template-columns: auto;
+    width: 100%;
+    margin: 8px 6px;
   }
 `;
 
@@ -74,24 +63,11 @@ const Container = styled.div`
 
 const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
-  width: 236px;
-  height: 120px;
+  width: ${props => props.useNew ? '300px' : '226px'};
+  height: ${props => props.useNew ? '220px' : '116px'};
 
-  /* Because the Carousel image has a fixed height, this is needed for almost all possibilities. */
-  @media only screen and (max-width: 600px) and (min-width: 500px) {
-    height: 260px;
-  }
-  @media only screen and (max-width: 500px) and (min-width: 400px) {
-    height: 235px;
-  }
-  @media only screen and (max-width: 400px) and (min-width: 300px) {
-    height: 210px;
-  }
-  @media only screen and (max-width: 300px) and (min-width: 200px) {
-    height: 180px;
-  }
-  @media only screen and (max-width: 200px) {
-    height: 160px;
+  @media only screen and (max-width: 480px) {
+    height: 195px;
   }
 `;
 
@@ -106,9 +82,12 @@ const DropDown = posed.i({
 
 const DetailsContainer = styled(Container)`
   flex-direction: column;
-  justify-content: space-evenly;
-  @media only screen and (max-width: 600px) {
-    margin-top: 5%;
+  justify-content: space-around;
+  padding: 0px;
+  margin-left: ${props => props.useNew ? '12px' : '0px'};
+  margin-top: ${props => props.openDetails === 'closed' ? '' : '16px'};
+  @media only screen and (max-width: 480px) {
+    margin-left: 0px;
   }
 `;
 
@@ -116,7 +95,7 @@ const DetailedCR = styled(Container)`
   display: flex;
   flex-direction: column;
   min-width: 160px;
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 768px) {
     width: 50%;
     margin-top: 0px;
     min-width: '';
@@ -133,15 +112,15 @@ function pickHex(color1, color2, color3, weightRaw) {
     const w1 = weight / 2.5;
     const w2 = 1 - w1;
     const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
-      Math.round(color2[1] * w1 + color3[1] * w2),
-      Math.round(color2[2] * w1 + color3[2] * w2)];
+    Math.round(color2[1] * w1 + color3[1] * w2),
+    Math.round(color2[2] * w1 + color3[2] * w2)];
     return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
   }
   const w1 = (weight - 2.5) / 2.5;
   const w2 = 1 - w1;
   const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-    Math.round(color1[1] * w1 + color2[1] * w2),
-    Math.round(color1[2] * w1 + color2[2] * w2)];
+  Math.round(color1[1] * w1 + color2[1] * w2),
+  Math.round(color1[2] * w1 + color2[2] * w2)];
   return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
 }
 
@@ -169,9 +148,9 @@ const PriceContainer = styled.div`
   text-align: center;
   flex-direction: column;
   width: 80%;
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 768px) {
     width: 50%;
-    margin-top: 0%;
+    margin-top: 0px;
   }
 `;
 
@@ -180,7 +159,7 @@ const Detail = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  @media only screen and (max-width: 748px) {
+  @media only screen and (max-width: 680px) {
     padding: 4px 8px;
   }
 `;
@@ -190,6 +169,9 @@ const DetailTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media only screen and (max-width: 480px) {
+    
+  }
 `;
 
 const DetailsView = posed.div({
@@ -198,12 +180,22 @@ const DetailsView = posed.div({
 });
 
 const DetailContent = styled(DetailsView)`
+  padding: 4px;
   @media only screen and (min-width: 600px) {
     height: auto !important;
   }
   @media only screen and (max-width: 600px) {
     visibility: ${props => props.state};
   }
+`;
+
+const DetailGroup = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 
 const DetailLabel = styled.span`
@@ -217,12 +209,12 @@ const DropDownIcon = styled(DropDown)`
   width: 4vw;
   border-style: solid;
   border-color: black;
-  border-width: 0px 3px 3px 0px;
+  border-width: 0px 3.5px 3.5px 0px;
   margin: 4px;
   position: relative;
   top: -5px;
   left: 0;
-  @media only screen and (min-width: 600px) {
+  @media only screen and (min-width: 480px) {
     display: none;
   }
 `;
@@ -268,33 +260,101 @@ const CRPriceContainer = styled.div`
     align-content: space-between;
     align-items: center;
     @media only screen and (max-width: 600px) {
-      margin: 5% 0px;
+      margin: 0px;
       justify-content: space-between;
     }
 `;
 
-const BookmarkIcon = styled(BookmarkMui)`
-
+const onHeartClickAnimMobile = keyframes`
+  0% {
+    font-size: 0.9rem;
+  }
+  50% {
+    font-size: 1.1rem;
+  }
+  100% {
+    font-size: 1.0rem;
+  }
 `;
 
-const BookmarBorderIcon = styled(BookmarkBorderMui)`
-
+const onHeartClickAnimDesktop = keyframes`
+  0% {
+    font-size: 1.75rem;
+  }
+  50% {
+    font-size: 2.05rem;
+  }
+  100% {
+    font-size: 2.0rem;
+  }
 `;
+
 
 const BookmarkArea = styled.div`
   position: absolute;
   top: 4px;
   right: 6px;
-  z-index: 800;
-  & > svg {
-    height: 1.15em;
-    cursor: pointer;
+  z-index: 600;
+  padding: 16px;
+  background-color: transparent;
+  transition: all 0.2s;
+  & > i {
+    color: ${props => props.active ? '#ba0707' : '#e4e4e4'};
+    font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
+    animation: ${props => props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : ''};
+    filter: drop-shadow(0 0 0.18rem rgba(220, 20, 60, 0.12));
+    @media only screen and (max-width: 768px) {
+      animation: ${props => props.heartCliked ? css`${onHeartClickAnimMobile} 0.3s ease-in 0s` : ''};
+    }
+  }
+  &:hover {
+    & > i {
+      color: #cc0606;
+    } 
+  }
+`;
+
+const CarTitle = styled.div`
+  width: 100%;
+  height: auto;
+  padding: ${props => props.useNew ? '8px' : '4px'};
+  display: flex;
+  justify-content: ${props => props.useNew ? 'center' : 'flex-start'};;
+  align-items: center;
+  & > span {
+    font-weight: ${props => props.useNew ? '400' : '600'};
+    font-size: ${props => props.useNew ? '1.35rem' : '1.08rem'};
   }
   @media only screen and (max-width: 768px) {
-    position: static;
-    top: none;
-    right: none;
+    justify-content: space-between;
   }
+
+  @media only screen and (max-width: 488px) {
+    justify-content: space-between;
+    & > span {
+      font-weight: 600;
+      font-size: 1.08rem;
+    }
+  }
+`;
+
+const ExpandDetails = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 60;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-left: 24px;
+  padding-bottom: 8px;
+  cursor: pointer;
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const CarouselWrapper = styled(Carousel)`
+  position: relative;
 `;
 
 function gotToCarDetail(vin, event, history, position, caller, cookies) {
@@ -312,12 +372,12 @@ function gotToCarDetail(vin, event, history, position, caller, cookies) {
 }
 
 function CarCard({
-  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark
+  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark, useNewDesign
 }) {
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
   const [autocheckSource, changeAutocheckSource] = useState('');
-  // const [carBookmarked, changeBookmark] = useState(car.bookmarked);
+  const [heartClickAnim, handleHeartClick] = useState(false);
 
   const {
     vin,
@@ -345,12 +405,19 @@ function CarCard({
         key={key}
         id="car-card"
         onClick={e => gotToCarDetail(vin, e, history, position, caller, cookies)}
+        showDetail={openDetails}
         on
+        useNew={useNewDesign}
       >
-        <Carousel
+        <BookmarkArea heartCliked={heartClickAnim} useNew={useNewDesign} active={car.bookmarked} data-cy="bookmark-area" onClick={() => handleBookmark(vin, car.bookmarked)}>
+          <Heart onClick={() => handleHeartClick(!heartClickAnim)} />
+        </BookmarkArea>
+        <CarouselWrapper
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
+          data-cy="car-carousel"
+          useNew={useNewDesign}
         >
           {images.map((image, i) => (
             <ImageWrapper
@@ -360,52 +427,49 @@ function CarCard({
               src={image}
               threshold={1000}
               delayTime={1000}
+              useNew={useNewDesign}
             />
           ))}
-        </Carousel>
-        <DetailsContainer>
+        </CarouselWrapper>
+        <DetailsContainer useNew={useNewDesign} openDetails={openDetails}>
           <DetailTitle>
-            <div>
-              <span style={{ fontSize: '16px', fontWeight: 600 }}>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
-            </div>
-            <div style={{ display: ' flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 60 }}>
+            <CarTitle useNew={useNewDesign}>
+              <span>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
+            </CarTitle>
+            <ExpandDetails>
               <DropDownIcon pose={openDetails} onClick={() => setOpenDetails(state => (state === 'open' ? 'closed' : 'open'))} />
-              <MediaQuery maxDeviceWidth={768}>
-                <BookmarkArea onClick={() => handleBookmark(vin, car.bookmarked)}>
-                  {
-                    !car.bookmarked ? <BookmarBorderIcon /> : <BookmarkIcon />
-                  }
-                </BookmarkArea>
-              </MediaQuery>
-            </div>
+            </ExpandDetails>
           </DetailTitle>
-          <hr style={{ margin: '0 0 5px' }} />
           <input hidden name="VIN" value={vin} readOnly />
-          <DetailContent pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
-            <Detail>
-              <DetailLabel>
-                <FormattedMessage id="car.vin" />
-              </DetailLabel>
-              <DetailValue>{vin}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>
-                <FormattedMessage id="car.odometer" />
-              </DetailLabel>
-              <DetailValue>{numberWithCommas(odometer)}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>
-                <FormattedMessage id="car.engine" />
-              </DetailLabel>
-              <DetailValue>{engine}</DetailValue>
-            </Detail>
-            <Detail>
-              <DetailLabel>
-                <FormattedMessage id="car.transmission" />
-              </DetailLabel>
-              <DetailValue>{transmission}</DetailValue>
-            </Detail>
+          <DetailContent useNew={useNewDesign} pose={openDetails} state={(openDetails === 'open') ? 'show' : 'hidden'}>
+            <DetailGroup useNew={useNewDesign}>
+              <Detail>
+                <DetailLabel>
+                  <FormattedMessage id="car.vin" />
+                </DetailLabel>
+                <DetailValue>{vin}</DetailValue>
+              </Detail>
+              <Detail>
+                <DetailLabel>
+                  <FormattedMessage id="car.odometer" />
+                </DetailLabel>
+                <DetailValue>{numberWithCommas(odometer)}</DetailValue>
+              </Detail>
+            </DetailGroup>
+            <DetailGroup>
+              <Detail>
+                <DetailLabel>
+                  <FormattedMessage id="car.engine" />
+                </DetailLabel>
+                <DetailValue>{engine}</DetailValue>
+              </Detail>
+              <Detail>
+                <DetailLabel>
+                  <FormattedMessage id="car.transmission" />
+                </DetailLabel>
+                <DetailValue>{transmission}</DetailValue>
+              </Detail>
+            </DetailGroup>
           </DetailContent>
         </DetailsContainer>
         <CRPriceContainer>
@@ -425,13 +489,6 @@ function CarCard({
               requestFunction={requestFunction}
             />
           </PriceContainer>
-          <MediaQuery minDeviceWidth={768}>
-            <BookmarkArea onClick={() => handleBookmark(vin, car.bookmarked)}>
-              {
-                !car.bookmarked ? <BookmarBorderIcon /> : <BookmarkIcon />
-              }
-            </BookmarkArea>
-          </MediaQuery>
         </CRPriceContainer>
       </CarContainer>
       <IframeModal open={openAutocheck} src={autocheckSource} width="90%" height="90%" handleClose={() => { changeAutocheckSource(''); setOpenAutocheck(false); }} />

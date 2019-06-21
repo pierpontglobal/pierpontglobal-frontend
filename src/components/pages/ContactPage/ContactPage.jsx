@@ -1,551 +1,512 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import MessageIcon from '@material-ui/icons/Message';
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
-import SendIcon from '@material-ui/icons/Send';
-import { IconButton } from '@material-ui/core';
-import MediaQuery from 'react-responsive';
-import { AsYouType } from 'libphonenumber-js';
-import axios from 'axios';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { ApiServer } from '../../../Defaults';
+/**
+ * @desc Rebuild Contact page using clean and modern design
+ * @author Daniel Peña
+ */
+import React from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import ArrowIconMui from '@material-ui/icons/KeyboardArrowLeft';
+import FullscreenIconMui from '@material-ui/icons/Fullscreen';
+import FullscreenExitIconMui from '@material-ui/icons/FullscreenExit';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
-const styles = theme => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '45%',
-  },
-  messageField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '94%',
-  },
-  sendIcon: {
-    icon: {
-      color: 'blue',
-    },
-  },
-});
+import { AppNavHeight } from '../../../constants/ApplicationSettings';
+import MemberCard from './MemberCard/MemberCard';
+import ContactForm from './ContactForm/ContactForm';
 
-const PageWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-rows: 60% 40%;
-  margin: 0 auto;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Description = styled.div`
-  width: 80%;
-  margin: 0 auto;
-  & > p {
-    text-align: center !important;
+const exitForm = keyframes`
+  to {
+    opacity: 0;
+    transform: translateY(400px);
   }
 `;
 
-const Content = styled.div`
-  width: 100%;
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media only screen and (min-width: 768px) { 
-    flex-direction: column;
+const enterForm = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(400px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
   }
 `;
 
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+const fullTopBackground = keyframes`
+  to {
+    height: 100%;
+    position: static;
+    background-color: black;
+  }
 `;
 
-const ContactBox = styled.div`
-  padding: 16px;
+const fullBottomBackground = keyframes`
+  99% {
+    height: 0px;
+    width: 0px;
+  }
+  100% {
+    display: none;
+  }
+`;
+
+const normalBottomBackground = keyframes`
+  99% {
+    height: 40%;
+  }
+  100% {
+    display: block;
+  }
+`;
+
+const normalTopBackground = keyframes`
+  to {
+    height: 60%;
+    position: relative;
+  }
+`;
+
+const fullMapWrapper = keyframes`
+  to {
+    opacity: 1;
+  }
+`;
+
+const normalMapWrapper = keyframes`
+  to {
+    opacity: 0.3;
+  }
+`;
+
+const showLeftFormContent = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+`;
+
+const hideLeftFormContent = keyframes`
+  99% {
+    width: 5%;
+    opacity: 0.2;
+  }
+  100% {
+    width: 0%;
+    opacity: 0;
+    display: none;
+  }
+`;
+
+const normalRightFormContent = keyframes`
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: ${`calc(100% - ${AppNavHeight}px)`};
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+const TopBackground = styled.div`
+  width: 100%;
+  height: 60%;
+  background-color: black;
+  position: relative;
+
+  animation: ${props => props.isFullscreen ? css`${fullTopBackground} 0.3s ease-in-out 0s` : css`${normalTopBackground} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
+`;
+
+const BottomBackground = styled.div`
+  width: 100%;
+  height: 40%;
+  background-color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  animation: ${props => props.isFullscreen ? css`${fullBottomBackground} 0.3s ease-in-out 0s` : css`${normalBottomBackground} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
+
+  & > svg {
+    position: absolute;
+    top: -50%;
+    left: 0;
+    z-index: 500;
+    & > path {
+      fill: rgb(0, 0, 0, 0.02);
+    }
+  }
+`;
+
+const FromWrapper = styled.div`
+  background-color: white;
   border-radius: 8px;
-  box-shadow: 0px 0px 3px 0px #ccc;
-  border: none;
-  width: 100%;
-  min-height: 480px;
-  display: grid;
-  grid-template-rows: 30% 60% 10%;
-  @media only screen and (min-width: 768px) {
-    box-shadow: 0px 0px 8px 2px #ccc;
+  box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.15);
+  top: -70%;
+  width: 55%;
+  position: absolute;
+  z-index: 800;
+
+  animation: ${props => props.isFullscreen ? css`${exitForm} 0.3s ease-in-out 0s` : css`${enterForm} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
+
+  @media only screen and (max-width: 768px) {
+    width: 95%;
+    top: -70%;
   }
 `;
 
-const InfoBox = styled.div`
-  margin: 8px;
-  padding: 16px;
-  border: none;
+const FormContentWrapper = styled.div`
   width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: ${props => props.showAllMembers ? 'auto' : '3fr 1fr'};
+  grid-template-rows: auto;
+
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+  }
+`;
+
+const HeaderContent = styled.div`
+  height: auto;
+  width: 100%;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  @media only screen and (min-width: 768px) {
-    justify-content: flex-start;
+  z-index: 90;
+  position: absolute;
+  background: transparent;
+  top: 25%;
+
+  @media only screen and (max-width: 768px) {
+    top: 2%;
   }
 `;
 
-const FormWrapper = styled.div`
+const PageTitle = styled.div`
   width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    font-size: 2.45rem;
+    color: white;
+    font-weight: 400;
+  }
+
+  @media only screen and (max-width: 768px) {
+    & > span {
+    font-size: 2.0rem;
+    }
+  }
+`;
+
+const PageDescripcion = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  & > span {
+    font-size: 1.45rem;
+    color: #fefefe;
+    font-weight: 100;
+  }
+
+  @media only screen and (max-width: 768px) {
+    & > span {
+    font-size: 1.15rem;
+    }
+  }
+`;
+
+const FormLeftWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: ${props => props.showAllMembers ? 'none' : 'grid'};
+  grid-template-rows: 1fr 3fr;
+  grid-template-columns: auto;
+  position: relative;
+
+  animation: ${props => props.showAllMembers ? css`${hideLeftFormContent} 0.3s ease-in-out 0s` : css`${showLeftFormContent} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
+`;
+
+const FormTitle = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 16px;
+  & > span {
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+`;
+
+const FormRightWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #f9f9f9;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: ${props => props.showAllMembers ? 'row' : 'column'};
+  flex-wrap: wrap;
+  padding: ${props => props.showAllMembers ? '42px' : '0px'};
+  max-width: ${props => props.showAllMembers ? '100%' : ''};
+  position: relative;
+
+  animation: ${props => props.showAllMembers ? css`${showLeftFormContent} 0.3s ease-in-out 0s` : css`${normalRightFormContent} 0.3s ease-in-out 0s`};
+  animation-fill-mode: forwards;
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
-const EmailInfo = styled.div`
-  display: flex;
-  padding: 16px;
-  flex-direction: column;
+const FooterText = styled.div`
+  position: absolute;
+  bottom: 8px;
+  left: 0;
   width: 100%;
-  align-items: center;
-  justify-content: center;
-  & > span {
-    color: blue;
-    text-decoration: underline;
-    &:hover {
-      cursor: pointer;
-    }
-  }
+  text-align: center;
 `;
 
 const MapWrapper = styled.div`
-  display: grid;
   width: 100%;
-  grid-template-rows: 25% 75%;
-  min-height: 220px;
-  margin: 8px;
-`;
-
-const MapsBox = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-`;
-
-const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-  @media only screen and (min-width: 768px) {
-    flex-direction: row;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  & > iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 200;
+    animation: ${props => props.isFullscreen ? css`${fullMapWrapper} 0.3s ease-in-out 0.3s` : css`${normalMapWrapper} 0.3s ease-in-out 0.3s`};
+    animation-fill-mode: forwards;
   }
 `;
 
-const SendIconWrapper = styled.div`
-  transform: rotate(-12deg);
+const ContactFormWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
 `;
 
-function printNumber(e) {
-  e.target.value = new AsYouType('US').input(e.target.value);
+const ShowHideWrapper = styled.div`
+  position: absolute;
+  left: -12px;
+  top: calc(50% - 8px);
+  border-radius: 50%;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.4s;
+  transform: ${props => props.showAllMembers ? 'rotate(-180deg)' : 'none'};
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ShowHideIcon = styled(ArrowIconMui)`
+  color: white;
+`;
+
+const FullscreenIcon = styled(FullscreenIconMui)`
+  color: #fefefe;
+  font-size: 1.6rem;
+  transition: all 0.3s;
+`;
+
+const FullscreenExitIcon = styled(FullscreenExitIconMui)`
+  color: #fefefe;
+  font-size: 1.6rem;
+  transition: all 0.3s;
+`;
+
+const FullscreenIconWrapper = styled.div`
+  position: absolute;
+  right: 12px;
+  top: ${props => props.isFullscreen ? '64px' : '16px'};
+  z-index: 800;
+  background-color: black;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 8px;
+  transition:a ll 0.3s;
+  &:hover ${FullscreenIcon} {
+    font-size: 2.0rem;
+  }
+  @media only screen and (max-width: 768px) {
+    top: ${props => props.isFullscreen ? '64px' : '16px'};
+    right: 8px;
+  }
+`;
+
+const steve = {
+  name: 'Steve Solomon',
+  phone: '(999) 999-9999',
+  email: 'steve@pierpontglobal.com',
+  photo: '/images/whatsapp/steve/steve.png',
+  role: 'CEO / Sales support',
 }
 
-class ContactPage extends Component {
+const hector = {
+  name: 'Hector Acosta',
+  phone: '(999) 999-9999',
+  email: 'hector@pierpontglobal.com',
+  photo: '/images/whatsapp/hector/hector.png',
+  role: 'CTO / Software engineer',
+}
+
+const daniel = {
+  name: 'Daniel Peña',
+  phone: '(999) 999-9999',
+  email: 'daniel@pierpontglobal.com',
+  role: 'Software Engineer',
+  photo: '/images/whatsapp/daniel/daniel.png',
+}
+
+const juan = {
+  name: 'Juan Villagrana',
+  phone: '(999) 999-9999',
+  email: 'juan@pierpontglobal.com',
+  role: 'CEO / Customer service',
+  photo: '/images/whatsapp/juan/juan.png',
+}
+
+const emily = {
+  name: 'Emily Rubens',
+  phone: '(999) 999-9999',
+  email: 'emily@pierpontglobal.com',
+  role: 'Operations manager',
+}
+
+const luca = {
+  name: 'Luca Toledo',
+  phone: '(999) 999-9999',
+  email: 'luca@pierpontglobal.com',
+  role: 'Sale representative',
+}
+
+class ContactPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sendingMessage: false,
-      sent: false,
-      sendToEmail: 'support@pierpontglobal.com',
-      name: {
-        error: false,
-        value: '',
-      },
-      email: {
-        error: false,
-        value: '',
-      },
-      phone: {
-        error: false,
-        value: '',
-      },
-      company: {
-        error: false,
-        value: '',
-      },
-      message: {
-        error: false,
-        value: '',
-      },
-    };
-  }
-
-  sendMessage = () => {
-    this.setState({
-      sendingMessage: true,
-    }, () => {
-      const {
-        name, email, phone, company, message,
-      } = this.state;
-
-      axios.post(`${ApiServer}/api/v1/user/send-contact-form`, {
-        name: name.value,
-        email: email.value,
-        phone: phone.value,
-        company: company.value,
-        message: message.value,
-      }).then(() => {
-        this.setState({
-          sendingMessage: false,
-          sent: true,
-          name: { error: false, value: '' },
-          email: { error: false, value: '' },
-          phone: { error: false, value: '' },
-          company: { error: false, value: '' },
-          message: { error: false, value: '' },
-        });
-      }, () => {
-        this.setState({
-          sendingMessage: false,
-          sent: false,
-        });
-      });
-    });
-  }
-
-  validateMessage = () => {
-    const {
-      name, email, phone, company, message,
-    } = this.state;
-    let validEmail = false;
-    if (this.validateEmail(email.value)) {
-      validEmail = true;
-    }
-
-    if (validEmail && message.value.length >= 10 && name.value.length > 0) {
-      this.sendMessage({
-        message: {
-          name: name.value,
-          email: email.value,
-          phone: phone.value,
-          company: company.value,
-          message: message.value,
-        },
-      });
-    } else {
-      const errors = [];
-      if (!validEmail) {
-        errors.push({
-          error: true,
-          value: email.value,
-          name: 'email',
-        });
-      }
-      if (message.value.length < 10) {
-        errors.push({
-          error: true,
-          value: message.value,
-          name: 'message',
-        });
-      }
-      if (name.value.length <= 0) {
-        errors.push({
-          error: true,
-          value: name.value,
-          name: 'name',
-        });
-      }
-
-      const newState = {};
-      errors.forEach((e) => {
-        newState[e.name] = e;
-      });
-      this.setState({
-        ...newState,
-      });
+      fullname: '',
+      email: '',
+      message: '',
+      isFullscreen: false,
+      showAllMembers: false,
     }
   }
 
-  validateEmail = (email) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+  toggleFullscreen = () => {
+    this.setState((prevState) => ({
+      isFullscreen: !prevState.isFullscreen,
+    }));
   }
 
-  handleInput = (event) => {
-    if (event.target) {
-      if (event.target.id === 'phone') {
-        printNumber(event);
-      }
-      this.setState({
-        [event.target.id]: {
-          error: false,
-          value: event.target.value,
-        },
-      });
+  getFirstWord = (text) => {
+    if (!!text) {
+      let firstWord = text.split(' ')[0];
+      return firstWord;
     }
+    return text;
   }
 
-  changeDestinationEmail = (email) => {
-    this.setState({
-      sendToEmail: email,
-    });
+  showAllMembersInForm = () => {
+    this.setState((prevState) => ({
+      showAllMembers: !prevState.showAllMembers,
+    }));
   }
 
   render() {
-    const {
-      name, email, phone, company, message, sendingMessage, sent, sendToEmail,
-    } = this.state;
-    const { classes, intl } = this.props;
-
-    const saleSupport = 'steve@pierpontglobal.com';
-    const customerSupport = 'juan@pierpontglobal.com';
-    const technicalSupport = 'hector@pierpontglobal.com';
-    const support = 'support@pierpontglobal.com';
-
-    this.labels = {
-      sending: intl.formatMessage({ id: 'label.sending' }),
-      sent: intl.formatMessage({ id: 'label.sent' }),
-      toSend: intl.formatMessage({ id: 'label.to-send' }),
-      name: intl.formatMessage({ id: 'contact.name' }),
-      phone: intl.formatMessage({ id: 'contact.phone' }),
-      email: intl.formatMessage({ id: 'contact.email' }),
-      company: intl.formatMessage({ id: 'contact.company' }),
-      message: intl.formatMessage({ id: 'contact.message' }),
-      dominicanRepublic: intl.formatMessage({ id: 'country.dominican-republic' }),
-      miamiFlorida: intl.formatMessage({ id: 'country.miami-florida' }),
-    };
-
-    let sendingLabel = this.labels.toSend;
-    if (sendingMessage) {
-      sendingLabel = this.labels.sending;
-    } else if (sent) {
-      sendingLabel = this.labels.sent;
-    }
-
+    const { isFullscreen, showAllMembers } = this.state;
+    const { user, intl } = this.props;
     return (
-      <PageWrapper>
-        <Header>
-          <Title>
-            <h2>
-              <FormattedMessage id="label.contact-us" />
-            </h2>
-          </Title>
-          <Description>
-            <p>
-              <span>
-                <FormattedMessage id="contact.title" />
-              </span>
-              <br />
-              <span>
-                <FormattedMessage id="contact.subtitle" />
-              </span>
-            </p>
-          </Description>
-        </Header>
-        <Content>
-          <Wrap>
-            <ContactBox>
-              <div style={{
-                width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-              }}
-              >
-                <img src="/icon_sm.png" alt="Pierpont Global, Inc | Contact page" width="60px" />
-                <h6>
-                  <FormattedMessage id="contact.hour-support" />
-                </h6>
-              </div>
-              <div>
-                <div style={{
-                  display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px',
-                }}
-                >
-                  <span style={{ fontStyle: 'italic' }}>
-                    { sendingLabel }
-                  </span>
-                  <MessageIcon />
-                </div>
-                <FormWrapper>
-                  <form className={classes.container}>
-                    <TextField
-                      error={name.error}
-                      id="name"
-                      label={this.labels.name}
-                      value={name.value}
-                      className={classes.textField}
-                      margin="normal"
-                      onChange={this.handleInput}
-                    />
-                    <TextField
-                      error={email.error}
-                      id="email"
-                      value={email.value}
-                      autoComplete="email"
-                      label={this.labels.email}
-                      className={classes.textField}
-                      margin="normal"
-                      onChange={this.handleInput}
-                    />
-                    <TextField
-                      error={phone.error}
-                      id="phone"
-                      value={phone.value}
-                      label={this.labels.phone}
-                      className={classes.textField}
-                      margin="normal"
-                      onChange={this.handleInput}
-                      autoComplete="tel"
-                      type="tel"
-                    />
-                    <TextField
-                      error={company.error}
-                      value={company.value}
-                      id="company"
-                      label={this.labels.company}
-                      className={classes.textField}
-                      margin="normal"
-                      onChange={this.handleInput}
-                    />
-                    <div style={{ marginTop: '16px' }}>
-                      <TextField
-                        error={message.error}
-                        id="message"
-                        value={message.value}
-                        label={this.labels.message}
-                        className={classes.messageField}
-                        multiline
-                        rowsMax="4"
-                        onChange={this.handleInput}
-                      />
-                    </div>
-                  </form>
-                </FormWrapper>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-item' }}>
-                <div>
-                  <FormattedMessage id="label.send-to" />
-                  {' '}
-                  <span style={{ color: 'darkgray' }}>{ sendToEmail }</span>
-                </div>
-                <SendIconWrapper>
-                  <IconButton onClick={this.validateMessage}>
-                    <SendIcon color="action" />
-                  </IconButton>
-                </SendIconWrapper>
-              </div>
-            </ContactBox>
-            <InfoBox>
-              <EmailInfo>
-                <div>
-                  <FormattedMessage id="sale-support" />
-                </div>
-                <span onClick={() => this.changeDestinationEmail(saleSupport)}>
-                  {saleSupport}
-                </span>
-              </EmailInfo>
-              <EmailInfo>
-                <div>
-                  <FormattedMessage id="customer-service" />
-                </div>
-                <span onClick={() => this.changeDestinationEmail(customerSupport)}>
-                  {customerSupport}
-                </span>
-              </EmailInfo>
-              <EmailInfo>
-                <div>
-                  <FormattedMessage id="technical-support" />
-                </div>
-                <span onClick={() => this.changeDestinationEmail(technicalSupport)}>
-                  {technicalSupport}
-                </span>
-              </EmailInfo>
-              <EmailInfo>
-                <div>
-                  <FormattedMessage id="general-services" />
-                </div>
-                <span onClick={() => this.changeDestinationEmail(support)}>{support}</span>
-              </EmailInfo>
-            </InfoBox>
-            <MediaQuery maxDeviceWidth={768}>
-              <MapsBox>
-                <MapWrapper>
-                  <div style={{
-                    width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center',
-                  }}
-                  >
-                    <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.miamiFlorida }</span></div>
-                    <span style={{ fontSize: '0.8rem' }}>199 # Flagger St #215 Miami Fl, 33131</span>
-                  </div>
-                  <div style={{
-                    width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                  }}
-                  >
-                    <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" width="100%" frameBorder="0" style={{ border: 'none' }} allowFullScreen />
-                  </div>
-                </MapWrapper>
-                <MapWrapper>
-                  <div style={{
-                    width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center',
-                  }}
-                  >
-                    <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.dominicanRepublic }</span></div>
-                    <span style={{ fontSize: '0.8rem' }}>Jardines del Fresno, Av. Republica De Colombia</span>
-                  </div>
-                  <div style={{
-                    width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                  }}
-                  >
-                    <iframe title="Mobile map - dominican republic" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.4656954292323!2d-69.99003868475685!3d18.507845987416378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf8a4e5fe245bf%3A0x211fbc9e3a1f08c5!2sJardines+del+Fresno!5e0!3m2!1sen!2sdo!4v1556558034607!5m2!1sen!2sdo" width="100%" frameBorder="0" style={{ border: 'none' }} allowFullScreen />
-                  </div>
-                </MapWrapper>
-              </MapsBox>
-            </MediaQuery>
-          </Wrap>
-        </Content>
-        <Footer>
-          <MediaQuery minDeviceWidth={768}>
-            <MapsBox>
-              <MapWrapper>
-                <div style={{
-                  width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center',
-                }}
-                >
-                  <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.miamiFlorida }</span></div>
-                  <span style={{ fontSize: '0.8rem' }}>199 # Flagger St #215 Miami Fl, 33131</span>
-                </div>
-                <div style={{
-                  width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                }}
-                >
-                  <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" width="100%" frameBorder="0" style={{ border: 'none' }} allowFullScreen />
-                </div>
-              </MapWrapper>
-              <MapWrapper>
-                <div style={{
-                  width: '100%', overflowX: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center',
-                }}
-                >
-                  <div><span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{ this.labels.dominicanRepublic }</span></div>
-                  <span style={{ fontSize: '0.8rem' }}>Jardines del Fresno, Av. Republica De Colombia</span>
-                </div>
-                <div style={{
-                  width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                }}
-                >
-                  <iframe title="Mobile map - dominican republic" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.4656954292323!2d-69.99003868475685!3d18.507845987416378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf8a4e5fe245bf%3A0x211fbc9e3a1f08c5!2sJardines+del+Fresno!5e0!3m2!1sen!2sdo!4v1556558034607!5m2!1sen!2sdo" width="100%" frameBorder="0" style={{ border: 'none' }} allowFullScreen />
-                </div>
-              </MapWrapper>
-            </MapsBox>
-          </MediaQuery>
-        </Footer>
-      </PageWrapper>
+      <Wrapper>
+        <TopBackground isFullscreen={isFullscreen}>
+          <MapWrapper isFullscreen={isFullscreen}>
+            <iframe title="Mobile map - miami florida" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.8792765692288!2d-80.19274648464578!3d25.774550783630893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9b69c2ad348bb%3A0x7b8117c2e431f3a7!2s199+E+Flagler+St%2C+Miami%2C+FL+33131%2C+USA!5e0!3m2!1sen!2sdo!4v1556557890802!5m2!1sen!2sdo" frameBorder="0" allowFullScreen />
+          </MapWrapper>
+          <HeaderContent>
+            <PageTitle>
+              <FormattedMessage id="contact-page.title" values={{ subject: (!!user.name) ? this.getFirstWord(user.name) : intl.formatMessage({ id: 'contact-page.title.there' }) }} />
+            </PageTitle>
+            <PageDescripcion>
+              <FormattedMessage id="contact-page.description" />
+            </PageDescripcion>
+          </HeaderContent>
+          <FullscreenIconWrapper isFullscreen={isFullscreen} onClick={this.toggleFullscreen}>
+            {
+              isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />
+            }
+          </FullscreenIconWrapper>
+        </TopBackground>
+        <BottomBackground isFullscreen={isFullscreen}>
+          <FromWrapper isFullscreen={isFullscreen}>
+            <FormContentWrapper showAllMembers={showAllMembers}>
+              <FormLeftWrapper showAllMembers={showAllMembers}>
+                <FormTitle>
+                  <FormattedMessage id="contact-page.write-your-message" />
+                </FormTitle>
+                <ContactFormWrapper>
+                  <ContactForm intl={intl} user={user} />
+                </ContactFormWrapper>
+              </FormLeftWrapper>
+              <FormRightWrapper showAllMembers={showAllMembers}>
+                <ShowHideWrapper showAllMembers={showAllMembers} onClick={this.showAllMembersInForm}>
+                  <ShowHideIcon />
+                </ShowHideWrapper>
+                <MemberCard user={hector} />
+                <MemberCard user={steve} />
+                {
+                  showAllMembers ?
+                    <>
+                      <MemberCard user={juan} />
+                      <MemberCard user={daniel} />
+                      <MemberCard user={emily} />
+                      <MemberCard user={luca} />
+                    </>
+                    : null
+                }
+              </FormRightWrapper>
+            </FormContentWrapper>
+          </FromWrapper>
+          <FooterText>
+            &copy; 2019 - PierpontGlobal, Inc. All rights reserved.
+          </FooterText>
+        </BottomBackground>
+      </Wrapper>
     );
   }
 }
 
-export default withStyles(styles)(injectIntl(ContactPage));
+export default injectIntl(ContactPage);

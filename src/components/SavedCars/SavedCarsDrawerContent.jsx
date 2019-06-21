@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
 import ArrowMuiIcon from '@material-ui/icons/NavigateNext';
-import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { connect } from 'react-redux';
 import CarDisplay from './CarDisplay/CarDisplay';
-import { ApiServer } from '../../Defaults';
 import ApplicationRoutes from '../../constants/Routes';
 
 const Wrapper = styled.div`
   max-width: 400px;
   min-width: 400px;
   height: 100%;
-  background-color: #303030;
+  background: rgb(236,236,236);
+  background: linear-gradient(346deg, rgba(236,236,236,1) 0%, rgba(255,255,255,1) 100%);
   position: relative;
   z-index: 4000;
+  @media only screen and (max-width: 480px) {
+    max-width: 100vw;
+    min-width: 100vw;
+  }
 `;
 
 const Title = styled.div`
@@ -22,8 +26,9 @@ const Title = styled.div`
   margin-bottom: 16px;
   text-align: center;
   & > span {
-    color: white;
-    font-size: 1.25rem;
+    color: #303030;
+    font-size: 1.35rem;
+    font-weight: 400;
   }
 `;
 
@@ -34,19 +39,18 @@ const HideButton = styled(IconButton)`
 `;
 
 const ArrowIcon = styled(ArrowMuiIcon)`
-  color: white;
+  color: #303030;
 `;
 
 const CarList = styled.div`
   width: 100%;
-  max-height: calc(100vh - 320px);
-  margin-top: 32px;
+  max-height: calc(100vh - 300px);
+  margin-top: 54px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   overflow: scroll;
-  padding-top: 42px;
   @media only screen and (max-width: 768px) and (min-width: 500px) {
     max-height: calc(100vh - 220px);
   }
@@ -64,7 +68,7 @@ const EmptyListMessage = styled.div`
   text-align: center;
   position: relative;
   & > span {
-    color: white;
+    color: #303030;
     opacity: 0;
     position: absolute;
     left: -20px;
@@ -96,20 +100,9 @@ class SavedCarsDrawerContent extends Component {
   }
 
   componentDidMount = () => {
-    axios.get(`${ApiServer}/api/v1/user/saved_cars`).then(data => {
-
-      // Sample purposes
-      let withPhoto = data.data.cars.map(car => {
-        return {
-          ...car,
-          photo: car.car_images.filter(img => img.f5 === 'FRONTLEFT')[0].f3,
-        }
-      })
-
-      this.setState({
-        cars: withPhoto,
-        loading: false,
-      });
+    this.setState({
+      cars: this.props.savedCars,
+      loading: false,
     });
   }
 
@@ -119,15 +112,16 @@ class SavedCarsDrawerContent extends Component {
       cars: cars
     }, () => {
       // Propage removed car to marketplace
-      if(window.location.href.includes(ApplicationRoutes.marketplace)) {
-        this.props.removedBookmarkedCar(carVin);
+      if (window.location.href.includes(ApplicationRoutes.marketplace)) {
+        this.props.updateCarsList(carVin);
       }
     });
   }
 
   render() {
-    const { cars, loading } = this.state;
-    return(
+    const { loading } = this.state;
+    const { savedCars } = this.props;
+    return (
       <>
         <Wrapper>
           <HideButton onClick={this.props.handleClose}>
@@ -137,16 +131,16 @@ class SavedCarsDrawerContent extends Component {
             <span>My saved cars</span>
           </Title>
           {
-            loading ? <LinearProgress /> : cars.length === 0 ? <EmptyListMessage><span>No saved cars yet.</span></EmptyListMessage> : (
+            loading ? <LinearProgress /> : savedCars.length === 0 ? <EmptyListMessage><span>No saved cars yet.</span></EmptyListMessage> : (
               (
                 <CarList>
                   {
-                    cars.map((car, index) => (
+                    savedCars.map((car, index) => (
                       <CarDisplay car={car} delay={`${index * 0.17}s`} handleClose={this.props.handleClose} updateCarList={this.updateCarList} />
                     ))
                   }
                 </CarList>
-            ))
+              ))
           }
         </Wrapper>
       </>
@@ -154,4 +148,12 @@ class SavedCarsDrawerContent extends Component {
   }
 }
 
-export default SavedCarsDrawerContent;
+
+// Redux configuration
+const maptStateToProps = state => ({
+  savedCars: state.userReducer.savedCars || []
+});
+
+export default connect(
+  maptStateToProps
+)(SavedCarsDrawerContent);

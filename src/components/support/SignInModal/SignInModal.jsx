@@ -166,7 +166,7 @@ class SignInModal extends React.Component {
       password: this.password.value,
       grant_type: 'password',
     };
-    const response = await axios.post(`${ApiServer}/oauth/token`, data);
+    const response = await axios.post(`${ApiServer}/api/v2/users/login`, data);
     if (response.status === 200) {
       cookies.set('token', response.data.access_token, { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) });
       axios.post(`${ApiServer}/api/v1/user/notifier`, {

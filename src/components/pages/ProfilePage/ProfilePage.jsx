@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { injectIntl } from 'react-intl';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { CircularProgress } from '@material-ui/core';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import { ApiServer } from '../../../Defaults';
 import DealerCreator from './DealerCreator/DealerCreator';
@@ -17,6 +17,7 @@ import NotificationTypes from '../../../constants/NotificationTypes';
 import IssueTypes from '../../../constants/IssueTypes';
 import ApplicationRoutes from '../../../constants/Routes';
 import './styles.css';
+import withClientNotifier from '../../../hocs/withClientNotifier';
 
 const Wrapper = styled.div`
   background-color: #dedede;
@@ -46,7 +47,11 @@ const RouterWrapper = styled.div`
 
 const LoadingWrapper = styled.div`
   width: 100%;
-  height: 12px;
+  height: auto;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -87,25 +92,25 @@ class ProfilePage extends React.Component {
       card_sources,
       subcripcion_details } = settings;
 
-      console.log(user, dealer, card_sources, subcripcion_details);
+    console.log(user, dealer, card_sources, subcripcion_details);
 
-      this.setState({
-        user: user,
-        dealer: !!dealer ? {
-          name: dealer.name,
-          address: dealer.address1,
-          number: dealer.phone_number,
-          email: user.email,
-        } : null,
-        cards: card_sources,
-        subscription: subcripcion_details,
-        loading: false,
-      }, () => {
-        // Check for notifications
-        if (!dealer || !card_sources || !subcripcion_details) {
-          this.checkNotifications();
-        }
-      });
+    this.setState({
+      user: user,
+      dealer: !!dealer ? {
+        name: dealer.name,
+        address: dealer.address1,
+        number: dealer.phone_number,
+        email: user.email,
+      } : null,
+      cards: card_sources,
+      subscription: subcripcion_details,
+      loading: false,
+    }, () => {
+      // Check for notifications
+      if (!dealer || !card_sources || !subcripcion_details) {
+        this.checkNotifications();
+      }
+    });
   }
 
   sendNotification = (notifications) => {
@@ -134,22 +139,22 @@ class ProfilePage extends React.Component {
     let notifications = [notificationDto];
 
     if (!subscription) {
-      const subscriptionNoti = {...notificationDto};
+      const subscriptionNoti = { ...notificationDto };
       notifications.push(subscriptionNoti);
     } else if (!!subscription && !subscription.active) {
-      const subscriptionNoti = {...notificationDto};
+      const subscriptionNoti = { ...notificationDto };
       notifications.push(subscriptionNoti);
     }
 
     if (!cards) {
-      const cardNoti = {...notificationDto};
+      const cardNoti = { ...notificationDto };
       cardNoti.message = messages.cardsText;
       cardNoti.issue_id = IssueTypes.CARD_INFORMATION_MISSING;
       notifications.push(cardNoti);
     }
 
     if (!dealer) {
-      const dealerNoti = {...notificationDto};
+      const dealerNoti = { ...notificationDto };
       dealerNoti.message = messages.cardsText;
       notifications.push(dealerNoti);
     }
@@ -160,25 +165,26 @@ class ProfilePage extends React.Component {
   render() {
     const {
       dealer,
-      user, cards, loading,
+      loading,
       subscription,
     } = this.state;
-    const { cookies } = this.props;
+
+    const { cookies, user, openNotification } = this.props;
 
     return (
-      loading ? 
+      loading ?
         <LoadingWrapper>
-            <LinearProgress />
-        </LoadingWrapper> 
+          <CircularProgress />
+        </LoadingWrapper>
         : (
-        <Wrapper>
-          <DealerCreator show={!dealer || !subscription} hasDealer={!dealer} />
-          <AccountPanelWrapper>
-            <AccountPanel dealer={dealer} />
-          </AccountPanelWrapper>
-          <RouterWrapper>
+          <Wrapper>
+            <DealerCreator show={!dealer || !subscription} hasDealer={!dealer} />
+            <AccountPanelWrapper>
+              <AccountPanel openNotification={openNotification} dealer={dealer} />
+            </AccountPanelWrapper>
+            <RouterWrapper>
               <Switch>
-                <Route exact path={ApplicationRoutes.profilePage.default} render={() => (<SettingSide cookies={cookies} />)} />
+                <Route exact path={ApplicationRoutes.profilePage.default} render={() => (<SettingSide openNotification={openNotification} user={user} cookies={cookies} />)} />
                 <Route path={ApplicationRoutes.profilePage.purchase} render={() => (<PurchaseSide cookies={cookies} />)} />
                 <Route path={ApplicationRoutes.profilePage.pending} render={() => (<PendingSide cookies={cookies} />)} />
                 <Route path={ApplicationRoutes.profilePage.financial} render={() => (<FinancialSide cookies={cookies} />)} />
@@ -191,9 +197,9 @@ class ProfilePage extends React.Component {
                 />
                 <Route exact path={ApplicationRoutes.profilePage.transactions} render={() => (<TransactionsSide cookies={cookies} />)} />
               </Switch>
-          </RouterWrapper>
-        </Wrapper>
-      )
+            </RouterWrapper>
+          </Wrapper>
+        )
     );
   }
 }
@@ -202,4 +208,4 @@ ProfilePage.defaultProps = {
   cookies: {},
 };
 
-export default withRouter(injectIntl(ProfilePage));
+export default withRouter(injectIntl(withClientNotifier(ProfilePage)));

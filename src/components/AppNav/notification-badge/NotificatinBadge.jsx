@@ -26,7 +26,6 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 3,
   },
 });
 
@@ -37,7 +36,7 @@ const CustomPopper = styled(Popper)`
   top: 60px !important;
   @media only screen and (min-width: 748px) {
     width: 24% !important;
-    right: 16% !important;
+    right: 5% !important;
     left: auto !important;
     height: 65% !important;
   }
@@ -57,16 +56,16 @@ class NotificationBadge extends Component {
   componentWillMount = () => {
     this.userToken = this.props.cookies.get('token', { path: '/' });
 
-    this.cable = ActionCable.createConsumer(`${WSConnection}?token=${this.userToken}`);
+    this.cable = ActionCable.createConsumer(`${WSConnection}`);
 
     this.subscription = this.cable.subscriptions.create({
-      channel: 'AdminNotificationChannel',
+      channel: 'NotificationChannel',
     },
-    {
-      received: (data) => {
-        this.handleReceived(data);
-      },
-    });
+      {
+        received: (data) => {
+          this.handleReceived(data);
+        },
+      });
   }
 
   handleReceived = (data) => {

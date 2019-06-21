@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import Home from '@material-ui/icons/Home';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
 import Phone from '@material-ui/icons/Phone';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SettingsIconMui from '@material-ui/icons/Settings';
 import Input from '@material-ui/icons/Input';
 import CollectionMuiIcon from '@material-ui/icons/CollectionsBookmark';
 import styled from 'styled-components';
 import { withCookies } from 'react-cookie';
 import { FormattedMessage } from 'react-intl';
+import HelpIconMui from '@material-ui/icons/Help';
 import SliderOptions from '../../Slider/slider-options/SliderOptions';
 import AccountPanel from '../../AccountPanel/AccountPanel';
 import Slider from '../../Slider/Slider';
 
 
 // To avoid performance issues I've declared this variables up here
-const labelHome = <FormattedMessage id="label.home" />;
 const labelMarket = <FormattedMessage id="label.market" />;
 const labelContact = <FormattedMessage id="label.contact-us" />;
 const labelProfile = <FormattedMessage id="label.profile" />;
@@ -63,6 +63,14 @@ class MenuDrawer extends Component {
     });
   }
 
+  showSettings = () => {
+    this.setState({
+      open: false,
+    }, () => {
+      this.props.showSettings()
+    });
+  }
+
   render() {
     const {
       onMaskClick, afterOptionclick, onRequestOpen, dealer,
@@ -70,19 +78,19 @@ class MenuDrawer extends Component {
     const { open } = this.state;
 
     let menuOptions = [
-      { label: labelHome, icon: <Home color="primary" />, urlMatch: '/' },
       { label: labelMarket, icon: <DirectionsCar color="primary" />, urlMatch: '/marketplace' },
       { label: labelContact, icon: <Phone color="primary" />, urlMatch: '/contact-us' },
       { label: labelProfile, icon: <AccountCircle color="primary" />, urlMatch: '/user' },
       { label: 'My saved cars', icon: <CollectionMuiIcon color="primary" />, handleClick: this.showSavedCars },
+      { label: 'Help & support', icon: <HelpIconMui color="primary" />, urlMatch: '/support' },
+      { label: 'Settings', icon: <SettingsIconMui color="primary" />, handleClick: this.showSettings },
     ];
 
     if (!this.userIsLoggedIn()) {
       menuOptions = [
-        { label: labelHome, icon: <Home color="primary" />, urlMatch: '/' },
-        { label: labelMarket, icon: <DirectionsCar color="primary" />, urlMatch: '/marketplace' },
+        { label: 'Help & support', icon: <HelpIconMui color="primary" />, urlMatch: '/support' },
         { label: labelContact, icon: <Phone color="primary" />, urlMatch: '/contact-us' },
-        { label: labelSignin, icon: <Input color="primary" />, handleClick: this.showLoginModal },
+        { label: labelSignin, icon: <Input color="primary" />, urlMatch: '/' },
       ];
     }
 

@@ -5,13 +5,24 @@ import { injectIntl } from 'react-intl';
 import Item from './Item/Item';
 import OptionBtn from './OptionBtn/OptionBtn';
 import RangeSelector from './RangeSelector/RangeSelector';
+import ArrowIcon from '@material-ui/icons/KeyboardArrowDown';
+
+const ArrowWrapper = styled.div`
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  transform: ${ props => props.toggle ? 'rotate(180deg)' : 'rotate(0deg)' };
+  & > svg {
+    font-size: 1.5rem;
+  }
+`;
 
 const FilterPanelWrapper = styled.div`
-  background-color: #FAFAFA;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.18);
+  background-color: #FFF;
   height: 100%;
   overflow: auto;
-  @media only screen and (max-width: 600px) {
+  width: 100%;
+  @media only screen and (max-width: 768px) {
     height: 100%,
   };
 `;
@@ -22,15 +33,6 @@ const ExpandableDiv = posed.div({
   },
   expanded: {
     height: '200px',
-  },
-});
-
-const RotatableIcon = posed.i({
-  retracted: {
-    rotate: 0,
-  },
-  expanded: {
-    rotate: 180,
   },
 });
 
@@ -64,14 +66,16 @@ class FilterPanel extends React.Component {
 
   componentWillMount() {
     const { intl } = this.props;
-    this.text = {
-      maker: intl.formatMessage({ id: 'marketplace.maker' }),
-      model: intl.formatMessage({ id: 'marketplace.model' }),
-      trim: intl.formatMessage({ id: 'marketplace.trim' }),
-      year: intl.formatMessage({ id: 'marketplace.year' }),
-      color: intl.formatMessage({ id: 'marketplace.color' }),
-      engine: intl.formatMessage({ id: 'marketplace.engine' }),
-    };
+    this.setState({
+      text: {
+        maker: intl.formatMessage({ id: 'marketplace.maker' }),
+        model: intl.formatMessage({ id: 'marketplace.model' }),
+        trim: intl.formatMessage({ id: 'marketplace.trim' }),
+        year: intl.formatMessage({ id: 'marketplace.year' }),
+        color: intl.formatMessage({ id: 'marketplace.color' }),
+        engine: intl.formatMessage({ id: 'marketplace.engine' }),
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -165,7 +169,7 @@ class FilterPanel extends React.Component {
 
   render() {
     const {
-      availableArguments, maker, model, trim, year, color, engine, yearTogle,
+      availableArguments, maker, model, trim, year, color, engine, yearTogle, text,
     } = this.state;
     const { onSeeAll } = this.props;
     let makersArray = [];
@@ -193,7 +197,7 @@ class FilterPanel extends React.Component {
 
     return (
       <FilterPanelWrapper>
-        <Item name={this.text.maker}>
+        <Item name={text.maker}>
           <OptionBtn
             selected={maker}
             values={makersArray}
@@ -202,7 +206,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name={this.text.model}>
+        <Item name={text.model}>
           <OptionBtn
             selected={model}
             values={modelsArray}
@@ -211,7 +215,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name={this.text.trim}>
+        <Item name={text.trim}>
           <OptionBtn
             selected={trim}
             values={trimArray}
@@ -220,7 +224,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <ExpandableDiv style={{ overflow: 'hidden' }} pose={yearTogle ? 'expanded' : 'retracted'} className="border-bottom">
+        <ExpandableDiv style={{ overflow: 'hidden', minHeight: '72px' }} pose={yearTogle ? 'expanded' : 'retracted'} className="border-bottom">
           <div
             className="d-flex mb-0 p-3 justify-content-between"
             onClick={() => { this.setState({ yearTogle: !yearTogle }); }}
@@ -235,9 +239,9 @@ class FilterPanel extends React.Component {
                 fontWeight: '600',
               }}
             >
-              <span>{this.text.year}</span>
+              <span>{text.year}</span>
             </div>
-            <RotatableIcon pose={yearTogle ? 'expanded' : 'retracted'} style={{ color: 'rgb(58, 62, 67)' }} className="fas fa-angle-down" />
+            <ArrowWrapper toggle={yearTogle} style={{ color: 'rgb(58, 62, 67)' }}><ArrowIcon /></ArrowWrapper>
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
             <RangeSelector
@@ -247,7 +251,7 @@ class FilterPanel extends React.Component {
             />
           </div>
         </ExpandableDiv>
-        <Item name={this.text.color}>
+        <Item name={text.color}>
           <OptionBtn
             selected={color}
             values={colorArray}
@@ -256,7 +260,7 @@ class FilterPanel extends React.Component {
             onSeeAll={onSeeAll}
           />
         </Item>
-        <Item name={this.text.engine}>
+        <Item name={text.engine}>
           <OptionBtn
             selected={engine}
             values={engineArray}

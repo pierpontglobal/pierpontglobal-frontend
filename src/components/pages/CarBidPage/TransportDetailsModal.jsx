@@ -94,19 +94,19 @@ class TransportDetailsModal extends React.Component {
         >
           <div id="priceBreackDown-1">
             <div id="priceBreackDown-1-heading">
-                Handle price break
+              Cost breakdown
             </div>
             <div id="priceBreackDown-1-body">
-              {rowWithTitle(<span style={{ fontWeight: '900', fontSize: '15px' }}>Estimated total</span>, <span style={{ fontWeight: '900', fontSize: '15px' }}>Not available</span>)}
-              {rowWithTitle('Unit cost', 'Not available')}
+              {rowWithTitle(<span style={{ fontWeight: '900', fontSize: '15px' }}>Estimated total</span>, <span style={{ fontWeight: '900', fontSize: '15px' }}>USD$ 29,889.45</span>)}
               <hr />
-              {rowWithTitle('Taxes', 'Not available')}
+              {rowWithTitle('Unit cost', '$ 24,000.00')}
+              {rowWithTitle('Taxes', '$ 4,320.00')}
               {rowWithTitle('Shipping', `$${handlePlaceHolder.shipping.toFixed(2)}`)}
               {rowWithTitle('Fee', `$${handlePlaceHolder.pierpontFee.toFixed(2)}`)}
               {rowWithTitle('Processing', `$${handlePlaceHolder.freightFowaridng.toFixed(2)}`)}
               {rowWithTitle('Transport', `$${handlePlaceHolder.transport.toFixed(2)}`)}
               <hr />
-              {rowWithTitle(<span style={{ fontWeight: '900' }}>Required deposit</span>, <span style={{ fontWeight: '900' }}>Not available</span>)}
+              {rowWithTitle(<span style={{ fontWeight: '900' }}>Required deposit</span>, <span style={{ fontWeight: '900' }}>USD$ 2,400.00</span>)}
             </div>
           </div>
         </Modal>

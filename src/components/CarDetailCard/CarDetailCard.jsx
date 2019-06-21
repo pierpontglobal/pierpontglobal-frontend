@@ -19,7 +19,8 @@ const Container = styled.div`
 const CardTitle = styled.div`
   width: 100%;
   margin-bottom: 8px;
-  text-align: center;
+  text-align: left;
+  padding-left: 8px;
   & > h4 {
     font-size: 1.45em;
     font-weight: 400;
@@ -31,7 +32,7 @@ const ContentText = styled.div`
   font-size: 0.875em;
   line-height: 1.64;
   display: flex;
-  justify-content: ${props => (props.justify ? props.justify : 'space-between')};
+  justify-content: ${props => (props.justify ? props.justify : 'flex-start')};
   align-items: center;
   padding: 8px;
   @media only screen and (min-width: 768) {
@@ -54,8 +55,8 @@ const ContentValue = styled.div`
 const ConditionBtnWrapper = styled.div`
   overflow: visible;
   width: calc(100% - 120px);
-  margin: 0 auto;
   margin-top: 8px;
+  margin-left: 8px;
 `;
 
 function pickHex(color1, color2, color3, weightRaw) {
@@ -85,28 +86,30 @@ function CarDetailCard({ car }) {
   const timeDiff = Math.abs(diference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
+  console.log('DEBUG car >>>>>', car);
   return (
     <Container>
       <CardTitle>
         <h4>
-          {`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}
+          { car.title }
         </h4>
       </CardTitle>
       <ContentText>
-        <Span fontWeight={600}>Sale Date: </Span>
+        <Span fontWeight={600} style={{ marginRight: '8px' }}>Sale Date: </Span>
         <ContentValue
+          style={{ marginBottom: '6px' }}
           fontColor={diference < 0 ? 'rgb(169,169,169)' : `rgb(${pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], diffDays)})`}
         >
           <TimeAgo date={car.saleDate} />
         </ContentValue>
       </ContentText>
       <ContentText>
-        <Span fontWeight={600}>VIN: </Span>
+        <Span fontWeight={600} style={{ marginRight: '8px' }}>VIN: </Span>
         <ContentValue>
           {car.vin}
         </ContentValue>
       </ContentText>
-      <ContentText justify="space-around" style={{ marginTop: '8px' }}>
+      <ContentText justify="flex-start" style={{ marginTop: '8px' }}>
         <Span
           style={{ width: '30%' }}
           className="d-flex"
