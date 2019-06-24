@@ -129,7 +129,7 @@ const UserSection = props => {
       </RegistrationForm>
       <MediaQuery minDeviceWidth={769}>
         <ButtonHolders>
-          <LightButton onClick={() => { props.setRegisterView(false) }}> <Icon type="left" /> Sign in</LightButton>
+          <LightButton onClick={() => { props.setPage(1) }}> <Icon type="left" /> Sign in</LightButton>
           <LightButton
             onClick={() => {
               if (current + 1 < 4) {
@@ -624,7 +624,7 @@ export const RegisterView = props => {
       </StepperWrapper>
     </MediaQuery>
     <RegistartionWrapper>
-      <Section setRegisterView={props.setRegisterView} current={current} setCurrent={setCurrent} completeName={completeName} setCompleteName={setCompleteName} phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} email={email} setEmail={setEmail} verified={verified} setVerified={setVerified} dealerName={dealerName} setDealerName={setDealerName} country={country} setCountry={setCountry} city={city} setCity={setCity} address={address} setAddress={setAddress} username={username} setUsername={setUsername} password={password} setPassword={setPassword} coupon={coupon} setCoupon={setCoupon} amountToPay={amountToPay} setAmountToPay={setAmountToPay} cardToken={cardToken} setCardToken={setCardToken} />
+      <Section setPage={props.setPage} current={current} setCurrent={setCurrent} completeName={completeName} setCompleteName={setCompleteName} phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} email={email} setEmail={setEmail} verified={verified} setVerified={setVerified} dealerName={dealerName} setDealerName={setDealerName} country={country} setCountry={setCountry} city={city} setCity={setCity} address={address} setAddress={setAddress} username={username} setUsername={setUsername} password={password} setPassword={setPassword} coupon={coupon} setCoupon={setCoupon} amountToPay={amountToPay} setAmountToPay={setAmountToPay} cardToken={cardToken} setCardToken={setCardToken} />
     </RegistartionWrapper>
     <MediaQuery maxDeviceWidth={769}>
       <ButtonHolders>
@@ -642,7 +642,7 @@ export const RegisterView = props => {
           }
         }}>
           <Icon type="left" /> Back
-            </LightButton>) : (<LightButton onClick={() => { props.setRegisterView(false) }}> <Icon type="left" /> Sign in</LightButton>)}
+            </LightButton>) : (<LightButton onClick={() => { props.setPage(1) }}> <Icon type="left" /> Sign in</LightButton>)}
 
         {current < 3 ? (<LightButton disabled={!verified && current === 1} onClick={() => {
           if (current + 1 < 4) {

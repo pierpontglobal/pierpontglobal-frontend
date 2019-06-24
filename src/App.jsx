@@ -30,7 +30,7 @@ import { DefaultTheme, OneSignalKey, ApiServer } from "./Defaults";
 import OauthPage from "./components/pages/OauthPage/OauthPage";
 import WhatsApp from "./components/Modal/WhatsApp/WhatsApp";
 import SupportPage from "./components/pages/SupportPage/SupportPage.jsx";
-import SignInPage from "./components/pages/SignInPage/SignInPage";
+import SignInPage, { RecoverPage } from "./components/pages/SignInPage/SignInPage";
 import ApplicationRoutes from "./constants/Routes";
 import withAPI from './hocs/withAPI';
 
@@ -314,6 +314,11 @@ class App extends React.Component {
                     exact
                     path={ApplicationRoutes.oauthPage}
                     render={() => <OauthPage />}
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.changePassword}
+                    render={() => <RecoverPage />}
                   />
                   <Route
                     exact

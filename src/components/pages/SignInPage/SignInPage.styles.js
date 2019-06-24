@@ -58,6 +58,19 @@ export const SignInForm = styled.div`
   }
 `;
 
+export const RecoverForm = styled.div`
+width: 90%;
+  height: 80px;
+  background-color: white;
+  margin: 20px auto 0;
+  border-radius: 15px;
+  box-shadow: rgba(47, 64, 163, 0.3) 0px 0px 50px -10px !important;
+  padding: 10px;
+  @media only screen and (max-width: 768px) {
+    margin: 20px auto 0;
+  }
+`;
+
 export const SignInBox = styled.div`
   overflow: hidden;
   width: ${props => (props.big ? "748px" : "450px")};

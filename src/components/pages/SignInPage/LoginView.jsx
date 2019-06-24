@@ -92,7 +92,7 @@ export const LoginView = props => {
           color: 'darkblue',
           cursor: 'pointer'
         }} onClick={() => {
-          props.setRegisterView(!props.registerView);
+          props.setPage(2);
         }}>
           Subscribe!
           </span>
@@ -105,7 +105,7 @@ export const LoginView = props => {
           color: 'darkblue',
           cursor: 'pointer'
         }} onClick={() => {
-          props.setRegisterView(!props.registerView);
+          props.setPage(3);
         }}>
           Recover!
           </span>
