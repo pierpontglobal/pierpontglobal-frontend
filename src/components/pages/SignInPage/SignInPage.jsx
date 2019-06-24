@@ -14,9 +14,14 @@ import { LoginView } from "./LoginView";
 import { RegisterView } from "./RegisterView";
 import Measure from 'react-measure'
 
+const queryString = require('query-string');
+
 const SignInPage = props => {
-  const [registerView, setRegisterView] = useState(false);
+  var params = queryString.parse(window.location.search, { ignoreQueryPrefix: true })
+
+  const [registerView, setRegisterView] = useState(params.register === "true");
   const [rightSeparation, setRightSeparation] = useState(0);
+
 
   return (
     <SignInWrapper>
