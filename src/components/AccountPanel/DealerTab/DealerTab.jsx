@@ -212,7 +212,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateDealerLogo: (logo) => dispatch(USER_ACTIONS.updateDetealerLogo(logo)),
+  updateDealerLogo: (logo) => dispatch(USER_ACTIONS.updateDealerLogo(logo)),
 });
 
 export default connect(
