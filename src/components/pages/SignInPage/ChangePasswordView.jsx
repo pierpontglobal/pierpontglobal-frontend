@@ -54,7 +54,7 @@ export const ChangePasswordView = props => {
     <Subtitle>Customer password recover</Subtitle>
     <RecoverForm>
       <Fields>
-        <SimpleInput style={{ height: '40px' }} icon={<Icon onClick={() => { setViewPassword(!viewPassword) }} style={{ position: 'absolute', zIndex: 100, right: 0, cursor: 'pointer', fontSize: '24px' }} type={viewPassword ? "eye-invisible" : "eye"} />} value={password} label="New password" type={viewPassword ? 'text' : 'password'} autocomplete="password" name="password" onChange={node => setPassword(node.target.value)} />
+        <SimpleInput style={{ height: '40px' }} icon={<Icon onClick={() => { setViewPassword(!viewPassword) }} style={{ position: 'absolute', zIndex: 100, right: 0, cursor: 'pointer', fontSize: '24px' }} type={viewPassword ? "eye-invisible" : "eye"} />} value={password} label="New password" type={viewPassword ? 'text' : 'password'} autoComplete="password" name="password" onChange={node => setPassword(node.target.value)} />
       </Fields>
     </RecoverForm>
     {status !== undefined ?

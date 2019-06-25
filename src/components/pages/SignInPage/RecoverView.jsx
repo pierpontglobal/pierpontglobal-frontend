@@ -48,7 +48,7 @@ export const RecoverView = props => {
     <Subtitle>Customer password recover</Subtitle>
     <RecoverForm>
       <Fields>
-        <SimpleInput value={username} label="Username | Email" type="email" autocomplete="email" name="email" onChange={node => setUsername(node.target.value)} />
+        <SimpleInput value={username} label="Username | Email" type="email" autoComplete="email" name="email" onChange={node => setUsername(node.target.value)} />
       </Fields>
     </RecoverForm>
     {status !== undefined ?
