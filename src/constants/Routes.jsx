@@ -1,5 +1,6 @@
 const ApplicationRoutes = {
   home: '/',
+  changePassword: '/reset_password',
   oauthPage: '/oauth/login',
   marketplace: '/marketplace',
   carPage: '/marketplace/car',

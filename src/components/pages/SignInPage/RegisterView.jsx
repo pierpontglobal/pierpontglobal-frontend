@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MediaQuery from "react-responsive";
 import {
   RegistrationWrapper,
-  LargeSteps,
   ButtonHolders,
   RegistartionWrapper,
   VerifyWrapper,
@@ -38,7 +37,6 @@ import {
 import { TextField, InputAdornment, MenuItem } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 
-
 import { Icon } from "antd";
 import "antd/dist/antd.css";
 import "antd/lib/steps/style";
@@ -49,13 +47,51 @@ import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Typography from '@material-ui/core/Typography';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+
+function validateNameInspector(name, setValidName) {
+  if (name.length < 2) {
+    setValidName(false);
+    return false;
+  }
+  setValidName(true);
+  return true;
+}
+
+function validatePhoneInspector(phoneNumber, setValidPhone) {
+  let phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  if (!phoneNumber.match(phoneno)) {
+    setValidPhone(false);
+    return false;
+  }
+  if (phoneNumber.length < 10) {
+    setValidPhone(false);
+    return false;
+  }
+  setValidPhone(true);
+  return true;
+}
+
+function validateEmailInspector(email, setValidEmail) {
+  let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!emailRegex.test(email)) {
+    setValidEmail(false);
+    return false;
+  }
+  if (email.length < 4) {
+    setValidEmail(false);
+    return false;
+  }
+  setValidEmail(true);
+  return true;
+}
 
 const UserSection = props => {
+  const [validName, setValidName] = useState(true);
+  const [validPhone, setValidPhone] = useState(true);
+  const [validEmail, setValidEmail] = useState(true);
+
   const {
     current,
     setCurrent,
@@ -74,6 +110,7 @@ const UserSection = props => {
         <Title>Welcome to PierpontGlobal</Title>
         <Subtitle>Customer Registration</Subtitle>
         <TextField
+          error={!validName}
           name="name"
           autoComplete="name"
           id="standard-name"
@@ -91,6 +128,7 @@ const UserSection = props => {
           }}
         />
         <TextField
+          error={!validPhone}
           name="mobile"
           autoComplete="tel"
           id="standard-phone"
@@ -109,6 +147,7 @@ const UserSection = props => {
           }}
         />
         <TextField
+          error={!validEmail}
           name="email"
           autoComplete="email"
           id="standard-email"
@@ -127,12 +166,27 @@ const UserSection = props => {
           }}
         />
       </RegistrationForm>
-      <MediaQuery minDeviceWidth={769}>
         <ButtonHolders>
-          <LightButton onClick={() => { props.setRegisterView(false) }}> <Icon type="left" /> Sign in</LightButton>
+        <MediaQuery maxDeviceWidth={769}>
+            <MobileStepperCustom
+              variant="dots"
+              steps={4}
+              position="static"
+              activeStep={current}
+            />
+
+          </MediaQuery>
+          <LightButton onClick={() => { props.setPage(1) }}> <Icon type="left" /> Sign in</LightButton>
           <LightButton
             onClick={() => {
-              if (current + 1 < 4) {
+              let nameValidator = validateNameInspector(completeName, setValidName);
+              let phoneValidator = validatePhoneInspector(phoneNumber, setValidPhone);
+              let emailValidator = validateEmailInspector(email, setValidEmail);
+
+              if (current + 1 < 4
+                && nameValidator
+                && phoneValidator
+                && emailValidator) {
                 setCurrent(current + 1);
               }
             }}
@@ -140,17 +194,22 @@ const UserSection = props => {
             Next <Icon type="right" />
           </LightButton>
         </ButtonHolders>
-      </MediaQuery>
     </>
   );
 };
 
-async function sendSubscription(completeName, email, phoneNumber) {
+async function sendSubscription(completeName, email, phoneNumber, setCurrent,
+  setErrorSnack,
+  setShowError) {
   await axios.post(`${ApiServer}/api/v2/users/subscription`, {
     first_name: completeName,
     last_name: "",
     email: email,
     phone_number: phoneNumber
+  }).then((data) => { console.log(data) }).catch((error) => {
+    setCurrent(0);
+    setErrorSnack(error.response.data.status);
+    setShowError(true)
   });
 }
 
@@ -162,11 +221,15 @@ const VerifySection = props => {
     setVerified,
     completeName,
     email,
-    phoneNumber
+    phoneNumber,
+    setErrorSnack,
+    setShowError
   } = props;
   let cable = null;
   if (!verified) {
-    sendSubscription(completeName, email, phoneNumber);
+    sendSubscription(completeName, email, phoneNumber, setCurrent,
+      setErrorSnack,
+      setShowError);
     cable = ActionCable.createConsumer(`${WSConnection}?hash=${email}`);
   }
   return (
@@ -193,8 +256,18 @@ const VerifySection = props => {
           </Subtitle>
         </VerifyWrapper>
       </RegistrationForm>
-      <MediaQuery minDeviceWidth={769}>
         <ButtonHolders>
+
+        <MediaQuery maxDeviceWidth={769}>
+            <MobileStepperCustom
+              variant="dots"
+              steps={4}
+              position="static"
+              activeStep={current}
+            />
+
+          </MediaQuery>
+
           <LightButton
             onClick={() => {
               if (current - 1 > -1) {
@@ -215,12 +288,27 @@ const VerifySection = props => {
             Next <Icon type="right" />
           </LightButton>
         </ButtonHolders>
-      </MediaQuery>
     </>
   );
 };
 
+function validateDealerNameInspector(name, setValidName) {
+  console.log(name.length)
+  if (name.length < 3) {
+    setValidName(false);
+    return false;
+  }
+  setValidName(true);
+  return true;
+}
+
 const DealerSection = props => {
+
+  const [validName, setValidName] = useState(true);
+  const [validCountry, setValidCountry] = useState(true);
+  const [validCity, setValidCity] = useState(true);
+  const [validAddress, setValidAddress] = useState(true);
+
   const {
     current,
     setCurrent,
@@ -239,6 +327,7 @@ const DealerSection = props => {
         <Title>Dealer</Title>
         <Subtitle>Dealer registration</Subtitle>
         <TextField
+          error={!validName}
           id="standard-name"
           label="Dealer name"
           margin="normal"
@@ -254,6 +343,7 @@ const DealerSection = props => {
           }}
         />
         <TextField
+          error={!validCountry}
           margin="normal"
           id="standard-select-country"
           required
@@ -282,6 +372,7 @@ const DealerSection = props => {
           ))}
         </TextField>
         <TextField
+          error={!validCity}
           margin="normal"
           InputProps={{
             startAdornment: (
@@ -298,6 +389,7 @@ const DealerSection = props => {
           autoComplete="address-level2"
         />
         <TextField
+          error={!validAddress}
           margin="normal"
           InputProps={{
             startAdornment: (
@@ -314,8 +406,17 @@ const DealerSection = props => {
           label="Address"
         />
       </RegistrationForm>
-      <MediaQuery minDeviceWidth={769}>
         <ButtonHolders>
+
+                <MediaQuery maxDeviceWidth={769}>
+                    <MobileStepperCustom
+                      variant="dots"
+                      steps={4}
+                      position="static"
+                      activeStep={current}
+                    />
+
+                  </MediaQuery>
           <LightButton
             onClick={() => {
               if (current - 1 > -1) {
@@ -327,7 +428,18 @@ const DealerSection = props => {
           </LightButton>
           <LightButton
             onClick={() => {
-              if (current + 1 < 4) {
+              let validatedName = validateDealerNameInspector(dealerName, setValidName);
+              let validatedCountry = validateDealerNameInspector(country, setValidCountry);
+              let validatedCity = validateDealerNameInspector(city, setValidCity);
+              let validatedAddress = validateDealerNameInspector(address, setValidAddress);
+
+              console.log(validatedName);
+
+              if (current + 1 < 4
+                && validatedName
+                && validatedCountry
+                && validatedCity
+                && validatedAddress) {
                 setCurrent(current + 1);
               }
             }}
@@ -335,7 +447,6 @@ const DealerSection = props => {
             Next <Icon type="right" />
           </LightButton>
         </ButtonHolders>
-      </MediaQuery>
     </>
   );
 };
@@ -346,6 +457,8 @@ const SubscriptionSection = injectStripe(props => {
   const [couponVerified, setCouponVerified] = useState(undefined);
   const [basePrice, setBasePrice] = useState(495);
   const [cookies, setCookies] = useCookies();
+  const [validPassword, setValidPassword] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const {
     completeName,
@@ -354,13 +467,14 @@ const SubscriptionSection = injectStripe(props => {
     password,
     setPassword,
     coupon,
-    setCoupon,
+    setCoupon
   } = props;
 
   return (
     <>
       <RegistrationForm>
         <TextField
+          error={!validPassword}
           id="standard-password"
           label="Password"
           autoComplete="new-password"
@@ -391,6 +505,7 @@ const SubscriptionSection = injectStripe(props => {
             )
           }}
         />
+        <p>Password must be 8 characters long, and contain at least one number and one lowercase letter</p>
         <Title>Payment</Title>
         <br />
         <CardElement />
@@ -432,6 +547,12 @@ const SubscriptionSection = injectStripe(props => {
             )
           }}
         />
+        {loading ?
+          <Icon
+            style={{ fontSize: "60px", marginTop: "20px" }}
+            type="loading"
+          /> : <></>
+        }
         <StatusMessage status={fieldsCorrect}>
           Something went wrong please review payment information
         </StatusMessage>
@@ -443,11 +564,15 @@ const SubscriptionSection = injectStripe(props => {
               borderRadius: "15px"
             }}
             onClick={async ev => {
+              setLoading(true);
               let { token } = await props.stripe.createToken({
                 name: completeName
               });
-              console.log(props.password);
-              if (token !== undefined) {
+              let strongRegex = new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.{8,})");
+              let passwordValidation = strongRegex.test(props.password);
+
+              if (token !== undefined && passwordValidation) {
+                setValidPassword(true);
                 let payload = {
                   coupon: props.coupon,
                   user: {
@@ -467,7 +592,7 @@ const SubscriptionSection = injectStripe(props => {
                 axios.post(`${ApiServer}/api/v2/users/signup`, payload).then((response) => {
                   const data = {
                     user: {
-                      email: props.email,
+                      login: props.email,
                       password: props.password
                     }
                   };
@@ -483,9 +608,16 @@ const SubscriptionSection = injectStripe(props => {
                   );
                 }).catch((error) => {
                   setFieldsCorrect(false);
+                  setValidPassword(true);
+                  setLoading(false);
                 });
+              } else if (!passwordValidation){
+                setValidPassword(false)
+                setLoading(false);
               } else {
                 setFieldsCorrect(false);
+                setValidPassword(true);
+                setLoading(false);
               }
             }}
           >
@@ -496,8 +628,19 @@ const SubscriptionSection = injectStripe(props => {
         </div>
       </RegistrationForm>
 
-      <MediaQuery minDeviceWidth={769}>
         <ButtonHolders>
+
+
+                <MediaQuery maxDeviceWidth={769}>
+                    <MobileStepperCustom
+                      variant="dots"
+                      steps={4}
+                      position="static"
+                      activeStep={current}
+                    />
+
+                  </MediaQuery>
+
           <LightButton
             onClick={() => {
               if (current - 1 > -1) {
@@ -508,7 +651,6 @@ const SubscriptionSection = injectStripe(props => {
             <Icon type="left" /> Back
           </LightButton>
         </ButtonHolders>
-      </MediaQuery>
     </>
   );
 });
@@ -596,7 +738,7 @@ export const RegisterView = props => {
   const [email, setEmail] = useState("");
   const [verified, setVerified] = useState(false);
   const [dealerName, setDealerName] = useState("");
-  const [country, setCountry] = useState("DO");
+  const [country, setCountry] = useState("Dominican Republic");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [username, setUsername] = useState("");
@@ -604,6 +746,8 @@ export const RegisterView = props => {
   const [coupon, setCoupon] = useState("");
   const [amountToPay, setAmountToPay] = useState("495.00");
   const [cardToken, setCardToken] = useState("");
+  const [errorSnack, setErrorSnack] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const steps = getSteps();
 
@@ -624,34 +768,61 @@ export const RegisterView = props => {
       </StepperWrapper>
     </MediaQuery>
     <RegistartionWrapper>
-      <Section setRegisterView={props.setRegisterView} current={current} setCurrent={setCurrent} completeName={completeName} setCompleteName={setCompleteName} phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} email={email} setEmail={setEmail} verified={verified} setVerified={setVerified} dealerName={dealerName} setDealerName={setDealerName} country={country} setCountry={setCountry} city={city} setCity={setCity} address={address} setAddress={setAddress} username={username} setUsername={setUsername} password={password} setPassword={setPassword} coupon={coupon} setCoupon={setCoupon} amountToPay={amountToPay} setAmountToPay={setAmountToPay} cardToken={cardToken} setCardToken={setCardToken} />
+      <Section
+        setErrorSnack={setErrorSnack}
+        setShowError={setShowError}
+        setPage={props.setPage}
+        current={current}
+        setCurrent={setCurrent}
+        completeName={completeName}
+        setCompleteName={setCompleteName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        email={email}
+        setEmail={setEmail}
+        verified={verified}
+        setVerified={setVerified}
+        dealerName={dealerName}
+        setDealerName={setDealerName}
+        country={country}
+        setCountry={setCountry}
+        city={city}
+        setCity={setCity}
+        address={address}
+        setAddress={setAddress}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        coupon={coupon}
+        setCoupon={setCoupon}
+        amountToPay={amountToPay}
+        setAmountToPay={setAmountToPay}
+        cardToken={cardToken}
+        setCardToken={setCardToken} />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={showError}
+        autoHideDuration={6000}
+        onClose={() => { setShowError(false) }}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">{errorSnack}</span>}
+        action={[
+          <IconButton
+            key="close"
+            aria-label="Close"
+            color="inherit"
+            onClick={() => { setShowError(false) }}
+          >
+            <CloseIcon />
+          </IconButton>,
+        ]}
+      />
     </RegistartionWrapper>
-    <MediaQuery maxDeviceWidth={769}>
-      <ButtonHolders>
-
-        <MobileStepperCustom
-          variant="dots"
-          steps={steps.length}
-          position="static"
-          activeStep={current}
-        />
-
-        {current > 0 ? (<LightButton onClick={() => {
-          if (current - 1 > -1) {
-            setCurrent(current - 1);
-          }
-        }}>
-          <Icon type="left" /> Back
-            </LightButton>) : (<LightButton onClick={() => { props.setRegisterView(false) }}> <Icon type="left" /> Sign in</LightButton>)}
-
-        {current < 3 ? (<LightButton disabled={!verified && current === 1} onClick={() => {
-          if (current + 1 < 4) {
-            setCurrent(current + 1);
-          }
-        }}>
-          Next <Icon type="right" />
-        </LightButton>) : ("")}
-      </ButtonHolders>
-    </MediaQuery>
   </RegistrationWrapper >);
 };

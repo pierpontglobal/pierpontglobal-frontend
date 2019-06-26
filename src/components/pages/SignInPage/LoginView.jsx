@@ -63,8 +63,8 @@ export const LoginView = props => {
     <Subtitle>Customer Login</Subtitle>
     <SignInForm>
       <Fields>
-        <SimpleInput value={username} label="Username | Email" type="email" autocomplete="email" name="email" onChange={node => setUsername(node.target.value)} />
-        <SimpleInput value={password} label={<>Password<span style={{ opacity: 0 }}>.......................</span></>} type="password" autocomplete="password" name="password" onChange={node => setPassword(node.target.value)} />
+        <SimpleInput value={username} label="Username | Email" type="email" autoComplete="email" name="email" onChange={node => setUsername(node.target.value)} />
+        <SimpleInput value={password} label={<>Password<span style={{ opacity: 0 }}>.......................</span></>} type="password" autoComplete="password" name="password" onChange={node => setPassword(node.target.value)} />
       </Fields>
     </SignInForm>
     <StatusMessage status={status}>
@@ -92,7 +92,7 @@ export const LoginView = props => {
           color: 'darkblue',
           cursor: 'pointer'
         }} onClick={() => {
-          props.setRegisterView(!props.registerView);
+          props.setPage(2);
         }}>
           Subscribe!
           </span>
@@ -105,7 +105,7 @@ export const LoginView = props => {
           color: 'darkblue',
           cursor: 'pointer'
         }} onClick={() => {
-          props.setRegisterView(!props.registerView);
+          props.setPage(3);
         }}>
           Recover!
           </span>

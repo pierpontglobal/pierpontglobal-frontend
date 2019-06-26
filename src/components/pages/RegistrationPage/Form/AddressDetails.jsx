@@ -63,7 +63,7 @@ class AddressDetails extends Component {
             onChange={node => this.props.handleChange("country", node)}
             SelectProps={{
               name: "country",
-              autocomplete: "country",
+              autoComplete: "country",
               MenuProps: {}
             }}
             helperText="Please select your currency"
@@ -86,7 +86,7 @@ class AddressDetails extends Component {
             onChange={node => this.props.handleChange("city", node)}
             label="City"
             name="city"
-            autocomplete="address-level2"
+            autoComplete="address-level2"
             value={values.city}
           />
         </Form.Field>
@@ -98,7 +98,7 @@ class AddressDetails extends Component {
             }}
             onChange={node => this.props.handleChange("zipcode", node)}
             name="zip"
-            autocomplete="postal-code"
+            autoComplete="postal-code"
             label="Zip code"
             value={values.zipcode}
           />
@@ -112,7 +112,7 @@ class AddressDetails extends Component {
             required
             onChange={node => this.props.handleChange("address1", node)}
             name="address"
-            autocomplete="address-line1"
+            autoComplete="address-line1"
             label="Primary address"
             value={values.address1}
           />
@@ -126,7 +126,7 @@ class AddressDetails extends Component {
             margin="normal"
             onChange={node => this.props.handleChange("address2", node)}
             name="address"
-            autocomplete="address-line2"
+            autoComplete="address-line2"
             label="Secondary Address (Optional)"
             value={values.address2}
           />

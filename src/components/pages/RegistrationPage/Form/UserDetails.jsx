@@ -72,7 +72,7 @@ class UserDetails extends Component {
             label="First Name"
             name="fname"
             value={values.firstName}
-            autocomplete="given-name"
+            autoComplete="given-name"
           />
         </Form.Field>
         <Form.Field>
@@ -86,7 +86,7 @@ class UserDetails extends Component {
             label="Last Name"
             name="lname"
             value={values.lastName}
-            autocomplete="family-name"
+            autoComplete="family-name"
           />
         </Form.Field>
         <Form.Field>
@@ -100,7 +100,7 @@ class UserDetails extends Component {
             onChange={(node) => { this.checkEmail(node); }}
             label="Email Address"
             type="email"
-            autocomplete="email"
+            autoComplete="email"
             value={values.email}
             ref={(node) => { this.email = node; }}
           />
@@ -118,7 +118,7 @@ class UserDetails extends Component {
             margin="normal"
             name="phone"
             value={values.phonenumber}
-            autocomplete="tel"
+            autoComplete="tel"
           />
         </Form.Field>
         <Button variant="contained" color="primary" ref={node => this.submitButton = node} onClick={this.saveAndContinue}>Confirm and continue</Button>
