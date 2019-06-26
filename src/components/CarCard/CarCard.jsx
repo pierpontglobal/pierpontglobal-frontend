@@ -299,7 +299,7 @@ const BookmarkArea = styled.div`
   background-color: transparent;
   transition: all 0.2s;
   & > i {
-    color: ${props => props.active ? '#ba0707' : '#e4e4e4'};
+    color: ${props => props.active ? 'rgba(225,48,108,1)' : 'rgba(223, 32, 96, 1)'};
     font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
     animation: ${props => props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : ''};
     filter: drop-shadow(0 0 0.18rem rgba(220, 20, 60, 0.12));
