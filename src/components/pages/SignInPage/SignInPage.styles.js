@@ -24,11 +24,18 @@ export const WhiteLayer = styled.div`
   padding: 40px;
   background: rgba(255, 255, 255, 0.8);
   z-index: 4;
+  @media only screen and (max-width: 768px) {
+    height: 80vh;
+  }
 `;
 
 export const Logo = styled.img`
-  width: 50px !important;
+  width: 50px;
   align-self: flex-start;
+  @media only screen and (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 export const Title = styled.div`
@@ -36,6 +43,10 @@ export const Title = styled.div`
   font-size: 24px;
   margin-top: 20px;
   color: #3b444b;
+  @media only screen and (max-width: 768px) {
+    font-weight: 600;
+    font-size: 16px;
+  }
 `;
 
 export const Subtitle = styled.div`
@@ -43,6 +54,10 @@ export const Subtitle = styled.div`
   font-size: 16px;
   margin-bottom: 20px;
   color: #3b444b;
+  @media only screen and (max-width: 768px) {
+    font-weight: 400;
+    font-size: 14px;
+  }
 `;
 
 export const SignInForm = styled.div`
@@ -59,7 +74,7 @@ export const SignInForm = styled.div`
 `;
 
 export const RecoverForm = styled.div`
-width: 90%;
+  width: 90%;
   height: 80px;
   background-color: white;
   margin: 20px auto 0;
@@ -68,6 +83,7 @@ width: 90%;
   padding: 10px;
   @media only screen and (max-width: 768px) {
     margin: 20px auto 0;
+    height: 60px;
   }
 `;
 
@@ -85,9 +101,9 @@ export const SignInBox = styled.div`
   transition: 1s;
   @media only screen and (max-width: 768px) {
     width: 90vw;
-    height: 70vh;
-    margin-left: 5vw;
-    margin-top: 15vh;
+    height: auto;
+    margin-left: 3vw;
+    margin-top: 10vh;
   }
 `;
 

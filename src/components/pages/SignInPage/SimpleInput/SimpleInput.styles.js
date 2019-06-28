@@ -19,6 +19,9 @@ export const LightInput = styled.div`
     props.full === true
       ? "translateY(-23px) translateX(-30px) scale(0.8)"
       : ""};
+    @media only screen and (max-width: 768px) {
+      font-size: 14px;
+    }
   }
   > input {
     width: 100%;
@@ -32,6 +35,9 @@ export const LightInput = styled.div`
     :focus + span {
       transform: translateY(-23px) translateX(-30px) scale(0.8);
       z-index: 60;
+    }
+    @media only screen and (max-width: 768px) {
+      font-size: 16px;
     }
   }
 `;
