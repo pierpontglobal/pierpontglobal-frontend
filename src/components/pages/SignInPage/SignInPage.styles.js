@@ -24,8 +24,12 @@ export const WhiteLayer = styled.div`
   padding: 40px;
   background: rgba(255, 255, 255, 0.8);
   z-index: 4;
+  @media only screen and (max-width: 1280px) and (min-width: 768px) {
+    padding: 16px 40px;
+  }
   @media only screen and (max-width: 768px) {
     height: 80vh;
+    padding: 12px 24px;
   }
 `;
 
