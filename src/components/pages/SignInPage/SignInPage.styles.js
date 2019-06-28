@@ -36,6 +36,10 @@ export const Logo = styled.img`
     width: 32px;
     height: 32px;
   }
+  @media only screen and (max-width: 1280px) and (min-width: 768px){
+    width: 42px;
+    height: 42px;
+  }
 `;
 
 export const Title = styled.div`
@@ -103,7 +107,7 @@ export const SignInBox = styled.div`
     width: 90vw;
     height: auto;
     margin-left: 3vw;
-    margin-top: 10vh;
+    margin-top: 2vh;
   }
 `;
 
