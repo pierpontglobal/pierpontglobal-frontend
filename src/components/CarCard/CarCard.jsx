@@ -173,7 +173,7 @@ const DetailTitle = styled.div`
   align-items: center;
   font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
   @media only screen and (max-width: 480px) {
-    
+    margin-top: 12px;
   }
 `;
 
@@ -239,7 +239,7 @@ const DetailValue = styled.span`
 const AutoCheckBtn = styled.button`
   border-radius: 4px;
   background-color: #3e78c0;
-  font-size: 0.65em;
+  font-size: 0.90em;
   font-weight: bold;
   line-height: 1.33;
   color: #ffffff;
@@ -257,6 +257,9 @@ const AutoCheckBtn = styled.button`
     max-height: none;
     padding: 4px;
     width: 100%;
+  }
+  @media only screen and (max-width: 480px) {
+    font-size: 0.85em;
   }
 `;
 
@@ -333,7 +336,7 @@ const CarTitle = styled.div`
   display: flex;
   justify-content: ${props => props.useNew ? 'center' : 'flex-start'};;
   align-items: center;
-  white-space: nowrap;
+  white-space: ${props => props.useNew ? 'wrap' : 'nowrap'};
   & > span {
     font-weight: ${props => props.useNew ? '400' : '600'};
     font-size: ${props => props.useNew ? '1.18rem' : '0.88rem'};
@@ -344,6 +347,7 @@ const CarTitle = styled.div`
 
   @media only screen and (max-width: 488px) {
     justify-content: space-between;
+    white-space: nowrap;
     & > span {
       font-weight: 600;
       font-size: 1.08rem;

@@ -46,6 +46,8 @@ const Wrapper = styled.div`
   }
 
   @media only screen and (max-width: 480px) {
+    margin: 0px;
+    width: 100vw;
     grid-template-columns: auto;
     grid-template-rows: 80px 5fr;
     grid-template-areas:
