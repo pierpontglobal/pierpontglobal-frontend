@@ -10,9 +10,9 @@ const setLanguages = langs => ({
   payload: langs
 })
 
-const modifyMarketLayout = isCardLayout => ({
+const changeMarketDesign = toChange => ({
   type: ActionTypes.CHANGE_MARKET_LAYOUT,
-  payload: isCardLayout
+  payload: toChange
 });
 
 const modifyPushNotifications = receivePushNotifications => ({
@@ -23,6 +23,6 @@ const modifyPushNotifications = receivePushNotifications => ({
 export default {
   setLanguage,
   setLanguages,
-  modifyMarketLayout,
+  changeMarketDesign,
   modifyPushNotifications
 }

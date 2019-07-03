@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 import USER_ACTIONS from '../../../modules/user/action';
 import MARKET_ACTIONS from '../../../modules/market/actions';
+import SETTINGS_ACTIONS from '../../../modules/settings/actions';
 import FilterPanel from '../../FilterPanel/FilterPanel';
 import SortBar from '../../SortBar/SortBar';
 import CarCard from '../../CarCard/CarCard';
@@ -24,13 +25,12 @@ const qs = require('query-string');
 const SearchBarHeight = 120;
 
 const Wrapper = styled.div`
-  width: ${props => props.useNew ? '100vw' : ''};
-  max-width: ${props => props.useNew ? '' : '1200px'};
+  width: ${props => props.useNew ? '100vw' : '80vw'};
   height: 100%;
   display: grid;
-  grid-template-columns: minmax(300px, 1fr) 5fr;
+  grid-template-columns: 280px auto;
   grid-column-gap: 24px;
-  grid-template-rows: minmax(40px, 1fr) 5fr;
+  grid-template-rows: 80px auto;
   grid-template-areas:
     "sidebar searchbar"
     "sidebar cars";
@@ -38,16 +38,16 @@ const Wrapper = styled.div`
   overflow: hidden;
 
   @media only screen and (max-width: 1024px) and (min-width: 768px) {
-    grid-template-columns: minmax(200px, 1fr) 5fr;
+    grid-template-columns: 200px 5fr;
   }
 
   @media only screen and (max-width: 768px) and (min-width: 0px) {
-    grid-template-columns: minmax(165px, 1fr) 5fr;
+    grid-template-columns: 165px 5fr;
   }
 
   @media only screen and (max-width: 480px) {
     grid-template-columns: auto;
-    grid-template-rows: minmax(40px, 1fr) 5fr;
+    grid-template-rows: 80px 5fr;
     grid-template-areas:
       "searchbar"
       "cars";
@@ -173,12 +173,12 @@ class MarketPlacePage extends React.Component {
   }
 
   shouldUseNewDesing = () => {
-    const { cookies } = this.props;
+    const { cookies, changeMarketDesign } = this.props;
     const itShould = cookies.get('switch_marketplace', { path: '/' });
     if (!!itShould && itShould === "on") {
-      this.useNewDesign = true;
+      changeMarketDesign('new');
     } else {
-      this.useNewDesign = false;
+      changeMarketDesign('old');
     }
   }
 
@@ -223,7 +223,7 @@ class MarketPlacePage extends React.Component {
   }
 
   async getCars() {
-    const { fetch, savedCars } = this.props;
+    const { fetch, savedCars, useNewDesign } = this.props;
     const { page, size } = this.state;
 
     let str = '';
@@ -286,7 +286,7 @@ class MarketPlacePage extends React.Component {
       };
 
       carsGroup.push(
-        <CarCard useNewDesign={this.useNewDesign} handleBookmark={this.handleBookmark} caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
+        <CarCard useNewDesign={useNewDesign} handleBookmark={this.handleBookmark} caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
       );
     }
 
@@ -336,6 +336,7 @@ class MarketPlacePage extends React.Component {
 
   handleReceived(message) {
     const { cars } = this.state;
+    const { useNewDesign } = this.state;
     const response = JSON.parse(message);
     const carElements = [];
     for (let j = 0; j < cars.length; j += 1) {
@@ -343,15 +344,9 @@ class MarketPlacePage extends React.Component {
       if (car.vin === response.vin) {
         car.wholePrice = response.mmr;
       }
-      carElements.push(<CarCard useNewDesign={this.useNewDesign} handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
+      carElements.push(<CarCard useNewDesign={useNewDesign} handleBookmark={this.handleBookmark} key={car.vin} car={car} requestFunction={requestPrice} />);
     }
     this.setState({ cars: carElements, loaded: true });
-  }
-
-  forceRerender = () => {
-    this.shouldUseNewDesing();
-    this.forceUpdate();
-    this.getCars();
   }
 
   render() {
@@ -362,6 +357,7 @@ class MarketPlacePage extends React.Component {
       showOtherOptionsInModalFilter,
       otherFiltersOptions,
     } = this.state;
+    const { useNewDesign } = this.props;
 
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
 
@@ -372,7 +368,7 @@ class MarketPlacePage extends React.Component {
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <Wrapper useNew={this.useNewDesign}>
+          <Wrapper useNew={useNewDesign}>
             <SidePanel>
               <MediaQuery minDeviceWidth={600}>
                 <FilterPanel
@@ -383,9 +379,9 @@ class MarketPlacePage extends React.Component {
                 />
               </MediaQuery>
             </SidePanel>
-            <MainContent useNew={this.useNewDesign}>
+            <MainContent useNew={useNewDesign}>
               <SearchBarWrapper>
-                <SearchBarBox useNew={this.useNewDesign}>
+                <SearchBarBox useNew={useNewDesign}>
                   <SortBar header={this.params.q} />
                 </SearchBarBox>
                 <FilterIcon>
@@ -397,7 +393,7 @@ class MarketPlacePage extends React.Component {
                   </IconButton>
                 </FilterIcon>
               </SearchBarWrapper>
-              <CarSection ref={this.carsSection} useNew={this.useNewDesign}>
+              <CarSection ref={this.carsSection} useNew={useNewDesign}>
                 {
                   loaded ? cars.length <= 0 ? (
                     <NotFoundWrapper>
@@ -408,7 +404,6 @@ class MarketPlacePage extends React.Component {
                         dataLength={cars.length}
                         next={this.getCars}
                         hasMore
-
                         loader={(
                           <div style={{
                             width: '100%',
@@ -429,7 +424,7 @@ class MarketPlacePage extends React.Component {
                           </p>
                         )}
                       >
-                        <CarsWrapper useNew={this.useNewDesign}>
+                        <CarsWrapper useNew={useNewDesign}>
                           {cars}
                         </CarsWrapper>
                       </InfiniteScroll>
@@ -495,7 +490,8 @@ class MarketPlacePage extends React.Component {
 // Redux Config
 const mapStateToProps = state => ({
   cars: state.marketReducer.cars,
-  savedCars: state.userReducer.savedCars
+  savedCars: state.userReducer.savedCars,
+  useNewDesign: state.settingsReducer.useNewDesign,
 });
 const mapDispatchToProps = dispatch => ({
   fetch: (ApiServer, str, page, pageSize) => dispatch(MARKET_ACTIONS.fetchCars(ApiServer, str, page, pageSize)),
@@ -505,6 +501,7 @@ const mapDispatchToProps = dispatch => ({
   update: car => dispatch(MARKET_ACTIONS.modifyCar(car)),
   addSavedCar: vin => dispatch(USER_ACTIONS.addSavedCar(vin)),
   removeSavedCar: vin => dispatch(USER_ACTIONS.removeSavedCar(vin)),
+  changeMarketDesign: toChange => dispatch(SETTINGS_ACTIONS.changeMarketDesign(toChange))
 });
 
 export default connect(

@@ -8,7 +8,7 @@ const settingsReducer = (state = settingsInitialState, action) => {
 
   switch(action.type) {
     case ACTIONS.CHANGE_MARKET_LAYOUT:
-      newState.marketCardsLayout = action.payload;
+      newState.useNewDesign = (action.payload === 'new') ? true : false;
       return newState;
   
     case ACTIONS.CHANGE_PUSH_NOTIFICATIONS:

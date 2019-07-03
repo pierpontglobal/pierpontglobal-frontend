@@ -84,6 +84,7 @@ const DetailsContainer = styled(Container)`
   flex-direction: column;
   justify-content: space-around;
   padding: 0px;
+  font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
   margin-left: ${props => props.useNew ? '12px' : '0px'};
   margin-top: ${props => props.openDetails === 'closed' ? '' : '16px'};
   @media only screen and (max-width: 480px) {
@@ -95,6 +96,7 @@ const DetailedCR = styled(Container)`
   display: flex;
   flex-direction: column;
   min-width: 160px;
+  font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
   @media only screen and (max-width: 768px) {
     width: 50%;
     margin-top: 0px;
@@ -126,7 +128,7 @@ function pickHex(color1, color2, color3, weightRaw) {
 
 const TimeAgoContainer = styled.div`
     
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 600;
   width: 100%;
   color: rgb(${props => pickHex([24, 183, 11], [255, 167, 0], [255, 0, 0], props.diffDays)});
@@ -147,7 +149,7 @@ const PriceContainer = styled.div`
   align-items: center;
   text-align: center;
   flex-direction: column;
-  width: 80%;
+  width: ${props => props.useNew ? '80%' : '70%'};
   @media only screen and (max-width: 768px) {
     width: 50%;
     margin-top: 0px;
@@ -169,6 +171,7 @@ const DetailTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
   @media only screen and (max-width: 480px) {
     
   }
@@ -201,6 +204,9 @@ const DetailGroup = styled.div`
 const DetailLabel = styled.span`
   font-size: 0.85rem;
   font-weight: 600;
+  & > span {
+    font-size: 0.75rem;
+  }
 `;
 
 const DropDownIcon = styled(DropDown)`
@@ -222,6 +228,9 @@ const DropDownIcon = styled(DropDown)`
 const DetailValue = styled.span`
   font-size: 0.85rem;
   margin-left: 4px;
+  & > span {
+    font-size: 0.70rem;
+  }
   @media only screen and (max-width: 600px) {
     margin-left: 4px;
   }
@@ -230,7 +239,7 @@ const DetailValue = styled.span`
 const AutoCheckBtn = styled.button`
   border-radius: 4px;
   background-color: #3e78c0;
-  font-size: 0.75em;
+  font-size: 0.65em;
   font-weight: bold;
   line-height: 1.33;
   color: #ffffff;
@@ -292,17 +301,20 @@ const onHeartClickAnimDesktop = keyframes`
 
 const BookmarkArea = styled.div`
   position: absolute;
-  top: 4px;
-  right: 6px;
+  top: ${props => props.useNew ? '4pxm' : '-4px'};
+  right: ${props => props.useNew ? '6px' : '-6px'};
   z-index: 600;
   padding: 16px;
   background-color: transparent;
   transition: all 0.2s;
   & > i {
-    color: ${props => props.active ? 'rgba(225,48,108,1)' : 'white'};
+    color: ${props => props.active ? 'rgba(225,48,108,1)' : 'rgba(255,255,255,0.32)'};
     font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
     animation: ${props => props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : ''};
-    filter: drop-shadow(0 0 0.18rem rgba(220, 20, 60, 0.12));
+    stroke-width: ${props => props.active ? '0px' : '2px'};
+    -webkit-text-stroke-color: rgba(220, 20, 60, 0.62);
+    -webkit-text-stroke-width: ${props => props.active ? '0px' : '1px'};
+    /*filter: drop-shadow(0 0 0.18rem rgba(220, 20, 60, 0.12));*/
     @media only screen and (max-width: 768px) {
       animation: ${props => props.heartCliked ? css`${onHeartClickAnimMobile} 0.3s ease-in 0s` : ''};
     }
@@ -321,9 +333,10 @@ const CarTitle = styled.div`
   display: flex;
   justify-content: ${props => props.useNew ? 'center' : 'flex-start'};;
   align-items: center;
+  white-space: nowrap;
   & > span {
     font-weight: ${props => props.useNew ? '400' : '600'};
-    font-size: ${props => props.useNew ? '1.35rem' : '1.08rem'};
+    font-size: ${props => props.useNew ? '1.18rem' : '0.88rem'};
   }
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
@@ -432,7 +445,7 @@ function CarCard({
           ))}
         </CarouselWrapper>
         <DetailsContainer useNew={useNewDesign} openDetails={openDetails}>
-          <DetailTitle>
+          <DetailTitle useNew={useNewDesign}>
             <CarTitle useNew={useNewDesign}>
               <span>{`${car.year || ''} ${car.make || ''} ${car.model || ''} ${car.trimLevel || ''}`}</span>
             </CarTitle>
