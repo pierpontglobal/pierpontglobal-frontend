@@ -133,6 +133,7 @@ const FilterIcon = styled.div`
 async function requestPrice(vin) {
   await axios.patch(`${ApiServer}/api/v1/car/price-request`, { vin });
 }
+
 class MarketPlacePage extends React.Component {
   constructor(props) {
     super(props);
