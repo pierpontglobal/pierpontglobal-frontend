@@ -23,6 +23,7 @@ import RegistrationPage from "./components/pages/RegistrationPage/RegistrationPa
 import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
 import CarPage from "./components/pages/CarBidPage/CarBidPage";
 import ContactPage from "./components/pages/ContactPage/ContactPage";
+import ConstructionMarket from "./components/pages/ConstructionMarket/ConstructionMarket";
 import NotificationPage from "./components/pages/NotificationPage/NotificationPage";
 import "./styles.css";
 import AppNav from "./components/AppNav/AppNav";
@@ -113,6 +114,7 @@ class App extends React.Component {
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
 
     this.marketplaceRef = React.createRef();
+    this.appNav = React.createRef();
   }
 
   setDealer = dealer => {
@@ -212,7 +214,7 @@ class App extends React.Component {
     const responseUser = (await axios.get(`${ApiServer}/api/v1/user`)).data;
 
     let user = {
-      name: `${responseUser.first_name} ${responseUser.last_name}`,
+      name: responseUser.first_name,
       address: `${responseUser.address.primary_address} ${
         responseUser.address.secondary_address
         }, ${responseUser.address.zip_code}, ${responseUser.address.city} ${
@@ -221,6 +223,7 @@ class App extends React.Component {
       email: responseUser.email,
       phone: responseUser.phone_number,
       photo: !!responseUser.photo_url ? `${ApiServer}/${responseUser.photo_url}` : undefined,
+      roles: ['user', 'admin', 'construction'],
       dealer: !!responseUser.dealer ? {
         name: responseUser.dealer.name,
         latitude: responseUser.dealer.latitude,
@@ -231,10 +234,13 @@ class App extends React.Component {
       } : {}
     }
 
-    console.log('RETREIVED USER >>>>> ');
-    console.log(responseUser);
+    console.log('Response uder>>>>>>>>', responseUser);
 
     createUser(user);
+    if (!!this.appNav) {
+      console.log('will cal add constructon link for app >>>>>', user.roles);
+      this.appNav.addConstructionLink(user.roles);
+    }
   };
 
   verifyUserLoggedIn() {
@@ -268,6 +274,20 @@ class App extends React.Component {
     await this.getUser();
   }
 
+  hasRole = async (role) => {
+    const { user } = this.props;
+    if (!!user && !user.roles) {
+      await this.getUser();
+    }
+    const userRole = this.getRole(role);
+    return !!userRole ? true : false;
+  }
+
+  getRole = (role) => {
+    const { user } = this.props;
+    return user.roles.find(x => x.toLowerCase() === role.toLowerCase());
+  }
+
   render() {
     const { cookies, user, settings } = this.props;
     const userSignedIn = this.verifyUserLoggedIn();
@@ -294,6 +314,7 @@ class App extends React.Component {
                     cookies={cookies}
                     verifyUserLoggedIn={this.verifyUserLoggedIn}
                     user={user}
+                    onRef={ref => (this.appNav = ref)}
                   />
                   {!this.verifyUserLoggedIn() ? null : (
                     <>
@@ -340,6 +361,19 @@ class App extends React.Component {
                         />
                       ) : (
                           <Redirect to="/" />
+                        )
+                    }
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.constructionPage}
+                    render={() =>
+                      (this.verifyUserLoggedIn() && this.hasRole('construction')) ? (
+                        <ConstructionMarket
+                          cookies={cookies}
+                        />
+                      ) : (
+                          <Redirect to={ApplicationRoutes.marketplace} />
                         )
                     }
                   />

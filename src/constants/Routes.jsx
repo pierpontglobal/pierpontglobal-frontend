@@ -16,7 +16,8 @@ const ApplicationRoutes = {
   notificationPage: '/user/notifications',
   contactPage: '/contact-us',
   supportPage: '/support',
-  supportPageTutorial: '/support/:tutorial'
+  supportPageTutorial: '/support/:tutorial',
+  constructionPage: '/construction',
 }
 
 export default ApplicationRoutes;
