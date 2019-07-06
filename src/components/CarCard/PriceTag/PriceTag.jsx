@@ -23,7 +23,7 @@ class PriceTag extends React.Component {
       className,
       requestFunction,
       color: color || '#000000',
-      fontSizeButton: fontSizeButton || '14px',
+      fontSizeButton: fontSizeButton || '12px',
       vin,
       requesting: false,
     };

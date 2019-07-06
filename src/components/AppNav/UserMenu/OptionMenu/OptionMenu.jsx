@@ -4,6 +4,8 @@ import ArrowIconMui from '@material-ui/icons/KeyboardArrowLeft';
 import { Switch } from 'antd';
 import { withCookies } from 'react-cookie';
 import { AppNavHeight } from '../../../../constants/ApplicationSettings';
+import SETTINGS_ACTIONS from '../../../../modules/settings/actions';
+import { connect } from 'react-redux';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -108,10 +110,13 @@ class OptionMenu extends React.Component {
   }
 
   toggleMarketplaceDesign = (checked) => {
+    const { changeMarketDesign } = this.props;
     this.props.cookies.set('switch_marketplace', checked ? 'on' : 'off', { path: '/' });
-    if (!!this.props.forceUpdate) {
-      this.props.forceUpdate();
+    let toChange = 'new';
+    if (!checked) {
+      toChange = 'old'
     }
+    changeMarketDesign(toChange);
   }
 
   render() {
@@ -145,4 +150,11 @@ class OptionMenu extends React.Component {
   }
 }
 
-export default withCookies(OptionMenu);
+const mapDispatchToProps = dispatch => ({
+  changeMarketDesign: (toChange) => dispatch(SETTINGS_ACTIONS.changeMarketDesign(toChange)) 
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withCookies(OptionMenu));

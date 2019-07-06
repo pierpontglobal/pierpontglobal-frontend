@@ -10,7 +10,7 @@ const ConditionLabel = styled.div`
   box-shadow: none;
   color: #000000;
   opacity: 1.0;
-  font-size: 0.75em;
+  font-size: 0.65em;
   font-weight: normal;
   line-height: 1.31;
   -webkit-letter-spacing: normal;
@@ -25,7 +25,7 @@ const ConditionScore = styled.div`
   text-align: center;
   border-radius: 0px 4px 4px 0px;
   background-color: ${props => `rgb(${props.hexColor})`};
-  font-size: 0.75em;
+  font-size: 0.65em;
   font-weight: bold;
   line-height: 1.33;
   color: #ffffff;

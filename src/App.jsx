@@ -197,6 +197,11 @@ class App extends React.Component {
     this.props.changeLanguage(lang);
   };
 
+  setMarketLayout = () => {
+    const { cookies, setMarketLayout } = this.props;
+    setMarketLayout(cookies.get("switch_marletplace", { path: '/' }));
+  }
+
   getSavedCars = async () => {
     const { fetchSavedCars } = this.props;
     await fetchSavedCars();
@@ -263,12 +268,6 @@ class App extends React.Component {
     await this.getUser();
   }
 
-  forceRerenderMarketplace = () => {
-    if (!!this.marketplaceRef) {
-      this.marketplaceRef.forceRerender();
-    }
-  }
-
   render() {
     const { cookies, user, settings } = this.props;
     const userSignedIn = this.verifyUserLoggedIn();
@@ -295,7 +294,6 @@ class App extends React.Component {
                     cookies={cookies}
                     verifyUserLoggedIn={this.verifyUserLoggedIn}
                     user={user}
-                    forceUpdate={() => this.forceRerenderMarketplace()}
                   />
                   {!this.verifyUserLoggedIn() ? null : (
                     <>
@@ -429,7 +427,7 @@ const mapDispatchToProps = dispatch => ({
   removeUser: () => dispatch(USER_ACTIONS.removeUser()),
   setLanguage: lang => dispatch(SETTINGS_ACTIONS.setLanguage(lang)),
   setLanguages: languages => dispatch(SETTINGS_ACTIONS.setLanguages(languages)),
-  setMarketLayout: useNew => dispatch(SETTINGS_ACTIONS.modifyMarketLayout(useNew)),
+  setMarketLayout: useNew => dispatch(SETTINGS_ACTIONS.changeMarketDesign(useNew)),
   receivePushNotifications: receive => dispatch(SETTINGS_ACTIONS.modifyPushNotifications(receive)),
   fetchSavedCars: () => dispatch(USER_ACTIONS.fetchSavedCars()),
 });

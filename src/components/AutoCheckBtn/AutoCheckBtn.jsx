@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 const style = {
   borderRadius: '4px',
   backgroundColor: '#3e78c0',
-  fontSize: '0.75em',
+  fontSize: '0.95em',
   fontWeight: 'bold',
   lineHeight: 1.33,
   color: '#ffffff',
