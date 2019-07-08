@@ -8,6 +8,8 @@ import VehicleCard from './VehicleCard/VehicleCard';
 import { withRouter } from 'react-router-dom';
 import ConstructionMarketDetail from './ConstructionMarketDetail/ConstructionMarketDetail';
 import ApplicationRoutes from '../../../constants/Routes';
+import axios from 'axios';
+import { ApiServer } from '../../../Defaults';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -115,117 +117,11 @@ class ConstructionMarket extends React.Component {
     super(props);
     this.state = {
       isLoading: false,
-      totalVehicles: 600,
-      vehicles: [
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        },
-        {
-          title: '2010 Advance Captor 4800',
-          serial: '1000036401',
-          location: 'CHICAGO, IL',
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: '1143538',
-          mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-        }
-      ],
+      pageSize: 25,
+      page: 0,
+      totalVehicles: 0,
+      vehicles: [],
+      searchText: "",
       categoryOptions: [
         { name: 'moccino', value: 1 },
         { name: 'very heavy', value: 2 },
@@ -237,6 +133,7 @@ class ConstructionMarket extends React.Component {
 
   componentWillMount = () => {
     this.shouldRenderDetail(window.location.search);
+    this.getVehicles();
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -248,9 +145,35 @@ class ConstructionMarket extends React.Component {
     this.vehicleId = urlParams.get('vehicleId');
   }
 
+  getFirsts = () => {
+
+  }
+
   getVehicles = () => {
-    this.setState({
-      vehicles: [...this.state.vehicles, ...this.state.vehicles]
+    const { pageSize, searchText } = this.state;
+    const page = this.state.page + 1;
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles?page=${page}&page_size=${pageSize}&search_text=${searchText}`).then(data => {
+      const res = data.data;
+      const toAppend = res.vehicles.map(v => {
+        return {
+          title: v.title,
+          serial: '1000036401',
+          location: v.location,
+          type: 'Other Equipment',
+          category: 'Other Equipment',
+          subCategory: '750-1115 Sweeper/Scrubber Ride On',
+          description: 'Sweeper/Scrubber Ride On',
+          equipmentId: v.equipment_id,
+          mainImage: v.main_image,
+          price: v.price,
+          id: v.id
+        }
+      })
+      this.setState({
+        vehicles: [...this.state.vehicles, ...toAppend],
+        totalVehicles: res.total_vehicles,
+        page
+      })
     })
   }
 

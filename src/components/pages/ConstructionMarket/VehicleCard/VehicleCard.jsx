@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import numeral from 'numeral';
 
 const VehicleWrapper = styled.div`
   width: 23%;
@@ -189,7 +190,7 @@ class VehicleCard extends React.Component {
         </Details>
         <VehicleBottom>
           <VehiclePrice>
-            <span>$11,600 USD</span>
+            <span>{ `US$ ${numeral(vehicle.price).format("0,0")}` }</span>
           </VehiclePrice>
           <BuyButton onClick={() => this.props.handleClick(vehicle.serial)}>
             Buy now!
