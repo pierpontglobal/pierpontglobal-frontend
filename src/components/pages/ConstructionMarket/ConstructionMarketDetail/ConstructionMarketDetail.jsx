@@ -15,6 +15,8 @@ import PrintIconMui from '@material-ui/icons/Print';
 import EmailIconMui from '@material-ui/icons/Email';
 import numeral from 'numeral';
 import CheckIconMui from '@material-ui/icons/CheckCircleOutline';
+import axios from 'axios';
+import { ApiServer } from '../../../../Defaults';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -83,7 +85,10 @@ const RelatedVehicles = styled.div`
 
 const LoadingWrapper = styled.div`
   width: 100%;
-  padding: 24px;
+  height: ${props => `calc(100vh - ${AppNavHeight}px)`};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
@@ -118,7 +123,7 @@ const Price = styled.div`
   width: 100%;
   padding: 12px;
   & > span {
-    font-size: 1.12rem;
+    font-size: 1.18rem;
     font-weight: 200;
   }
 `;
@@ -290,19 +295,22 @@ class ConstructionMarketDetail extends React.Component {
   componentWillMount = () => {
     // Get vehicle
     const { vehicleId } = this.props;
-    this.setState({
-      vehicle: {
-        title: '2010 Advance Captor 4800',
-        serial: '1000036401',
-        location: 'CHICAGO, IL',
-        type: 'Other Equipment',
-        category: 'Other Equipment',
-        subCategory: '750-1115 Sweeper/Scrubber Ride On',
-        description: 'Sweeper/Scrubber Ride On',
-        equipmentId: '1143538',
-        price: '54600',
-        mainImage: 'https://images.rouseservices.com/ImageProcessor/get/getimage.aspx?type=ItemDetailBig&guid=cee289fe-9893-5758-1e8f-156ba5e400ba'
-      }
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles/single?vehicle_id=${vehicleId}`).then(data => {
+      const vehicle = data.data.vehicle;
+      this.setState({
+        vehicle: {
+          title: vehicle.title,
+          serial: '1000036401',
+          location: vehicle.location,
+          type: 'Other Equipment',
+          category: 'Other Equipment',
+          subCategory: '750-1115 Sweeper/Scrubber Ride On',
+          description: 'Sweeper/Scrubber Ride On',
+          equipmentId: vehicle.equipment_id,
+          price: vehicle.price,
+          mainImage: vehicle.main_image
+        }
+      })
     })
   }
 
@@ -361,8 +369,8 @@ class ConstructionMarketDetail extends React.Component {
     }
     const images = [
       {
-        original: 'http://lorempixel.com/1000/600/nature/1/',
-        thumbnail: 'http://lorempixel.com/250/150/nature/1/',
+        original: !!vehicle ? vehicle.mainImage : '',
+        thumbnail: !!vehicle ? vehicle.mainImage : '',
       },
       {
         original: 'http://lorempixel.com/1000/600/nature/2/',
@@ -404,7 +412,7 @@ class ConstructionMarketDetail extends React.Component {
                 </Location>
                 <Price>
                   <span>
-                    { `US$ ${numeral(vehicle.price).format("0.00")}` }
+                    { `US$ ${numeral(vehicle.price).format("0,0")}` }
                   </span>
                 </Price>
                 <Tags>
