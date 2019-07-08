@@ -186,8 +186,12 @@ class ConstructionMarket extends React.Component {
   }
 
   handleFilterChange = (change) => {
+    let filterId = change.id;
+    if (!!change.id.name) filterId = change.id.name;
     this.setState({
-      [change.id]: change.value
+      [filterId]: change.value
+    }, () => {
+      console.log(this.state);
     })
   }
 

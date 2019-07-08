@@ -60,18 +60,19 @@ const VehicleDetailBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-top: 42px;
 `;
 
 const InfoSidebar = styled.div`
   grid-area: sidebar;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #f9f9f9;
   border-radius: 5px;
   border: 1px solid #dde0e2;
   padding: 16px;
+  margin-top: 42px;
 `;
 
 const RelatedVehicles = styled.div`
@@ -555,8 +556,6 @@ class ConstructionMarketDetail extends React.Component {
                     </ClientInfo>
                   ) :  null
                 }
-                <hr />
-
               </InfoSidebar>
               <RelatedVehicles>
 
