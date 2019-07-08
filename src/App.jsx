@@ -234,11 +234,8 @@ class App extends React.Component {
       } : {}
     }
 
-    console.log('Response uder>>>>>>>>', responseUser);
-
     createUser(user);
     if (!!this.appNav) {
-      console.log('will cal add constructon link for app >>>>>', user.roles);
       this.appNav.addConstructionLink(user.roles);
     }
   };
