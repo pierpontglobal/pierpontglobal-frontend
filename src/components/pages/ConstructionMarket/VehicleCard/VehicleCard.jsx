@@ -193,7 +193,7 @@ class VehicleCard extends React.Component {
             <span>{ `US$ ${numeral(vehicle.price).format("0,0")}` }</span>
           </VehiclePrice>
           <BuyButton onClick={() => this.props.handleClick(vehicle.id)}>
-            Buy now!
+            See detail
           </BuyButton>
         </VehicleBottom>
       </VehicleWrapper>
