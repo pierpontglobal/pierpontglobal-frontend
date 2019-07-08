@@ -294,7 +294,7 @@ class ConstructionMarket extends React.Component {
                   style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}
                   pageStart={0}
                   loadMore={this.getVehicles}
-                  hasMore={true}
+                  hasMore={totalVehicles > vehicles.length}
                   useWindow={false}
                   getScrollParent={() => this.scrollParentRef}
                   threshold={100}
