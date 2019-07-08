@@ -10,12 +10,13 @@ import ConstructionMarketDetail from './ConstructionMarketDetail/ConstructionMar
 import ApplicationRoutes from '../../../constants/Routes';
 import axios from 'axios';
 import { ApiServer } from '../../../Defaults';
+import numeral from 'numeral';
 
 const Wrapper = styled.div`
   width: 100%;
   height: ${props => `calc(100vh - ${AppNavHeight}px)`};
   display: grid;
-  grid-template-rows: 60px auto;
+  grid-template-rows: 80px auto;
   grid-template-columns: 300px auto;
   grid-template-areas:
   "sidebar mainTitle"
@@ -74,9 +75,16 @@ const MainTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  & > span { 
+  flex-direction: column;
+  padding: 12px;
+  & > h1 {
     font-size: 1.72rem;
     font-weight: 400;
+  }
+  & > span { 
+    font-size: 0.85rem;
+    font-weight: 200;
+    padding: 12px;
   }
 `;
 
@@ -225,7 +233,8 @@ class ConstructionMarket extends React.Component {
           Search mobile...
         </SearchBarMobile>
         <MainTitle>
-          <span>Construction vehicles</span>
+          <h1>Construction vehicles</h1>
+          <span>{ numeral(totalVehicles).format("0,0") } vehicles found</span>
         </MainTitle>
         <MainContent ref={(ref) => this.scrollParentRef = ref}>
             {
