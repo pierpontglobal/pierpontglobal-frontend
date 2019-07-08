@@ -1,28 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import { withStyles } from '@material-ui/core/styles';
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 90%;
   padding: 8px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
 `;
 
 const InputWrapper = styled.div`
-  & > input {
-    border: none;
-    padding: 8px;
-    box-shadow: 0px 0px 6px 2px rgb(0, 0, 0, 0.08);
-    min-width: 120px;
-  }
-  & > select {
-    border: none;
-    box-shadow: 0px 0px 6px 2px rgb(0, 0, 0, 0.08);
-    text-indent: 8px;
-    min-width: 120px;
-  }
+  width: 100%;
 `;
 
 const Title = styled.div`
@@ -32,13 +27,20 @@ const Title = styled.div`
   }
 `;
 
+const styles = theme => ({
+  formControl: {
+    minWidth: 120,
+    width: '100%'
+  },
+});
+
 class ConstructionFilter extends React.Component {
   state = {
     textValue: '',
     selectValue: ''
   }
   handleChange = (e) => {
-    const id = e.target.id;
+    const id = e.target.id || e.target.name;
     const value = e.target.value;
     this.setState({
       [id]: value,
@@ -49,23 +51,38 @@ class ConstructionFilter extends React.Component {
     })
   }
   render() {
-    const { name, type, options, displayName } = this.props;
+    const { name, type, options, displayName, classes } = this.props;
     const { textValue, selectValue } = this.state;
     return(
       <Wrapper>
-        <Title>
-          <span>{displayName}</span>
-        </Title>
         <InputWrapper>
           {
             type.toLowerCase() === "select" ? (
-              <select id={name} value={selectValue} onChange={this.handleChange}>
-                {
-                  options.map(opt => (
-                    <option value={opt.value}>{opt.name}</option>
-                  ))
-                }
-              </select>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor={name}>{displayName}</InputLabel>
+                <Select
+                  fullWidth
+                  value={selectValue}
+                  onChange={this.handleChange}
+                  inputProps={{
+                    name: {name},
+                    id: {name},
+                  }}
+                >
+                  {
+                    options.map(opt => (
+                      <MenuItem value={opt.value}>{opt.name}</MenuItem>
+                    ))
+                  }
+                </Select>
+              </FormControl>
+              // <select id={name} value={selectValue} onChange={this.handleChange}>
+              //   {
+              //     options.map(opt => (
+              //       <option value={opt.value}>{opt.name}</option>
+              //     ))
+              //   }
+              // </select>
             ) : (
               <input id={name} type="text" value={textValue} onChange={this.handleChange} />
             )
@@ -76,4 +93,4 @@ class ConstructionFilter extends React.Component {
   }
 }
 
-export default ConstructionFilter;
+export default withStyles(styles)(ConstructionFilter);
