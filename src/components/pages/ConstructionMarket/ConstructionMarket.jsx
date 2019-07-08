@@ -149,7 +149,7 @@ class ConstructionMarket extends React.Component {
 
   }
 
-  getVehicles = () => {
+  getVehicles = (search) => {
     const { pageSize, searchText } = this.state;
     const page = this.state.page + 1;
     axios.get(`${ApiServer}/api/v2/heavy_vehicles?page=${page}&page_size=${pageSize}&search_text=${searchText}`).then(data => {
@@ -178,11 +178,27 @@ class ConstructionMarket extends React.Component {
   }
 
   handleFilterChange = (change) => {
-    console.log(change);
+    this.setState({
+      [change.id]: change.value
+    })
   }
 
   handleClick = (vehicleId) => {
     this.props.history.push(`${ApplicationRoutes.constructionPage}?vehicleId=${vehicleId}`);
+  }
+  
+  search = (e) => {
+    if (!!e.key && e.key === 'Enter') {
+      const { searchText } = this.state;
+      if (!!searchText) {
+        this.setState({
+          vehicles: [],
+          page: 0
+        }, () => {
+          this.getVehicles();
+        })
+      }
+    }
   }
 
   render() {
@@ -199,6 +215,7 @@ class ConstructionMarket extends React.Component {
             <span>Apply Filters</span>
           </SidebarTitle>
           <FilterList>
+            <ConstructionFilter name="searchText" displayName="Search" type="input" handleChange={this.handleFilterChange} handleKeyDown={(e) => this.search(e)} />
             <ConstructionFilter name="type" displayName="Type" type="select" options={categoryOptions} handleChange={this.handleFilterChange} />
             <ConstructionFilter name="category" displayName="Category" type="select" options={categoryOptions} handleChange={this.handleFilterChange} />
             <ConstructionFilter name="subcategory" displayName="Subcategory" type="select" options={categoryOptions} handleChange={this.handleFilterChange} />

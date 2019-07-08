@@ -5,6 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
 
 const Wrapper = styled.div`
   width: 90%;
@@ -76,15 +77,19 @@ class ConstructionFilter extends React.Component {
                   }
                 </Select>
               </FormControl>
-              // <select id={name} value={selectValue} onChange={this.handleChange}>
-              //   {
-              //     options.map(opt => (
-              //       <option value={opt.value}>{opt.name}</option>
-              //     ))
-              //   }
-              // </select>
             ) : (
-              <input id={name} type="text" value={textValue} onChange={this.handleChange} />
+              <TextField
+                id={name}
+                label={displayName}
+                fullWidth
+                onChange={this.handleChange}
+                onKeyDown={this.props.handleKeyDown}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              // <input id={name} type="text" value={textValue} onChange={this.handleChange} />
             )
           }
         </InputWrapper>
