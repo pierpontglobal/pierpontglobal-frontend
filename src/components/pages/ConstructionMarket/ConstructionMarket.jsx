@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
 import { CircularProgress } from '@material-ui/core';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from 'react-infinite-scroller';
 import ConstructionFilter from './ConstructionFilter/ConstructionFilter';
 import VehicleCard from './VehicleCard/VehicleCard';
 import { withRouter } from 'react-router-dom';
@@ -115,6 +115,7 @@ class ConstructionMarket extends React.Component {
     super(props);
     this.state = {
       isLoading: false,
+      totalVehicles: 600,
       vehicles: [
         {
           title: '2010 Advance Captor 4800',
@@ -262,7 +263,7 @@ class ConstructionMarket extends React.Component {
   }
 
   render() {
-    const { vehicles, isLoading, categoryOptions } = this.state;
+    const { vehicles, isLoading, categoryOptions, totalVehicles } = this.state;
     if (!!this.vehicleId) {
       return (
         <ConstructionMarketDetail history={this.props.history} vehicleId={this.vehicleId} />
@@ -286,43 +287,39 @@ class ConstructionMarket extends React.Component {
         <MainTitle>
           <span>Construction vehicles</span>
         </MainTitle>
-        <MainContent>
-          {
-            isLoading ? 'Loading...' : (
-              <InfiniteScroll
-                dataLength={vehicles.length}
-                next={this.getVehicles}
-                hasMore
-                loader={(
-                  <div style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    paddingTop: '10px',
-                    height: '80px',
-                    alignContent: 'center',
-                  }}
-                  >
-                    <CircularProgress />
-                  </div>
-                )}
-                height={`calc(100vh - ${AppNavHeight + 16}px)px`}
-                endMessage={(
-                  <p style={{ textAlign: 'center' }}>
-                    Has reached the end...
-                  </p>
-                )}
-              >
-                <VehiclesWrapper>
-                  {
-                    vehicles.map(vehicle => (
-                      <VehicleCard handleClick={this.handleClick} vehicle={vehicle} />
-                    ))
+        <MainContent ref={(ref) => this.scrollParentRef = ref}>
+            {
+              isLoading ? 'Loading...' : (
+                <InfiniteScroll
+                  style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}
+                  pageStart={0}
+                  loadMore={this.getVehicles}
+                  hasMore={true}
+                  useWindow={false}
+                  getScrollParent={() => this.scrollParentRef}
+                  threshold={100}
+                  loader={
+                    <div style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      paddingTop: '10px',
+                      height: '80px',
+                      alignContent: 'center',
+                    }}
+                    >
+                      <CircularProgress />
+                    </div>
                   }
-                </VehiclesWrapper>
-              </InfiniteScroll>
-            )
-          }
+                >
+                    {
+                      vehicles.map(vehicle => (
+                        <VehicleCard handleClick={this.handleClick} vehicle={vehicle} />
+                      ))
+                    }
+                </InfiniteScroll>
+              )
+            }
         </MainContent>
       </Wrapper>
     );
