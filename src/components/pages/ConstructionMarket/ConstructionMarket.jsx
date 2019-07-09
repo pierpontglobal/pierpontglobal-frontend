@@ -174,7 +174,8 @@ class ConstructionMarket extends React.Component {
           equipmentId: v.equipment_id,
           mainImage: v.main_image,
           price: v.price,
-          id: v.id
+          id: v.id,
+          addedToCart: v.added_to_cart,
         }
       })
       this.setState({
@@ -212,6 +213,38 @@ class ConstructionMarket extends React.Component {
       }
     }
   }
+
+  // addToCart = (vehicleId) => {
+  //   axios.post(`${ApiServer}/api/v2/heavy_vehicles/add?vehicle_id=${vehicleId}`).then(data => {
+  //     const res = data.data;
+  //     let vehicle = this.state.vehicles.find(x => x.id === vehicleId);
+  //     let idx = this.state.vehicles.indexOf(vehicle);
+  //     let vehicleReplace = {
+  //       ...vehicle,
+  //       addedToCart: true
+  //     }
+  //     let vehicles = this.state.vehicles.splice(idx, 0, vehicleReplace)
+  //     this.setState({
+  //       vehicles
+  //     })
+  //   })
+  // }
+
+  // removeFromCart = (vehicleId) => {
+  //   axios.post(`${ApiServer}/api/v2/heavy_vehicles/remove?vehicle_id=${vehicleId}`).then(data => {
+  //     const res = data.data;
+  //     let vehicle = this.state.vehicles.find(x => x.id === vehicleId);
+  //     let idx = this.state.vehicles.indexOf(vehicle);
+  //     let vehicleReplace = {
+  //       ...vehicle,
+  //       addedToCart: false
+  //     }
+  //     let vehicles = this.state.vehicles.splice(idx, 0, vehicleReplace)
+  //     this.setState({
+  //       vehicles
+  //     })
+  //   })
+  // }
 
   render() {
     const { vehicles, isLoading, categoryOptions, totalVehicles } = this.state;

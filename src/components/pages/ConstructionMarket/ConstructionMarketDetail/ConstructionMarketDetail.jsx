@@ -16,6 +16,8 @@ import numeral from 'numeral';
 import CheckIconMui from '@material-ui/icons/CheckCircleOutline';
 import axios from 'axios';
 import { ApiServer } from '../../../../Defaults';
+import CartIconMui from '@material-ui/icons/AddShoppingCart';
+import CartRemoveIconMui from '@material-ui/icons/RemoveShoppingCart';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -161,7 +163,8 @@ const ActionIcons = styled.div`
 const ActionIcon = styled.div`
   padding: 0px 8px;
   & > svg {
-    color: rgb(0, 0, 0, 0.7);
+    color: ${props => props.primary ? '#32619' : 'rgb(0, 0, 0, 0.7)'};
+    cursor: pointer;
   }
 `;
 
@@ -280,6 +283,12 @@ const QuantityWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const CartIcon = styled.div`
+  & > svg {
+    color: white;
+    cursor: pointer;
+  }
+`;
 
 class ConstructionMarketDetail extends React.Component {
   constructor(props) {
@@ -318,6 +327,7 @@ class ConstructionMarketDetail extends React.Component {
           price: vehicle.price,
           mainImage: vehicle.main_image,
           id: vehicle.id,
+          addedToCart: !!vehicle.added_to_cart ? true : false
         },
         requested: !!vehicle.requested ? true : false,
         requestSuccess: !!vehicle.requested ? true : false,
@@ -378,6 +388,30 @@ class ConstructionMarketDetail extends React.Component {
           requested: true
         })
       });
+    })
+  }
+
+  addToCart = (vehicleId) => {
+    axios.post(`${ApiServer}/api/v2/heavy_vehicles/add?vehicle_id=${vehicleId}`).then(data => {
+      const res = data.data;
+      this.setState({
+        vehicle: {
+          ...this.state.vehicle,
+          addedToCart: true
+        }
+      })
+    })
+  }
+
+  removeFromCart = (vehicleId) => {
+    axios.post(`${ApiServer}/api/v2/heavy_vehicles/remove?vehicle_id=${vehicleId}`).then(data => {
+      const res = data.data;
+      this.setState({
+        vehicle: {
+          ...this.state.vehicle,
+          addedToCart: false
+        }
+      })
     })
   }
 
@@ -464,6 +498,17 @@ class ConstructionMarketDetail extends React.Component {
                   <ActionIcon>
                     <PrintIconMui />
                   </ActionIcon>
+                  {
+                    vehicle.addedToCart ? (
+                      <ActionIcon primary onClick={() => this.removeFromCart(vehicle.id)}>
+                        <CartRemoveIconMui />
+                      </ActionIcon>
+                    ) : (
+                      <ActionIcon primary onClick={() => this.addToCart(vehicle.id)}>
+                        <CartIconMui />
+                      </ActionIcon>
+                    )
+                  }
                 </ActionIcons>
                 <DetailTabs>
                   <Tabs

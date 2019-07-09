@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import numeral from 'numeral';
+import CartIconMui from '@material-ui/icons/AddShoppingCart';
+import CartRemoveIconMui from '@material-ui/icons/RemoveShoppingCart';
+import axios from 'axios';
+import { ApiServer } from '../../../../Defaults';
 
 const VehicleWrapper = styled.div`
   width: 23%;
@@ -37,11 +41,17 @@ const VehicleImage = styled.div`
   width: 100%;
   height: 100%;
   display: inline-block;
+  position: relative;
   & > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+`;
+const IconWrapper = styled.div`
+  position: absolute;
+  top: 6px;
+  right: 8px;
 `;
 
 const TitleBar = styled.div`
@@ -128,15 +138,61 @@ const BuyButton = styled.button`
     color: #32619a;
   }
 `;
+const CartIcon = styled.div`
+  & > i {
+    color: ${props => props.addedToCart ? '#32619a' : 'rgba(255,255,255,0.32)'};
+    cursor: pointer;
+    stroke-width: ${props => props.addedToCart ? '0px' : '2px'};
+    -webkit-text-stroke-color: #32619a;
+    -webkit-text-stroke-width: ${props => props.addedToCart ? '0px' : '1px'};
+  }
+`;
 
 class VehicleCard extends React.Component {
+
+  state = {
+    addedToCart: !!this.props.vehicle.addedToCart ? true : false
+  }
+
+  addToCart = (vehicleId) => {
+    // this.props.addtoCart(vehicleId);
+    axios.post(`${ApiServer}/api/v2/heavy_vehicles/add?vehicle_id=${vehicleId}`).then(data => {
+      const res = data.data;
+      this.setState({
+        addedToCart: true
+      })
+    })
+  }
+
+  removeFromCart = (vehicleId) => {
+    // this.props.removeFromCart(vehicleId);
+    axios.post(`${ApiServer}/api/v2/heavy_vehicles/remove?vehicle_id=${vehicleId}`).then(data => {
+      const res = data.data;
+      this.setState({
+        addedToCart: false
+      })
+    })
+  }
   
   render() {
     const { vehicle } = this.props;
+    const {addedToCart } = this.state;
     return(
       <VehicleWrapper showDetail={false} key={vehicle.serial}>
         <VehicleImage>
-          <img alt="car naem" src={vehicle.mainImage} />
+          <IconWrapper>
+            {
+              addedToCart ? (
+                <CartIcon addedToCart={addedToCart} onClick={() => this.removeFromCart(vehicle.id)}>
+                  <i class="fas fa-shopping-cart"></i>
+                </CartIcon>
+              ) : (
+                <CartIcon addedToCart={addedToCart} onClick={() => this.addToCart(vehicle.id)}>
+                  <i class="fas fa-shopping-cart"></i>
+                </CartIcon>)
+            }
+          </IconWrapper>
+          <img alt={vehicle.title} src={vehicle.mainImage} />
         </VehicleImage>
         <TitleBar>
           <VehicleTitle>
