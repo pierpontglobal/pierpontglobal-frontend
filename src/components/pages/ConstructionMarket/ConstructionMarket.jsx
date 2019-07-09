@@ -227,6 +227,24 @@ class ConstructionMarket extends React.Component {
     }
   }
 
+  updateVehicle = (vehicle) => {
+    let vehicles = [...this.state.vehicles];
+    vehicles.forEach(v => {
+      if (v.id === vehicle.id) {
+        v.addedToCart = vehicle.addedToCart;
+        // Add other attributes edited from detail to reflect changes in market here....
+      }
+    })
+    this.setState({
+      vehicles
+    })
+  }
+
+  willGoBack = (data) => {
+    let vehicle = data.vehicle;
+    this.updateVehicle(vehicle);
+  }
+
   render() {
     const { vehicles, isLoading, categoryOptions, totalVehicles, userCanSeePage } = this.state;
     if (!userCanSeePage) {
@@ -234,7 +252,7 @@ class ConstructionMarket extends React.Component {
     }
     if (!!this.vehicleId) {
       return (
-        <ConstructionMarketDetail getUser={this.props.getUser} user={this.props.user} history={this.props.history} vehicleId={this.vehicleId} />
+        <ConstructionMarketDetail willGoBack={this.willGoBack} updateVehicle={this.updateVehicle} getUser={this.props.getUser} user={this.props.user} history={this.props.history} vehicleId={this.vehicleId} />
       );
     }
     return(

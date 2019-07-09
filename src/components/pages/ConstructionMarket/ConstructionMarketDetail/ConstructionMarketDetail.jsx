@@ -338,6 +338,12 @@ class ConstructionMarketDetail extends React.Component {
     })
   }
 
+  componentWillUnmount = () => {
+    this.setState({
+      vehicle: undefined,
+    })
+  }
+
   handleChange = (e) => {
     this.setState({
       client: {
@@ -368,6 +374,7 @@ class ConstructionMarketDetail extends React.Component {
   }
 
   goBack = () => {
+    this.props.willGoBack({vehicle: this.state.vehicle});
     this.props.history.goBack();
   }
 
@@ -402,6 +409,8 @@ class ConstructionMarketDetail extends React.Component {
           ...this.state.vehicle,
           addedToCart: true
         }
+      }, () => {
+        this.props.updateVehicle(this.state.vehicle)
       })
     })
   }
@@ -414,6 +423,8 @@ class ConstructionMarketDetail extends React.Component {
           ...this.state.vehicle,
           addedToCart: false
         }
+      }, () => {
+        this.props.updateVehicle(this.state.vehicle)
       })
     })
   }
