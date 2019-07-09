@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AppNavHeight } from '../../../../constants/ApplicationSettings';
-import { CircularProgress, Button } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
+import { CircularProgress, Button, TextField } from '@material-ui/core';
 import { connect } from 'react-redux';
 import BackIconMui from '@material-ui/icons/KeyboardArrowLeft';
 import ImageGallery from 'react-image-gallery';
@@ -274,6 +273,13 @@ const BackIcon = styled.div`
     color: rgb(0, 0, 0, 0.9);
   }
 `;
+const QuantityWrapper = styled.div`
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 class ConstructionMarketDetail extends React.Component {
   constructor(props) {
@@ -284,6 +290,7 @@ class ConstructionMarketDetail extends React.Component {
       requestingVehicle: false,
       requested: false,
       requestSuccess: false,
+      quantity: 1,
       client: {
         ...this.props.user,
         company: '',
@@ -309,8 +316,11 @@ class ConstructionMarketDetail extends React.Component {
           description: 'Sweeper/Scrubber Ride On',
           equipmentId: vehicle.equipment_id,
           price: vehicle.price,
-          mainImage: vehicle.main_image
-        }
+          mainImage: vehicle.main_image,
+          id: vehicle.id,
+        },
+        requested: !!vehicle.requested ? true : false,
+        requestSuccess: !!vehicle.requested ? true : false,
       })
     })
   }
@@ -321,6 +331,12 @@ class ConstructionMarketDetail extends React.Component {
         ...this.state.client,
         [e.target.id]: e.target.value
       }
+    })
+  }
+
+  handleQuantityChange = (e) => {
+    this.setState({
+      quantity: e.target.value
     })
   }
 
@@ -352,18 +368,21 @@ class ConstructionMarketDetail extends React.Component {
     this.setState({
       requestingVehicle: true,
     }, () => {
-      setTimeout(()=>{
+      const { vehicle, quantity } = this.state;
+      axios.post(`${ApiServer}/api/v2/heavy_vehicles/request?vehicle_id=${vehicle.id}&quantity=${quantity}`)
+      .then(data => {
+        const res = data.data;
         this.setState({
           requestingVehicle: false,
           requestSuccess: true,
           requested: true
         })
-      },3000);
+      });
     })
   }
 
   render() {
-    const { vehicle, client, detailTabValue, requestingVehicle, requestSuccess, requested} = this.state;
+    const { vehicle, client, detailTabValue, requestingVehicle, requestSuccess, requested, quantity} = this.state;
     const { user } = this.props;
     if (!!user.email && !this.clientDefined) {
       this.defineClient();
@@ -537,12 +556,31 @@ class ConstructionMarketDetail extends React.Component {
                           { client.name }
                         </span>
                       </ClientName>
+                      {
+                        !requested ? (
+                          <QuantityWrapper>
+                            <TextField
+                              id="quantity"
+                              label="Quantity"
+                              fullWidth
+                              defaultValue={quantity}
+                              onChange={this.handleQuantityChange}
+                              margin="normal"
+                              type="number"
+                              variant="filled"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          </QuantityWrapper>
+                        ) : null
+                      }
                       <RequestWrapper>
                         {
                           requestingVehicle ? <CircularProgress /> : requested ? (
                             requestSuccess ? <CheckIcon><CheckIconMui /> Vehicle requested</CheckIcon> : 'failere in requesitng...'
                           ) : ( <RequestBtn onClick={() => this.requestVehicle()}>
-                                Request Info
+                                Request vehicle
                               </RequestBtn>)
                         }
                       </RequestWrapper>
