@@ -140,7 +140,7 @@ const BuyButton = styled.button`
 `;
 const CartIcon = styled.div`
   & > i {
-    color: ${props => props.addedToCart ? '#32619a' : 'rgba(255,255,255,0.32)'};
+    color: ${props => props.addedToCart ? '#2678da' : 'rgba(255,255,255,0.32)'};
     cursor: pointer;
     stroke-width: ${props => props.addedToCart ? '0px' : '2px'};
     -webkit-text-stroke-color: #32619a;

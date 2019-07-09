@@ -18,6 +18,8 @@ import axios from 'axios';
 import { ApiServer } from '../../../../Defaults';
 import CartIconMui from '@material-ui/icons/AddShoppingCart';
 import CartRemoveIconMui from '@material-ui/icons/RemoveShoppingCart';
+import { withRouter } from 'react-router-dom';
+import ApplicationRoutes from '../../../../constants/Routes';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -309,7 +311,7 @@ class ConstructionMarketDetail extends React.Component {
     this.clientDefined = false;
   }
 
-  componentWillMount = () => {
+  componentWillMount = async () => {
     // Get vehicle
     const { vehicleId } = this.props;
     axios.get(`${ApiServer}/api/v2/heavy_vehicles/single?vehicle_id=${vehicleId}`).then(data => {
@@ -654,4 +656,4 @@ class ConstructionMarketDetail extends React.Component {
 const mapStateToProps = state => ({
   user: state.userReducer.user
 });
-export default connect(mapStateToProps, null)(ConstructionMarketDetail);
+export default connect(mapStateToProps, null)(withRouter(ConstructionMarketDetail));

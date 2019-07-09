@@ -91,7 +91,7 @@ class App extends React.Component {
         email: null,
         number: null
       },
-      user: {}
+      user: {},
     };
 
     axios.defaults.xsrfCookieName = "CSRF-TOKEN";
@@ -123,7 +123,7 @@ class App extends React.Component {
     });
   };
 
-  componentWillMount = () => {
+  componentWillMount = async () => {
     this.setLanguageData();
   }
 
@@ -223,7 +223,7 @@ class App extends React.Component {
       email: responseUser.email,
       phone: responseUser.phone_number,
       photo: !!responseUser.photo_url ? `${ApiServer}/${responseUser.photo_url}` : undefined,
-      roles: ['user', 'admin', 'construction'],
+      roles: [...responseUser.roles, "construction"],
       dealer: !!responseUser.dealer ? {
         name: responseUser.dealer.name,
         latitude: responseUser.dealer.latitude,
@@ -237,6 +237,9 @@ class App extends React.Component {
     createUser(user);
     if (!!this.appNav) {
       this.appNav.addConstructionLink(user.roles);
+    }
+    if (!!this.constructionMarket) {
+      this.constructionMarket.hasRole("construction")
     }
   };
 
@@ -269,20 +272,6 @@ class App extends React.Component {
 
   handleSignIn = async () => {
     await this.getUser();
-  }
-
-  hasRole = async (role) => {
-    const { user } = this.props;
-    if (!!user && !user.roles) {
-      await this.getUser();
-    }
-    const userRole = this.getRole(role);
-    return !!userRole ? true : false;
-  }
-
-  getRole = (role) => {
-    const { user } = this.props;
-    return user.roles.find(x => x.toLowerCase() === role.toLowerCase());
   }
 
   render() {
@@ -365,9 +354,12 @@ class App extends React.Component {
                     exact
                     path={ApplicationRoutes.constructionPage}
                     render={() =>
-                      (this.verifyUserLoggedIn() && this.hasRole('construction')) ? (
+                      this.verifyUserLoggedIn() ? (
                         <ConstructionMarket
                           cookies={cookies}
+                          user={user}
+                          getUser={this.getUser}
+                          onRef={ref => (this.constructionMarket = ref)}
                         />
                       ) : (
                           <Redirect to={ApplicationRoutes.marketplace} />

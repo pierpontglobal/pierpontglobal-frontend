@@ -130,6 +130,7 @@ class ConstructionMarket extends React.Component {
       totalVehicles: 0,
       vehicles: [],
       searchText: "",
+      userCanSeePage: true,
       categoryOptions: [
         { name: 'moccino', value: 1 },
         { name: 'very heavy', value: 2 },
@@ -139,7 +140,7 @@ class ConstructionMarket extends React.Component {
     }
   }
 
-  componentWillMount = () => {
+  componentWillMount = async () => {
     this.shouldRenderDetail(window.location.search);
     this.getVehicles();
   }
@@ -148,13 +149,25 @@ class ConstructionMarket extends React.Component {
     this.shouldRenderDetail(newProps.location.search);
   }
 
+  componentDidMount = () => {
+    this.props.onRef(this)
+  }
+
+  hasRole = (role) => {
+    const userRole = this.getRole(role);
+    this.setState({
+      userCanSeePage: !!userRole ? true : false
+    })
+  }
+
+  getRole = (role) => {
+    const { user } = this.props;
+    return user.roles.find(x => x.toLowerCase() === role.toLowerCase());
+  }
+
   shouldRenderDetail = (search) => {
     const urlParams = new URLSearchParams(search);
     this.vehicleId = urlParams.get('vehicleId');
-  }
-
-  getFirsts = () => {
-
   }
 
   getVehicles = (search) => {
@@ -214,43 +227,11 @@ class ConstructionMarket extends React.Component {
     }
   }
 
-  // addToCart = (vehicleId) => {
-  //   axios.post(`${ApiServer}/api/v2/heavy_vehicles/add?vehicle_id=${vehicleId}`).then(data => {
-  //     const res = data.data;
-  //     let vehicle = this.state.vehicles.find(x => x.id === vehicleId);
-  //     let idx = this.state.vehicles.indexOf(vehicle);
-  //     let vehicleReplace = {
-  //       ...vehicle,
-  //       addedToCart: true
-  //     }
-  //     let vehicles = this.state.vehicles.splice(idx, 0, vehicleReplace)
-  //     this.setState({
-  //       vehicles
-  //     })
-  //   })
-  // }
-
-  // removeFromCart = (vehicleId) => {
-  //   axios.post(`${ApiServer}/api/v2/heavy_vehicles/remove?vehicle_id=${vehicleId}`).then(data => {
-  //     const res = data.data;
-  //     let vehicle = this.state.vehicles.find(x => x.id === vehicleId);
-  //     let idx = this.state.vehicles.indexOf(vehicle);
-  //     let vehicleReplace = {
-  //       ...vehicle,
-  //       addedToCart: false
-  //     }
-  //     let vehicles = this.state.vehicles.splice(idx, 0, vehicleReplace)
-  //     this.setState({
-  //       vehicles
-  //     })
-  //   })
-  // }
-
   render() {
     const { vehicles, isLoading, categoryOptions, totalVehicles } = this.state;
     if (!!this.vehicleId) {
       return (
-        <ConstructionMarketDetail history={this.props.history} vehicleId={this.vehicleId} />
+        <ConstructionMarketDetail getUser={this.props.getUser} user={this.props.user} history={this.props.history} vehicleId={this.vehicleId} />
       );
     }
     return(
@@ -312,4 +293,4 @@ class ConstructionMarket extends React.Component {
   }
 }
 
-export default withRouter(ConstructionMarket);
+export default withRouter(withRouter(ConstructionMarket));
