@@ -20,6 +20,7 @@ import CartIconMui from '@material-ui/icons/AddShoppingCart';
 import CartRemoveIconMui from '@material-ui/icons/RemoveShoppingCart';
 import { withRouter } from 'react-router-dom';
 import ApplicationRoutes from '../../../../constants/Routes';
+import ReactToPrint from 'react-to-print';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -417,6 +418,16 @@ class ConstructionMarketDetail extends React.Component {
     })
   }
 
+  sendEmail = () => {
+    const { vehicle } = this.state;
+    const emailTo = "support@pierpontglobal.com";
+    const ceo = "steve@pierpontglobal.com";
+    const cto = "hector@pierpontglobal.com";
+    const emailSub = "Heavy vehicle request";
+    const emailBody = `Hi, I would like to request vehicle: ${vehicle.title}, from: ${vehicle.location} with id: ${vehicle.id}`;
+    window.location.href = "mailto:"+emailTo+'?cc='+ceo+';'+cto+'&subject='+emailSub+'&body='+emailBody;
+  }
+
   render() {
     const { vehicle, client, detailTabValue, requestingVehicle, requestSuccess, requested, quantity} = this.state;
     const { user } = this.props;
@@ -441,7 +452,7 @@ class ConstructionMarketDetail extends React.Component {
       <>
         {
           vehicle === undefined ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : (
-            <Wrapper>
+            <Wrapper ref={el => (this.componentRef = el)}>
               <CarouselBox>
                 <BackWrapper>
                   <BackIcon onClick={() => this.goBack()}>
@@ -494,12 +505,17 @@ class ConstructionMarketDetail extends React.Component {
                   </Tag>
                 </Tags>
                 <ActionIcons>
-                  <ActionIcon>
+                  <ActionIcon onClick={this.sendEmail}>
                     <EmailIconMui />
                   </ActionIcon>
-                  <ActionIcon>
-                    <PrintIconMui />
-                  </ActionIcon>
+                  <ReactToPrint
+                    trigger={() => (
+                      <ActionIcon>
+                        <PrintIconMui />
+                      </ActionIcon>
+                    )}
+                    content={() => this.componentRef}
+                  />
                   {
                     vehicle.addedToCart ? (
                       <ActionIcon primary onClick={() => this.removeFromCart(vehicle.id)}>
