@@ -5,6 +5,7 @@ import CartIconMui from '@material-ui/icons/AddShoppingCart';
 import CartRemoveIconMui from '@material-ui/icons/RemoveShoppingCart';
 import axios from 'axios';
 import { ApiServer } from '../../../../Defaults';
+import ApplicationRoutes from '../../../../constants/Routes';
 
 const VehicleWrapper = styled.div`
   width: 23%;
@@ -21,6 +22,12 @@ const VehicleWrapper = styled.div`
   background-color: #fff;
   position: relative;
   transition: all 0.3s;
+  cursor: pointer;
+  transition: all 0.16;
+
+  &:hover {
+    box-shadow: 0px 0px 5px 4px rgba(0,0,0,0.09);
+  }
 
   @media only screen and (max-width: 768px) and (min-width: 480px) {
     grid-template-rows: 2fr 60px 160px;
@@ -139,8 +146,9 @@ const BuyButton = styled.button`
   }
 `;
 const CartIcon = styled.div`
-  & > i {
-    color: ${props => props.addedToCart ? '#2678da' : 'rgba(255,255,255,0.32)'};
+  padding: 8px;
+  & > svg {
+    color: ${props => 'rgba(255,255,255,0.92)'};
     cursor: pointer;
     stroke-width: ${props => props.addedToCart ? '0px' : '2px'};
     -webkit-text-stroke-color: #32619a;
@@ -173,25 +181,19 @@ class VehicleCard extends React.Component {
       })
     })
   }
+
+  seeDetails = (event) => {
+    if (event.target.tagName === 'LI' || event.target.tagName === 'SPAN' || event.target.tagName === 'DIV' || event.target.tagName === 'IMG') {
+      this.props.history.push(`${ApplicationRoutes.constructionPage}?vehicleId=${this.props.vehicle.id}`)
+    } 
+  }
   
   render() {
     const { vehicle } = this.props;
     const {addedToCart } = this.state;
     return(
-      <VehicleWrapper showDetail={false} key={vehicle.serial}>
+      <VehicleWrapper showDetail={false} key={vehicle.serial} onClick={this.seeDetails}>
         <VehicleImage>
-          <IconWrapper>
-            {
-              addedToCart ? (
-                <CartIcon addedToCart={addedToCart} onClick={() => this.removeFromCart(vehicle.id)}>
-                  <i class="fas fa-shopping-cart"></i>
-                </CartIcon>
-              ) : (
-                <CartIcon addedToCart={addedToCart} onClick={() => this.addToCart(vehicle.id)}>
-                  <i class="fas fa-shopping-cart"></i>
-                </CartIcon>)
-            }
-          </IconWrapper>
           <img alt={vehicle.title} src={vehicle.mainImage} />
         </VehicleImage>
         <TitleBar>
@@ -248,9 +250,19 @@ class VehicleCard extends React.Component {
           <VehiclePrice>
             <span>{ `US$ ${numeral(vehicle.price).format("0,0")}` }</span>
           </VehiclePrice>
-          <BuyButton onClick={() => this.props.handleClick(vehicle.id)}>
+          {
+            addedToCart ? (
+              <CartIcon addedToCart={addedToCart} onClick={() => this.removeFromCart(vehicle.id)}>
+                <CartRemoveIconMui />
+              </CartIcon>
+            ) : (
+              <CartIcon addedToCart={addedToCart} onClick={() => this.addToCart(vehicle.id)}>
+                <CartIconMui />
+              </CartIcon>)
+          }
+          {/* <BuyButton onClick={() => this.props.handleClick(vehicle.id)}>
             See detail
-          </BuyButton>
+          </BuyButton> */}
         </VehicleBottom>
       </VehicleWrapper>
     );

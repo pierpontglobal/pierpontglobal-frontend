@@ -228,7 +228,10 @@ class ConstructionMarket extends React.Component {
   }
 
   render() {
-    const { vehicles, isLoading, categoryOptions, totalVehicles } = this.state;
+    const { vehicles, isLoading, categoryOptions, totalVehicles, userCanSeePage } = this.state;
+    if (!userCanSeePage) {
+      this.props.history.push(ApplicationRoutes.marketplace);
+    }
     if (!!this.vehicleId) {
       return (
         <ConstructionMarketDetail getUser={this.props.getUser} user={this.props.user} history={this.props.history} vehicleId={this.vehicleId} />
@@ -281,7 +284,7 @@ class ConstructionMarket extends React.Component {
                 >
                     {
                       vehicles.map(vehicle => (
-                        <VehicleCard handleClick={this.handleClick} vehicle={vehicle} />
+                        <VehicleCard history={this.props.history} handleClick={this.handleClick} vehicle={vehicle} />
                       ))
                     }
                 </InfiniteScroll>
