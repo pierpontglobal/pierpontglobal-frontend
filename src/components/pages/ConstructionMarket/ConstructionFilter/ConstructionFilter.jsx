@@ -40,6 +40,9 @@ class ConstructionFilter extends React.Component {
     textValue: '',
     selectValue: ''
   }
+  componentDidMount = () => {
+    this.props.onRef(this);
+  }
   handleChange = (e) => {
     const id = e.target.id || e.target.name;
     const value = e.target.value;
@@ -49,6 +52,12 @@ class ConstructionFilter extends React.Component {
       textValue: value,
     }, () => {
       this.props.handleChange({id: id, value: value});
+    })
+  }
+  clean = () => {
+    this.setState({
+      selectValue: '',
+      textValue: '',
     })
   }
   render() {
@@ -89,7 +98,6 @@ class ConstructionFilter extends React.Component {
                   shrink: true,
                 }}
               />
-              // <input id={name} type="text" value={textValue} onChange={this.handleChange} />
             )
           }
         </InputWrapper>

@@ -22,42 +22,75 @@ import { withRouter } from 'react-router-dom';
 import ApplicationRoutes from '../../../../constants/Routes';
 import ReactToPrint from 'react-to-print';
 
+const PageWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+`;
+
 const Wrapper = styled.div`
   width: 85%;
   display: grid;
-  margin: 0 auto;
   margin-top: 36px;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 125px 60px auto;
   position: relative;
   grid-template-areas: 
-    "carousel details sidebar"
-    "related related sidebar";
+    "sidebar header"
+    "sidebar location"
+    "sidebar carousel";
   grid-column-gap: 32px;
-
-  @media only screen and (max-width: 490px) {
-    width: 100%;
-    grid-template-columns: auto;
-    grid-template-rows: 2fr 1fr 1fr auto;
-    grid-row-gap: 16px;
-    grid-template-areas: 
-    "carousel"
-    "details"
-    "sidebar"
-    "related";
-  }
 `;
 
-const CarouselBox = styled.div`
+const Sidebar = styled.div`
+  grid-area: sidebar;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SidebarSection = styled.div`
+  width: 100%;
+  padding: 8px;
+  background-color: rgb(250, 250, 250);
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 1px 2px 0px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Carousel = styled.div`
   grid-area: carousel;
-  width: 90%;
-  height: 90%;
-  margin: 0 auto;
-  @media only screen and (max-width: 490px) {
-    width: 100%;
-    height: 100%;
-  }
+  width: 100%;
+  height: 100%;
 `;
+
+const Header = styled.div`
+  grid-area: header;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(62, 120, 192);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LocationBar = styled.div`
+  grid-area: location;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+
+
+/// ---------
+
+
 
 const VehicleDetailBox = styled.div`
   grid-area: details;
@@ -214,12 +247,11 @@ const RequestWrapper = styled.div`
 `;
 const RequestBtn = styled.button`
   padding: 16px;
-  background: transparent;
-  border: solid 1px #32619a;
-  border-radius: 2px;
-  margin-bottom: 12px;
+  background: white;
+  border-radius: 8px;
+  border-radius: 4px;
   font-size: 1.09rem;
-  color: #32619a;
+  color: rgb(62,120,192);
   cursor: pointer;
 `;
 const CheckIcon = styled.div`
@@ -460,177 +492,43 @@ class ConstructionMarketDetail extends React.Component {
       }
     ]
     return(
-      <>
+      <PageWrapper>
         {
           vehicle === undefined ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : (
-            <Wrapper ref={el => (this.componentRef = el)}>
-              <CarouselBox>
-                <BackWrapper>
-                  <BackIcon onClick={() => this.goBack()}>
-                    <BackIconMui /> Go back
-                  </BackIcon>
-                </BackWrapper>
-                <ImageGallery items={images} />
-              </CarouselBox>
-              <VehicleDetailBox>
-                <Title>
-                  <span>
-                    { vehicle.title }
-                  </span>
-                </Title>
-                <Location>
-                  <LocationIcon>
-                    <LocationIconMui />
-                  </LocationIcon>
-                  <LocationText>
+            <Wrapper>
+              <Sidebar>
+                <SidebarSection style={{ marginBottom: '12px' }}>
+                  <Title>
                     <span>
-                      { vehicle.location }
+                      { vehicle.title }
                     </span>
-                  </LocationText>
-                </Location>
-                <Price>
-                  <span>
-                    { `US$ ${numeral(vehicle.price).format("0,0")}` }
-                  </span>
-                </Price>
-                <Tags>
-                  <Tag>
-                    <TagIcon>
-                      <TagIconMui />
-                    </TagIcon>
-                    <TagText>
-                      <span>
-                        Low interest financing
-                      </span>
-                    </TagText>
-                  </Tag>
-                  <Tag>
-                    <TagIcon>
-                      <TagIconMui />
-                    </TagIcon>
-                    <TagText>
-                      <span>
-                        Special dial
-                      </span>
-                    </TagText>
-                  </Tag>
-                </Tags>
-                <ActionIcons>
-                  <ActionIcon onClick={this.sendEmail}>
-                    <EmailIconMui />
-                  </ActionIcon>
-                  <ReactToPrint
-                    trigger={() => (
-                      <ActionIcon>
-                        <PrintIconMui />
-                      </ActionIcon>
-                    )}
-                    content={() => this.componentRef}
-                  />
-                  {
-                    vehicle.addedToCart ? (
-                      <ActionIcon primary onClick={() => this.removeFromCart(vehicle.id)}>
-                        <CartRemoveIconMui />
-                      </ActionIcon>
-                    ) : (
-                      <ActionIcon primary onClick={() => this.addToCart(vehicle.id)}>
-                        <CartIconMui />
-                      </ActionIcon>
-                    )
-                  }
-                </ActionIcons>
-                <DetailTabs>
-                  <Tabs
-                    value={detailTabValue}
-                    onChange={this.handleTabsChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    centered
-                  >
-                    <Tab id="details" label="Details" />
-                    <Tab id="description" label="Description" />
-                  </Tabs>
-                  { detailTabValue === 0 && <TabContainer>
-                    <TabContent>
-                      <TabcontentLabel>
-                        <span>Serial</span>
-                      </TabcontentLabel>
-                      <div>
-                        <span>
-                          { vehicle.serial }
-                        </span>
-                      </div>
-                    </TabContent>
-                    <TabContent>
-                      <TabcontentLabel>
-                        <span>Equipment id</span>
-                      </TabcontentLabel>
-                      <div>
-                        <span>
-                          { vehicle.equipmentId }
-                        </span>
-                      </div>
-                    </TabContent>
-                    <TabContent>
-                      <TabcontentLabel>
-                        <span>Sub category</span>
-                      </TabcontentLabel>
-                      <div>
-                        <span>
-                          { vehicle.subCategory }
-                        </span>
-                      </div>
-                    </TabContent>
-                  </TabContainer> }
-                  { detailTabValue === 1 && <TabContainer>
-                    <TabContent>
-                      <TabcontentLabel>
-                        <span>Description</span>
-                      </TabcontentLabel>
-                      <div>
-                        <span>
-                          { vehicle.description }
-                        </span>
-                      </div>
-                    </TabContent>
-                    <TabContent>
-                      <TabcontentLabel>
-                        <span>Equipment type</span>
-                      </TabcontentLabel>
-                      <div>
-                        <span>
-                          { vehicle.type }
-                        </span>
-                      </div>
-                    </TabContent>
-                    <TabContent>
-                      <TabcontentLabel>
-                        <span>Category</span>
-                      </TabcontentLabel>
-                      <div>
-                        <span>
-                          { vehicle.category }
-                        </span>
-                      </div>
-                    </TabContent>
-                  </TabContainer> }
-                </DetailTabs>
-              </VehicleDetailBox>
-              <InfoSidebar>
-                <SidebarTitle>
-                  <span>
-                    Equipment Sales Rep
-                  </span>
-                </SidebarTitle>
+                  </Title>
+                </SidebarSection>
+                <SidebarSection>
+                  <Title>
+                    <span>
+                      Specifications
+                    </span>
+                  </Title>
+                </SidebarSection>
+              </Sidebar>
+              <Header>
+                <div>
+                  <Price style={{ marginLeft: '16px' }}>
+                    <span style={{ color: 'white', fontSize: '1.12rem' }}>Whole price</span><br />
+                    <span style={{ color: 'white', fontSize: '1.32rem', fontWeight: '600' }}>{ `RD$ ${numeral(vehicle.price).format("0,00")}` }</span>
+                  </Price>
+                </div>
+                <div style={{ padding: '16px' }}>
                 {
                   !!client ? (
                     <ClientInfo>
-                      <ClientName>
+                      {/* <ClientName>
                         <span>
                           { client.name }
                         </span>
-                      </ClientName>
-                      {
+                      </ClientName> */}
+                      {/* {
                         !requested ? (
                           <QuantityWrapper>
                             <TextField
@@ -648,34 +546,290 @@ class ConstructionMarketDetail extends React.Component {
                             />
                           </QuantityWrapper>
                         ) : null
-                      }
+                      } */}
                       <RequestWrapper>
                         {
                           requestingVehicle ? <CircularProgress /> : requested ? (
-                            requestSuccess ? <CheckIcon><CheckIconMui /> Vehicle requested</CheckIcon> : 'failere in requesitng...'
+                            requestSuccess ? <CheckIcon><CheckIconMui /> <span style={{ color: 'white' }}>Vehicle requested</span></CheckIcon> : <span style={{ color: 'white' }}>Failere in requesitng...</span>
                           ) : ( <RequestBtn onClick={() => this.requestVehicle()}>
                                 Request vehicle
                               </RequestBtn>)
                         }
                       </RequestWrapper>
                      
-                      <ClientPhone>
+                      {/* <ClientPhone>
                         { client.phone }
                       </ClientPhone>
                       <ClientEmail>
                         { client.email }
-                      </ClientEmail>
+                      </ClientEmail> */}
                     </ClientInfo>
                   ) :  null
                 }
-              </InfoSidebar>
-              <RelatedVehicles>
-
-              </RelatedVehicles>
+                </div>
+              </Header>
+              <LocationBar>
+                <div>
+                  <Location>
+                    <LocationIcon>
+                      <LocationIconMui />
+                    </LocationIcon>
+                    <LocationText>
+                      <span>
+                        { vehicle.location }
+                      </span>
+                    </LocationText>
+                  </Location>
+                </div>
+                <div>
+                  <ActionIcons>
+                    <ActionIcon onClick={this.sendEmail}>
+                      <EmailIconMui />
+                    </ActionIcon>
+                    <ReactToPrint
+                      trigger={() => (
+                        <ActionIcon>
+                          <PrintIconMui />
+                        </ActionIcon>
+                      )}
+                      content={() => this.componentRef}
+                    />
+                    {
+                      vehicle.addedToCart ? (
+                        <ActionIcon primary onClick={() => this.removeFromCart(vehicle.id)}>
+                          <CartRemoveIconMui />
+                        </ActionIcon>
+                      ) : (
+                        <ActionIcon primary onClick={() => this.addToCart(vehicle.id)}>
+                          <CartIconMui />
+                        </ActionIcon>
+                      )
+                    }
+                  </ActionIcons>
+                </div>
+              </LocationBar>
+              <Carousel>
+                {/* <BackWrapper>
+                  <BackIcon onClick={() => this.goBack()}>
+                    <BackIconMui /> Go back
+                  </BackIcon>
+                </BackWrapper> */}
+                <ImageGallery items={images} />
+              </Carousel>
             </Wrapper>
+            // <Wrapper ref={el => (this.componentRef = el)}>
+              // <CarouselBox>
+              //   <BackWrapper>
+              //     <BackIcon onClick={() => this.goBack()}>
+              //       <BackIconMui /> Go back
+              //     </BackIcon>
+              //   </BackWrapper>
+              //   <ImageGallery items={images} />
+              // </CarouselBox>
+            //   <VehicleDetailBox>
+            //     <Title>
+            //       <span>
+            //         { vehicle.title }
+            //       </span>
+            //     </Title>
+            //     <Location>
+            //       <LocationIcon>
+            //         <LocationIconMui />
+            //       </LocationIcon>
+            //       <LocationText>
+            //         <span>
+            //           { vehicle.location }
+            //         </span>
+            //       </LocationText>
+            //     </Location>
+            //     <Price>
+            //       <span>
+            //         { `US$ ${numeral(vehicle.price).format("0,0")}` }
+            //       </span>
+            //     </Price>
+            //     <Tags>
+            //       <Tag>
+            //         <TagIcon>
+            //           <TagIconMui />
+            //         </TagIcon>
+            //         <TagText>
+            //           <span>
+            //             Low interest financing
+            //           </span>
+            //         </TagText>
+            //       </Tag>
+            //       <Tag>
+            //         <TagIcon>
+            //           <TagIconMui />
+            //         </TagIcon>
+            //         <TagText>
+            //           <span>
+            //             Special dial
+            //           </span>
+            //         </TagText>
+            //       </Tag>
+            //     </Tags>
+                // <ActionIcons>
+                //   <ActionIcon onClick={this.sendEmail}>
+                //     <EmailIconMui />
+                //   </ActionIcon>
+                //   <ReactToPrint
+                //     trigger={() => (
+                //       <ActionIcon>
+                //         <PrintIconMui />
+                //       </ActionIcon>
+                //     )}
+                //     content={() => this.componentRef}
+                //   />
+                //   {
+                //     vehicle.addedToCart ? (
+                //       <ActionIcon primary onClick={() => this.removeFromCart(vehicle.id)}>
+                //         <CartRemoveIconMui />
+                //       </ActionIcon>
+                //     ) : (
+                //       <ActionIcon primary onClick={() => this.addToCart(vehicle.id)}>
+                //         <CartIconMui />
+                //       </ActionIcon>
+                //     )
+                //   }
+                // </ActionIcons>
+            //     <DetailTabs>
+            //       <Tabs
+            //         value={detailTabValue}
+            //         onChange={this.handleTabsChange}
+            //         indicatorColor="primary"
+            //         textColor="primary"
+            //         centered
+            //       >
+            //         <Tab id="details" label="Details" />
+            //         <Tab id="description" label="Description" />
+            //       </Tabs>
+            //       { detailTabValue === 0 && <TabContainer>
+            //         <TabContent>
+            //           <TabcontentLabel>
+            //             <span>Serial</span>
+            //           </TabcontentLabel>
+            //           <div>
+            //             <span>
+            //               { vehicle.serial }
+            //             </span>
+            //           </div>
+            //         </TabContent>
+            //         <TabContent>
+            //           <TabcontentLabel>
+            //             <span>Equipment id</span>
+            //           </TabcontentLabel>
+            //           <div>
+            //             <span>
+            //               { vehicle.equipmentId }
+            //             </span>
+            //           </div>
+            //         </TabContent>
+            //         <TabContent>
+            //           <TabcontentLabel>
+            //             <span>Sub category</span>
+            //           </TabcontentLabel>
+            //           <div>
+            //             <span>
+            //               { vehicle.subCategory }
+            //             </span>
+            //           </div>
+            //         </TabContent>
+            //       </TabContainer> }
+            //       { detailTabValue === 1 && <TabContainer>
+            //         <TabContent>
+            //           <TabcontentLabel>
+            //             <span>Description</span>
+            //           </TabcontentLabel>
+            //           <div>
+            //             <span>
+            //               { vehicle.description }
+            //             </span>
+            //           </div>
+            //         </TabContent>
+            //         <TabContent>
+            //           <TabcontentLabel>
+            //             <span>Equipment type</span>
+            //           </TabcontentLabel>
+            //           <div>
+            //             <span>
+            //               { vehicle.type }
+            //             </span>
+            //           </div>
+            //         </TabContent>
+            //         <TabContent>
+            //           <TabcontentLabel>
+            //             <span>Category</span>
+            //           </TabcontentLabel>
+            //           <div>
+            //             <span>
+            //               { vehicle.category }
+            //             </span>
+            //           </div>
+            //         </TabContent>
+            //       </TabContainer> }
+            //     </DetailTabs>
+            //   </VehicleDetailBox>
+            //   <InfoSidebar>
+            //     <SidebarTitle>
+            //       <span>
+            //         Equipment Sales Rep
+            //       </span>
+            //     </SidebarTitle>
+            //     {
+            //       !!client ? (
+            //         <ClientInfo>
+            //           <ClientName>
+            //             <span>
+            //               { client.name }
+            //             </span>
+            //           </ClientName>
+            //           {
+            //             !requested ? (
+            //               <QuantityWrapper>
+            //                 <TextField
+            //                   id="quantity"
+            //                   label="Quantity"
+            //                   fullWidth
+            //                   defaultValue={quantity}
+            //                   onChange={this.handleQuantityChange}
+            //                   margin="normal"
+            //                   type="number"
+            //                   variant="filled"
+            //                   InputLabelProps={{
+            //                     shrink: true,
+            //                   }}
+            //                 />
+            //               </QuantityWrapper>
+            //             ) : null
+            //           }
+            //           <RequestWrapper>
+            //             {
+            //               requestingVehicle ? <CircularProgress /> : requested ? (
+            //                 requestSuccess ? <CheckIcon><CheckIconMui /> Vehicle requested</CheckIcon> : 'failere in requesitng...'
+            //               ) : ( <RequestBtn onClick={() => this.requestVehicle()}>
+            //                     Request vehicle
+            //                   </RequestBtn>)
+            //             }
+            //           </RequestWrapper>
+                     
+            //           <ClientPhone>
+            //             { client.phone }
+            //           </ClientPhone>
+            //           <ClientEmail>
+            //             { client.email }
+            //           </ClientEmail>
+            //         </ClientInfo>
+            //       ) :  null
+            //     }
+            //   </InfoSidebar>
+            //   <RelatedVehicles>
+
+            //   </RelatedVehicles>
+            // </Wrapper>
           )
         }
-      </>
+      </PageWrapper>
     );
   }
 }

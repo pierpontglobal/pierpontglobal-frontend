@@ -223,10 +223,10 @@ class VehicleCard extends React.Component {
           </DetailGroup>
           <DetailGroup>
             <GroupLabel>
-              <span>Subcategory: </span>
+              <span>Manufacturar: </span>
             </GroupLabel>
             <GroupValue>
-              <span>{ vehicle.subCategory }</span>
+              <span>{ vehicle.manufacturer }</span>
             </GroupValue>
           </DetailGroup>
           <DetailGroup>

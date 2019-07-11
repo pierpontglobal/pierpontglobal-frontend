@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AppNavHeight } from '../../../constants/ApplicationSettings';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Button } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroller';
 import ConstructionFilter from './ConstructionFilter/ConstructionFilter';
 import VehicleCard from './VehicleCard/VehicleCard';
@@ -120,6 +120,15 @@ const SidebarTitle = styled.div`
   }
 `;
 
+const SearchBtn = styled.div`
+  padding: 8px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding: 8px;
+`;
+
 class ConstructionMarket extends React.Component {
   constructor(props){
     super(props);
@@ -131,12 +140,12 @@ class ConstructionMarket extends React.Component {
       vehicles: [],
       searchText: "",
       userCanSeePage: true,
-      categoryOptions: [
-        { name: 'moccino', value: 1 },
-        { name: 'very heavy', value: 2 },
-        { name: 'house destruction', value: 3 },
-        { name: 'argument error', value: 4 },
-      ]
+      types: [],
+      total_types: 0,
+      type_page: 1,
+      categories: [],
+      total_categories: 0,
+      category_page: 1,
     }
   }
 
@@ -151,6 +160,29 @@ class ConstructionMarket extends React.Component {
 
   componentDidMount = () => {
     this.props.onRef(this)
+    this.getOptions();
+  }
+
+  getOptions = () => {
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles/types?page=${this.state.type_page}&limit=5`).then(data => {
+      const res = data.data;
+      this.setState({
+        types: res.requested_types,
+        total_types: res.total_types
+      })
+    })
+  }
+
+  fetchMoreTypes = () => {
+    const page = this.state.type_page + 1;
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles/types?page=${page}&limit=20`).then(data => {
+      const res = data.data;
+      this.setState({
+        types: res.requested_types,
+        total_types: res.total_types,
+        type_page: page
+      })
+    })
   }
 
   hasRole = (role) => {
@@ -170,20 +202,59 @@ class ConstructionMarket extends React.Component {
     this.vehicleId = urlParams.get('vehicleId');
   }
 
-  getVehicles = (search) => {
-    const { pageSize, searchText } = this.state;
-    const page = this.state.page + 1;
-    axios.get(`${ApiServer}/api/v2/heavy_vehicles?page=${page}&page_size=${pageSize}&search_text=${searchText}`).then(data => {
+  searchVehicles = (search) => {
+    const { pageSize, searchText, type, category } = this.state;
+    const page = 1;
+    
+    const type_id = (!!type) ? type : -1;
+    const category_id = !!category ? category : -1;
+
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles?page=${page}&page_size=${pageSize}&search_text=${searchText}&type_id=${type_id}&category_id=${category_id}`)
+    .then(data => {
       const res = data.data;
       const toAppend = res.vehicles.map(v => {
         return {
           title: v.title,
-          serial: '1000036401',
+          serial: v.serial,
           location: v.location,
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
+          type: this.cutStringTo(v.type.name, 16),
+          category: this.cutStringTo(v.category.name, 16),
+          manufacturer: v.manufacturer.name,
+          description: this.cutStringTo(v.description, 16),
+          equipmentId: v.equipment_id,
+          mainImage: v.main_image,
+          price: v.price,
+          id: v.id,
+          addedToCart: v.added_to_cart,
+        }
+      })
+      this.setState({
+        vehicles: [...toAppend],
+        totalVehicles: res.total_vehicles,
+        page: 1,
+      })
+    })
+  }
+
+  getVehicles = () => {
+    const { pageSize, searchText, type, category} = this.state;
+    const page = this.state.page + 1;
+    
+    const type_id = (!!type) ? type : -1;
+    const category_id = !!category ? category : -1;
+
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles?page=${page}&page_size=${pageSize}&search_text=${searchText}&type_id=${type_id}&category_id=${category_id}`)
+    .then(data => {
+      const res = data.data;
+      const toAppend = res.vehicles.map(v => {
+        return {
+          title: v.title,
+          serial: v.serial,
+          location: v.location,
+          type: this.cutStringTo(v.type.name, 16),
+          category: this.cutStringTo(v.category.name, 16),
+          manufacturer: v.manufacturer.name,
+          description: this.cutStringTo(v.description, 16),
           equipmentId: v.equipment_id,
           mainImage: v.main_image,
           price: v.price,
@@ -206,6 +277,27 @@ class ConstructionMarket extends React.Component {
       [filterId]: change.value
     }, () => {
       console.log(this.state);
+    })
+  }
+
+  handleTypeChange = (change) => {
+    let filterId = change.id;
+    let filterValue = change.value;
+    if (!!change.id.name) filterId = change.id.name;
+    this.setState({
+      [filterId]: change.value
+    }, () => {
+      this.fetchCategories(filterValue)
+    })
+  }
+
+  fetchCategories = (filterId) => {
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles/categories?filter_id=${parseInt(filterId)}`).then(data => {
+      const res = data.data;
+      this.setState({
+        categories: res.requested_categories || [],
+        total_categories: res.total_categories
+      })
     })
   }
 
@@ -245,8 +337,36 @@ class ConstructionMarket extends React.Component {
     this.updateVehicle(vehicle);
   }
 
+  applyFilters = () => {
+    this.searchVehicles();
+  }
+
+  clearFilters = () => {
+    this.setState({
+      type: -1,
+      category: -1,
+      searchText: '',
+      page: 1,
+    }, () => {
+      if (!!this.typeFilterRef) {
+        this.typeFilterRef.clean();
+      }
+      if (!!this.categoryFilterRef) {
+        this.categoryFilterRef.clean();
+      }
+      if (!!this.textFilterRef) {
+        this.textFilterRef.clean();
+      }
+      this.searchVehicles();
+    })
+  }
+
+  cutStringTo = (value, length) => {
+    return value.substring(0, length);
+  }
+
   render() {
-    const { vehicles, isLoading, categoryOptions, totalVehicles, userCanSeePage } = this.state;
+    const { vehicles, isLoading, totalVehicles, userCanSeePage, types, total_types, categories, total_categories } = this.state;
     if (!userCanSeePage) {
       this.props.history.push(ApplicationRoutes.marketplace);
     }
@@ -259,14 +379,17 @@ class ConstructionMarket extends React.Component {
       <Wrapper>
         <Sidebar>
           <SidebarTitle>
-            <span>Apply Filters</span>
+            <span>Filters</span>
           </SidebarTitle>
           <FilterList>
-            <ConstructionFilter name="searchText" displayName="Search" type="input" handleChange={this.handleFilterChange} handleKeyDown={(e) => this.search(e)} />
-            <ConstructionFilter name="type" displayName="Type" type="select" options={categoryOptions} handleChange={this.handleFilterChange} />
-            <ConstructionFilter name="category" displayName="Category" type="select" options={categoryOptions} handleChange={this.handleFilterChange} />
-            <ConstructionFilter name="subcategory" displayName="Subcategory" type="select" options={categoryOptions} handleChange={this.handleFilterChange} />
+            <ConstructionFilter onRef={ref => (this.textFilterRef = ref)} name="searchText" displayName="Search" type="input" handleChange={this.handleFilterChange} />
+            <ConstructionFilter onRef={ref => (this.typeFilterRef = ref)} name="type" displayName="Type" type="select" options={types.map(t => ({name: this.cutStringTo(t.name, 12), value: t.id}))} handleChange={this.handleTypeChange} />
+            <ConstructionFilter onRef={ref => (this.categoryFilterRef = ref)} name="category" displayName="Category" type="select" options={categories.map(c => ({name: this.cutStringTo(c.name, 12), value: c.id}))} handleChange={this.handleFilterChange} />
           </FilterList>
+          <SearchBtn>
+            <Button color="primary" onClick={() => this.applyFilters()}>Apply</Button>
+            <Button color="primary" onClick={() => this.clearFilters()}>Clear</Button>
+          </SearchBtn>
         </Sidebar>
         <SearchBarMobile>
           Search mobile...
