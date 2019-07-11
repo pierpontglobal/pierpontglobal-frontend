@@ -395,7 +395,7 @@ class ConstructionMarket extends React.Component {
           Search mobile...
         </SearchBarMobile>
         <MainTitle>
-          <h1>Construction vehicles</h1>
+          <h1 style={{ marginBottom: '0px' }}>Construction vehicles</h1>
           <span>{ numeral(totalVehicles).format("0,0") } vehicles found</span>
         </MainTitle>
         <MainContent ref={(ref) => this.scrollParentRef = ref}>
