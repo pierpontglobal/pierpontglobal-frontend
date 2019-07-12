@@ -204,7 +204,7 @@ class ConstructionCart extends React.Component {
               </div>
               <div style={{ width: '100%', textAlign: 'center', padding: '16px', marginTop: '24px' }}>
                 {
-                  requesting ? (<LoadingWrapper><CircularProgress /></LoadingWrapper>) : requested ? (<span style={{ color: 'white' }}>All vehicles requested.</span>) : (<Button variant="contained" onClick={this.requestCart}>Request cart</Button>)
+                  requesting ? (<LoadingWrapper><CircularProgress /></LoadingWrapper>) : requested ? (<span style={{ color: 'white' }}>All vehicles requested.</span>) : (<Button disabled={vehicles.length === 0} variant="contained" onClick={this.requestCart}>Request cart</Button>)
                 }
               </div>
             </CartInfo>
