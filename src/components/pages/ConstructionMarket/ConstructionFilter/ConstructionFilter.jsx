@@ -90,6 +90,7 @@ class ConstructionFilter extends React.Component {
               <TextField
                 id={name}
                 label={displayName}
+                value={textValue}
                 fullWidth
                 onChange={this.handleChange}
                 onKeyDown={this.props.handleKeyDown}
