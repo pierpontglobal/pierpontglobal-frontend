@@ -18,6 +18,7 @@ const ApplicationRoutes = {
   supportPage: '/support',
   supportPageTutorial: '/support/:tutorial',
   constructionPage: '/construction',
+  constructionCartPage: '/construction/cart',
 }
 
 export default ApplicationRoutes;

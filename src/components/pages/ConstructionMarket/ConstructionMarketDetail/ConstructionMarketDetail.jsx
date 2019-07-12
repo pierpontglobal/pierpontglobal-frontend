@@ -324,6 +324,18 @@ const CartIcon = styled.div`
     cursor: pointer;
   }
 `;
+const SpecList = styled.div`
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+`;
+const Spec = styled.div`
+  width: 100%;
+  padding: 4px;
+  display: flex;
+  justify-content: flex-start;
+`;
 
 class ConstructionMarketDetail extends React.Component {
   constructor(props) {
@@ -348,26 +360,31 @@ class ConstructionMarketDetail extends React.Component {
     // Get vehicle
     const { vehicleId } = this.props;
     axios.get(`${ApiServer}/api/v2/heavy_vehicles/single?vehicle_id=${vehicleId}`).then(data => {
-      const vehicle = data.data.vehicle;
+      const v = data.data.vehicle;
       this.setState({
         vehicle: {
-          title: vehicle.title,
-          serial: '1000036401',
-          location: vehicle.location,
-          type: 'Other Equipment',
-          category: 'Other Equipment',
-          subCategory: '750-1115 Sweeper/Scrubber Ride On',
-          description: 'Sweeper/Scrubber Ride On',
-          equipmentId: vehicle.equipment_id,
-          price: vehicle.price,
-          mainImage: vehicle.main_image,
-          id: vehicle.id,
-          addedToCart: !!vehicle.added_to_cart ? true : false
+          title: v.title,
+          serial: v.serial,
+          location: v.location,
+          type: this.cutStringTo(v.type.name, 16),
+          category: this.cutStringTo(v.category.name, 16),
+          manufacturer: v.manufacturer.name,
+          description: this.cutStringTo(v.description, 16),
+          equipmentId: v.equipment_id,
+          mainImage: v.main_image,
+          price: v.price,
+          id: v.id,
+          addedToCart: v.added_to_cart,
+          class_code: v.class_code
         },
-        requested: !!vehicle.requested ? true : false,
-        requestSuccess: !!vehicle.requested ? true : false,
+        requested: !!v.requested ? true : false,
+        requestSuccess: !!v.requested ? true : false,
       })
     })
+  }
+
+  cutStringTo = (value, length) => {
+    return value.substring(0, length);
   }
 
   componentWillUnmount = () => {
@@ -503,6 +520,14 @@ class ConstructionMarketDetail extends React.Component {
                       { vehicle.title }
                     </span>
                   </Title>
+                  <div style={{ marginTop: '16px', padding: '8px', display: 'flex' }}>
+                    <span style={{ fontWeight: '600', marginRight: '8px' }}>Type</span>
+                    <span>{ vehicle.type }</span>
+                  </div>
+                  <div style={{ marginTop: '16px', padding: '8px', display: 'flex' }}>
+                    <span style={{ fontWeight: '600', marginRight: '8px' }}>Category</span>
+                    <span>{ vehicle.category }</span>
+                  </div>
                 </SidebarSection>
                 <SidebarSection>
                   <Title>
@@ -510,6 +535,48 @@ class ConstructionMarketDetail extends React.Component {
                       Specifications
                     </span>
                   </Title>
+                  <SpecList>
+                    <Spec>
+                      <div>
+                        <span style={{ fontWeight: '600', marginRight: '8px' }}>
+                          Equipment id
+                        </span>
+                      </div>
+                      <div>
+                        { vehicle.equipmentId }
+                      </div>
+                    </Spec>
+                    <Spec>
+                      <div>
+                        <span style={{ fontWeight: '600', marginRight: '8px' }}>
+                          Manufacturer
+                        </span>
+                      </div>
+                      <div>
+                        { vehicle.manufacturer }
+                      </div>
+                    </Spec>
+                    <Spec>
+                      <div>
+                        <span style={{ fontWeight: '600', marginRight: '8px' }}>
+                          Equipment id
+                        </span>
+                      </div>
+                      <div>
+                        { vehicle.equipmentId }
+                      </div>
+                    </Spec>
+                    <Spec>
+                      <div>
+                        <span style={{ fontWeight: '600', marginRight: '8px' }}>
+                          Class code
+                        </span>
+                      </div>
+                      <div>
+                        { vehicle.class_code }
+                      </div>
+                    </Spec>
+                  </SpecList>
                 </SidebarSection>
               </Sidebar>
               <Header>

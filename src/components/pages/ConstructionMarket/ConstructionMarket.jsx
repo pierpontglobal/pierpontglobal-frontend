@@ -123,6 +123,7 @@ const SidebarTitle = styled.div`
 const SearchBtn = styled.div`
   padding: 8px;
   width: 100%;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
@@ -365,6 +366,10 @@ class ConstructionMarket extends React.Component {
     return value.substring(0, length);
   }
 
+  viewCart = () => {
+    this.props.history.push(ApplicationRoutes.constructionCartPage);
+  }
+
   render() {
     const { vehicles, isLoading, totalVehicles, userCanSeePage, types, total_types, categories, total_categories } = this.state;
     if (!userCanSeePage) {
@@ -387,16 +392,23 @@ class ConstructionMarket extends React.Component {
             <ConstructionFilter onRef={ref => (this.categoryFilterRef = ref)} name="category" displayName="Category" type="select" options={categories.map(c => ({name: this.cutStringTo(c.name, 12), value: c.id}))} handleChange={this.handleFilterChange} />
           </FilterList>
           <SearchBtn>
-            <Button color="primary" onClick={() => this.applyFilters()}>Apply</Button>
-            <Button color="primary" onClick={() => this.clearFilters()}>Clear</Button>
+            <Button color="primary"  onClick={() => this.clearFilters()}>Clear</Button>
+            <Button color="secondary" variant="contained" onClick={() => this.applyFilters()}>Apply</Button>
           </SearchBtn>
         </Sidebar>
         <SearchBarMobile>
           Search mobile...
         </SearchBarMobile>
         <MainTitle>
-          <h1 style={{ marginBottom: '0px' }}>Construction vehicles</h1>
-          <span>{ numeral(totalVehicles).format("0,0") } vehicles found</span>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <h1 style={{ marginBottom: '0px' }}>Construction vehicles</h1>
+              <span>{ numeral(totalVehicles).format("0,0") } vehicles found</span>
+            </div>
+            <div style={{ marginLeft: '32px' }}>
+              <Button onClick={this.viewCart}>View cart</Button>
+            </div>
+          </div>
         </MainTitle>
         <MainContent ref={(ref) => this.scrollParentRef = ref}>
             {

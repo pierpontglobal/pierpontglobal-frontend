@@ -34,6 +34,7 @@ import SupportPage from "./components/pages/SupportPage/SupportPage.jsx";
 import SignInPage, { RecoverPage } from "./components/pages/SignInPage/SignInPage";
 import ApplicationRoutes from "./constants/Routes";
 import withAPI from './hocs/withAPI';
+import ConstructionCart from './components/pages/ConstructionMarket/ConstructionCart/ConstructionCart';
 
 const car = {
   year: "2017",
@@ -360,6 +361,22 @@ class App extends React.Component {
                           user={user}
                           getUser={this.getUser}
                           onRef={ref => (this.constructionMarket = ref)}
+                        />
+                      ) : (
+                          <Redirect to={ApplicationRoutes.marketplace} />
+                        )
+                    }
+                  />
+                  <Route
+                    exact
+                    path={ApplicationRoutes.constructionCartPage}
+                    render={() =>
+                      this.verifyUserLoggedIn() ? (
+                        <ConstructionCart
+                          cookies={cookies}
+                          user={user}
+                          getUser={this.getUser}
+                          onRef={ref => (this.constructionCart = ref)}
                         />
                       ) : (
                           <Redirect to={ApplicationRoutes.marketplace} />
