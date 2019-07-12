@@ -77,7 +77,7 @@ const MainTitle = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 12px;
-  & > h1 {
+  & h1 {
     font-size: 1.72rem;
     font-weight: 400;
   }
@@ -405,7 +405,7 @@ class ConstructionMarket extends React.Component {
               <h1 style={{ marginBottom: '0px' }}>Construction vehicles</h1>
               <span>{ numeral(totalVehicles).format("0,0") } vehicles found</span>
             </div>
-            <div style={{ marginLeft: '32px' }}>
+            <div style={{ marginLeft: '64px' }}>
               <Button onClick={this.viewCart}>View cart</Button>
             </div>
           </div>

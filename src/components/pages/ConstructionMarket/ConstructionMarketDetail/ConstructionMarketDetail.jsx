@@ -65,6 +65,8 @@ const Carousel = styled.div`
   grid-area: carousel;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  overflow: scroll;
 `;
 
 const Header = styled.div`
@@ -375,7 +377,8 @@ class ConstructionMarketDetail extends React.Component {
           price: v.price,
           id: v.id,
           addedToCart: v.added_to_cart,
-          class_code: v.class_code
+          class_code: v.class_code,
+          images: v.images
         },
         requested: !!v.requested ? true : false,
         requestSuccess: !!v.requested ? true : false,
@@ -494,20 +497,22 @@ class ConstructionMarketDetail extends React.Component {
     if (!!user.email && !this.clientDefined) {
       this.defineClient();
     }
-    const images = [
-      {
-        original: !!vehicle ? vehicle.mainImage : '',
-        thumbnail: !!vehicle ? vehicle.mainImage : '',
-      },
-      {
-        original: !!vehicle ? vehicle.mainImage : '',
-        thumbnail: !!vehicle ? vehicle.mainImage : '',
-      },
+    let images = [
       {
         original: !!vehicle ? vehicle.mainImage : '',
         thumbnail: !!vehicle ? vehicle.mainImage : '',
       }
     ]
+    if (!!vehicle && !!vehicle.images && vehicle.images.length > 0) {
+      let other_images = vehicle.images.map(imgObj => imgObj.image)
+      other_images.forEach(img => {
+        images.push({
+          original: img,
+          thumbnail: img,
+        })
+      })
+    }
+
     return(
       <PageWrapper>
         {
@@ -681,7 +686,7 @@ class ConstructionMarketDetail extends React.Component {
                     <BackIconMui /> Go back
                   </BackIcon>
                 </BackWrapper> */}
-                <ImageGallery items={images} />
+                <ImageGallery items={images} showPlayButton={false} />
               </Carousel>
             </Wrapper>
             // <Wrapper ref={el => (this.componentRef = el)}>
