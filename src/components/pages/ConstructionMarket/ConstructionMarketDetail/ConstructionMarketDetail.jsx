@@ -21,6 +21,7 @@ import CartRemoveIconMui from '@material-ui/icons/RemoveShoppingCart';
 import { withRouter } from 'react-router-dom';
 import ApplicationRoutes from '../../../../constants/Routes';
 import ReactToPrint from 'react-to-print';
+import "./ConstructionMarketDetail.css";
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -517,7 +518,7 @@ class ConstructionMarketDetail extends React.Component {
       <PageWrapper>
         {
           vehicle === undefined ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : (
-            <Wrapper>
+            <Wrapper ref={el => (this.componentRef = el)}>
               <Sidebar>
                 <SidebarSection style={{ marginBottom: '12px' }}>
                   <Title>

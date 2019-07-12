@@ -165,7 +165,7 @@ class ConstructionMarket extends React.Component {
   }
 
   getOptions = () => {
-    axios.get(`${ApiServer}/api/v2/heavy_vehicles/types?page=${this.state.type_page}&limit=5`).then(data => {
+    axios.get(`${ApiServer}/api/v2/heavy_vehicles/types?page=${this.state.type_page}&limit=20`).then(data => {
       const res = data.data;
       this.setState({
         types: res.requested_types,
@@ -388,8 +388,8 @@ class ConstructionMarket extends React.Component {
           </SidebarTitle>
           <FilterList>
             <ConstructionFilter onRef={ref => (this.textFilterRef = ref)} name="searchText" displayName="Search" type="input" handleChange={this.handleFilterChange} />
-            <ConstructionFilter onRef={ref => (this.typeFilterRef = ref)} name="type" displayName="Type" type="select" options={types.map(t => ({name: this.cutStringTo(t.name, 12), value: t.id}))} handleChange={this.handleTypeChange} />
-            <ConstructionFilter onRef={ref => (this.categoryFilterRef = ref)} name="category" displayName="Category" type="select" options={categories.map(c => ({name: this.cutStringTo(c.name, 12), value: c.id}))} handleChange={this.handleFilterChange} />
+            <ConstructionFilter onRef={ref => (this.typeFilterRef = ref)} name="type" displayName="Type" type="select" options={types.map(t => ({name: this.cutStringTo(t.name, 24), value: t.id}))} handleChange={this.handleTypeChange} />
+            <ConstructionFilter onRef={ref => (this.categoryFilterRef = ref)} name="category" displayName="Category" type="select" options={categories.map(c => ({name: this.cutStringTo(c.name, 24), value: c.id}))} handleChange={this.handleFilterChange} />
           </FilterList>
           <SearchBtn>
             <Button color="primary"  onClick={() => this.clearFilters()}>Clear</Button>

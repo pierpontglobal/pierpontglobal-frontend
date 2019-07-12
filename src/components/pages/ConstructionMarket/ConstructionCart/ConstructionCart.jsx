@@ -150,6 +150,10 @@ class ConstructionCart extends React.Component {
     }) 
   }
 
+  cutStringTo = (value, length) => {
+    return value.substring(0, length);
+  }
+
   render() {
     const { vehicles, cartTotal,requesting, requested } = this.state;
     let cartTotal2 = 0;
@@ -181,13 +185,13 @@ class ConstructionCart extends React.Component {
                         </div>
                         <div>
                           <span>
-                            { v.vehicle.description }
+                            { this.cutStringTo(v.vehicle.description, 82) }
                           </span>
                         </div>
                       </VehicleData>
                       <VehiclePrice>
                         <div>
-                          <span style={{ fontWeight: '600', fontSize: '1.16rem' }}>US$ {numeral(v.vehicle.price).format("0,0")}</span>
+                          <span style={{ fontWeight: '600', fontSize: '1.08rem' }}>US$ {numeral(v.vehicle.price).format("0,0")}</span>
                         </div>
                       </VehiclePrice>
                     </VehicleShow>
