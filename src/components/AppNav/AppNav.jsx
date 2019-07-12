@@ -232,6 +232,14 @@ class AppNav extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
   selectActiveNavbarLink = (pathname) => {
     let navbarLinks = [...this.state.navbarLinks];
 
@@ -244,8 +252,6 @@ class AppNav extends React.Component {
       
       if (!!navbarLink) {
         const idx = navbarLinks.indexOf(navbarLink);
-        console.log('DEBUG >>>>');
-        console.log(navbarLinks, navbarLink, idx, pathname);
         navbarLinks[idx].active = true;
 
         this.setState({
@@ -271,6 +277,25 @@ class AppNav extends React.Component {
     this.setState({
       navbarLinks
     });
+  }
+
+  addConstructionLink = (roles) => {
+    let navbarLinks = [...this.state.navbarLinks];
+    console.log('will add construction link!', roles);
+    if (!!roles) {
+      const constructionRole = roles.find(x => x.toLowerCase() === "construction");
+      if (!!constructionRole) {
+        navbarLinks.unshift({
+          label: 'Construction',
+          url: ApplicationRoutes.constructionPage,
+          active: false
+        });
+      }
+    }
+    this.props.onRef(undefined);
+    this.setState({
+      navbarLinks
+    })
   }
 
   toggelUserMenu = () => {

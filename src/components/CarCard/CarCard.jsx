@@ -215,7 +215,7 @@ const DropDownIcon = styled(DropDown)`
   width: 4vw;
   border-style: solid;
   border-color: black;
-  border-width: 0px 3.5px 3.5px 0px;
+  border-width: 0px 2.6px 2.6px 0px;
   margin: 4px;
   position: relative;
   top: -5px;
