@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ApiServer } from '../../../../Defaults';
 import numeral from 'numeral';
 import { Button, CircularProgress } from '@material-ui/core';
+import CloseIconMui from '@material-ui/icons/Close';
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -27,7 +28,7 @@ const Title = styled.div`
 
 const Wrapper = styled.div`
   width: 75%;
-  height: auto;
+  height: 100%;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -35,7 +36,7 @@ const Wrapper = styled.div`
 
 const DataDisplay = styled.div`
   width: 100%;
-  height: auto;
+  height: 100%;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-column-gap: 32px;
@@ -50,6 +51,8 @@ const VehiclesShow = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  max-height: 100%;
+  overflow: auto;
 `;
 const CartInfo = styled.div`
   grid-area: info;
@@ -63,7 +66,7 @@ const CartInfo = styled.div`
 
 const VehicleShow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns:  32px 1fr 3fr 1fr;
   grid-template-rows: auto;
   margin-bottom: 12px;
 `;
@@ -114,6 +117,19 @@ const LoadingWrapper = styled.div`
   padding: 16px;
 `;
 
+const RemoveIcon = styled.div`
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  & > svg {
+    font-size: 1.4rem;
+  }
+`;
+
 class ConstructionCart extends React.Component {
   constructor(props) {
     super(props);
@@ -131,6 +147,17 @@ class ConstructionCart extends React.Component {
       this.setState({
         vehicles: res.vehicles,
         cartTotal: (!!res.vehicles && res.vehicles.length > 0) ? res.vehicles.reduce( (acc, v) => (acc + (v.vehicle.price * v.quantity) )) : 0,
+      })
+    })
+  }
+
+  removeVehicle = (vId) => {
+    axios.post(`${ApiServer}/api/v2/heavy_vehicles/remove?vehicle_id=${vId}`).then(data => {
+      const res = data.data;
+      console.log(res.vehicle);
+      console.log(this.state.vehicles)
+      this.setState({
+        vehicles: this.state.vehicles.filter(x => x.vehicle.id !== res.vehicle.id),
       })
     })
   }
@@ -174,6 +201,9 @@ class ConstructionCart extends React.Component {
                 ) : (
                   vehicles.map(v => (
                     <VehicleShow>
+                      <RemoveIcon>
+                        <CloseIconMui onClick={() => this.removeVehicle(v.vehicle.id)} />
+                      </RemoveIcon>
                       <VehicleImage>
                         <img alt={v.title} src={v.vehicle.main_image} />
                       </VehicleImage>
