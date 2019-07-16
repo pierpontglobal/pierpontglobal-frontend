@@ -130,6 +130,14 @@ const SearchBtn = styled.div`
   padding: 8px;
 `;
 
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 class ConstructionMarket extends React.Component {
   constructor(props){
     super(props);
@@ -152,7 +160,11 @@ class ConstructionMarket extends React.Component {
 
   componentWillMount = async () => {
     this.shouldRenderDetail(window.location.search);
-    this.getVehicles();
+    this.setState({
+      isLoading: true
+    }, () => {
+      this.getVehicles();
+    })
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -266,6 +278,7 @@ class ConstructionMarket extends React.Component {
       this.setState({
         vehicles: [...this.state.vehicles, ...toAppend],
         totalVehicles: res.total_vehicles,
+        isLoading: false,
         page
       })
     })
@@ -412,7 +425,7 @@ class ConstructionMarket extends React.Component {
         </MainTitle>
         <MainContent ref={(ref) => this.scrollParentRef = ref}>
             {
-              isLoading ? 'Loading...' : (
+              isLoading ? <LoadingWrapper><CircularProgress /></LoadingWrapper> : (
                 <InfiniteScroll
                   style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}
                   pageStart={0}
