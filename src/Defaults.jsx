@@ -7,7 +7,7 @@ export const OneSignalKey =
     : "76b26e12-3abb-4faf-8ca2-a589f73a602c";
 export const ApiServer =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
+    ? "https://api.pierpontglobal.com"
     : "https://api.pierpontglobal.com";
 export const StripeKey =
   process.env.NODE_ENV === "development"
@@ -15,7 +15,7 @@ export const StripeKey =
     : "pk_live_Rnf6s2eReIqXTzHhZGFvFvMA";
 export const WSConnection =
   process.env.NODE_ENV === "development"
-    ? "ws://localhost:3000/cable"
+    ? "wss://api.pierpontglobal.com/cable"
     : "wss://api.pierpontglobal.com/cable";
 
 export const AccentButton = styled(Button)`

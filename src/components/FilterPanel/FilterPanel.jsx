@@ -159,8 +159,7 @@ class FilterPanel extends React.Component {
       }
       str += `${searchable}=${encodeURIComponent(searchables[searchable])}`;
     });
-
-    window.history.pushState(null, 'Marketplace', `?${str}`);
+    
     this.props.getCars();
     if (this.props.handleFilterChange) {
       this.props.handleFilterChange(searchables);

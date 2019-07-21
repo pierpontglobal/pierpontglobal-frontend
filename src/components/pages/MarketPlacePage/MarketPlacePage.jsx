@@ -230,7 +230,6 @@ class MarketPlacePage extends React.Component {
     const { page, size } = this.state;
 
     let str = '';
-    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
     Object.keys(this.params).forEach((key) => {
       if ((this.params[key] !== '' && this.params[key] !== null) && key !== '') {
@@ -239,7 +238,6 @@ class MarketPlacePage extends React.Component {
     });
     str = str.substr(1, str.length);
 
-    //window.history.pushState(null, 'Marketplace', `/marketplace?${str}`);
     const response = await fetch(ApiServer, str, page, 20);
 
     const carsArray = !!response ? response.cars : [];
