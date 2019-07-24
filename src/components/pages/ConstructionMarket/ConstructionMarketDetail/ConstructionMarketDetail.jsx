@@ -488,7 +488,7 @@ class ConstructionMarketDetail extends React.Component {
     const ceo = "steve@pierpontglobal.com";
     const cto = "hector@pierpontglobal.com";
     const emailSub = "Heavy vehicle request";
-    const emailBody = `Hi, I would like to request vehicle: ${vehicle.title}, from: ${vehicle.location} with id: ${vehicle.id}`;
+    const emailBody = `Hi, I would like to request vehicle: ${vehicle.title}, from: ${vehicle.location} with id: ${vehicle.id} and serial: ${vehicle.serial}`;
     window.location.href = "mailto:"+emailTo+'?cc='+ceo+';'+cto+'&subject='+emailSub+'&body='+emailBody;
   }
 
