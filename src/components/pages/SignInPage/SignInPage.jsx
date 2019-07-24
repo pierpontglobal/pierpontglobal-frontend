@@ -3,16 +3,12 @@ import {
   SignInWrapper,
   SignInBox,
   BlobLeft,
-  GlassBlobLeft,
   WhiteLayer,
   BlobRight,
-  GlassBlobRight,
   MainImage,
-  GlassMainImage,
 } from "./SignInPage.styles";
 import { LoginView } from "./LoginView";
 import { RegisterView } from "./RegisterView";
-import Measure from 'react-measure'
 import { RecoverView } from "./RecoverView";
 import { ChangePasswordView } from "./ChangePasswordView";
 
@@ -22,7 +18,6 @@ const SignInPage = props => {
 
   const [page, setPage] = useState(1);
   const [registerView, setRegisterView] = useState(false);
-  const [rightSeparation, setRightSeparation] = useState(0);
 
   useEffect(() => {
     var params = queryString.parse(window.location.search, { ignoreQueryPrefix: true })
@@ -59,56 +54,26 @@ const SignInPage = props => {
       <BlobLeft src="/images/signinpage/blob.svg" />
       <BlobRight src="/images/signinpage/blob.svg" />
       <MainImage src="/images/signinpage/Dealer.svg" />
-
-      <Measure
-        bounds
-        onResize={contentRect => {
-          let bounds = contentRect.bounds;
-          setRightSeparation(bounds.right);
-        }}
-      >
-        {({ measureRef }) => (
-          <SignInBox ref={measureRef} big={page == 2}>
-            <GlassBlobLeft big={page == 2} rightSeparation={rightSeparation} src="/images/signinpage/blob.svg" />
-            <GlassBlobRight big={page == 2} rightSeparation={rightSeparation} src="/images/signinpage/blob.svg" />
-            <GlassMainImage big={page == 2} rightSeparation={rightSeparation} src="/images/signinpage/Dealer.svg" />
-            <WhiteLayer>
-              {view}
-            </WhiteLayer>
-          </SignInBox>
-        )}
-      </Measure>
+      <SignInBox big={page == 2}>
+        <WhiteLayer>
+          {view}
+        </WhiteLayer>
+      </SignInBox>
     </SignInWrapper >
   );
 };
 
 export function RecoverPage(props) {
-  const [rightSeparation, setRightSeparation] = useState(0);
-
   return (
     <SignInWrapper>
       <BlobLeft src="/images/signinpage/blob.svg" />
       <BlobRight src="/images/signinpage/blob.svg" />
       <MainImage src="/images/signinpage/Dealer.svg" />
-
-      <Measure
-        bounds
-        onResize={contentRect => {
-          let bounds = contentRect.bounds;
-          setRightSeparation(bounds.right);
-        }}
-      >
-        {({ measureRef }) => (
-          <SignInBox ref={measureRef} big={false}>
-            <GlassBlobLeft big={false} rightSeparation={rightSeparation} src="/images/signinpage/blob.svg" />
-            <GlassBlobRight big={false} rightSeparation={rightSeparation} src="/images/signinpage/blob.svg" />
-            <GlassMainImage big={false} rightSeparation={rightSeparation} src="/images/signinpage/Dealer.svg" />
-            <WhiteLayer>
-              <ChangePasswordView />
-            </WhiteLayer>
-          </SignInBox>
-        )}
-      </Measure>
+      <SignInBox big={false}>
+        <WhiteLayer>
+          <ChangePasswordView />
+        </WhiteLayer>
+      </SignInBox>
     </SignInWrapper >
   );
 }

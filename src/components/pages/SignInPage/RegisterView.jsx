@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MediaQuery from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 import {
   RegistrationWrapper,
   ButtonHolders,
@@ -166,34 +167,34 @@ const UserSection = props => {
           }}
         />
       </RegistrationForm>
-        <ButtonHolders>
+      <ButtonHolders>
         <MediaQuery maxDeviceWidth={769}>
-            <MobileStepperCustom
-              variant="dots"
-              steps={4}
-              position="static"
-              activeStep={current}
-            />
+          <MobileStepperCustom
+            variant="dots"
+            steps={4}
+            position="static"
+            activeStep={current}
+          />
 
-          </MediaQuery>
-          <LightButton onClick={() => { props.setPage(1) }}> <Icon type="left" /> Sign in</LightButton>
-          <LightButton
-            onClick={() => {
-              let nameValidator = validateNameInspector(completeName, setValidName);
-              let phoneValidator = validatePhoneInspector(phoneNumber, setValidPhone);
-              let emailValidator = validateEmailInspector(email, setValidEmail);
+        </MediaQuery>
+        <LightButton onClick={() => { props.setPage(1) }}> <Icon type="left" /> Sign in</LightButton>
+        <LightButton
+          onClick={() => {
+            let nameValidator = validateNameInspector(completeName, setValidName);
+            let phoneValidator = validatePhoneInspector(phoneNumber, setValidPhone);
+            let emailValidator = validateEmailInspector(email, setValidEmail);
 
-              if (current + 1 < 4
-                && nameValidator
-                && phoneValidator
-                && emailValidator) {
-                setCurrent(current + 1);
-              }
-            }}
-          >
-            Next <Icon type="right" />
-          </LightButton>
-        </ButtonHolders>
+            if (current + 1 < 4
+              && nameValidator
+              && phoneValidator
+              && emailValidator) {
+              setCurrent(current + 1);
+            }
+          }}
+        >
+          Next <Icon type="right" />
+        </LightButton>
+      </ButtonHolders>
     </>
   );
 };
@@ -256,38 +257,38 @@ const VerifySection = props => {
           </Subtitle>
         </VerifyWrapper>
       </RegistrationForm>
-        <ButtonHolders>
+      <ButtonHolders>
 
         <MediaQuery maxDeviceWidth={769}>
-            <MobileStepperCustom
-              variant="dots"
-              steps={4}
-              position="static"
-              activeStep={current}
-            />
+          <MobileStepperCustom
+            variant="dots"
+            steps={4}
+            position="static"
+            activeStep={current}
+          />
 
-          </MediaQuery>
+        </MediaQuery>
 
-          <LightButton
-            onClick={() => {
-              if (current - 1 > -1) {
-                setCurrent(current - 1);
-              }
-            }}
-          >
-            <Icon type="left" /> Back
+        <LightButton
+          onClick={() => {
+            if (current - 1 > -1) {
+              setCurrent(current - 1);
+            }
+          }}
+        >
+          <Icon type="left" /> Back
           </LightButton>
-          <LightButton
-            disabled={!verified}
-            onClick={() => {
-              if (current + 1 < 4) {
-                setCurrent(current + 1);
-              }
-            }}
-          >
-            Next <Icon type="right" />
-          </LightButton>
-        </ButtonHolders>
+        <LightButton
+          disabled={!verified}
+          onClick={() => {
+            if (current + 1 < 4) {
+              setCurrent(current + 1);
+            }
+          }}
+        >
+          Next <Icon type="right" />
+        </LightButton>
+      </ButtonHolders>
     </>
   );
 };
@@ -406,47 +407,47 @@ const DealerSection = props => {
           label="Address"
         />
       </RegistrationForm>
-        <ButtonHolders>
+      <ButtonHolders>
 
-                <MediaQuery maxDeviceWidth={769}>
-                    <MobileStepperCustom
-                      variant="dots"
-                      steps={4}
-                      position="static"
-                      activeStep={current}
-                    />
+        <MediaQuery maxDeviceWidth={769}>
+          <MobileStepperCustom
+            variant="dots"
+            steps={4}
+            position="static"
+            activeStep={current}
+          />
 
-                  </MediaQuery>
-          <LightButton
-            onClick={() => {
-              if (current - 1 > -1) {
-                setCurrent(current - 1);
-              }
-            }}
-          >
-            <Icon type="left" /> Back
+        </MediaQuery>
+        <LightButton
+          onClick={() => {
+            if (current - 1 > -1) {
+              setCurrent(current - 1);
+            }
+          }}
+        >
+          <Icon type="left" /> Back
           </LightButton>
-          <LightButton
-            onClick={() => {
-              let validatedName = validateDealerNameInspector(dealerName, setValidName);
-              let validatedCountry = validateDealerNameInspector(country, setValidCountry);
-              let validatedCity = validateDealerNameInspector(city, setValidCity);
-              let validatedAddress = validateDealerNameInspector(address, setValidAddress);
+        <LightButton
+          onClick={() => {
+            let validatedName = validateDealerNameInspector(dealerName, setValidName);
+            let validatedCountry = validateDealerNameInspector(country, setValidCountry);
+            let validatedCity = validateDealerNameInspector(city, setValidCity);
+            let validatedAddress = validateDealerNameInspector(address, setValidAddress);
 
-              console.log(validatedName);
+            console.log(validatedName);
 
-              if (current + 1 < 4
-                && validatedName
-                && validatedCountry
-                && validatedCity
-                && validatedAddress) {
-                setCurrent(current + 1);
-              }
-            }}
-          >
-            Next <Icon type="right" />
-          </LightButton>
-        </ButtonHolders>
+            if (current + 1 < 4
+              && validatedName
+              && validatedCountry
+              && validatedCity
+              && validatedAddress) {
+              setCurrent(current + 1);
+            }
+          }}
+        >
+          Next <Icon type="right" />
+        </LightButton>
+      </ButtonHolders>
     </>
   );
 };
@@ -611,7 +612,7 @@ const SubscriptionSection = injectStripe(props => {
                   setValidPassword(true);
                   setLoading(false);
                 });
-              } else if (!passwordValidation){
+              } else if (!passwordValidation) {
                 setValidPassword(false)
                 setLoading(false);
               } else {
@@ -628,29 +629,29 @@ const SubscriptionSection = injectStripe(props => {
         </div>
       </RegistrationForm>
 
-        <ButtonHolders>
+      <ButtonHolders>
 
 
-                <MediaQuery maxDeviceWidth={769}>
-                    <MobileStepperCustom
-                      variant="dots"
-                      steps={4}
-                      position="static"
-                      activeStep={current}
-                    />
+        <MediaQuery maxDeviceWidth={769}>
+          <MobileStepperCustom
+            variant="dots"
+            steps={4}
+            position="static"
+            activeStep={current}
+          />
 
-                  </MediaQuery>
+        </MediaQuery>
 
-          <LightButton
-            onClick={() => {
-              if (current - 1 > -1) {
-                setCurrent(current - 1);
-              }
-            }}
-          >
-            <Icon type="left" /> Back
+        <LightButton
+          onClick={() => {
+            if (current - 1 > -1) {
+              setCurrent(current - 1);
+            }
+          }}
+        >
+          <Icon type="left" /> Back
           </LightButton>
-        </ButtonHolders>
+      </ButtonHolders>
     </>
   );
 });
@@ -731,6 +732,14 @@ function getStepContent(step) {
   }
 }
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
 export const RegisterView = props => {
   const [current, setCurrent] = useState(0);
   const [completeName, setCompleteName] = useState("");
@@ -748,6 +757,19 @@ export const RegisterView = props => {
   const [cardToken, setCardToken] = useState("");
   const [errorSnack, setErrorSnack] = useState("");
   const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      let isMovileView = getWindowDimensions().width <= 768
+      window.changeWWPosition(isMovileView ? 'moveToTop' : 'normal');
+    }
+    window.addEventListener('resize', handleResize);
+    window.changeWWPosition(getWindowDimensions().width <= 768 ? 'moveToTop' : 'normal');
+    return function cleanup() {
+      window.removeEventListener('resize', handleResize);
+      window.changeWWPosition('normal');
+    };
+  });
 
   const steps = getSteps();
 

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { CircularProgress, Button, MobileStepper } from "@material-ui/core";
-import { Steps } from "antd";
 
 export const SignInWrapper = styled.div`
   width: 100%;
@@ -12,6 +11,7 @@ export const SignInWrapper = styled.div`
   align-items: flex-start;
   justify-self: center;
   align-self: center;
+  background: transparent;
 `;
 
 export const WhiteLayer = styled.div`
@@ -22,13 +22,12 @@ export const WhiteLayer = styled.div`
   top: 0;
   left: 0;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   z-index: 4;
   @media only screen and (max-width: 1280px) and (min-width: 768px) {
     padding: 16px 40px;
   }
   @media only screen and (max-width: 768px) {
-    height: 80vh;
     padding: 12px 24px;
   }
 `;
@@ -100,7 +99,7 @@ export const SignInBox = styled.div`
   width: ${props => (props.big ? "748px" : "450px")};
   height: 70vh;
   position: absolute;
-  background: rgba(255, 255, 255, 1);
+  background: transparent;
   margin-left: ${props => (props.big ? "calc(50vw - 374px)" : "15vw")};
   margin-top: 15vh;
   border-radius: 15px;
@@ -108,10 +107,10 @@ export const SignInBox = styled.div`
   box-shadow: rgba(47, 64, 163, 0.3) 0px 0px 50px -10px !important;
   transition: 1s;
   @media only screen and (max-width: 768px) {
-    width: 90vw;
-    height: auto;
-    margin-left: 3vw;
-    margin-top: 2vh;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
   }
 `;
 
@@ -128,20 +127,6 @@ export const BlobLeft = styled.img`
   opacity: 0.3;
 `;
 
-export const GlassBlobLeft = styled(BlobLeft)`
-  position: absolute;
-  filter: blur(5px);
-  bottom: calc(-160px - 15vh);
-  left: ${props =>
-    props.big ? "calc(-300px - (50vw - 374px))" : "calc(-300px - 15vw)"};
-  z-index: 3;
-  transition: 1s;
-  @media only screen and (max-width: 768px) {
-    bottom: calc(-160px -15vh);
-    left: calc(-300px - 5vw);
-  }
-`;
-
 export const BlobRight = styled.img`
   position: absolute;
   width: 88vw;
@@ -155,22 +140,6 @@ export const BlobRight = styled.img`
   opacity: 0.3;
 `;
 
-export const GlassBlobRight = styled(BlobRight)`
-  position: absolute;
-  filter: blur(5px);
-  top: calc(-500px - 15vh);
-  right: ${props =>
-    props.big
-      ? "calc(-400px - (100vw - (50vw - 374px) - 100%))"
-      : "calc(-400px - (100vw - 15vw - 100%))"};
-  z-index: 3;
-  transition: 1s;
-  @media only screen and (max-width: 768px) {
-    top: calc(-500px - 15vh);
-    right: calc(-400px - 5vw);
-  }
-`;
-
 export const MainImage = styled.img`
   position: absolute;
   z-index: 2;
@@ -179,19 +148,6 @@ export const MainImage = styled.img`
   min-width: 800px;
   right: 100px;
   top: 300px;
-`;
-
-export const GlassMainImage = styled(MainImage)`
-  position: absolute;
-  filter: blur(5px);
-  top: calc(300px - 15vh);
-  right: calc(100px - (100vw - ${props => props.rightSeparation}px));
-  z-index: 3;
-  transition: 0s;
-  @media only screen and (max-width: 768px) {
-    top: calc(300px - 15vh);
-    right: calc(100px - 5vw);
-  }
 `;
 
 export const Fields = styled.div`
