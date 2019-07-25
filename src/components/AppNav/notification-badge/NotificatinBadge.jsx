@@ -4,7 +4,6 @@ import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
-import { ActionCableProvider } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
 import { withCookies } from 'react-cookie';
 import axios from 'axios';
@@ -141,46 +140,44 @@ class NotificationBadge extends Component {
     } = this.state;
     return (
       <>
-        <ActionCableProvider cable={this.cable}>
-          <IconButton
-            disabled={notifications.length <= 0}
-            disableRipple
-            onClick={this.handleToggle}
-            className={classes.iconButton}
-            buttonRef={(node) => {
-              this.anchorEl = node;
-            }}
-            aria-owns={open ? 'menu-list-grow' : undefined}
-            aria-haspopup="true"
-          >
-            <Badge className={classes.margin} badgeContent={notifications.length} max={99} color="primary">
-              {(notifications.length > 0) ? <NotificationsActiveIcon /> : <NotificationsIcon />}
-            </Badge>
-          </IconButton>
-          <CustomPopper open={open} anchorEl={this.anchorEl} transition disablePortal>
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list-grow"
-                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom', width: '100%' }}
-              >
-                <ClickAwayListener onClickAway={this.handleClose}>
-                  <div style={{ width: '100%', backgroundColor: '#efeded' }}>
-                    <Notifications onReadAll={this.onReadAllNotification} onRead={this.onReadNotification} cookies={cookies} notifications={notifications} onClose={this.handleClose} />
-                  </div>
-                </ClickAwayListener>
-              </Grow>
-            )}
-          </CustomPopper>
-          <PPGModal
-            setOpen={openNotificationModal}
-            handleClose={this.closeNotificationModal}
-            setPadding={false}
-            onlyChildren
-          >
-            <NotificationDetailModal handleClose={this.closeNotificationModal} selectedNotification={selectedNotification} />
-          </PPGModal>
-        </ActionCableProvider>
+        <IconButton
+          disabled={notifications.length <= 0}
+          disableRipple
+          onClick={this.handleToggle}
+          className={classes.iconButton}
+          buttonRef={(node) => {
+            this.anchorEl = node;
+          }}
+          aria-owns={open ? 'menu-list-grow' : undefined}
+          aria-haspopup="true"
+        >
+          <Badge className={classes.margin} badgeContent={notifications.length} max={99} color="primary">
+            {(notifications.length > 0) ? <NotificationsActiveIcon /> : <NotificationsIcon />}
+          </Badge>
+        </IconButton>
+        <CustomPopper open={open} anchorEl={this.anchorEl} transition disablePortal>
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              id="menu-list-grow"
+              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom', width: '100%' }}
+            >
+              <ClickAwayListener onClickAway={this.handleClose}>
+                <div style={{ width: '100%', backgroundColor: '#efeded' }}>
+                  <Notifications onReadAll={this.onReadAllNotification} onRead={this.onReadNotification} cookies={cookies} notifications={notifications} onClose={this.handleClose} />
+                </div>
+              </ClickAwayListener>
+            </Grow>
+          )}
+        </CustomPopper>
+        <PPGModal
+          setOpen={openNotificationModal}
+          handleClose={this.closeNotificationModal}
+          setPadding={false}
+          onlyChildren
+        >
+          <NotificationDetailModal handleClose={this.closeNotificationModal} selectedNotification={selectedNotification} />
+        </PPGModal>
       </>
     );
   }

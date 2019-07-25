@@ -13,7 +13,6 @@ const ApplicationRoutes = {
     subscription: '/user/subscription',
     transactions: '/user/transactions',
   },
-  notificationPage: '/user/notifications',
   contactPage: '/contact-us',
   supportPage: '/support',
   supportPageTutorial: '/support/:tutorial',

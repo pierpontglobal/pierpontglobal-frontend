@@ -20,6 +20,7 @@ import SettingsModalContent from './SettingsModalContent/SettingsModalContent';
 import PPGModal from '../ppg-modal/PPGModal';
 import Axios from 'axios';
 import { ApiServer } from '../../Defaults';
+import MediaQuery from 'react-responsive';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -53,6 +54,7 @@ const AppLogo = styled.div`
   align-items: center;
   max-width: 160px;
   border: none;
+  padding: 10px;
   cursor: pointer;
 `;
 
@@ -249,7 +251,7 @@ class AppNav extends React.Component {
 
     if (window.location.href.includes(pathname)) {
       let navbarLink = navbarLinks.filter(x => x.url === pathname)[0];
-      
+
       if (!!navbarLink) {
         const idx = navbarLinks.indexOf(navbarLink);
         navbarLinks[idx].active = true;
@@ -299,7 +301,7 @@ class AppNav extends React.Component {
   }
 
   toggelUserMenu = () => {
-    this.setState( (prevState) => ({
+    this.setState((prevState) => ({
       openUserMenu: !prevState.openUserMenu,
     }))
   }
@@ -313,8 +315,8 @@ class AppNav extends React.Component {
 
   removeCookies = () => {
     const { cookies } = this.props;
-    cookies.remove('token', {path: '/'});
-    cookies.remove('one_signal_uuid', {path: '/'});
+    cookies.remove('token', { path: '/' });
+    cookies.remove('one_signal_uuid', { path: '/' });
     Axios.delete(`${ApiServer}/api/v2/users/logout`);
   }
 
@@ -364,7 +366,7 @@ class AppNav extends React.Component {
     if (text && text.length > chars) {
       let cutted = text.substr(0, chars);
       cutted = cutted + "..."
-      return  cutted;
+      return cutted;
     }
     return text;
   }
@@ -407,7 +409,7 @@ class AppNav extends React.Component {
               <AppLogo>
                 <Img
                   style={{
-                    width: '100%',
+                    width: '90%',
                     cursor: 'pointer',
                   }}
                   alt="Pierpont Global, Inc"
@@ -424,14 +426,16 @@ class AppNav extends React.Component {
                 />
               </AppLogo>
             </LogoWrapper>
-            <MobileIcons>
-              <NotificatinBadgeWrapper>
-                <NotificatinBadge />
-              </NotificatinBadgeWrapper>
-              <BurgerWrapper onClick={this.handleDrawerOpen}>
-                <BurgerIcon />
-              </BurgerWrapper>
-            </MobileIcons>
+            <MediaQuery maxDeviceWidth={768}>
+              <MobileIcons>
+                <NotificatinBadgeWrapper>
+                  <NotificatinBadge />
+                </NotificatinBadgeWrapper>
+                <BurgerWrapper onClick={this.handleDrawerOpen}>
+                  <BurgerIcon />
+                </BurgerWrapper>
+              </MobileIcons>
+            </MediaQuery>
             <NavbarLinks>
               {
                 navbarLinks.map((link, index) => (
@@ -445,22 +449,24 @@ class AppNav extends React.Component {
               }
             </NavbarLinks>
             <NavbarItems>
-              <NotificatinBadgeWrapper>
-                <NotificatinBadge />
-              </NotificatinBadgeWrapper>
+              <MediaQuery minDeviceWidth={768}>
+                <NotificatinBadgeWrapper>
+                  <NotificatinBadge />
+                </NotificatinBadgeWrapper>
+              </MediaQuery>
               <ProfileIconWrapper>
                 <UserImageWrapper>
-                  <img alt={`${username} | Pierpont Global`} src={ !!user.photo ? user.photo : '/images/no-user-photo.png' } />
+                  <img alt={`${username} | Pierpont Global`} src={!!user.photo ? user.photo : '/images/no-user-photo.png'} />
                   {/* <CustomBagde>
                     <span>1</span>
                   </CustomBagde> */}
                 </UserImageWrapper>
                 <UserNameWrapper onClick={this.toggelUserMenu}>
                   <span>
-                    { PossibleLongTextFormatter(username, 12) }
+                    {PossibleLongTextFormatter(username, 12)}
                   </span>
                 </UserNameWrapper>
-                <ArrowWrapper isOpen={openUserMenu} onClick={this.toggelUserMenu}r>
+                <ArrowWrapper isOpen={openUserMenu} onClick={this.toggelUserMenu} r>
                   <ArrowIcon />
                 </ArrowWrapper>
                 {

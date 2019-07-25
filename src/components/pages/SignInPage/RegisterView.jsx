@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MediaQuery from "react-responsive";
-import { useMediaQuery } from "react-responsive";
 import {
   RegistrationWrapper,
   ButtonHolders,
@@ -18,8 +17,7 @@ import { LightButton } from "../sign-in-page/styles/sign_in_styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import {
-  ActionCableConsumer,
-  ActionCableProvider
+  ActionCableConsumer
 } from "react-actioncable-provider";
 import ActionCable from "actioncable";
 import {
@@ -236,15 +234,13 @@ const VerifySection = props => {
   return (
     <>
       <RegistrationForm>
-        <ActionCableProvider cable={cable}>
-          <ActionCableConsumer
-            channel="VerificationChannel"
-            onReceived={message => {
-              console.log(message);
-              setVerified(message["verified"]);
-            }}
-          />
-        </ActionCableProvider>
+        <ActionCableConsumer
+          channel="VerificationChannel"
+          onReceived={message => {
+            console.log(message);
+            setVerified(message["verified"]);
+          }}
+        />
         <VerifyWrapper>
           <Title>Verify that it is you</Title>
           <Icon

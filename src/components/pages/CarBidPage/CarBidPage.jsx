@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { ActionCableProvider } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
@@ -200,7 +199,6 @@ class CarBidPage extends React.Component {
     const position = parameters.position;
 
     const { intl } = this.props;
-    this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
 
     const labels = {
       carBidPreview: intl.formatMessage({ id: 'car-bid.preview' }),
@@ -269,54 +267,52 @@ class CarBidPage extends React.Component {
 
     return (
       <div>
-        <ActionCableProvider cable={this.cable}>
-          <MediaQuery minDeviceWidth={768}>
-            <React.Fragment>
-              <div style={{ marginTop: '16px' }} className="d-flex justify-content-center">
-                <SideMenuWrapper>
-                  <CarDetailCard car={car} />
-                  <CarDetailTable car={car} />
-                </SideMenuWrapper>
-                <div
-                  style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                  {userBid !== undefined
-                    ? <UserBidCard bid={userBid} />
-                    : (
-                      <BidPanel
-                        updateUserBidCallback={this.updateUserBidCallback}
-                        carId={car.id}
-                        vin={car.vin}
-                        saleDate={car.saleDate}
-                        wholePrice={car.wholePrice}
-                      />
-                    )}
-                  <LocationBar
-                    currentLocation={car.location}
-                    transportPrice="277"
-                    to="to Port Miami, FL"
-                  />
-                  <CarCarousel maxWidth="720px" images={car.images} />
-                </div>
+        <MediaQuery minDeviceWidth={768}>
+          <React.Fragment>
+            <div style={{ marginTop: '16px' }} className="d-flex justify-content-center">
+              <SideMenuWrapper>
+                <CarDetailCard car={car} />
+                <CarDetailTable car={car} />
+              </SideMenuWrapper>
+              <div
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                {userBid !== undefined
+                  ? <UserBidCard bid={userBid} />
+                  : (
+                    <BidPanel
+                      updateUserBidCallback={this.updateUserBidCallback}
+                      carId={car.id}
+                      vin={car.vin}
+                      saleDate={car.saleDate}
+                      wholePrice={car.wholePrice}
+                    />
+                  )}
+                <LocationBar
+                  currentLocation={car.location}
+                  transportPrice="277"
+                  to="to Port Miami, FL"
+                />
+                <CarCarousel maxWidth="720px" images={car.images} />
               </div>
-              <CarBottomNav
-                prev={prevCar}
-                next={nextCar}
-                position={position}
-                goTo={this.goTo}
-              />
-            </React.Fragment>
-          </MediaQuery>
-          <MediaQuery maxDeviceWidth={768}>
-            <TabsComponent options={tabOptions} />
+            </div>
             <CarBottomNav
               prev={prevCar}
               next={nextCar}
               position={position}
               goTo={this.goTo}
             />
-          </MediaQuery>
-        </ActionCableProvider>
+          </React.Fragment>
+        </MediaQuery>
+        <MediaQuery maxDeviceWidth={768}>
+          <TabsComponent options={tabOptions} />
+          <CarBottomNav
+            prev={prevCar}
+            next={nextCar}
+            position={position}
+            goTo={this.goTo}
+          />
+        </MediaQuery>
       </div>
     );
   }

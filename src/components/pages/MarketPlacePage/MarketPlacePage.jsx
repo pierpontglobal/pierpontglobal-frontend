@@ -1,136 +1,18 @@
 import React from 'react';
 import axios from 'axios';
-import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
-import ActionCable from 'actioncable';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import styled from 'styled-components';
-import MediaQuery from 'react-responsive';
-import { CircularProgress } from '@material-ui/core';
-import { FormattedMessage } from 'react-intl';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { IconButton } from '@material-ui/core';
+import { ActionCableConsumer } from 'react-actioncable-provider';
 import { connect } from 'react-redux';
 
 import USER_ACTIONS from '../../../modules/user/action';
 import MARKET_ACTIONS from '../../../modules/market/actions';
 import SETTINGS_ACTIONS from '../../../modules/settings/actions';
-import FilterPanel from '../../FilterPanel/FilterPanel';
-import SortBar from '../../SortBar/SortBar';
-import CarCard from '../../CarCard/CarCard';
+import CarCard from './CarCard/CarCard';
 import { ApiServer } from '../../../Defaults';
-import './styles.css';
-import PPGModal from '../../ppg-modal/PPGModal';
+import { MarketPlaceLayout, FilterLayout, CarsHolder } from './MarketPlacePage.styles';
+import { FilterMultiple } from './FilterBox/FilterBox'
+import windowSize from 'react-window-size';
 
-const qs = require('query-string');
-const SearchBarHeight = 120;
-
-const Wrapper = styled.div`
-  width: ${props => props.useNew ? '100vw' : '80vw'};
-  height: 100%;
-  display: grid;
-  grid-template-columns: 280px auto;
-  grid-column-gap: 24px;
-  grid-template-rows: 80px auto;
-  grid-template-areas:
-    "sidebar searchbar"
-    "sidebar cars";
-  margin: ${props => props.useNew ? '' : '0 auto'};
-  overflow: hidden;
-
-  @media only screen and (max-width: 1024px) and (min-width: 768px) {
-    grid-template-columns: 200px 5fr;
-  }
-
-  @media only screen and (max-width: 768px) and (min-width: 0px) {
-    grid-template-columns: 165px 5fr;
-  }
-
-  @media only screen and (max-width: 480px) {
-    margin: 0px;
-    width: 100vw;
-    grid-template-columns: auto;
-    grid-template-rows: 80px 5fr;
-    grid-template-areas:
-      "searchbar"
-      "cars";
-  }
-`;
-
-const SidePanel = styled.div`
-  grid-area: sidebar;
-  width: 100%;
-  display: flex;
-  overflow: auto;
-  height: 100%;
-  @media only screen and (max-width: 480px) {
-    display: none;
-  }
-`;
-
-const CarSection = styled.div`
-  grid-area: cars;
-  height: ${`calc(100vh - ${SearchBarHeight + 16}px)`};
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  min-height: ${`calc(100vh - ${SearchBarHeight + 16}px)`};
-  max-height: ${`calc(100vh - ${SearchBarHeight + 16}px)`};
-  overflow-y: auto;
-`;
-
-const CarsWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const SearchBarWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 300;
-
-  @media only screen and (max-width: 768px) {
-    justify-content: space-between;
-  }
-`;
-
-const SearchBarBox = styled.div`
-  width: ${props => props.useNew ? '50%' : '90%'};
-  @media only screen and (max-width: 768px) {
-    width: 70%;
-  }
-`;
-
-const MainContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: calc(100% - 24px);
-`;
-
-const NotFoundWrapper = styled.div`
-  width: 100%;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
-`;
-
-const FilterIcon = styled.div`
-  display: none;
-  @media only screen and (max-width: 600px) {
-    display: flex;
-    justify-content: flex-end;
-  }
-`;
+import SearchBox from './SearchBox/SearchBox';
 
 async function requestPrice(vin) {
   await axios.patch(`${ApiServer}/api/v1/car/price-request`, { vin });
@@ -142,11 +24,11 @@ class MarketPlacePage extends React.Component {
 
     this.cable = null;
 
-    this.params = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-
     this.state = {
+      hide: true,
+      q: '',
       cars: [],
-      availableArguments: [],
+      availableArguments: {},
       loaded: false,
       page: 1,
       carsSectionHeight: window.innerHeight,
@@ -169,6 +51,11 @@ class MarketPlacePage extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
     this.getCars();
+    window.addEventListener('load', () => {
+      if (this.props.windowWidth > 768) {
+        this.setState({ hide: false })
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -231,15 +118,14 @@ class MarketPlacePage extends React.Component {
 
     let str = '';
 
-    Object.keys(this.params).forEach((key) => {
-      if ((this.params[key] !== '' && this.params[key] !== null) && key !== '') {
-        str += `&${key}=${encodeURIComponent(this.params[key])}`;
+    Object.keys(this.state).forEach((key) => {
+      if ((this.state[key] !== '' && this.state[key] !== null) && key !== '') {
+        str += `&${key}=${encodeURIComponent(this.state[key])}`;
       }
     });
     str = str.substr(1, str.length);
 
     const response = await fetch(ApiServer, str, page, 20);
-
     const carsArray = !!response ? response.cars : [];
     const carsGroup = [];
 
@@ -285,24 +171,10 @@ class MarketPlacePage extends React.Component {
         images,
         title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
       };
-
-      carsGroup.push(
-        <CarCard useNewDesign={useNewDesign} handleBookmark={this.handleBookmark} caller={str} position={i} key={carObject.vin} car={carObject} requestFunction={requestPrice} />,
-      );
+      carsGroup.push(carObject);
     }
-
-    this.setState((prevState) => ({
-      cars: carsGroup,
-      page: page + 1,
-      availableArguments: !!response ? response.available_arguments : [],
-      loaded: true,
-      carsSectionHeight: this.carsSection.current.offsetHeight,
-      size: !!response ? response.size : 0,
-    }), () => {
-      if (this.state.size !== size) {
-        this.carsSection.current.scrollTop = 0;
-      }
-    });
+    console.log(carsGroup);
+    this.setState({ availableArguments: response.available_arguments, cars: carsGroup });
   }
 
   showFilterPanel = () => {
@@ -315,10 +187,6 @@ class MarketPlacePage extends React.Component {
     this.setState({
       openModalFilter: false,
     });
-  }
-
-  onFilterChange = (/* params */) => {
-    // TODO: Handle on filter change
   }
 
   seeAllOptions = (options) => {
@@ -351,140 +219,56 @@ class MarketPlacePage extends React.Component {
   }
 
   render() {
-    const {
-      loaded,
-      cars,
-      openModalFilter,
-      showOtherOptionsInModalFilter,
-      otherFiltersOptions,
-    } = this.state;
-    const { useNewDesign } = this.props;
 
-    this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
+    const { availableArguments, hide, cars } = this.state;
+
+    const makerElements = tryGetArray(availableArguments, 'maker_name');
+    const modelElements = tryGetArray(availableArguments, 'model_name');
+    const trimElements = tryGetArray(availableArguments, 'trim');
+    const yearElements = tryGetArray(availableArguments, 'year');
+    const colorElements = tryGetArray(availableArguments, 'color');
+    const engineElements = tryGetArray(availableArguments, 'engine');
+    const transmisionElements = tryGetArray(availableArguments, 'transmission').map(
+      (transmission) => transmission.element === 1 ? { element: 'Automatic', amount: transmission.amount } : { element: 'Manual', amount: transmission.amount }
+    );
+    const fuelElements = tryGetArray(availableArguments, 'fuel');
+    const doorElements = tryGetArray(availableArguments, 'doors');
+    const bodyElements = tryGetArray(availableArguments, 'body_type');
 
     return (
       <>
-        <ActionCableProvider cable={this.cable}>
+        <SearchBox toggleFilter={() => this.setState({ hide: !hide })} handelChange={(text) => { this.setState({ q: text }, () => this.getCars()); }} />
+        <MarketPlaceLayout>
+          <FilterLayout pose={hide ? 'hideF' : 'showF'}>
+            <FilterMultiple onSelect={(selected) => { this.setState({ maker: selected }, () => this.getCars()); }} title={"Makers"} filterElements={makerElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ model: selected }, () => this.getCars()); }} title={"Models"} filterElements={modelElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ trim: selected }, () => this.getCars()); }} title={"Trims"} filterElements={trimElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ year: selected }, () => this.getCars()); }} title={"Years"} filterElements={yearElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ color: selected }, () => this.getCars()); }} title={"Colors"} filterElements={colorElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ engine: selected }, () => this.getCars()); }} title={"Engines"} filterElements={engineElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ transmission: selected.map((transmission) => (transmission === 'Automatic' ? 'automatic' : 'manual')) }, () => this.getCars()); }} title={"Transmissions"} filterElements={transmisionElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ fuel: selected }, () => this.getCars()); }} title={"Fuels"} filterElements={fuelElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ doors: selected }, () => this.getCars()); }} title={"Doors"} filterElements={doorElements} />
+            <FilterMultiple onSelect={(selected) => { this.setState({ body_type: selected }, () => this.getCars()); }} title={"Car Types"} filterElements={bodyElements} />
+          </FilterLayout>
+          <CarsHolder>
+            {cars.map((car) => <CarCard></CarCard>)}
+          </CarsHolder>
           <ActionCableConsumer
             channel="PriceQueryChannel"
             onReceived={this.handleReceived}
           />
-          <Wrapper useNew={useNewDesign}>
-            <SidePanel>
-              <MediaQuery minDeviceWidth={600}>
-                <FilterPanel
-                  getCars={this.getCars}
-                  availableArguments={this.state.availableArguments}
-                  params={this.params}
-                  onSeeAll={this.seeAllOptions}
-                />
-              </MediaQuery>
-            </SidePanel>
-            <MainContent useNew={useNewDesign}>
-              <SearchBarWrapper>
-                <SearchBarBox useNew={useNewDesign}>
-                  <SortBar header={this.params.q} />
-                </SearchBarBox>
-                <FilterIcon>
-                  <IconButton color="primary" onClick={this.showFilterPanel}>
-                    <FilterListIcon />
-                    <span style={{ fontSize: '0.75em' }}>
-                      <FormattedMessage id="label.filters" />
-                    </span>
-                  </IconButton>
-                </FilterIcon>
-              </SearchBarWrapper>
-              <CarSection ref={this.carsSection} useNew={useNewDesign}>
-                {
-                  loaded ? cars.length <= 0 ? (
-                    <NotFoundWrapper>
-                      <FormattedMessage id="marketplace.not-found" />
-                    </NotFoundWrapper>
-                  ) : (
-                      <InfiniteScroll
-                        dataLength={cars.length}
-                        next={this.getCars}
-                        hasMore
-                        loader={(
-                          <div style={{
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            paddingTop: '10px',
-                            height: '80px',
-                            alignContent: 'center',
-                          }}
-                          >
-                            <CircularProgress />
-                          </div>
-                        )}
-                        height={`calc(100vh - 16px)px`}
-                        endMessage={(
-                          <p style={{ textAlign: 'center' }}>
-                            <b><FormattedMessage id="marketplace.end-message" /></b>
-                          </p>
-                        )}
-                      >
-                        <CarsWrapper useNew={useNewDesign}>
-                          {cars}
-                        </CarsWrapper>
-                      </InfiniteScroll>
-                    ) : (
-                      <div style={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        paddingTop: '24px',
-                        height: '80px',
-                        alignContent: 'center',
-                        marginTop: '2px',
-                      }}
-                      >
-                        <CircularProgress />
-                      </div>
-                    )
-                }
-              </CarSection>
-            </MainContent>
-            <PPGModal
-              setOpen={openModalFilter}
-              handleClose={() => this.onCloseModal('openModalFilter')}
-              width="80%"
-              height="80%"
-              setPadding={false}
-              onBackAction={(otherFiltersOptions) ? this.quitOptionsFilters : undefined}
-            >
-              {/* Repeating this component here is not a performance issue. This child component,
-                of the PPGModal is only rendered when the modal is open.  */}
-              {!showOtherOptionsInModalFilter ? (
-                <FilterPanel
-                  getCars={this.getCars}
-                  availableArguments={this.state.availableArguments}
-                  params={this.params}
-                  handleFilterChange={this.onFilterChange}
-                  onSeeAll={this.seeAllOptions}
-                />
-              ) : (
-                  <div style={{ padding: '16px', height: '100%', overflowX: 'scroll' }}>
-                    <input
-                      className="border-0"
-                      style={{
-                        width: '300px',
-                        padding: '10px',
-                        marginBottom: '20px',
-                        borderRadius: '5px',
-                        boxShadow: '0rem 0rem 1rem rgba(0, 0, 0, 0.15)',
-                      }}
-                      placeholder="  Type search term"
-                    />
-                    {otherFiltersOptions}
-                  </div>
-                )}
-            </PPGModal>
-          </Wrapper>
-        </ActionCableProvider>
+        </MarketPlaceLayout>
       </>
     );
+  }
+}
+
+function tryGetArray(structure, target) {
+  try {
+    return structure[target].buckets.map((item) => ({ element: item.key, amount: item.doc_count }));
+  } catch {
+    return [];
   }
 }
 
@@ -508,4 +292,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MarketPlacePage);
+)(windowSize(MarketPlacePage));

@@ -14,6 +14,9 @@ import messages_en from "./translations/en.json";
 import locale_en from "react-intl/locale-data/en";
 import locale_es from "react-intl/locale-data/es";
 import { addLocaleData } from 'react-intl';
+import { ActionCableProvider } from 'react-actioncable-provider';
+import ActionCable from 'actioncable';
+import { ApiServer } from './Defaults';
 
 const PPGStore = configureStore(AppInitialState);
 
@@ -46,7 +49,7 @@ let languages = [
 
 const getBrowserLocale = () => navigator.language.split(/[-_]/)[0];
 
-const currentLang = cookies.get('language', {path: '/'});
+const currentLang = cookies.get('language', { path: '/' });
 
 // Set default language
 if (!!currentLang) {
@@ -67,11 +70,14 @@ const setLanguage = (lang) => {
 }
 
 const renderApp = () => {
+  let cable = ActionCable.createConsumer(`${ApiServer}/cable`);
   ReactDOM.render(
     <CookiesProvider>
       <ReduxProvider store={PPGStore}>
         <IntlProvider locale={language} messages={messages[language]}>
-          <App changeLanguage={(lang) => setLanguage(lang)} languages={languages} language={language} />
+          <ActionCableProvider cable={cable}>
+            <App changeLanguage={(lang) => setLanguage(lang)} languages={languages} language={language} />
+          </ActionCableProvider>
         </IntlProvider>
       </ReduxProvider>
     </CookiesProvider>

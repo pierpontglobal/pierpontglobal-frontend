@@ -24,7 +24,6 @@ import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
 import CarPage from "./components/pages/CarBidPage/CarBidPage";
 import ContactPage from "./components/pages/ContactPage/ContactPage";
 import ConstructionMarket from "./components/pages/ConstructionMarket/ConstructionMarket";
-import NotificationPage from "./components/pages/NotificationPage/NotificationPage";
 import "./styles.css";
 import AppNav from "./components/AppNav/AppNav";
 import { DefaultTheme, OneSignalKey, ApiServer } from "./Defaults";
@@ -413,18 +412,6 @@ class App extends React.Component {
                         )
                     }
                   />
-                  <Route
-                    exact
-                    path={ApplicationRoutes.notificationPage}
-                    render={() =>
-                      this.verifyUserLoggedIn() ? (
-                        <NotificationPage cookies={cookies} />
-                      ) : (
-                          <Redirect to="/" />
-                        )
-                    }
-                  />
-
                   <Route
                     exact
                     path={ApplicationRoutes.contactPage}
