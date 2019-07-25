@@ -51,11 +51,6 @@ class MarketPlacePage extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
     this.getCars();
-    window.addEventListener('load', () => {
-      if (this.props.windowWidth > 768) {
-        this.setState({ hide: false })
-      }
-    });
   }
 
   componentWillUnmount() {
@@ -233,6 +228,10 @@ class MarketPlacePage extends React.Component {
     const fuelElements = tryGetArray(availableArguments, 'fuel');
     const doorElements = tryGetArray(availableArguments, 'doors');
     const bodyElements = tryGetArray(availableArguments, 'body_type');
+
+    if (this.props.windowWidth > 768 && hide === true) {
+      this.setState({ hide: false })
+    }
 
     return (
       <>
