@@ -169,11 +169,10 @@ class MarketPlacePage extends React.Component {
         saleDate: Date.parse(car.sale_information.auction_start_date),
         bookmarked: bookmarked,
         images,
-        title: () => `${car.year} ${car.make} ${car.model} ${car.trimLevel}`,
+        title: `${car.car_information.year} ${car.car_information.car_maker} ${car.car_information.car_model} ${car.car_information.trim}`,
       };
       carsGroup.push(carObject);
     }
-    console.log(carsGroup);
     this.setState({ availableArguments: response.available_arguments, cars: carsGroup });
   }
 
@@ -252,7 +251,7 @@ class MarketPlacePage extends React.Component {
             <FilterMultiple onSelect={(selected) => { this.setState({ body_type: selected }, () => this.getCars()); }} title={"Car Types"} filterElements={bodyElements} />
           </FilterLayout>
           <CarsHolder>
-            {cars.map((car) => <CarCard></CarCard>)}
+            {cars.map((car) => <CarCard car={car} />)}
           </CarsHolder>
           <ActionCableConsumer
             channel="PriceQueryChannel"
