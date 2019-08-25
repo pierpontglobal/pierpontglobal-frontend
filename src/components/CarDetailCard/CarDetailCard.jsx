@@ -69,15 +69,15 @@ function pickHex(color1, color2, color3, weightRaw) {
     const w1 = weight / 2.5;
     const w2 = 1 - w1;
     const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
-      Math.round(color2[1] * w1 + color3[1] * w2),
-      Math.round(color2[2] * w1 + color3[2] * w2)];
+    Math.round(color2[1] * w1 + color3[1] * w2),
+    Math.round(color2[2] * w1 + color3[2] * w2)];
     return rgb;
   }
   const w1 = (weight - 2.5) / 2.5;
   const w2 = 1 - w1;
   const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-    Math.round(color1[1] * w1 + color2[1] * w2),
-    Math.round(color1[2] * w1 + color2[2] * w2)];
+  Math.round(color1[1] * w1 + color2[1] * w2),
+  Math.round(color1[2] * w1 + color2[2] * w2)];
   return rgb;
 }
 
@@ -86,12 +86,11 @@ function CarDetailCard({ car }) {
   const timeDiff = Math.abs(diference);
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-  console.log('DEBUG car >>>>>', car);
   return (
     <Container>
       <CardTitle>
         <h4>
-          { car.title }
+          {car.title}
         </h4>
       </CardTitle>
       <ContentText>
@@ -128,7 +127,7 @@ function CarDetailCard({ car }) {
         </Span>
       </ContentText>
       <ConditionBtnWrapper>
-        { car.score ? <ConditionBtn score={car.score} /> : <ConditionBtn score={null} />}
+        {car.score ? <ConditionBtn score={car.score} /> : <ConditionBtn score={null} />}
       </ConditionBtnWrapper>
     </Container>
   );

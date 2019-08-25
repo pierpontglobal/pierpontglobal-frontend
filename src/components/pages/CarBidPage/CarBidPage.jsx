@@ -64,7 +64,7 @@ function createCarObject(data) {
     carType: carInfo.car_type_code,
     vehicleType: carInfo.car_vehicle_type,
     displacement: carInfo.displacement,
-    images: carInfo.images.reverse().map(image => (image.f3)),
+    images: carInfo.images.sort((a, b) => (a.f2 - b.f2)).map(image => image.f1),
     location: saleInfo.action_location,
     wholePrice: saleInfo.whole_price,
   };
@@ -171,7 +171,7 @@ class CarBidPage extends React.Component {
         carType: carInfo.car_type_code,
         vehicleType: carInfo.car_vehicle_type,
         displacement: carInfo.displacement,
-        images: carInfo.images.reverse().map(image => (image.f3)),
+        images: carInfo.images.sort((a, b) => (a.f2 - b.f2)).map(image => image.f1),
         location: saleInfo.action_location,
         wholePrice: saleInfo.whole_price,
       },
