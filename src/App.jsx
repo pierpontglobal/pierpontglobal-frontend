@@ -112,6 +112,21 @@ class App extends React.Component {
       error => Promise.reject(error)
     );
 
+    axios.interceptors.response.use(response => response,
+      (error) => {
+        if (error.response.request.responseURL.includes('oauth/token')) {
+          return error.response;
+        } if (error.response.status === 401 &&
+          (
+            error.response.data === 'Signature has expired' ||
+            error.response.data === 'nil user'
+          )) {
+          this.props.cookies.remove('token');
+          window.location.href = '/?signIn=true';
+        }
+        return Promise.reject(error);
+      });
+
     this.verifyUserLoggedIn = this.verifyUserLoggedIn.bind(this);
 
     this.marketplaceRef = React.createRef();

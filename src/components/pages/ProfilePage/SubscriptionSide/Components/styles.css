@@ -1,14 +1,4 @@
-tbody tr:nth-child(odd){
-    background-color: #EBF1F8;
-}
 
-tr {
-  transition: 0.5s;
-}
-
-tr:hover {
-    background-color: #D8E4F1 !important;
-}
 
 @-webkit-keyframes rotate {
     from {

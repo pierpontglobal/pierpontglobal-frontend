@@ -249,11 +249,11 @@ class MarketPlacePage extends React.Component {
       const imagesObjs = car.car_information.images;
 
       for (let j = 0; j < imagesObjs.length; j += 1) {
-        const url = imagesObjs[j].f3;
+        const url = imagesObjs[j].f1;
         if (url === null) {
           images.push('/not-an-image.jk');
         } else {
-          images[imagesObjs[j].f4] = `${url}?width=400&height=400&position=${imagesObjs[j].f4}`;
+          images[imagesObjs[j].f2] = `${url}?width=400&height=400&position=${imagesObjs[j].f2}`;
         }
       }
 
