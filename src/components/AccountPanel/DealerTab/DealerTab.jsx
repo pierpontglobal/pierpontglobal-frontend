@@ -140,7 +140,6 @@ class DealerTab extends React.Component {
   }
 
   handleImage = (e) => {
-    // Preview photo
     this.previewPhoto(e);
     this.changeLogo(e.file);
     console.log(e);
@@ -149,8 +148,6 @@ class DealerTab extends React.Component {
   changeLogo = (logo) => {
     const { updateDealerLogo } = this.props;
     updateDealerLogo(logo).then((newLogoUrl) => {
-      console.log('After changing logo >>>>>>');
-      console.log(newLogoUrl);
       this.cleanLogo();
       this.props.openNotification({
         title: 'Delaer logo was changed',
