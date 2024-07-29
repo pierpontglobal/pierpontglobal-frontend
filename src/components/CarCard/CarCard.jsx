@@ -12,34 +12,33 @@ import PriceTag from './PriceTag/PriceTag';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import IframeModal from '../iframe-modal/IframeModal';
+import { ApiServer } from '../../Defaults';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-const Heart = (props) => {
-  return (
-    <i class="fas fa-heart"></i>
-  );
-}
+const Heart = props => (
+  <i className="fas fa-heart" />
+);
 
 const CarContainer = styled.div`
-  width: ${props => props.useNew ? '23%' : '98%'};
+  width: ${props => (props.useNew ? '23%' : '98%')};
   min-width: 300px; 
   height: auto;
-  margin: ${props => props.useNew ? '12px' : '4px'};
+  margin: ${props => (props.useNew ? '12px' : '4px')};
   border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: ${props => props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.08)'};
+  box-shadow: ${props => (props.useNew ? '0px 0px 4px 2px rgba(0,0,0,0.06)' : '3px 3px 6px rgba(0,0,0,0.08)')};
   display: grid;
-  grid-template-columns: ${props => props.useNew ? 'auto' : '1fr 1.2fr 2fr'};
-  grid-template-rows: ${props => props.useNew ? '2fr minmax(140px, 160px) minmax(100px, 120px)' : 'auto'};
+  grid-template-columns: ${props => (props.useNew ? 'auto' : '1fr 1.2fr 2fr')};
+  grid-template-rows: ${props => (props.useNew ? '2fr minmax(140px, 160px) minmax(100px, 120px)' : 'auto')};
   background-color: #fff;
   cursor: pointer;
   position: relative;
   transition: all 0.3s;
-  border: ${props => props.useNew ? '' : '1px solid rgba(0,0,0,0.16)'};
+  border: ${props => (props.useNew ? '' : '1px solid rgba(0,0,0,0.16)')};
 
   @media only screen and (max-width: 768px) and (min-width: 480px) {
     grid-template-rows: 2fr 160px minmax(100px, 120px);
@@ -49,7 +48,7 @@ const CarContainer = styled.div`
   }
 
   @media only screen and (max-width: 480px) {
-    grid-template-rows: ${props => props.showDetail === 'closed' ? '2fr 40px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)'};
+    grid-template-rows: ${props => (props.showDetail === 'closed' ? '2fr 40px minmax(100px, 120px)' : '2fr 140px minmax(100px, 120px)')};
     grid-template-columns: auto;
     width: 100%;
     margin: 8px 6px;
@@ -63,8 +62,8 @@ const Container = styled.div`
 
 const ImageWrapper = styled(LazyLoadImage)`
   object-fit: cover;
-  width: ${props => props.useNew ? '300px' : '226px'};
-  height: ${props => props.useNew ? '220px' : '116px'};
+  width: ${props => (props.useNew ? '300px' : '226px')};
+  height: ${props => (props.useNew ? '220px' : '116px')};
 
   @media only screen and (max-width: 480px) {
     height: 195px;
@@ -84,9 +83,9 @@ const DetailsContainer = styled(Container)`
   flex-direction: column;
   justify-content: space-around;
   padding: 0px;
-  font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
-  margin-left: ${props => props.useNew ? '12px' : '0px'};
-  margin-top: ${props => props.openDetails === 'closed' ? '' : '16px'};
+  font-size: ${props => (props.useNew ? '1.0rem' : '0.8rem')};
+  margin-left: ${props => (props.useNew ? '12px' : '0px')};
+  margin-top: ${props => (props.openDetails === 'closed' ? '' : '16px')};
   @media only screen and (max-width: 480px) {
     margin-left: 0px;
   }
@@ -96,7 +95,7 @@ const DetailedCR = styled(Container)`
   display: flex;
   flex-direction: column;
   min-width: 160px;
-  font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
+  font-size: ${props => (props.useNew ? '1.0rem' : '0.8rem')};
   @media only screen and (max-width: 768px) {
     width: 50%;
     margin-top: 0px;
@@ -114,15 +113,15 @@ function pickHex(color1, color2, color3, weightRaw) {
     const w1 = weight / 2.5;
     const w2 = 1 - w1;
     const rgb = [Math.round(color2[0] * w1 + color3[0] * w2),
-    Math.round(color2[1] * w1 + color3[1] * w2),
-    Math.round(color2[2] * w1 + color3[2] * w2)];
+      Math.round(color2[1] * w1 + color3[1] * w2),
+      Math.round(color2[2] * w1 + color3[2] * w2)];
     return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
   }
   const w1 = (weight - 2.5) / 2.5;
   const w2 = 1 - w1;
   const rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-  Math.round(color1[1] * w1 + color2[1] * w2),
-  Math.round(color1[2] * w1 + color2[2] * w2)];
+    Math.round(color1[1] * w1 + color2[1] * w2),
+    Math.round(color1[2] * w1 + color2[2] * w2)];
   return `${rgb[0]} , ${rgb[1]} , ${rgb[2]}`;
 }
 
@@ -149,7 +148,7 @@ const PriceContainer = styled.div`
   align-items: center;
   text-align: center;
   flex-direction: column;
-  width: ${props => props.useNew ? '80%' : '70%'};
+  width: ${props => (props.useNew ? '80%' : '70%')};
   @media only screen and (max-width: 768px) {
     width: 50%;
     margin-top: 0px;
@@ -171,7 +170,7 @@ const DetailTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: ${props => props.useNew ? '1.0rem' : '0.8rem'};
+  font-size: ${props => (props.useNew ? '1.0rem' : '0.8rem')};
   @media only screen and (max-width: 480px) {
     margin-top: 12px;
   }
@@ -304,22 +303,22 @@ const onHeartClickAnimDesktop = keyframes`
 
 const BookmarkArea = styled.div`
   position: absolute;
-  top: ${props => props.useNew ? '4pxm' : '-4px'};
-  right: ${props => props.useNew ? '6px' : '-6px'};
+  top: ${props => (props.useNew ? '4pxm' : '-4px')};
+  right: ${props => (props.useNew ? '6px' : '-6px')};
   z-index: 600;
   padding: 16px;
   background-color: transparent;
   transition: all 0.2s;
   & > i {
-    color: ${props => props.active ? 'rgba(225,48,108,1)' : 'rgba(255,255,255,0.32)'};
-    font-size: ${props => props.useNew ? '1.9rem' : '1.0rem'};
-    animation: ${props => props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : ''};
-    stroke-width: ${props => props.active ? '0px' : '2px'};
+    color: ${props => (props.active ? 'rgba(225,48,108,1)' : 'rgba(255,255,255,0.32)')};
+    font-size: ${props => (props.useNew ? '1.9rem' : '1.0rem')};
+    animation: ${props => (props.heartCliked ? css`${onHeartClickAnimDesktop} 0.3s ease-in 0s` : '')};
+    stroke-width: ${props => (props.active ? '0px' : '2px')};
     -webkit-text-stroke-color: rgba(220, 20, 60, 0.62);
-    -webkit-text-stroke-width: ${props => props.active ? '0px' : '1px'};
+    -webkit-text-stroke-width: ${props => (props.active ? '0px' : '1px')};
     /*filter: drop-shadow(0 0 0.18rem rgba(220, 20, 60, 0.12));*/
     @media only screen and (max-width: 768px) {
-      animation: ${props => props.heartCliked ? css`${onHeartClickAnimMobile} 0.3s ease-in 0s` : ''};
+      animation: ${props => (props.heartCliked ? css`${onHeartClickAnimMobile} 0.3s ease-in 0s` : '')};
     }
   }
   &:hover {
@@ -332,14 +331,14 @@ const BookmarkArea = styled.div`
 const CarTitle = styled.div`
   width: 100%;
   height: auto;
-  padding: ${props => props.useNew ? '8px' : '4px'};
+  padding: ${props => (props.useNew ? '8px' : '4px')};
   display: flex;
-  justify-content: ${props => props.useNew ? 'center' : 'flex-start'};;
+  justify-content: ${props => (props.useNew ? 'center' : 'flex-start')};;
   align-items: center;
-  white-space: ${props => props.useNew ? 'wrap' : 'nowrap'};
+  white-space: ${props => (props.useNew ? 'wrap' : 'nowrap')};
   & > span {
-    font-weight: ${props => props.useNew ? '400' : '600'};
-    font-size: ${props => props.useNew ? '1.18rem' : '0.88rem'};
+    font-weight: ${props => (props.useNew ? '400' : '600')};
+    font-size: ${props => (props.useNew ? '1.18rem' : '0.88rem')};
   }
   @media only screen and (max-width: 768px) {
     justify-content: space-between;
@@ -389,7 +388,7 @@ function gotToCarDetail(vin, event, history, position, caller, cookies) {
 }
 
 function CarCard({
-  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark, useNewDesign
+  key, car, requestFunction, history, intl, position, caller, cookies, handleBookmark, useNewDesign,
 }) {
   const [openDetails, setOpenDetails] = useState('closed');
   const [openAutocheck, setOpenAutocheck] = useState(false);
@@ -407,6 +406,11 @@ function CarCard({
     crUrl,
     wholePrice,
   } = car;
+
+  const transformedImages = images.map((image) => {
+    const cleanedImagePath = image.replace('public/', '');
+    return `${ApiServer}/${cleanedImagePath}`;
+  });
 
   const difference = saleDate - new Date();
   const timeDiff = Math.abs(difference);
@@ -441,7 +445,7 @@ function CarCard({
               effect="blur"
               id="image-carousel"
               key={i}
-              src={image}
+              src={transformedImages}
               threshold={1000}
               delayTime={1000}
               useNew={useNewDesign}

@@ -251,12 +251,6 @@ class App extends React.Component {
     }
 
     createUser(user);
-    if (!!this.appNav) {
-      this.appNav.addConstructionLink(user.roles);
-    }
-    if (!!this.constructionMarket) {
-      this.constructionMarket.hasRole("construction")
-    }
   };
 
   verifyUserLoggedIn() {

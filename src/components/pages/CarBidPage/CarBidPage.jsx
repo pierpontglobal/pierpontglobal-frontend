@@ -26,7 +26,7 @@ const SideMenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 15px;
-  @media only screen and (max-width: 1224px){
+  @media only screen and (max-width: 1224px) {
     width: 100%;
   }
 `;
@@ -35,21 +35,25 @@ const TabWrapper = styled.div`
   width: 100%;
 `;
 
-
 function createCarObject(data) {
   const carInfo = data.car_information;
   const saleInfo = data.sale_information;
+
+  const transformedImages = carInfo.images
+    .sort((a, b) => a.f2 - b.f2)
+    .map(image => image.f1)
+    .map((image) => {
+      const cleanedImagePath = image.replace('public/', '');
+      return `${ApiServer}/${cleanedImagePath}`;
+    });
 
   const car = {
     id: carInfo.id,
     year: carInfo.year,
     maker: carInfo.car_maker,
     model: carInfo.car_model,
-    title: `${carInfo.year ? carInfo.year : 'x'}
-    ${carInfo.car_maker ? carInfo.car_maker : ''}
-    ${carInfo.car_model ? carInfo.car_model : ''}
-    ${carInfo.trim ? carInfo.trim : ''}`,
-    saleDate: `${new Date(saleInfo.auction_start_date).toLocaleString()}`,
+    title: `${carInfo.year || 'x'} ${carInfo.car_maker || ''} ${carInfo.car_model || ''} ${carInfo.trim || ''}`,
+    saleDate: new Date(saleInfo.auction_start_date).toLocaleString(),
     vin: carInfo.vin,
     trim: carInfo.trim,
     odometer: `${carInfo.odometer} ${carInfo.odometer_unit}`,
@@ -64,7 +68,7 @@ function createCarObject(data) {
     carType: carInfo.car_type_code,
     vehicleType: carInfo.car_vehicle_type,
     displacement: carInfo.displacement,
-    images: carInfo.images.sort((a, b) => (a.f2 - b.f2)).map(image => image.f1),
+    images: transformedImages,
     location: saleInfo.action_location,
     wholePrice: saleInfo.whole_price,
   };
@@ -76,12 +80,7 @@ class CarBidPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.cable = null;
-
-    const {
-      userBid,
-      cookies,
-    } = this.props;
+    const { userBid, cookies } = this.props;
 
     this.state = {
       car: {
@@ -91,6 +90,8 @@ class CarBidPage extends React.Component {
       userBid,
       cookies,
     };
+
+    this.cable = null;
 
     this.getCarInfo = this.getCarInfo.bind(this);
     this.getBids = this.getBids.bind(this);
@@ -111,12 +112,10 @@ class CarBidPage extends React.Component {
     }
   }
 
-  setNextPrev = async (position) => {
-    this.setState({
-      search: this.props.history.location.search,
-    });
-    const caller = this.props.cookies.get('list_caller');
+  async setNextPrev(position) {
+    this.setState({ search: this.props.history.location.search });
 
+    const caller = this.props.cookies.get('list_caller');
     const prevNextResponse = await axios.get(`${ApiServer}/api/v1/car/query?${caller}&limit=3&offset=${position - 1}`);
     const { cars } = prevNextResponse.data;
 
@@ -135,15 +134,21 @@ class CarBidPage extends React.Component {
 
   async getBids(carId) {
     const response = (await axios.get(`${ApiServer}/api/v1/car/bid?car_id=${carId}`)).data;
-    this.setState({
-      userBid: parseFloat(response.amount),
-    });
+    this.setState({ userBid: parseFloat(response.amount) });
   }
 
   async getCarInfo(vin) {
     const response = await axios.get(`${ApiServer}/api/v1/car?vin=${vin}`);
     const carInfo = response.data.car_information;
     const saleInfo = response.data.sale_information;
+
+    const transformedImages = carInfo.images
+      .sort((a, b) => a.f2 - b.f2)
+      .map(image => image.f1)
+      .map((image) => {
+        const cleanedImagePath = image.replace('public/', '');
+        return `${ApiServer}/${cleanedImagePath}`;
+      });
 
     this.getBids(carInfo.id);
     this.setState({
@@ -152,11 +157,8 @@ class CarBidPage extends React.Component {
         year: carInfo.year,
         maker: carInfo.car_maker,
         model: carInfo.car_model,
-        title: `${carInfo.year ? carInfo.year : 'x'}
-        ${carInfo.car_maker ? carInfo.car_maker : ''}
-        ${carInfo.car_model ? carInfo.car_model : ''}
-        ${carInfo.trim ? carInfo.trim : ''}`,
-        saleDate: `${new Date(saleInfo.auction_start_date).toLocaleString()}`,
+        title: `${carInfo.year || 'x'} ${carInfo.car_maker || ''} ${carInfo.car_model || ''} ${carInfo.trim || ''}`,
+        saleDate: new Date(saleInfo.auction_start_date).toLocaleString(),
         vin: carInfo.vin,
         trim: carInfo.trim,
         odometer: `${carInfo.odometer} ${carInfo.odometer_unit}`,
@@ -171,7 +173,7 @@ class CarBidPage extends React.Component {
         carType: carInfo.car_type_code,
         vehicleType: carInfo.car_vehicle_type,
         displacement: carInfo.displacement,
-        images: carInfo.images.sort((a, b) => (a.f2 - b.f2)).map(image => image.f1),
+        images: transformedImages,
         location: saleInfo.action_location,
         wholePrice: saleInfo.whole_price,
       },
@@ -183,23 +185,17 @@ class CarBidPage extends React.Component {
   }
 
   updateUserBidCallback(userBid) {
-    this.setState({
-      userBid,
-    });
+    this.setState({ userBid });
   }
 
   render() {
     const {
-      userBid,
-      car,
-      nextCar,
-      prevCar,
+      userBid, car, nextCar, prevCar,
     } = this.state;
-
     const parameters = qs.parse(window.location.search, { ignoreQueryPrefix: true });
     const position = parameters.position;
-
     const { intl } = this.props;
+
     this.cable = ActionCable.createConsumer(`${ApiServer}/cable`);
 
     const labels = {
@@ -209,18 +205,8 @@ class CarBidPage extends React.Component {
 
     const firstTabContent = (
       <TabWrapper>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-            }}
-          >
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             {userBid !== undefined
               ? <UserBidCard bid={userBid} />
               : (
@@ -277,9 +263,7 @@ class CarBidPage extends React.Component {
                   <CarDetailCard car={car} />
                   <CarDetailTable car={car} />
                 </SideMenuWrapper>
-                <div
-                  style={{ display: 'flex', flexDirection: 'column' }}
-                >
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                   {userBid !== undefined
                     ? <UserBidCard bid={userBid} />
                     : (

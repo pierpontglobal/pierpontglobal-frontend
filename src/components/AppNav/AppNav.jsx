@@ -279,25 +279,6 @@ class AppNav extends React.Component {
     });
   }
 
-  addConstructionLink = (roles) => {
-    let navbarLinks = [...this.state.navbarLinks];
-    console.log('will add construction link!', roles);
-    if (!!roles) {
-      const constructionRole = roles.find(x => x.toLowerCase() === "construction");
-      if (!!constructionRole) {
-        navbarLinks.unshift({
-          label: 'Construction',
-          url: ApplicationRoutes.constructionPage,
-          active: false
-        });
-      }
-    }
-    this.props.onRef(undefined);
-    this.setState({
-      navbarLinks
-    })
-  }
-
   toggelUserMenu = () => {
     this.setState( (prevState) => ({
       openUserMenu: !prevState.openUserMenu,
