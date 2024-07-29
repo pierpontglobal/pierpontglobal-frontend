@@ -80,7 +80,7 @@ The application will be accessible at `http://localhost:4000`.
 
 ### Testing
 
-For logging in, you can create a user with the test card `4242424242424242` with any expiration date you wish. Alternatively, you can use the test user `hector@test.com` with the password `12345678`.
+For logging in, you can create a user with the test card `4242424242424242` with any expiration date you wish. Alternatively, you can use the test user `hector@test.com` with the password `123456789a`.
 
 ### Contributing
 
